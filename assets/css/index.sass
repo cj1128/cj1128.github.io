@@ -1,0 +1,151 @@
+$main-color: #6BD1B0
+$second-color: #6599D4
+
+@mixin clearfix
+  *zoom: 1
+  &:before, &:after
+    display: table
+    content: ""
+
+  &:after
+    clear: both
+    height: 0
+    visibility: hidden
+
+body
+  margin: 0
+  font-family: "Hiragino Sans GB",Helvetica, Tahoma, Arial, STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif
+
+.right
+  position: fixed
+  top: 0
+  right: 0
+  width: 300px
+  height: 100%
+  background: $main-color
+
+  img
+    display: block
+    width: 80%
+    max-width: 200px
+    margin: 50px auto
+
+  .my-name
+    text-align: center
+    color: $second-color
+    font-size: 3em
+
+  nav
+    margin-top: 100px
+    padding-left: 95px
+    font-size: 1.5em
+    color: white
+    li
+      list-style: none
+      text-align: left
+      a
+        color: white
+        text-decoration: none
+        &:hover
+          color: $second-color
+
+  footer
+    color: #8B8989
+    position: absolute
+    bottom: 0
+    left: 0
+    width: 100%
+    text-align: center
+    margin: 10px
+
+
+
+.left
+  margin-right: 300px
+
+  .container
+    max-width: 700px
+    padding: 0 50px
+    margin: auto
+
+  .list-container
+    padding: 20px
+    .post
+      margin-bottom: 100px
+      .title
+        a
+          text-decoration: none
+          color: black
+        text-align: center
+        font-size: 1.5em
+
+      .meta
+        @include clearfix
+        .date
+          float: right
+        .tags
+          float: left
+          .tag
+            color: $second-color
+            font-weight: bold
+      .excerpt
+        line-height: 150%
+        font-size: 20px
+    .buttons
+      width: 400px
+      margin: 0 auto
+      margin-bottom: 50px
+      @include clearfix
+      .prev,.next
+        display: block
+        cursor: pointer
+        color: black
+        box-sizing: border-box
+        width: 200px
+        float: left
+        padding: 10px
+        border: solid 1px #eee
+        border-radius: 3px
+        text-align: center
+        text-decoration: none
+        &.disabled
+          color: #aaa
+
+        &:hover
+          background: $main-color
+
+  .post-container
+    .title
+      text-align: center
+    .content
+      font-size: 20px
+      line-height: 180%
+    .post-info
+      .tags
+        font-weight: bold
+        color: $main-color
+
+//handle code highlight
+.highlight
+  pre
+    code
+      overflow: auto
+
+img
+  max-width: 90%
+  display: block
+  margin: 0 20px
+
+strong
+  color: #E84B50
+
+em
+  color: #EB6E25
+
+
+
+
+
+
+
+

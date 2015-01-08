@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>{{ page.title }}</title>
+	<meta name="author" content="{{ site.author.name }}">
+	<meta name="keywords" content="{{ page.title}}">
+	<meta name="description" content="{{ page.desc}}">
+
+	<link href='/assets/css/index.css' rel="stylesheet" media="all">
+	<script src="/assets/js/highlight.pack.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+	<link rel="stylesheet" href="/assets/css/code_highlight/monokai_sublime.css">
+
+</head>
+<body>
+
+<div class="left">
+
+	<div class="container">
+		{{ content }}
+	</div>
+
+</div>
+
+<div class="right">
+
+<img src="/assets/image/avatar.png">
+<h1 class='my-name'>CJ Ting</h1>
+
+<nav>
+	<li>
+		<a href="/">Home</a>
+	</li>
+	<li>
+		<a href="/apps_index.html">Apps</a>
+	</li>
+</nav>
+
+<footer>
+©2015 Valar Morghulis
+</footer>
+
+</div>
+
+
+</body>
+</html>

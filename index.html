@@ -1,0 +1,33 @@
+---
+layout : default
+title : CJ Ting's blog
+---
+
+<div class="list-container">
+   {% assign posts_collate = paginator.posts %}
+   {% include JB/posts_collate %}
+
+   <!-- Pagination links -->
+   <div class="buttons">
+       {% if paginator.previous_page %}
+        {% if paginator.previous_page == 1 %}
+            <a class='prev' href="/index.html">Prev</a>
+        {% else %}
+           <a class='prev' href="/page{{ paginator.previous_page }}" class="previous pag">Prev</a>
+         {% endif %}
+       {% else %}
+       <a class="prev disabled">
+           Prev
+       </a>
+       {% endif %}
+        {% if paginator.next_page %}
+                <a class='next' href="/page{{ paginator.next_page }}">Next</a>
+        {% else %}
+            <a class="next disabled">
+                Next
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+

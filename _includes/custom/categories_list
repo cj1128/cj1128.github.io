@@ -1,0 +1,7 @@
+<div class="row">
+  {% for category in categories_list %}
+  <div class="col-md-4 category">
+    <a href="/categories.html#{{ category[0] | capitalize}}-ref" class="btn btn-info category-link">{{ category[0] | capitalize }}</a>
+  </div>
+  {% endfor %}
+</div>

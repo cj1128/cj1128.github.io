@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="作者" content="丁希金">
+	<title>Applications</title>
+	<link rel="stylesheet" href="/assets/css/gridism.css">
+	<link rel="stylesheet" href="/assets/css/apps_index.css">
+
+</head>
+<body>
+	
+	<header>
+		<h1>Just for <span>fun</span></h1>
+		<a href="/index.html">Home</a>
+		<h3>Require modern browsers,Google Chrome is recommended</h3>
+	</header>
+	<section class="apps_container">
+		<div class="container grid">
+
+
+			<div class="unit one-third">	
+				<div class="mosi" id="mosi">
+					<h2 class="name">Mosi's Face</h2>
+					<p class="description">一个Html5实现的简单记忆配对游戏~</p>	
+					<img src="/assets/apps_index_image/mosi.png" alt="">
+				</div>	
+			</div>
+			
+		</div>
+
+	</section>
+
+
+</body>
+<script>
+	var $=document.querySelectorAll.bind(document);
+	var mosi=$('#mosi').item(0);
+	mosi.addEventListener('click',function(){
+		window.open("/apps/mosi_face/mosi.html");
+	})
+</script>
+</html>
