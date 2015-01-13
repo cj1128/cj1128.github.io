@@ -7,21 +7,22 @@ body {
   position: fixed;
   top: 0;
   right: 0;
-  width: 300px;
+  max-width: 300px;
+  width: 20%;
   height: 100%;
   background: #6BD1B0; }
   .right img {
     display: block;
     width: 80%;
     max-width: 200px;
-    margin: 50px auto; }
+    margin: 10% auto; }
   .right .my-name {
     text-align: center;
     color: #6599D4;
     font-size: 3em; }
   .right nav {
-    margin-top: 100px;
-    padding-left: 95px;
+    margin-top: 20%;
+    padding: 0 30%;
     font-size: 1.5em;
     color: white; }
     .right nav li {
@@ -39,10 +40,17 @@ body {
     left: 0;
     width: 100%;
     text-align: center;
-    margin: 10px; }
+    margin: 1%; }
 
 .left {
-  margin-right: 300px; }
+  margin-right: 20%; }
+  .left .brand {
+    text-align: right;
+    padding: 20px;
+    margin: 0;
+    display: none;
+    background: #6BD1B0;
+    color: white; }
   .left .container {
     max-width: 700px;
     padding: 0 50px;
@@ -76,34 +84,34 @@ body {
       .left .list-container .post .excerpt {
         line-height: 150%;
         font-size: 20px; }
-    .left .list-container .buttons {
-      width: 400px;
-      margin: 0 auto;
-      margin-bottom: 50px;
-      *zoom: 1; }
-      .left .list-container .buttons:before, .left .list-container .buttons:after {
-        display: table;
-        content: ""; }
-      .left .list-container .buttons:after {
-        clear: both;
-        height: 0;
-        visibility: hidden; }
-      .left .list-container .buttons .prev, .left .list-container .buttons .next {
-        display: block;
-        cursor: pointer;
-        color: black;
-        box-sizing: border-box;
-        width: 200px;
-        float: left;
-        padding: 10px;
-        border: solid 1px #eee;
-        border-radius: 3px;
-        text-align: center;
-        text-decoration: none; }
-        .left .list-container .buttons .prev.disabled, .left .list-container .buttons .next.disabled {
-          color: #aaa; }
-        .left .list-container .buttons .prev:hover, .left .list-container .buttons .next:hover {
-          background: #6BD1B0; }
+  .left .buttons {
+    width: 90%;
+    margin: 0 5%;
+    margin-bottom: 10%;
+    *zoom: 1; }
+    .left .buttons:before, .left .buttons:after {
+      display: table;
+      content: ""; }
+    .left .buttons:after {
+      clear: both;
+      height: 0;
+      visibility: hidden; }
+    .left .buttons .prev, .left .buttons .next {
+      display: block;
+      cursor: pointer;
+      color: black;
+      box-sizing: border-box;
+      width: 50%;
+      float: left;
+      padding: 10px;
+      border: solid 1px #eee;
+      border-radius: 3px;
+      text-align: center;
+      text-decoration: none; }
+      .left .buttons .prev.disabled, .left .buttons .next.disabled {
+        color: #aaa; }
+      .left .buttons .prev:hover, .left .buttons .next:hover {
+        background: #6BD1B0; }
   .left .post-container .title {
     text-align: center; }
   .left .post-container .content {
@@ -126,5 +134,17 @@ strong {
 
 em {
   color: #EB6E25; }
+
+@media screen and (max-width: 1000px) {
+  .right {
+    display: none; }
+
+  .left {
+    margin-right: 0; }
+    .left .brand {
+      display: block; }
+    .left .container {
+      margin: 0;
+      padding: 5%; } }
 
 /*# sourceMappingURL=index.css.map */

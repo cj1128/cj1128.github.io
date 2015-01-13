@@ -20,15 +20,17 @@ body
   position: fixed
   top: 0
   right: 0
-  width: 300px
+  max-width: 300px
+  width: 20%
   height: 100%
   background: $main-color
+
 
   img
     display: block
     width: 80%
     max-width: 200px
-    margin: 50px auto
+    margin: 10% auto
 
   .my-name
     text-align: center
@@ -36,8 +38,8 @@ body
     font-size: 3em
 
   nav
-    margin-top: 100px
-    padding-left: 95px
+    margin-top: 20%
+    padding: 0 30%
     font-size: 1.5em
     color: white
     li
@@ -56,12 +58,20 @@ body
     left: 0
     width: 100%
     text-align: center
-    margin: 10px
+    margin: 1%
 
 
 
 .left
-  margin-right: 300px
+  margin-right: 20%
+
+  .brand
+    text-align: right
+    padding: 20px
+    margin: 0
+    display: none
+    background: $main-color
+    color: white
 
   .container
     max-width: 700px
@@ -91,28 +101,28 @@ body
       .excerpt
         line-height: 150%
         font-size: 20px
-    .buttons
-      width: 400px
-      margin: 0 auto
-      margin-bottom: 50px
-      @include clearfix
-      .prev,.next
-        display: block
-        cursor: pointer
-        color: black
-        box-sizing: border-box
-        width: 200px
-        float: left
-        padding: 10px
-        border: solid 1px #eee
-        border-radius: 3px
-        text-align: center
-        text-decoration: none
-        &.disabled
-          color: #aaa
+  .buttons
+    width: 90%
+    margin: 0 5%
+    margin-bottom: 10%
+    @include clearfix
+    .prev,.next
+      display: block
+      cursor: pointer
+      color: black
+      box-sizing: border-box
+      width: 50%
+      float: left
+      padding: 10px
+      border: solid 1px #eee
+      border-radius: 3px
+      text-align: center
+      text-decoration: none
+      &.disabled
+        color: #aaa
 
-        &:hover
-          background: $main-color
+      &:hover
+        background: $main-color
 
   .post-container
     .title
@@ -141,6 +151,20 @@ strong
 
 em
   color: #EB6E25
+
+//media queries
+
+@media screen and (max-width: 1000px)
+  .right
+    display: none
+  .left
+    margin-right: 0
+    .brand
+      display: block
+    .container
+      margin: 0
+      padding: 5%
+
 
 
 
