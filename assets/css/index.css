@@ -1,33 +1,52 @@
 @charset "UTF-8";
+.highlight pre code {
+  overflow: auto;
+  font-size: 0.8em; }
+
+img {
+  max-width: 90%;
+  display: block;
+  margin: 0 20px; }
+
+strong {
+  color: #E84B50; }
+
+em {
+  color: #EB6E25; }
+
+a {
+  text-decoration: none;
+  color: #6599D4; }
+
 body {
   margin: 0;
-  font-family: "Hiragino Sans GB", Helvetica, Tahoma, Arial, STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif; }
+  font-family: "Hiragino Sans GB", Helvetica, Tahoma, Arial, STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
+  font-size: 18px; }
 
 .right {
   position: fixed;
   top: 0;
   right: 0;
-  max-width: 300px;
-  width: 20%;
+  width: 250px;
   height: 100%;
   background: #6BD1B0; }
   .right img {
     display: block;
-    width: 80%;
-    max-width: 200px;
+    -webkit-clip-path: circle(80px at center);
+    clip-path: circle(80px at center);
     margin: 10% auto; }
   .right .my-name {
     text-align: center;
     color: #6599D4;
-    font-size: 3em; }
+    font-size: 2em; }
   .right nav {
     margin-top: 20%;
     padding: 0 30%;
-    font-size: 1.5em;
+    font-size: 1.3em;
     color: white; }
     .right nav li {
       list-style: none;
-      text-align: left; }
+      text-align: center; }
       .right nav li a {
         color: white;
         text-decoration: none; }
@@ -40,10 +59,10 @@ body {
     left: 0;
     width: 100%;
     text-align: center;
-    margin: 1%; }
+    padding: 20px 0; }
 
 .left {
-  margin-right: 20%; }
+  margin-right: 250px; }
   .left .brand {
     text-align: right;
     padding: 20px;
@@ -52,9 +71,10 @@ body {
     background: #6BD1B0;
     color: white; }
   .left .container {
+    width: 90%;
     max-width: 700px;
     padding: 0 50px;
-    margin: auto; }
+    margin: 0 auto; }
   .left .list-container {
     padding: 20px; }
     .left .list-container .post {
@@ -66,7 +86,8 @@ body {
           text-decoration: none;
           color: black; }
       .left .list-container .post .meta {
-        *zoom: 1; }
+        *zoom: 1;
+        margin-bottom: 15px; }
         .left .list-container .post .meta:before, .left .list-container .post .meta:after {
           display: table;
           content: ""; }
@@ -120,20 +141,6 @@ body {
   .left .post-container .post-info .tags {
     font-weight: bold;
     color: #6BD1B0; }
-
-.highlight pre code {
-  overflow: auto; }
-
-img {
-  max-width: 90%;
-  display: block;
-  margin: 0 20px; }
-
-strong {
-  color: #E84B50; }
-
-em {
-  color: #EB6E25; }
 
 @media screen and (max-width: 1000px) {
   .right {

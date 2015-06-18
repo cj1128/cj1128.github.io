@@ -12,39 +12,59 @@ $second-color: #6599D4
     height: 0
     visibility: hidden
 
+.highlight
+  pre
+    code
+      overflow: auto
+      font-size: 0.8em
+
+img
+  max-width: 90%
+  display: block
+  margin: 0 20px
+
+strong
+  color: #E84B50
+
+em
+  color: #EB6E25
+
+a
+  text-decoration: none
+  color: $second-color
+
 body
   margin: 0
   font-family: "Hiragino Sans GB",Helvetica, Tahoma, Arial, STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif
+  font-size: 18px
 
 .right
   position: fixed
   top: 0
   right: 0
-  max-width: 300px
-  width: 20%
+  width: 250px
   height: 100%
   background: $main-color
 
-
   img
     display: block
-    width: 80%
-    max-width: 200px
+    -webkit-clip-path: circle(80px at center)
+    clip-path: circle(80px at center)
     margin: 10% auto
 
   .my-name
     text-align: center
     color: $second-color
-    font-size: 3em
+    font-size: 2em
 
   nav
     margin-top: 20%
     padding: 0 30%
-    font-size: 1.5em
+    font-size: 1.3em
     color: white
     li
       list-style: none
-      text-align: left
+      text-align: center
       a
         color: white
         text-decoration: none
@@ -58,12 +78,12 @@ body
     left: 0
     width: 100%
     text-align: center
-    margin: 1%
+    padding: 20px 0
 
 
 
 .left
-  margin-right: 20%
+  margin-right: 250px
 
   .brand
     text-align: right
@@ -74,9 +94,10 @@ body
     color: white
 
   .container
+    width: 90%
     max-width: 700px
     padding: 0 50px
-    margin: auto
+    margin: 0 auto
 
   .list-container
     padding: 20px
@@ -91,6 +112,7 @@ body
 
       .meta
         @include clearfix
+        margin-bottom: 15px
         .date
           float: right
         .tags
@@ -134,25 +156,6 @@ body
       .tags
         font-weight: bold
         color: $main-color
-
-//handle code highlight
-.highlight
-  pre
-    code
-      overflow: auto
-
-img
-  max-width: 90%
-  display: block
-  margin: 0 20px
-
-strong
-  color: #E84B50
-
-em
-  color: #EB6E25
-
-//media queries
 
 @media screen and (max-width: 1000px)
   .right

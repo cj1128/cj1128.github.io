@@ -15,7 +15,7 @@
           {% endfor %}
         </div>
       </div>
-      <div class="excerpt">
+      <div class="excerpt markdown-body">
         {{ post.excerpt}}
       </div>
     </div>
