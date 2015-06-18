@@ -31,9 +31,8 @@ body {
   height: 100%;
   background: #6BD1B0; }
   .right img {
+    width: 100px;
     display: block;
-    -webkit-clip-path: circle(80px at center);
-    clip-path: circle(80px at center);
     margin: 10% auto; }
   .right .my-name {
     text-align: center;
