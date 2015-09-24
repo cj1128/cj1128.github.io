@@ -1,7 +1,20 @@
 @charset "UTF-8";
+@import url(./normalize.css);
+html {
+  font-size: 16px;
+  font-family: "Hiragino Sans GB", Helvetica, Tahoma, Arial, STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif; }
+
+code {
+  padding: 2px 5px;
+  margin: 5px;
+  border: solid 1px #F4EAEA;
+  background-color: white;
+  color: red;
+  border-radius: 5px; }
+
 .highlight pre code {
   overflow: auto;
-  font-size: 0.8em; }
+  font-size: 0.8rem; }
 
 img {
   max-width: 90%;
@@ -18,11 +31,6 @@ a {
   text-decoration: none;
   color: #6599D4; }
 
-body {
-  margin: 0;
-  font-family: "Hiragino Sans GB", Helvetica, Tahoma, Arial, STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
-  font-size: 18px; }
-
 .right {
   position: fixed;
   top: 0;
@@ -37,11 +45,11 @@ body {
   .right .my-name {
     text-align: center;
     color: #6599D4;
-    font-size: 2em; }
+    font-size: 1.5rem; }
   .right nav {
     margin-top: 20%;
     padding: 0 30%;
-    font-size: 1.3em;
+    font-size: 1.3rem;
     color: white; }
     .right nav li {
       list-style: none;
@@ -80,7 +88,7 @@ body {
       margin-bottom: 100px; }
       .left .list-container .post .title {
         text-align: center;
-        font-size: 1.5em; }
+        font-size: 1.5rem; }
         .left .list-container .post .title a {
           text-decoration: none;
           color: black; }
@@ -103,7 +111,7 @@ body {
             font-weight: bold; }
       .left .list-container .post .excerpt {
         line-height: 150%;
-        font-size: 20px; }
+        font-size: 1.2rem; }
   .left .buttons {
     width: 90%;
     margin: 0 5%;
@@ -135,7 +143,6 @@ body {
   .left .post-container .title {
     text-align: center; }
   .left .post-container .content {
-    font-size: 20px;
     line-height: 180%; }
   .left .post-container .post-info .tags {
     font-weight: bold;

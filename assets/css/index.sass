@@ -1,5 +1,9 @@
 $main-color: #6BD1B0
 $second-color: #6599D4
+$base-font: 16px
+$font-family: "Hiragino Sans GB",Helvetica, Tahoma, Arial, STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif
+
+@import ./normalize.css
 
 @mixin clearfix
   *zoom: 1
@@ -12,11 +16,23 @@ $second-color: #6599D4
     height: 0
     visibility: hidden
 
+html
+  font-size: $base-font
+  font-family: $font-family
+
+code
+  padding: 2px 5px
+  margin: 5px
+  border: solid 1px #F4EAEA
+  background-color: white
+  color: red
+  border-radius: 5px
+
 .highlight
   pre
     code
       overflow: auto
-      font-size: 0.8em
+      font-size: 0.8rem
 
 img
   max-width: 90%
@@ -32,11 +48,6 @@ em
 a
   text-decoration: none
   color: $second-color
-
-body
-  margin: 0
-  font-family: "Hiragino Sans GB",Helvetica, Tahoma, Arial, STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif
-  font-size: 18px
 
 .right
   position: fixed
@@ -54,12 +65,12 @@ body
   .my-name
     text-align: center
     color: $second-color
-    font-size: 2em
+    font-size: 1.5rem
 
   nav
     margin-top: 20%
     padding: 0 30%
-    font-size: 1.3em
+    font-size: 1.3rem
     color: white
     li
       list-style: none
@@ -107,7 +118,7 @@ body
           text-decoration: none
           color: black
         text-align: center
-        font-size: 1.5em
+        font-size: 1.5rem
 
       .meta
         @include clearfix
@@ -121,7 +132,7 @@ body
             font-weight: bold
       .excerpt
         line-height: 150%
-        font-size: 20px
+        font-size: 1.2rem
   .buttons
     width: 90%
     margin: 0 5%
@@ -149,7 +160,6 @@ body
     .title
       text-align: center
     .content
-      font-size: 20px
       line-height: 180%
     .post-info
       .tags
