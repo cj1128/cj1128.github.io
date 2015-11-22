@@ -1,9 +1,7 @@
 ---
-layout: post
 title: Underhanded C, 有猫腻的C
-description: 
-category: C
-tags: C
+category: Unix
+tags: underhanded-c c
 ---
 
 >这一切，都要从这篇文章说起。[being-sneaky-in-c](http://www.codersnotes.com/notes/being-sneaky-in-c)

@@ -1,25 +1,22 @@
 ---
 layout : default
-title : CJ Ting's blog
 key: index
 ---
 
 <div class="page-index">
   <nav class="index__categories">
-    <a href="/" class="active">All</a>
+    <a href="/">All</a>
     <a href="/categories/web2.0.html">Web2.0</a>
     <a href="/categories/functional_programming.html">Functional Programming</a>
     <a href="/categories/unix.html">Unix</a>
     <a href="/categories/misc.html">MISC</a>
-    <a href="/categories/fun.html">Fun</a>
+    <a href="/categories/fun.html" class="active">Fun</a>
   </nav>
 
   <div class="index__posts-wrapper">
     <div class="index__posts">
-      {% assign posts = site.posts %}
+      {% assign posts = site.categories["fun"] %}
       {% include themes/avia/all_posts %}
     </div>
   </div>
 </div>
-
-

@@ -1,6 +1,6 @@
 ---
 title: mac升级实战~~HDD+SSD混合硬盘带来全新速度体验
-tags: mac ssd 
+tags: mac ssd
 ---
 
 先来上张成果图~

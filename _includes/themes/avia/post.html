@@ -1,0 +1,25 @@
+<div class="page-post">
+  <a class="post__title" href="{{ post.url }}">
+      {{ page.title }}
+  </a>
+
+  <div class="post__meta">
+    <div class='date'>
+      {{ page.date | date: "%b.%d.%Y"}}
+    </div>
+
+    <div class="tags">
+      {% for tag in page.tags %}
+        <span class="tag">{{ tag }}</span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="post__content markdown-body">
+    {{ content }}
+  </div>
+
+  <div class="post__comments">
+    {% include JB/comments %}
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ page.title }}</title>
+  <meta name="author" content="{{ site.author.name }}">
+  <meta name="keywords" content="{{ page.title}}">
+  <meta name="description" content="{{ page.desc}}">
+  <link href='/assets/theme/avia/bundle.min.css' rel="stylesheet" media="all">
+
+</head>
+<body>
+  <header class="header">
+    <a href="/">
+      <img class="header__avatar" src="/assets/image/avatar.png">
+    </a>
+    <div class="header__search">
+        <img src="/assets/theme/avia/search.png">
+      <input type="text" id="search-input" placeholder="Search for posts">
+      <ul class="header__search__box" id="search-box">
+      </ul>
+    </div>
+
+    <nav class="header__nav">
+      {% if page.key == "index" %}
+        {% assign index_class = "active" %}
+      {% endif %}
+      {% if page.key == "apps" %}
+        {% assign apps_class = "active" %}
+      {% endif %}
+      {% if page.key == "about" %}
+        {% assign about_class = "active" %}
+      {% endif %}
+
+      <a href="/" class={{ index_class }}>Posts</a>
+      <a href="javascript:void(0)" id="page-apps" class={{ apps_class }}>Apps</a>
+      <a href="https://github.com/fate-lovely" target="_blank">Github</a>
+      <a href="/about.html" class={{ about_class }}>About</a>
+    </nav>
+
+  </header>
+
+{{ content }}
+
+<script src="/assets/theme/avia/bundle.min.js"></script>
+<script src="/assets/theme/avia/main.js"></script>
+</body>
+</html>

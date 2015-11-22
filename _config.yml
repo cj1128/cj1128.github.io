@@ -1,4 +1,4 @@
-permalink: /:year-:month-:day/:title.html
+permalink: /:categories/:year-:month-:day-:title.html
 exclude: []
 excerpt_separator: "\n\n\n"
 markdown: redcarpet
@@ -21,6 +21,8 @@ defaults:
       type: "posts" # previously `post` in Jekyll 2.2.
     values:
       layout: "post"
+      category: "MISC"
+      key: index
 
 # The production_url is only used when full-domain names are needed
 # such as sitemap.txt
