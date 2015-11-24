@@ -5,7 +5,7 @@ html {
   background: #e2e2e2;
   color: #666;
   font-size: 14px;
-  font-family: "Open Sans", "Hiragino Sans GB";
+  font-family: "Open Sans", Helvetica, Tahoma, Arial, "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", STXihei, "华文细黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
   padding: 0 1px;
   height: 100%;
 }
@@ -154,7 +154,7 @@ body {
 .page-index .index__posts-wrapper .index__posts .post .post__title {
   display: block;
   margin-bottom: 30px;
-  font-size: 16px;
+  font-size: 20px;
   color: #444a59;
   font-weight: 600;
   line-height: 24px;
@@ -191,7 +191,7 @@ body {
 .page-post .post__title {
   display: block;
   margin-bottom: 30px;
-  font-size: 16px;
+  font-size: 20px;
   color: #444a59;
   font-weight: 600;
   line-height: 24px;
@@ -213,6 +213,10 @@ body {
 .page-post .post__meta .tags {
   margin-left: 25px;
   color: #ff5916;
+}
+.page-post .post__title {
+  font-size: 24px;
+  font-weight: 400;
 }
 .page-post .post__comments {
   margin-top: 40px;
