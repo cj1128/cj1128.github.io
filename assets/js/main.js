@@ -1,5 +1,6 @@
 ---
 ---
+var $ = document.querySelectorAll.bind(document)
 
 // add code highlight
 hljs.initHighlightingOnLoad()
@@ -86,7 +87,10 @@ function showSearchBox(result) {
   searchBox.style.display = "block"
 }
 
-
+// let all links opened at new tab
+[].forEach.call($(".page-post a"), function(ele) {
+  ele.setAttribute("target", "_blank")
+})
 
 
 
