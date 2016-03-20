@@ -418,6 +418,8 @@
 
 .markdown-body img {
   max-width: 100%;
+  display: block;
+  margin: auto;
   box-sizing: border-box;
 }
 

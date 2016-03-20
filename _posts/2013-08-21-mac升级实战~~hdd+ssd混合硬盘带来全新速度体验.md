@@ -5,7 +5,12 @@ tags: mac ssd
 
 先来上张成果图~
 
-![sansumg 840 ssd](/assets/post_image/2013-08-21/mac-17.jpeg)
+![](http://ww1.sinaimg.cn/large/9b85365djw1f23b57newtj21kw16owhd.jpg)
+
+
+
+
+
 
 
 **注意这篇文章针对的2011年末款的Mac Book Pro,15寸（MD318）,其他机型可能不适用！！！**
@@ -28,21 +33,37 @@ tags: mac ssd
 3. **光驱位硬盘托架**
 4. **三星840SSD**
 
-ssd我就不给购买连接了，去京东或者亚马逊。托架，光驱盒以及螺丝刀，这种小东西肯定是在淘宝上买了，为了方便大家，我把我买的店铺地址贴出来，因为我觉得东西挺好用，而且价格实惠，省的大家再找了。
-[欧天数码专营店](http://outiansm.tmall.com/?spm=0.0.w2-6778886271.1.yV0fGp)
+ssd我就不给购买连接了，去京东或者亚马逊。托架，光驱盒以及螺丝刀，这种小东西肯定是在淘宝上买了，为了方便大家，我把我买的店铺地址贴出来，因为我觉得东西挺好用，而且价格实惠，省的大家再找了。[欧天数码专营店](http://outiansm.tmall.com/?spm=0.0.w2-6778886271.1.yV0fGp)
+
+
 
 继续上图~
 
 
-<img src="/assets/post_image/2013-08-21/mac-2.jpeg" />
-<img src="/assets/post_image/2013-08-21/mac-4.jpeg" />
-<img src="/assets/post_image/2013-08-21/mac-5.jpeg" />
+
+![](http://ww1.sinaimg.cn/large/9b85365djw1f23b62ggnoj21kw16otb1.jpg)
+
+
+
+![](http://ww4.sinaimg.cn/large/9b85365djw1f23b68up7yj21kw16oac1.jpg)
+
+
+
+![](http://ww4.sinaimg.cn/large/9b85365djw1f23b6ecdbyj21kw16odgv.jpg)
+
+
 
 两款螺丝刀就可以把mac全部拆掉.一个是十字螺丝刀,用于拆mac的外部机壳,一个是T6螺丝刀,用于拆内部的一些固定螺丝.蓝色的是辅助撬开后盖的工具.说实话根本用不到.反正都是送的啦~~~.
 
 用十字螺丝刀下掉mac后盖上10颗螺丝就可以把后盖打开了.拧螺丝的时候一定要注意轻轻用力.mac的螺丝很小,非常容易将螺纹拧花.如果感觉用力还拧不动.就换一个方向试试.
 
-![mac拆开后盖](/assets/post_image/2013-08-21/mac-7.jpeg)
+
+
+![](http://ww3.sinaimg.cn/large/9b85365djw1f23b6m1dqjj21kw16o76w.jpg)
+
+
+
+
 
 拆开mac的时候最好在桌子上垫上一块布,可以防止mac被划伤.我当时懒得找布勒,直接就把衣服脱掉了垫在桌子上了…我太爱mac了…
 
@@ -50,7 +71,13 @@ ssd我就不给购买连接了，去京东或者亚马逊。托架，光驱盒�
 
 接下来便是拆硬盘的几颗螺丝.其实完全没必要看什么教程.感觉什么东西挡住了,就把他拆了.就这么简单.
 
-![mac硬盘](/assets/post_image/2013-08-21/mac-8.jpeg)
+
+
+![](http://ww4.sinaimg.cn/large/9b85365djw1f23b70z0xij21kw16ogo8.jpg)
+
+
+
+
 
 可以很清楚的看到mac用的是东芝的硬盘.
 
@@ -60,21 +87,40 @@ ssd我就不给购买连接了，去京东或者亚马逊。托架，光驱盒�
 将ssd换上主盘位.操作十分简单.直接放上去,然后插上数据线.
 
 
-<img src="/assets/post_image/2013-08-21/mac-9.jpeg" />
-<img src="/assets/post_image/2013-08-21/mac-10.jpeg" />
+
+![](http://ww1.sinaimg.cn/large/9b85365djw1f23b7bckhrj21kw16omzp.jpg)
+
+
+
+![](http://ww4.sinaimg.cn/large/9b85365djw1f23b7j6kyyj21kw16o40s.jpg)
 
 
 
 然后便是拆光驱,这个稍微复杂一点.但只要记住一点就可以,找螺丝,然后下螺丝,有什么东西挡住了便拆什么东西.小心一点.非常简单.
 
-![mac光驱](/assets/post_image/2013-08-21/mac-11.jpeg)
+
+
+![](http://ww1.sinaimg.cn/large/9b85365djw1f23b7wx84bj21kw16ojtb.jpg)
+
+
+
+
 
 接下来便是把刚才去下的原mac硬盘放入硬盘托架,然后拧紧螺丝.
-![硬盘托架](/assets/post_image/2013-08-21/mac-12.jpeg)
+
+
+
+![](http://ww4.sinaimg.cn/large/9b85365djw1f23b8758yej21kw16ojtd.jpg)
+
+
 
 观察图片可以看到硬盘右上角有一部分接口是暴露的,没有和任何东西相接.经实际测试,这没有任何影响.原谅我硬件知识太弱,我不知道那部分接口是干嘛用的…
 
-![](/assets/post_image/2013-08-21/mac-13.jpeg)
+
+
+![](http://ww4.sinaimg.cn/large/9b85365djw1f23b8hohumj21kw16onhc.jpg)
+
+
 
 装好托架以后便是反向操作,将mac再重新装起来~.然后便是装系统.
 
@@ -82,7 +128,11 @@ ssd我就不给购买连接了，去京东或者亚马逊。托架，光驱盒�
 
 然后选择安装系统,选择刚刚格式化好的ssd.然后便是飞速的安装过程.~
 
-![](/assets/post_image/2013-08-21/mac-15.jpeg)
+
+
+![](http://ww3.sinaimg.cn/large/9b85365djw1f23b8seljdj20p50iuglm.jpg)
+
+
 
 从安装进度条的速度就可以感受到ssd的飞速.安装大概值花了5分钟.真是超级快.
 
@@ -92,11 +142,17 @@ ssd我就不给购买连接了，去京东或者亚马逊。托架，光驱盒�
 
 哎.果然是我too young.进入新系统后,原来的hdd在新系统下面就像一个移动硬盘一样.所有的数据都可以访问.
 
-![](/assets/post_image/2013-08-21/mac-16.jpeg)
+
+
+![](http://ww3.sinaimg.cn/large/9b85365djw1f23b90l819j21kw16otdx.jpg)
+
+
 
 所以完全没必要准备一个移动硬盘来转移数据.直接进入新系统,然后转移数据.接着格式化原来的硬盘做数据盘便可.
 
 最后感慨一下ssd的飞速.真的是飞速.基本上所有软件都是秒开.开关机都是1秒钟搞定.新系统配置过程中需要重启,我还没反应过来,重启已经完成了~~
+
+
 这次耗费761CNY的升级计划效果还是非常显著的~~.
 
 自己动手,丰衣足食~~.
