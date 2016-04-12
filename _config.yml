@@ -1,7 +1,6 @@
 permalink: /:categories/:year-:month-:day-:title.html
 exclude: []
 excerpt_separator: "\n\n\n"
-markdown: redcarpet
 
 # Themes are encouraged to use these universal variables
 # so be sure to set them if your theme uses them.

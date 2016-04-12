@@ -1,7 +1,7 @@
 ---
 title: Browserify + SASS + BrowserSync + Gulp高效前端开发环境配置
 slug: Browserify-SASS-BrowserSync-Gulp-高效前端开发环境配置
-category: Web2.0
+category: web2.0
 tags: Browserify BrowserSync Gulp
 ---
 

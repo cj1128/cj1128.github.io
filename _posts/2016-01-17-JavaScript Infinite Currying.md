@@ -1,7 +1,7 @@
 ---
 layout: post
 title: JavaScript Infinite Currying
-category: Web2.0
+category: web2.0
 tags: JavaScript Curry
 ---
 
