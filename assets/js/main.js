@@ -1,23 +1,14 @@
 ---
 ---
-var $ = document.querySelectorAll.bind(document)
-
 // add code highlight
 hljs.initHighlightingOnLoad()
 
 // add copy code buttn
-var blocks = document.querySelectorAll(".highlight")
-for(var i = 0; i < blocks.length; i++) {
-  ele = blocks[i]
-  var id = "code-block-" + i
-  var pre = ele.childNodes[0]
-  pre.id = id
-  var btn = document.createElement("span")
-  btn.innerText = "copy code"
-  btn.className = "copy-code-btn"
-  btn.setAttribute("data-clipboard-target", "#" + id)
-  ele.appendChild(btn)
-}
+$(".highlight").each(function(index, ele) {
+  var id = "code-block-" + index
+  $(ele).find("code").attr("id", id)
+  $("<span />").text("copy code").addClass("copy-code-btn").attr("data-clipboard-target", "#" + id).appendTo(ele)
+})
 
 var clipboard = new Clipboard(".copy-code-btn")
 
@@ -88,9 +79,20 @@ function showSearchBox(result) {
 }
 
 // let all links opened at new tab
-[].forEach.call($(".page-post a"), function(ele) {
-  ele.setAttribute("target", "_blank")
+$(".page-post a").each(function(index, ele){
+  $(ele).attr("target", "_blank")
 })
 
 
-
+// add popups for images
+$(".page-post img").each(function(index, ele) {
+  if(ele.naturalWidth > $(ele).width()) {
+    $(ele).addClass("cursor-pointer")
+    $(ele).magnificPopup({
+      type: "image",
+      items: {
+        src: $(ele).attr("src"),
+      },
+    })
+  }
+})
