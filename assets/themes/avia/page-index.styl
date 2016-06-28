@@ -1,0 +1,47 @@
+/*
+* @Author: CJ Ting
+* @Date:   2016-06-27 22:19:45
+* @Last Modified by:   CJ Ting
+* @Last Modified time: 2016-06-27 22:31:49
+*/
+
+.page-index
+  flex: 1
+  display: flex
+
+.index__categories
+  padding-right: 20px
+  line-height: 40px
+  list-style: none
+  color: #8f9392
+  font-size: 11px
+  flex-shrink: 0
+  a
+    color: #8F939C
+    display: block
+    padding-left: 40px
+    cursor: pointer
+    &:hover
+      color: $main-black
+    &.active
+      color: $main-black
+      border-left: solid 4px $active
+
+.index__posts-wrapper
+  flex: 1
+  max-height: 100%
+  overflow: auto
+
+.index__posts
+  post-container()
+  line-height: 30px
+  .post
+    border-bottom: solid 1px $border-gray
+    margin-bottom: 40px
+    post()
+
+@media (max-width: 750px)
+  body
+    height: auto
+  .page-index
+    flex-direction: column
