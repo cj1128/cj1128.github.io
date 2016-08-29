@@ -1,25 +1,34 @@
-<div class="page-post">
-  <h1 class="post__title">
-      {{ page.title }}
-  </h1>
+<div class="post__content">
+  <header class="post__header" style="background-image:url({{ page.cover }});">
+    <a href="/">
+      HOME
+    </a>
+  </header>
 
-  <div class="post__meta">
-    <div class='date'>
-      {{ page.date | date: "%b.%d.%Y"}}
+  <div class="post__body">
+    <h1 class="post__title">
+        {{ page.title }}
+        {{ page.key }}
+    </h1>
+
+    <div class="post__meta">
+      <div class='date'>
+        {{ page.date | date: "%b.%d.%Y"}}
+      </div>
+
+      <div class="tags">
+        {% for tag in page.tags %}
+          <span class="tag">{{ tag }}</span>
+        {% endfor %}
+      </div>
     </div>
 
-    <div class="tags">
-      {% for tag in page.tags %}
-        <span class="tag">{{ tag }}</span>
-      {% endfor %}
+    <div class="markdown-body">
+      {{ content }}
     </div>
-  </div>
 
-  <div class="post__content markdown-body">
-    {{ content }}
-  </div>
-
-  <div class="post__comments">
-    {% include JB/comments %}
+    <div class="post__comments">
+      {% include JB/comments %}
+    </div>
   </div>
 </div>

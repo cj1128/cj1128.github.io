@@ -21,6 +21,31 @@
     e.clearSelection();
   })
 
+  // add search
+  if($("body").hasClass("page-index")) {
+    addSearch()
+  }
+
+  // make all links opened at new tab
+  $(".post__body a").each(function(index, ele){
+    $(ele).attr("target", "_blank")
+  })
+
+  // add popups for images
+  $(".page-post img").each(function(index, ele) {
+    if(ele.naturalWidth > $(ele).width()) {
+      $(ele).addClass("u-cursor-zoom-in")
+      $(ele).magnificPopup({
+        type: "image",
+        items: {
+          src: $(ele).attr("src"),
+        },
+      })
+    }
+  })
+})()
+
+function addSearch() {
   // add search support
   var index = []
   {% for post in site.posts %}
@@ -81,23 +106,4 @@
     }
     searchBox.style.display = "block"
   }
-
-  // let all links opened at new tab
-  $(".page-post a").each(function(index, ele){
-    $(ele).attr("target", "_blank")
-  })
-
-
-  // add popups for images
-  $(".page-post img").each(function(index, ele) {
-    if(ele.naturalWidth > $(ele).width()) {
-      $(ele).addClass("u-cursor-pointer")
-      $(ele).magnificPopup({
-        type: "image",
-        items: {
-          src: $(ele).attr("src"),
-        },
-      })
-    }
-  })
-})()
+}

@@ -1,0 +1,34 @@
+---
+layout : default
+---
+<header class="header">
+  <a href="/">
+    <img class="header__avatar" src="/assets/images/avatar.png">
+  </a>
+  <div class="header__search">
+      <img src="/assets/themes/avia/search.png">
+    <input type="text" id="search-input" placeholder="Search for posts">
+    <ul class="header__search__box" id="search-box">
+    </ul>
+  </div>
+
+  <nav class="header__nav">
+    {% if page.page == "index" %}
+      {% assign index_class = "active" %}
+    {% endif %}
+    {% if page.page == "apps" %}
+      {% assign apps_class = "active" %}
+    {% endif %}
+    {% if page.page == "about" %}
+      {% assign about_class = "active" %}
+    {% endif %}
+
+    <a href="/" class={{ index_class }}>Posts</a>
+    <a href="https://github.com/fate-lovely" target="_blank">Github</a>
+    <a href="/about.html" class={{ about_class }}>About</a>
+  </nav>
+</header>
+
+{{ content }}
+
+

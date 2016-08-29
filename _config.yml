@@ -18,8 +18,7 @@ defaults:
       type: "posts" # previously `post` in Jekyll 2.2.
     values:
       layout: "post"
-      category: "MISC"
-      key: index
+      page: "post"
 
 # The production_url is only used when full-domain names are needed
 # such as sitemap.txt

@@ -1,6 +1,6 @@
 {% for post in posts  %}
     <div class="post">
-      <a class="post__title" href="{{ post.url }}">
+      <a class="post__title hvr-underline-from-left" href="{{ post.url }}">
           {{ post.title }}
       </a>
 

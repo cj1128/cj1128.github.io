@@ -24,16 +24,16 @@ a
   text-decoration: none
 
 // for image popups
-.u-cursor-pointer
-  cursor: pointer
+.u-cursor-zoom-in
+  cursor: zoom-in
 
 .u-cursor-disabled
   cursor: not-allowed
 
 html
-  background: $bg
+  // background: $bg
   color: $main-color
-  font-size: 14px
+  font-size: 16px
   font-family: $font-family
   padding: 0 1px
 
@@ -42,10 +42,20 @@ body
   display: flex
   flex-direction: column
 
+// customize markdown
 pre code
   background: #F8F8FA !important
   padding: 30px 10px 10px 10px !important
   border-radius: 5px
+
+.markdown-body h2
+  font-size: 1.6rem
+.markdown-body h3
+  font-size: 1.5rem
+.markdown-body h4
+  font-size: 1.4rem
+.markdown-body h5,h6
+  font-size: 1.3rem
 
 .copy-code-btn
   cursor: pointer
@@ -65,47 +75,21 @@ post-container()
   box-sizing: border-box
   margin: auto
 
-post()
-  .post__title
-    display: block
-    margin-bottom: 30px
-    font-size: 20px
-    color: $main-black
-    font-weight: 600
-    line-height: 24px
-    &:hover
-      color: $main-blue
-  .post__meta
-    display: flex
-    margin: 20px 0
-    font-size: 12px
-    .date
-      color: #9B9B9B
-      margin-left: auto
-      padding-right: 25px
-      border-right: solid 1px $border-gray
-    .tags
-      margin-left: 25px
-      color: #FF5916
+post-meta()
+  display: flex
+  margin: 20px 0
+  font-size: 12px
+  .date
+    color: #9B9B9B
+    margin-left: auto
+    padding-right: 25px
+    border-right: solid 1px $border-gray
+  .tags
+    margin-left: 25px
+    color: #FF5916
 
 @require "./header.styl"
 @require "./page-about.styl"
 @require "./page-index.styl"
+@require "./page-post.styl"
 
-.page-post
-  post-container()
-  post()
-  width: 100%
-  max-width: 800px
-  font-size: 16px
-  line-height: 40px
-  flex-shrink: 0
-
-.post__title
-  font-size: 24px
-  font-weight: 400
-
-.post__comments
-  margin-top: 40px
-  padding-top: 40px
-  border-top: solid 1px $border-gray

@@ -5,36 +5,85 @@
 * @Last Modified time: 2016-06-27 22:31:49
 */
 
+/* Underline From Left */
+.hvr-underline-from-left {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  overflow: hidden;
+}
+.hvr-underline-from-left:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 100%;
+  bottom: 0;
+  background: $active;
+  height: 2px;
+  -webkit-transition-property: right;
+  transition-property: right;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.hvr-underline-from-left:hover:before, .hvr-underline-from-left:focus:before, .hvr-underline-from-left:active:before {
+  right: 0;
+}
+
 .page-index
-  flex: 1
-  display: flex
+  .index__container
+    flex: 1
+    display: flex
 
-.index__categories
-  padding-right: 20px
-  line-height: 40px
-  list-style: none
-  color: #8f9392
-  font-size: 11px
-  flex-shrink: 0
-  a
-    color: #8F939C
-    display: block
-    padding-left: 40px
-    cursor: pointer
+  .index__categories
+    padding-right: 20px
+    line-height: 40px
+    list-style: none
+    color: #8f9392
+    font-size: 0.8rem
+    flex-shrink: 0
+    a
+      color: #8F939C
+      display: block
+      padding-left: 40px
+      cursor: pointer
+      &:hover
+        color: $main-black
+      &.active
+        color: $main-black
+        border-left: solid 6px $active
+
+  .index__posts-wrapper
+    flex: 1
+    max-height: 100%
+    overflow: auto
+
+  .index__posts
+    post-container()
+    border: solid 1px #eee
+    line-height: 30px
+
+  .post__title
+    color: $main-black
+    font-size: 20px
+    line-height: 24px
+    font-weight: 600
+    margin-bottom: 30px
+    transition: all 0.3s ease-out
     &:hover
-      color: $main-black
-    &.active
-      color: $main-black
-      border-left: solid 4px $active
+      color: $active
 
-.index__posts-wrapper
-  flex: 1
-  max-height: 100%
-  overflow: auto
+  .post__meta
+    post-meta()
 
-.index__posts
-  post-container()
-  line-height: 30px
   .post
     border-bottom: solid 1px $border-gray
     margin-bottom: 40px
