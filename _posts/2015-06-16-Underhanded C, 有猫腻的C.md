@@ -1,7 +1,8 @@
 ---
 title: Underhanded C, 有猫腻的C
-category: Unix
+category: unix
 tags: underhanded-c c
+cover: http://ww4.sinaimg.cn/large/9b85365djw1f7bmw01i31j21hc0zkgr3.jpg
 ---
 
 >这一切，都要从这篇文章说起。[being-sneaky-in-c](http://www.codersnotes.com/notes/being-sneaky-in-c)

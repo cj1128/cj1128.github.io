@@ -32,7 +32,7 @@
   })
 
   // add popups for images
-  $(".page-post img").each(function(index, ele) {
+  $(".post__body img").each(function(index, ele) {
     if(ele.naturalWidth > $(ele).width()) {
       $(ele).addClass("u-cursor-zoom-in")
       $(ele).magnificPopup({

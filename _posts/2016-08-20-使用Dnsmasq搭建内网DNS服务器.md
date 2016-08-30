@@ -1,9 +1,8 @@
 ---
-layout: post
 title: 使用Dnsmasq搭建内网DNS服务器
-description: 
 category: misc
 tags: dns dnsmasq
+cover: http://ww1.sinaimg.cn/large/9b85365djw1f7bjp0tf5dj21jk0ikq95.jpg
 ---
 
 在日常开发过程中，我们经常要配置各种

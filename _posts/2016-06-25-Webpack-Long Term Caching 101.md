@@ -1,10 +1,8 @@
 ---
-layout: post
 title: Webpack Long Term Caching 101
-description: 
 category: web2.0
 tags: webpack caching
-
+cover: http://ww2.sinaimg.cn/large/9b85365dgw1f7bkfi3xhxj21jj0ndmy2.jpg
 ---
 
 缓存是Web中无法回避的话题，不仅因为缓存非常重要，能极大地改善用户体验，而且因为缓存很难做好。一旦生产环境出现了缓存失效，那就是一个十分棘手的问题。

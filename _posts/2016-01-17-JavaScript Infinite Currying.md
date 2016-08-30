@@ -1,8 +1,8 @@
 ---
-layout: post
 title: JavaScript Infinite Currying
 category: web2.0
 tags: JavaScript Curry
+cover: http://ww3.sinaimg.cn/large/9b85365dgw1f7bmdt86ltj21kw0w0wgf.jpg
 ---
 
 很久之前曾看到一个很有意思的JS问题，
@@ -10,7 +10,7 @@ tags: JavaScript Curry
 ``` javascript
 // 定义一个函数add，满足如下性质：
 add(1) == 1
-add((1)(2) == 3
+add(1)(2) == 3
 add(1)(2)(3) == 6
 ...
 
@@ -54,7 +54,7 @@ function g(x) {
 
 现在我们来分析上面的问题。
 
-首先，`add(1) == 1`，说明`add`函数应该返回一个整数。但是`add(1)(2) == 3`表明毫无疑问`add(1)`返回的值应该是一个函数。所以现在我们的问题就变成了，有没有可能让一个函数等于一个整数呢？（注意比较操作符是松散的`==`，而不是严格`===`。
+首先，`add(1) == 1`，说明`add`函数应该返回一个整数。但是`add(1)(2) == 3`表明毫无疑问`add(1)`返回的值应该是一个函数。所以现在我们的问题就变成了，有没有可能让一个函数等于一个整数呢？（注意比较操作符是松散的`==`，而不是严格`===`）。
 
 答案是有可能的。这里需要我们了解JS的一个小知识。那就是`valueOf`属性。当我们将一个对象和一个primitive进行比较的时候，JS会调用对象的`valueOf`方法获取一个primitive值，然后在进行比较。
 
@@ -65,7 +65,7 @@ a == "hello world!" // true
 a === "hello world!" // false，严格等于操作符会比较数据类型
 ```
 
-从这里就可以看出，只要我们定义了对象a的`valueOf`方法，我们可以让他和任意的primite值相等。
+从这里就可以看出，只要我们定义了对象a的`valueOf`方法，我们可以让他和任意的primitive值相等。
 
 函数也是一个对象。所以这个问题的解决方法就很清楚了。每次返回的都是一个函数。这个函数的`valueOf`会返回传入参数的和。
 

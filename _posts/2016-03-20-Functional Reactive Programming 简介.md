@@ -1,8 +1,8 @@
 ---
-layout: post
 title: Functional Reactive Programming 简介
 category: functional_programming
 tags: RxJS JavaScript FunctionalProgramming
+cover: http://ww2.sinaimg.cn/large/9b85365dgw1f7bmcscnvij21jk112496.jpg
 ---
 推荐阅读：
 

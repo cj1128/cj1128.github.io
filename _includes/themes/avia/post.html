@@ -1,5 +1,6 @@
 <div class="post__content">
-  <header class="post__header" style="background-image:url({{ page.cover }});">
+  {% assign default_bg = "http://ww2.sinaimg.cn/large/9b85365dgw1f7brwadugzj21kw11x1kx.jpg" %}
+  <header class="post__header" style="background-image:url({{ page.cover | default: default_bg; }});">
     <a href="/">
       HOME
     </a>
