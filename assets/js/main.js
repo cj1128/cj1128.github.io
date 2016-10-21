@@ -33,14 +33,16 @@
 
   // add popups for images
   $(".post__body img").each(function(index, ele) {
-    if(ele.naturalWidth > $(ele).width()) {
-      $(ele).addClass("u-cursor-zoom-in")
-      $(ele).magnificPopup({
-        type: "image",
-        items: {
-          src: $(ele).attr("src"),
-        },
-      })
+    ele.onload = function() {
+      if(ele.naturalWidth > $(ele).width()) {
+        $(ele).addClass("u-cursor-zoom-in")
+        $(ele).magnificPopup({
+          type: "image",
+          items: {
+            src: $(ele).attr("src"),
+          },
+        })
+      }
     }
   })
 })()
