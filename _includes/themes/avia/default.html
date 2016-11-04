@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
   <title>{{ page.title }} - CJ Ting's Blog</title>
   <meta name="author" content="{{ site.author.name }}">
   <meta name="description" content="{{ page.desc | default: page.title }}">
@@ -16,6 +16,14 @@
 
 <script src="/assets/themes/avia/bundle.min.js"></script>
 <script src="/assets/js/main.js"></script>
-{% include JB/analytics %}
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4f34ee3c85734c8235badd2b99b092a6";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
 </body>
 </html>

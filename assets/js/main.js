@@ -1,11 +1,20 @@
 ---
 ---
 (function(){
+  // replace post header image
+  var $postHeader = $(".post__header")
+  if($postHeader.length !== 0) {
+    var url = $postHeader.data("cover")
+    if($.browser.mobile) {
+      url = url.replace("large", "bmiddle")
+    }
+    $postHeader.css("background-image", "url(" + url + ")")
+  }
+
   // add code highlight
   hljs.initHighlightingOnLoad()
 
-  var isMobile = window.matchMedia("only screen and (max-width: 750px)").matches
-  if(isMobile) return
+  if($.browser.mobile) return
 
   // add copy code buttn
   $(".highlight").each(function(index, ele) {

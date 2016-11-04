@@ -3,6 +3,7 @@ set -eu
 
 js_files="
 ../../vendors/jquery.min.js
+../../vendors/detect_mobile_browser.js
 ../../vendors/highlight.pack.js
 ../../vendors/clipboard.min.js
 ../../vendors/notie.js
