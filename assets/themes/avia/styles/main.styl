@@ -5,11 +5,6 @@
 * @Last Modified time: 2016-06-28 07:40:13
 */
 
-@import "../../vendors/normalize.css"
-@import "../../vendors/code_highlight/tomorrow.css"
-@import "../../vendors/magnific-popup.css"
-@import "./markdown.css"
-
 $main-color = #666
 $main-black = #444A59
 $active = #0BB304
@@ -43,10 +38,11 @@ body
   flex-direction: column
 
 // customize markdown
-pre code
-  background: #F8F8FA !important
-  padding: 30px 10px 10px 10px !important
+pre
+  background: #f9f9f9
+  padding: 20px
   border-radius: 5px
+  position: relative
 
 .markdown-body h2
   font-size: 1.6rem
@@ -63,9 +59,6 @@ pre code
   top: 0
   right: 15px
   color: $active
-
-.highlight
-  position: relative
 
 post-container()
   padding: 30px 20px

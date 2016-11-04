@@ -7,23 +7,24 @@
   <meta name="author" content="{{ site.author.name }}">
   <meta name="description" content="{{ page.desc | default: page.title }}">
   <meta charset="utf-8" />
-  <link href='/assets/themes/avia/bundle.min.css' rel="stylesheet" media="all">
   <link rel="icon" href="data:;base64,=">
+  <script src="/assets/themes/avia/init.js"></script>
+  <script type="text/javascript">
+    var posts = Global.posts = []
+    {% for post in site.posts %}
+      posts.push({
+        title: "{{ post.title }}",
+        text: ("{{ post.title }}" + "{{ post.tags }}").toLowerCase(),
+        url: "{{ post.url }}",
+      })
+    {% endfor %}
+  </script>
+  <script src="/assets/themes/avia/dist/style.bundle.js"></script>
 </head>
 <body class="page-{{ page.page || default: 'default' }}">
 
 {{ content }}
 
-<script src="/assets/themes/avia/bundle.min.js"></script>
-<script src="/assets/js/main.js"></script>
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?4f34ee3c85734c8235badd2b99b092a6";
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
+{% include JB/analytics %}
 </body>
 </html>
