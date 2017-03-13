@@ -5,13 +5,15 @@
 */
 
 
-var $ = require("jquery")
+window.$ = require("jquery")
+require("magnific-popup")
 var Clipboard = require("clipboard")
 var notie = require("notie")
 require("notie/dist/notie.css")
 
 // enable disqus
 // http://perfectionkills.com/global-eval-what-are-the-options/
+// disqus的相关代码放在了#disqus中，eval就可以激活disqus功能
 ;(1, eval)($("#disqus").text())
 
 // replace post header image
@@ -35,30 +37,38 @@ clipboard.on('success', function(e) {
   e.clearSelection();
 })
 
+// make all links opened at new tab
+$(".post__body a").each(function(index, ele){
+  $(ele).attr("target", "_blank")
+})
+
+// add popups for images
+var magnificPopup = function(ele) {
+  if(ele.naturalWidth > $(ele).width()) {
+    $(ele).addClass("u-cursor-zoom-in")
+    $(ele).magnificPopup({
+      type: "image",
+      items: {
+        src: $(ele).attr("src"),
+      },
+    })
+  }
+}
+
+$(".post__body img").each(function(index, ele) {
+  if(ele.complete) {
+    magnificPopup(ele)
+    return
+  }
+  ele.onload = function() {
+    magnificPopup(ele)
+  }
+})
+
 // // add search
 // if($("body").hasClass("page-index")) {
 //   addSearch()
 // }
-
-// // make all links opened at new tab
-// $(".post__body a").each(function(index, ele){
-//   $(ele).attr("target", "_blank")
-// })
-
-// // add popups for images
-// $(".post__body img").each(function(index, ele) {
-//   ele.onload = function() {
-//     if(ele.naturalWidth > $(ele).width()) {
-//       $(ele).addClass("u-cursor-zoom-in")
-//       $(ele).magnificPopup({
-//         type: "image",
-//         items: {
-//           src: $(ele).attr("src"),
-//         },
-//       })
-//     }
-//   }
-// })
 
 // function addSearch() {
 //   // add search support
