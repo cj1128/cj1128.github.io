@@ -1,7 +1,0 @@
-{% for page in pages_list %}
-    	<li>
-        <a href="{{ BASE_PATH }}{{page.url}}" style="color:#00a6ac">{{page.title}}</a>
-      </li>
-{% endfor %}
-{% assign pages_list = nil %}
-{% assign group = nil %}

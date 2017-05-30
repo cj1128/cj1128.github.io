@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+  <title>Git是怎样生成diff的：Myers算法 - CJ Ting's Blog</title>
+  <meta name="author" content="CJ Ting">
+  <meta name="description" content="Git是怎样生成diff的：Myers算法">
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/bundle.css">
+  <style type="text/css">
+    @font-face {
+      font-family: 'Roboto Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Roboto Mono'), local('RobotoMono-Regular'), url('/font/Roboto-Mono_400_normal.woff') format('woff');
+    }
+    @font-face {
+      font-family: 'Roboto Mono';
+      font-style: normal;
+      font-weight: 700;
+      src: local('Roboto Mono Bold'), local('RobotoMono-Bold'), url(' /font/Roboto-Mono_700_normal.woff') format('woff');
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="post">
+    <header class="post__header" data-cover="http://ww1.sinaimg.cn/large/9b85365dgy1ffkpkmcbenj21e00dwjsa">
+      <a href="/">
+        HOME
+      </a>
+    </header>
+
+    <div class="post__body">
+      <h1 class="post__title">
+          Git是怎样生成diff的：Myers算法
+      </h1>
+
+      <div class="post__meta">
+        <div class='date'>
+          2017.05.13
+        </div>
+
+        <div class="tags">
+          
+            <span class="tag">git</span>
+          
+            <span class="tag">diff</span>
+          
+            <span class="tag">myers</span>
+          
+        </div>
+      </div>
+
+      <div class="post__content">
+        <p>diff是我们每天都要使用的一个功能，每次提交时，我都习惯先用<code>git diff --cached</code>看看这次提交更改了些什么，确定没问题，然后再<code>git commit</code>。git生成的diff非常直观，直观到我从来都没有去思考过diff是怎么生成的，觉得这应该是很简单的一件事，两个文件做个对比，不就行了。</p>
+
+<p></p>
+
+<h2 id="什么是直观的diff">什么是直观的diff</h2>
+
+<p>我们先简单定义一下什么是diff：diff就是目标文本和源文本之间的区别，也就是将源文本变成目标文本所需要的操作。</p>
+
+<p>git为我们生成的diff是很直观易懂的，一看就知道我们对文件进行了哪些改动。但是，实际上，diff生成是一个非常复杂的问题。</p>
+
+<p>举个简单的例子，源文本为<code>ABCABBA</code>，目标文本为<code>CBABAC</code>，他们之间的diff其实有无穷多种（我们以字符为单位，一般情况下是以行为单位）。比如</p>
+
+<pre><code class="language-text">1.  - A       2.  - A       3.  + C
+    - B           + C           - A
+      C             B             B
+    - A           - C           - C
+      B             A             A
+    + A             B             B
+      B           - B           - B
+      A             A             A
+    + C           + C           + C
+</code></pre>
+
+<p>上面三种都是有效的diff，都可以将源文本变成目标文本，但是第二种和第三种没有第一种看起来“直观”。</p>
+
+<p>所以，我们需要个算法，生成“直观”的diff，怎么样才叫直观呢？</p>
+
+<ul>
+<li>删除后新增，比新增后删除要好，也就是说，上面的例子2比例子3看起来要直观</li>
+
+<li><p>当修改一块代码时，整块的删除然后新增，比删除新增交叉在一起要好，例如：</p>
+
+<pre><code class="language-text">  Good: - one            Bad: - one
+        * two                 + four
+        * three               - two
+        - four                + five
+        - five                + six
+        - six                 - three
+</code></pre></li>
+
+<li><p>新增或删除的内容应该和代码结构相呼应，例如下面的例子，左边我们可以很直观地看出新增了一个inspect方法。</p>
+
+<pre><code class="language-text">  Good: class Foo                   Bad:    class Foo
+          def initialize(name)                def initialize(name)
+            @name = name                        @name = name
+          end                             +   end
+      -                                   +
+      -   def inspect                     +   def inspect
+      -     @name                         +     @name
+      -   end                                 end
+        end                                 end
+</code></pre></li>
+</ul>
+
+<p>除了直观以外，diff还需要短，这一点是好理解的，我们希望diff反应的是把源文本变成目标文本需要用的最少的操作。</p>
+
+<p>那么，现在的问题就是：怎样寻找最短的直观的diff？</p>
+
+<h2 id="diff与图搜索">diff与图搜索</h2>
+
+<p>”寻找最短的直观的diff”是一个非常模糊的问题，首先，我们需要把这个问题抽象为一个具体的数学问题，然后再来寻找算法解决。</p>
+
+<p>抽象的过程交给算法科学家了，抽象的结果是：<strong>寻找diff的过程可以被表示为图搜索</strong>。</p>
+
+<p>什么意思呢？还是以两个字符串，src=<strong>ABCABBA</strong>，dst=<strong>CBABAC</strong>为例，根据这两个字符串我们可以构造下面一张图，横轴是src内容，纵轴是dst内容。</p>
+
+<p>那么，图中每一条从左上角到右下角的路径，都表示一个diff。向右表示“删除”，向下表示”新增“，对角线则表示“原内容保持不动“。</p>
+
+<p><img src="http://ww1.sinaimg.cn/large/9b85365dgy1ffjxfo7r42j20lm0nudhx" alt="" /></p>
+
+<p>比如，我们选择这样一条路径：</p>
+
+<ol>
+<li>(0, 0) -&gt; (1, 0)</li>
+<li>(1, 0) -&gt; (2, 0) -&gt; (3, 1)</li>
+<li>(3, 1) -&gt; (3, 2) -&gt; (4, 3) -&gt; (5, 4)</li>
+<li>(5, 4) -&gt; (6, 4) -&gt; (7, 5)</li>
+<li>(7, 5) -&gt; (7, 6)</li>
+</ol>
+
+<p>这条路径代表的diff如下。</p>
+
+<pre><code class="language-text">- A
+- B
+  C
++ B
+  A
+  B
+- B
+  A
++ C
+</code></pre>
+
+<p>现在，“寻找diff”这件事，被抽象成了“寻找图的路径”了。那么，“最短的直观的”diff对应的路径有什么特点呢？</p>
+
+<ul>
+<li>路径长度最短（对角线不算长度）</li>
+<li>先向右，再向下（先删除，后新增）</li>
+</ul>
+
+<h2 id="myers算法">Myers算法</h2>
+
+<p>Myers算法就是一个能在大部分情况产生”最短的直观的“diff的一个算法。算法原理如下。</p>
+
+<p>首先，定义参数<code>d</code>和<code>k</code>，d代表路径的长度，<code>k</code>代表当前坐标<code>x - y</code>的值。定义一个”最优坐标“的概念，最优坐标表示d和k值固定的情况下，x值最大的坐标。x大，表示向右走的多，表示优先删除。</p>
+
+<p>还是用上面那张图为例。我们从坐标<code>(0, 0)</code>开始，此时，<code>d=0</code>，<code>k=0</code>，然后逐步增加<code>d</code>，计算每个<code>k</code>值下对应的最优坐标。</p>
+
+<p>因为每一步要么向右（x + 1），要么向下（y + 1），要么就是对角线（x和y都+1)，所以，当d=1时，k只可能有两个取值，要么是<code>1</code>，要么是<code>-1</code>。</p>
+
+<p>当<code>d=1</code>，<code>k=1</code>时，最优坐标是<code>(1, 0)</code>。</p>
+
+<p>当<code>d=1</code>，<code>k=-1</code>时，最优坐标是<code>(0, 1)</code>。</p>
+
+<p>因为d=1时，k要么是1，要么是-1，当d=2时，表示在d=1的基础上再走一步，k只有三个可能的取值，分别是<code>-2</code>，<code>0</code>，<code>2</code>。</p>
+
+<p>当<code>d=2</code>，<code>k=-2</code>时，最优坐标是<code>(2, 4)</code>。</p>
+
+<p>当<code>d=2</code>，<code>k=0</code>时，最优坐标是<code>(2, 2)</code>。</p>
+
+<p>当<code>d=2</code>，<code>k=2</code>时，最优坐标是<code>(3, 1)</code>。</p>
+
+<p>以此类推，直到我们找到一个<code>d</code>和<code>k</code>值，达到最终的目标坐标<code>(7, 6)</code>。</p>
+
+<p>下图横轴代表d，纵轴代表k，中间是最优坐标，从这张图可以清晰的看出，当<code>d=5</code>，<code>k=1</code>时，我们到达了目标坐标(7, 6)，因此，”最短的直观的“路径就是<code>(0, 0) -&gt; (1, 0) -&gt; (3, 1) -&gt; (5, 4) -&gt; (7, 5) -&gt; (7, 6)</code>，对应的diff如下。</p>
+
+<pre><code class="language-text">- A
+- B
+  C
++ B
+  A
+  B
+- B
+  A
++ C
+</code></pre>
+
+<p><img src="http://ww1.sinaimg.cn/large/9b85365dgy1ffjz1967znj20p20k9gmg" alt="" /></p>
+
+<p>现在我们可以知道，其实Myers算法是一个典型的”动态规划“算法，也就是说，父问题的求解归结为子问题的求解。要知道d=5时所有k对应的最优坐标，必须先要知道d=4时所有k对应的最优坐标，要知道d=4时的答案，必须先求解d=3，以此类推，和01背包问题很是相似。</p>
+
+<h2 id="实现">实现</h2>
+
+<p>算法原理知道以后，实现便是一件简单的事情了，<a href="https://github.com/fate-lovely/myers-diff">myers-diff</a>仓库是我使用Go实现的一个版本。基本流程如下：</p>
+
+<ol>
+<li>迭代d，d的取值范围为0到n+m，其中n和m分别代表源文本和目标文本的长度（这里我们选择以行为单位）</li>
+<li>每个d内部，迭代k，k的取值范围为-d到d，以2为步长，也就是-d，-d + 2，-d + 2 + 2&hellip;</li>
+<li>使用一个数组v，以k值为索引，存储最优坐标的x值（这里使用hash也行，但是用数组效率更高一些，因为Go不支持使用负数做索引，所以需要创建一个自定义类型）</li>
+<li>将每个d对应的v数组存储起来，后面回溯的时候需要用</li>
+<li>当我们找到一个d和k，到达目标坐标(n, m)时就跳出循环</li>
+<li>使用上面存储的v数组（每个d对应一个这样的数组），从终点反向得出路径</li>
+</ol>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+<li><a href="https://blog.jcoglan.com/2017/02/12/the-myers-diff-algorithm-part-1/">The Myers diff algorithm: part 1</a></li>
+</ul>
+      </div>
+
+      <div class="post__comments">
+        <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+        <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+        <script>
+        var cloudTieConfig = {
+          sourceId: "how-git-generate-diff2017-05-13 00:00:00 \x2b0800 CST",
+          productKey: "79ce150be00440d1bc3ff82aa7aad88c",
+          target: "cloud-tie-wrapper"
+        };
+        var yunManualLoad = true;
+        Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/init.js"></script>
+  <script type="text/javascript">
+    var script = document.createElement("script")
+    if(Global.isMobile) {
+      script.src = "/js/mobile.bundle.js"
+    } else {
+      script.src = "/js/desktop.bundle.js"
+    }
+    document.body.appendChild(script)
+  </script>
+  
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4f34ee3c85734c8235badd2b99b092a6";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</body>
+</html>

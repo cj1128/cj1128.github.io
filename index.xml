@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CJ Ting&#39;s Blog</title>
+    <link>http://cjting.me/</link>
+    <description>Recent content on CJ Ting&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 18 May 2017 22:46:44 +0800</lastBuildDate>
+    
+	<atom:link href="http://cjting.me/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>About me</title>
+      <link>http://cjting.me/about/</link>
+      <pubDate>Thu, 18 May 2017 22:46:44 +0800</pubDate>
+      
+      <guid>http://cjting.me/about/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Git是怎样生成diff的：Myers算法</title>
+      <link>http://cjting.me/misc/how-git-generate-diff/</link>
+      <pubDate>Sat, 13 May 2017 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/misc/how-git-generate-diff/</guid>
+      <description>&lt;p&gt;diff是我们每天都要使用的一个功能，每次提交时，我都习惯先用&lt;code&gt;git diff --cached&lt;/code&gt;看看这次提交更改了些什么，确定没问题，然后再&lt;code&gt;git commit&lt;/code&gt;。git生成的diff非常直观，直观到我从来都没有去思考过diff是怎么生成的，觉得这应该是很简单的一件事，两个文件做个对比，不就行了。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用Prometheus监控服务器性能</title>
+      <link>http://cjting.me/linux/use-prometheus-to-monitor-server/</link>
+      <pubDate>Sun, 12 Mar 2017 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/linux/use-prometheus-to-monitor-server/</guid>
+      <description>&lt;p&gt;最近一直在思考如何对线上服务做深度监控。基础的服务可用性监控很简单，定期Ping即可。但是怎样才能监控服务器的一些更加关键的数据呢？比如，每一个API Point的请求次数（QPS），最大响应时间，平均响应时间等。最终我希望实现的效果是有一个Dashboard，我可以清楚地看到各种参数曲线，对服务器的运行情况了然于胸。&lt;/p&gt;
+
+&lt;p&gt;绘制Dashboard不难，目前提供数据可视化的工具很多，随便选一个都能满足需要。关键问题是，怎样将整个流程打通？&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;服务器该以怎样的形式暴露出数据？&lt;/li&gt;
+&lt;li&gt;数据怎样被收集和存储起来？&lt;/li&gt;
+&lt;li&gt;存储起来的数据怎样提供给数据可视化工具？&lt;/li&gt;
+&lt;li&gt;怎样做到足够灵活，可以可视化自己感兴趣的任意数据？&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用Go编写代码明信片生成器</title>
+      <link>http://cjting.me/golang/write-a-code-post-generator-with-go/</link>
+      <pubDate>Sat, 18 Feb 2017 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/golang/write-a-code-post-generator-with-go/</guid>
+      <description>&lt;p&gt;很早之前就看过到关于&lt;a href=&#34;http://commits.io&#34;&gt;commits.io&lt;/a&gt;的一个帖子，这个站点专门制作代码明信片。什么是代码明信片呢？如下图。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://ok2pw0x6d.bkt.clouddn.com/Fqam4K_lGEdyiyAxz4eRbiWlptvN.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>图床on七牛，简单好用的图床插件</title>
+      <link>http://cjting.me/web2.0/build-an-img-bed-on-qiniu/</link>
+      <pubDate>Mon, 23 Jan 2017 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/web2.0/build-an-img-bed-on-qiniu/</guid>
+      <description>&lt;p&gt;最近在使用过程中发现&lt;strong&gt;图床on微博&lt;/strong&gt;出了点问题，响应体的JSON解析错误，不用想都知道肯定是微博修改了响应体的数据结构（微博图片上传接口响应体是html tag和json混在一起，十分专业）。简单修复了一下，测试的时候却发现，微博的图片上传接口变得不再稳定了，经常404。看来微博图床是不能用了，正好我早就觉得微博不是个好图床。缺点如下：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;经常性的要重新登陆，麻烦死了&lt;/li&gt;
+&lt;li&gt;无法获取到完整的上传图片列表&lt;/li&gt;
+&lt;li&gt;无法删除上传的图片&lt;/li&gt;
+&lt;li&gt;服务状态不可控，指不定什么时候接口就不能用了&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用pprof优化golang性能</title>
+      <link>http://cjting.me/golang/use-pprof-to-optimize-go/</link>
+      <pubDate>Mon, 14 Nov 2016 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/golang/use-pprof-to-optimize-go/</guid>
+      <description>&lt;p&gt;*Donald E.Knuth*说过一句非常著名的话，&lt;strong&gt;过早的优化是万恶之源&lt;/strong&gt;。原文如下：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;We should forget about small efficiencies, say about 97% of the time; premature optimization is the root of all evil.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;我是十分赞同这句话的，并且在开发过程中也深有体会。什么叫做*过早的优化*呢？即不需要考虑优化的时候你在考虑优化。这绝对不意味着可以任性地写代码，随意地选择数据结构和算法。这句话是告诉我们，在程序开发的早期阶段，程序员应该专注在程序的&lt;strong&gt;逻辑实现&lt;/strong&gt;上，而不是专注在程序的&lt;strong&gt;性能优化&lt;/strong&gt;上。用正确的数据结构和算法，优美合理的语句实现你要的功能。而不是满脑子在想：“这个函数是不是可以优化一下？”。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用SVG Morphing制作自己的加载动画</title>
+      <link>http://cjting.me/web2.0/make-loading-animation-with-svg-morphing/</link>
+      <pubDate>Mon, 07 Nov 2016 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/web2.0/make-loading-animation-with-svg-morphing/</guid>
+      <description>&lt;p&gt;每一个需要让用户等待的应用都应该有加载界面，可以是简单的文本，比如&lt;code&gt;加载中…&lt;/code&gt;，也可以是有趣的动画。当然，一个好玩的加载动画能够大大增加用户等待的耐心，谁喜欢枯燥的文字呢。所以，投入点时间寻找或者制作一个加载动画是很有意义的。感谢SVG和相关的动画技术，现在制作一款复杂的动画已经变得十分容易了。&lt;/p&gt;
+
+&lt;p&gt;这里我使用SVG的形变技术(Shape Morphing)来做一个简单的矩形、三角形、圆形变换的动画。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>从零开始搭建一个ELKB日志收集系统</title>
+      <link>http://cjting.me/misc/build-log-system-with-elkb/</link>
+      <pubDate>Fri, 21 Oct 2016 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/misc/build-log-system-with-elkb/</guid>
+      <description>&lt;p&gt;当今的软件开发&lt;strong&gt;多核&lt;/strong&gt;以及&lt;strong&gt;分布&lt;/strong&gt;已经成为了常态，基本上稍大型的应用都是多台机器分布式部署。分布式在提高性能的同时也带来了很多问题，今天我们只讨论一点，那就是如何处理多台机器线上系统的日志。&lt;/p&gt;
+
+&lt;p&gt;以我司的某个应用T为例，部署在了百度云5台机子上，其中一台拥有公网IP，使用了百度云提供的负载均衡服务。每次想要在日志中检索某个关键字时，基本步骤如下：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;打开五个shell，登陆拥有公网IP的那台机器&lt;/li&gt;
+&lt;li&gt;在另外四个shell中分别登陆其他的内网机器&lt;/li&gt;
+&lt;li&gt;对日志文件进行检索&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>从零开始搭建一个HTTPS网站</title>
+      <link>http://cjting.me/web2.0/build-a-https-site-from-scratch/</link>
+      <pubDate>Mon, 05 Sep 2016 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/web2.0/build-a-https-site-from-scratch/</guid>
+      <description>&lt;p&gt;我们都知道HTTP是非常不安全的，不安全的根源在于HTTP是明文传输。你在谷歌搜索了一个关键词（假设Google使用HTTP），HTTP数据包从你的计算机传送到服务器的过程中，中间经过的任意一个设备都可以轻松解析你的数据包，获取你的关键词，你的隐私毫无保障。&lt;/p&gt;
+
+&lt;p&gt;你的信息被人获取只是明文传输的其中一个问题。总体来说，明文传输有三个问题：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;窃听：第三方可以获取你的信息。&lt;/li&gt;
+&lt;li&gt;篡改：第三方可以修改你的信息。&lt;/li&gt;
+&lt;li&gt;冒充：第三方可以冒充你的身份。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用Dnsmasq搭建内网DNS服务器</title>
+      <link>http://cjting.me/misc/use-dnsmasq-to-build-own-dns-server/</link>
+      <pubDate>Sat, 20 Aug 2016 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/misc/use-dnsmasq-to-build-own-dns-server/</guid>
+      <description>&lt;p&gt;在日常开发过程中，我们经常要配置各种
+host，比如公司内部的各种服务，或者测试项目的时候暂时把生产环境URL配置到本地上等等。一般采取的方法都是每个人手动编辑自己的&lt;code&gt;/etc/hosts&lt;/code&gt;文件。这个做法有两个缺点：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;手动编辑&lt;code&gt;/etc/hosts&lt;/code&gt;文件非常麻烦，需要&lt;code&gt;sudo&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;工作量重复，团队内每个人都要配置一遍&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Webpack Long Term Caching 101</title>
+      <link>http://cjting.me/web2.0/webpack-long-term-caching-101/</link>
+      <pubDate>Sat, 25 Jun 2016 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/web2.0/webpack-long-term-caching-101/</guid>
+      <description>&lt;p&gt;缓存是Web中无法回避的话题，不仅因为缓存非常重要，能极大地改善用户体验，而且因为缓存很难做好。一旦生产环境出现了缓存失效，那就是一个十分棘手的问题。&lt;/p&gt;
+
+&lt;p&gt;在各种缓存的方案中，基于hash的Long Term Caching（永久缓存）在我看来是最简单也是最高效。每一个资源名称上都带有自身内容的hash值，然后全部设置为永久缓存永不过期。所有资源的索引文件全部设置为永不缓存。这样就保证了当资源更新时，资源名称会变化，索引文件会引入新的资源名称，也就保证了缓存永远不会失效。&lt;/p&gt;
+
+&lt;p&gt;这个处理方案显然和前端自身的编码没有关系，而是需要打包工具的支持。以下我们就用webapck为例，详细讲述怎样一步步实现Long Term Caching。项目最终的仓库&lt;a href=&#34;https://github.com/fate-lovely/long-term-caching-demo.git&#34;&gt;long-term-caching-demo&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用Ngrok实现内网穿透</title>
+      <link>http://cjting.me/misc/ngrok-tutorial/</link>
+      <pubDate>Sat, 21 May 2016 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/misc/ngrok-tutorial/</guid>
+      <description>&lt;p&gt;很多时候，我们都有这样的需求：需要将本地正在开发的服务暴露在公网上，也就是从外网直接访问我们本机上的服务。正常情况下，这是办不到的，因为我们的本机并没有公网IP，我们的本机处在内网当中。&lt;/p&gt;
+
+&lt;p&gt;这里需要顺手提及一个知识：NAT穿透。我们的机器一般都在路由器的内网当中，IP地址基本上都是&lt;code&gt;192.168.x.x&lt;/code&gt;系列，我们并没有公网IP，那么如何访问外网呢？我们打开浏览器访问Google，Google与我们主机之间如何通信？假设我们主机IP为&lt;code&gt;192.168.0.100&lt;/code&gt;，路由器LAN IP为&lt;code&gt;192.168.0.1&lt;/code&gt;，WAN IP为&lt;code&gt;211.22.145.234（这是一个公网IP）&lt;/code&gt;，Google服务器IP为&lt;code&gt;74.125.204.101&lt;/code&gt;。详细通信流程如下。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>编写第一个Chrome插件——图床on微博</title>
+      <link>http://cjting.me/web2.0/first-chrome-extension-image-bed-on-weibo/</link>
+      <pubDate>Wed, 06 Apr 2016 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/web2.0/first-chrome-extension-image-bed-on-weibo/</guid>
+      <description>&lt;p&gt;之前写博客需要的图片全部都是本地存储，非常麻烦。流程如下：先用截图工具截图（QQ截图就很好用），然后移动到目标文件夹，然后在markdown中输入绝对路径（jekyll生成站点以后路径会变化，所以不能使用相对路径）。除了麻烦以外，在markdown中编写时还是看不到图的，因为路径不对。&lt;/p&gt;
+
+&lt;p&gt;上次花点时间把所有的图片全部迁移到微博图床了。在chrome web store中搜索了一下，选了&lt;a href=&#34;https://chrome.google.com/webstore/detail/%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9A%E5%9B%BE%E5%BA%8A/fdfdnfpdplfbbnemmmoklbfjbhecpnhf?utm_source=chrome-ntp-icon&#34;&gt;新浪微博图床&lt;/a&gt;。功能是可以用的，不过有一些问题，最让我无法忍受的就是一点击按钮就会弹出一个chrome的空白窗口，无法关闭，只有重启chrome才行，这个实在是忍无可忍。&lt;/p&gt;
+
+&lt;p&gt;闲话不说了，总之我发现这是一次绝佳的自己造轮子的机会。自己造自己用多好玩，所以我准备自己写一个chrome 插件，来实现微博图床的功能。起什么名字好呢，恩，这真是一个世界难题。想了半天，决定叫做“图床on微博”吧，是的，我是RoR粉丝。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Functional Reactive Programming 简介</title>
+      <link>http://cjting.me/web2.0/intruduction-to-functional-reactive-programming/</link>
+      <pubDate>Sun, 20 Mar 2016 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/web2.0/intruduction-to-functional-reactive-programming/</guid>
+      <description>&lt;p&gt;推荐阅读：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=XRYN2xt11Ek&#34;&gt;Netflix JavaScript Talks - Async JavaScript with Reactive Extensions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://gist.github.com/staltz/868e7e9bc2a7b8c1f754&#34;&gt;The introduction to Reactive Programming you&amp;rsquo;ve been missing&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;HTML5Rocks有一篇关于&lt;a href=&#34;http://www.html5rocks.com/en/tutorials/es6/promises/&#34;&gt;Promise&lt;/a&gt;的经典文章，通过引入这样一个问题来说明Promise的优越性。问题如下：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;我们需要渲染一个故事，首先我们获取故事的json，渲染标题(story.heading)，然后再根据其中的charpter url，获取每一章的内容，并显示。中间出了任何问题，显示错误信息。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>JavaScript Infinite Currying</title>
+      <link>http://cjting.me/web2.0/javascript-infinite-currying/</link>
+      <pubDate>Sun, 17 Jan 2016 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/web2.0/javascript-infinite-currying/</guid>
+      <description>&lt;p&gt;很久之前曾看到一个很有意思的JS问题，&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;// 定义一个函数add，满足如下性质：
+add(1) == 1
+add(1)(2) == 3
+add(1)(2)(3) == 6
+...
+
+var g = add(1)(2)
+g(100) == 103
+g(200) == 203
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Browserify &#43; SASS &#43; BrowserSync &#43; Gulp高效前端开发环境配置</title>
+      <link>http://cjting.me/web2.0/frontend-development-with-browserify-sass-browsersync-gulp/</link>
+      <pubDate>Thu, 24 Sep 2015 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/web2.0/frontend-development-with-browserify-sass-browsersync-gulp/</guid>
+      <description>&lt;p&gt;之前开发的前端应用都是些比较简单的页面，开发的时候一般就是sublime，然后命令行里面启动&lt;code&gt;sass --watch&lt;/code&gt; 以及 &lt;code&gt;coffee --watch&lt;/code&gt; 就行了，修改代码以后自动编译，但是浏览器需要手动刷新。凑合着也能用，所以也就一直这样没有去理会别的解决方案了。&lt;/p&gt;
+
+&lt;p&gt;工作了以后，编写的应用规模变大了很多，而且前端的依赖也变得复杂了。传统的方式显然是解决不了问题的。这段时间，我一直在寻找一套高效的开发环境，要求如下：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;使用CommonJS进行依赖引用&lt;/li&gt;
+&lt;li&gt;ES6支持&lt;/li&gt;
+&lt;li&gt;React + JSX支持&lt;/li&gt;
+&lt;li&gt;SASS支持&lt;/li&gt;
+&lt;li&gt;修改以后自动高速编译，即便是很大的依赖&lt;/li&gt;
+&lt;li&gt;修改JS、HTML以后浏览器自动刷新&lt;/li&gt;
+&lt;li&gt;修改CSS浏览器使用Style Injection刷新&lt;/li&gt;
+&lt;li&gt;生产环境下合并压缩&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Underhanded C, 有猫腻的C</title>
+      <link>http://cjting.me/misc/underhanded-c/</link>
+      <pubDate>Tue, 16 Jun 2015 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/misc/underhanded-c/</guid>
+      <description>&lt;p&gt;这一切，都要从这篇文章说起，&lt;a href=&#34;http://www.codersnotes.com/notes/being-sneaky-in-c&#34;&gt;being-sneaky-in-c&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;通过这篇文章，我了解到，原来外国有一种比赛，叫做Underhanded C（中文翻译：有猫腻的C），完成规定的题目，要求是写出看起来毫无问题的代码，但是却偷偷的藏有Bug或者说后门。&lt;/p&gt;
+
+&lt;p&gt;这篇文章说的就是作者参与了这个比赛，以及他的解决方案。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>关于字符编码</title>
+      <link>http://cjting.me/misc/about-string-encoding/</link>
+      <pubDate>Thu, 24 Apr 2014 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/misc/about-string-encoding/</guid>
+      <description>&lt;p&gt;很早之前就碰到过&amp;rdquo;乱码&amp;rdquo;这个现象，当时非常困惑，完全不能理解发生了什么。&lt;/p&gt;
+
+&lt;p&gt;上大学以后，虽然开始接触计算机，不过我就没看到过具体讲解字符编码的内容。对这个领域始终是感到非常模糊。&lt;/p&gt;
+
+&lt;p&gt;不过，最近好像豁然开朗了一下，感觉突然就明白了这个问题。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>关于disqus的作用原理</title>
+      <link>http://cjting.me/web2.0/how-disqus-work/</link>
+      <pubDate>Thu, 21 Nov 2013 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/web2.0/how-disqus-work/</guid>
+      <description>&lt;p&gt;当初用jekyll-bootstrap做博客的时候,里面默认配置了disqus的评论模块.当初懵懵懂懂,去disqus官网按照提示填了字段以后,然后根据jekyll配置文件&lt;code&gt;_config.yml&lt;/code&gt;里面的字段&lt;code&gt;short-name&lt;/code&gt;填了一下,然后评论模块就可以用了.我心里一直觉得不能理解,但是心里觉得可能很麻烦,就一直没有去钻研这个事情,今天有空,耐心看了官方文档,一切豁然开朗.&lt;/p&gt;
+
+&lt;p&gt;当初对disqus的了解,就是一个&lt;strong&gt;云端评论中心&lt;/strong&gt;.可以将你对一篇文章的评论存储在disqus的中心,然后通过js脚本调用这些评论.但是,我困惑的问题就是:&lt;strong&gt;disqus怎样将评论和相应的页面进行绑定?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>发现一款超级好用软件--Apptivate</title>
+      <link>http://cjting.me/mac/use-apptivate-to-quickly-focus/</link>
+      <pubDate>Mon, 07 Oct 2013 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/mac/use-apptivate-to-quickly-focus/</guid>
+      <description>&lt;p&gt;用mac这么长时间，尤其是写代码的时候，明显感觉到一个需要，就是&lt;strong&gt;快速聚焦&lt;/strong&gt;。一般我写代码的时候，这四个软件都会全屏开在那儿，分别是&lt;strong&gt;sublime&lt;/strong&gt;、&lt;strong&gt;dash&lt;/strong&gt;、&lt;strong&gt;chrome&lt;/strong&gt;、&lt;strong&gt;iterm&lt;/strong&gt;。他们是做什么的就不说了。这几个软件基本上是必备的。而且经常需要在其中“跳跃”。以前我想要切换软件，要么是四指上滑，然后点选，要么是四指不停平切。当这样的操作次数很多的时候，明显感到很麻烦。所以我一直在找一款能够&lt;strong&gt;快速切换&lt;/strong&gt;或者说&lt;strong&gt;快速聚焦&lt;/strong&gt;的软件。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用CSS绘制Ruby可爱的红宝石标志</title>
+      <link>http://cjting.me/web2.0/draw-ruby-logo-with-css/</link>
+      <pubDate>Sun, 23 Jun 2013 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/web2.0/draw-ruby-logo-with-css/</guid>
+      <description>&lt;p&gt;有一次偶然逛Dribbble，发现了这个可爱的红宝石标志。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://ww3.sinaimg.cn/large/9b85365djw1f23bofx48nj20j1084a9z.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ruby的标志本来就很好看，加上这个配色，更加好看了。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>利用github pages搭建自己的个人博客</title>
+      <link>http://cjting.me/web2.0/build-blog-with-github-pages/</link>
+      <pubDate>Mon, 10 Jun 2013 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/web2.0/build-blog-with-github-pages/</guid>
+      <description>&lt;p&gt;很早之前就想写这篇文章，无奈因为一些事情，一直耽误到今天。&lt;/p&gt;
+
+&lt;p&gt;这个学期学了rails以后，早就萌生了建立自己的个人网站的想法。无奈rails学的不精，本来打算学通rails以后再买主机建站的。后来Google个人博客的时候，发现了&lt;strong&gt;github pages&lt;/strong&gt;这样一个好东西。可以免去你管理网站的麻烦，真实喜从天降。&lt;/p&gt;
+
+&lt;p&gt;管理网站确实麻烦无比。我想建立个人网站，最主要的目的也是为了写博文，记录生活与技术上的点滴发现。github pages完美满足了我的这个要求。下面详细来说建站步骤。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

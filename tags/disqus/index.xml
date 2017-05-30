@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Disqus on CJ Ting&#39;s Blog</title>
+    <link>http://cjting.me/tags/disqus/</link>
+    <description>Recent content in Disqus on CJ Ting&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 21 Nov 2013 00:00:00 +0800</lastBuildDate>
+    
+	<atom:link href="http://cjting.me/tags/disqus/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>关于disqus的作用原理</title>
+      <link>http://cjting.me/web2.0/how-disqus-work/</link>
+      <pubDate>Thu, 21 Nov 2013 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/web2.0/how-disqus-work/</guid>
+      <description>&lt;p&gt;当初用jekyll-bootstrap做博客的时候,里面默认配置了disqus的评论模块.当初懵懵懂懂,去disqus官网按照提示填了字段以后,然后根据jekyll配置文件&lt;code&gt;_config.yml&lt;/code&gt;里面的字段&lt;code&gt;short-name&lt;/code&gt;填了一下,然后评论模块就可以用了.我心里一直觉得不能理解,但是心里觉得可能很麻烦,就一直没有去钻研这个事情,今天有空,耐心看了官方文档,一切豁然开朗.&lt;/p&gt;
+
+&lt;p&gt;当初对disqus的了解,就是一个&lt;strong&gt;云端评论中心&lt;/strong&gt;.可以将你对一篇文章的评论存储在disqus的中心,然后通过js脚本调用这些评论.但是,我困惑的问题就是:&lt;strong&gt;disqus怎样将评论和相应的页面进行绑定?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

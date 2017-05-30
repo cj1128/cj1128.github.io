@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Browserify on CJ Ting&#39;s Blog</title>
+    <link>http://cjting.me/tags/browserify/</link>
+    <description>Recent content in Browserify on CJ Ting&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 24 Sep 2015 00:00:00 +0800</lastBuildDate>
+    
+	<atom:link href="http://cjting.me/tags/browserify/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Browserify &#43; SASS &#43; BrowserSync &#43; Gulp高效前端开发环境配置</title>
+      <link>http://cjting.me/web2.0/frontend-development-with-browserify-sass-browsersync-gulp/</link>
+      <pubDate>Thu, 24 Sep 2015 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/web2.0/frontend-development-with-browserify-sass-browsersync-gulp/</guid>
+      <description>&lt;p&gt;之前开发的前端应用都是些比较简单的页面，开发的时候一般就是sublime，然后命令行里面启动&lt;code&gt;sass --watch&lt;/code&gt; 以及 &lt;code&gt;coffee --watch&lt;/code&gt; 就行了，修改代码以后自动编译，但是浏览器需要手动刷新。凑合着也能用，所以也就一直这样没有去理会别的解决方案了。&lt;/p&gt;
+
+&lt;p&gt;工作了以后，编写的应用规模变大了很多，而且前端的依赖也变得复杂了。传统的方式显然是解决不了问题的。这段时间，我一直在寻找一套高效的开发环境，要求如下：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;使用CommonJS进行依赖引用&lt;/li&gt;
+&lt;li&gt;ES6支持&lt;/li&gt;
+&lt;li&gt;React + JSX支持&lt;/li&gt;
+&lt;li&gt;SASS支持&lt;/li&gt;
+&lt;li&gt;修改以后自动高速编译，即便是很大的依赖&lt;/li&gt;
+&lt;li&gt;修改JS、HTML以后浏览器自动刷新&lt;/li&gt;
+&lt;li&gt;修改CSS浏览器使用Style Injection刷新&lt;/li&gt;
+&lt;li&gt;生产环境下合并压缩&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

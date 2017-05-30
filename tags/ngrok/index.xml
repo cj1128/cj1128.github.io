@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ngrok on CJ Ting&#39;s Blog</title>
+    <link>http://cjting.me/tags/ngrok/</link>
+    <description>Recent content in Ngrok on CJ Ting&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 21 May 2016 00:00:00 +0800</lastBuildDate>
+    
+	<atom:link href="http://cjting.me/tags/ngrok/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>使用Ngrok实现内网穿透</title>
+      <link>http://cjting.me/misc/ngrok-tutorial/</link>
+      <pubDate>Sat, 21 May 2016 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/misc/ngrok-tutorial/</guid>
+      <description>&lt;p&gt;很多时候，我们都有这样的需求：需要将本地正在开发的服务暴露在公网上，也就是从外网直接访问我们本机上的服务。正常情况下，这是办不到的，因为我们的本机并没有公网IP，我们的本机处在内网当中。&lt;/p&gt;
+
+&lt;p&gt;这里需要顺手提及一个知识：NAT穿透。我们的机器一般都在路由器的内网当中，IP地址基本上都是&lt;code&gt;192.168.x.x&lt;/code&gt;系列，我们并没有公网IP，那么如何访问外网呢？我们打开浏览器访问Google，Google与我们主机之间如何通信？假设我们主机IP为&lt;code&gt;192.168.0.100&lt;/code&gt;，路由器LAN IP为&lt;code&gt;192.168.0.1&lt;/code&gt;，WAN IP为&lt;code&gt;211.22.145.234（这是一个公网IP）&lt;/code&gt;，Google服务器IP为&lt;code&gt;74.125.204.101&lt;/code&gt;。详细通信流程如下。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

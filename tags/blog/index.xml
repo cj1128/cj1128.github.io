@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blog on CJ Ting&#39;s Blog</title>
+    <link>http://cjting.me/tags/blog/</link>
+    <description>Recent content in Blog on CJ Ting&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 10 Jun 2013 00:00:00 +0800</lastBuildDate>
+    
+	<atom:link href="http://cjting.me/tags/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>利用github pages搭建自己的个人博客</title>
+      <link>http://cjting.me/web2.0/build-blog-with-github-pages/</link>
+      <pubDate>Mon, 10 Jun 2013 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/web2.0/build-blog-with-github-pages/</guid>
+      <description>&lt;p&gt;很早之前就想写这篇文章，无奈因为一些事情，一直耽误到今天。&lt;/p&gt;
+
+&lt;p&gt;这个学期学了rails以后，早就萌生了建立自己的个人网站的想法。无奈rails学的不精，本来打算学通rails以后再买主机建站的。后来Google个人博客的时候，发现了&lt;strong&gt;github pages&lt;/strong&gt;这样一个好东西。可以免去你管理网站的麻烦，真实喜从天降。&lt;/p&gt;
+
+&lt;p&gt;管理网站确实麻烦无比。我想建立个人网站，最主要的目的也是为了写博文，记录生活与技术上的点滴发现。github pages完美满足了我的这个要求。下面详细来说建站步骤。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

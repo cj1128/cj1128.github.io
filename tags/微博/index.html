@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+  <title>微博 - CJ Ting's Blog</title>
+  <meta name="author" content="CJ Ting">
+  <meta name="description" content="微博">
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/bundle.css">
+  <style type="text/css">
+    @font-face {
+      font-family: 'Roboto Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Roboto Mono'), local('RobotoMono-Regular'), url('/font/Roboto-Mono_400_normal.woff') format('woff');
+    }
+    @font-face {
+      font-family: 'Roboto Mono';
+      font-style: normal;
+      font-weight: 700;
+      src: local('Roboto Mono Bold'), local('RobotoMono-Bold'), url(' /font/Roboto-Mono_700_normal.woff') format('woff');
+    }
+  </style>
+</head>
+<body>
+  
+    <header class="header">
+  <a href="/">
+    <img class="header__avatar" src="/image/avatar.jpeg">
+  </a>
+
+
+
+  <nav class="header__nav">
+    <a href="/" class="header__nav__item header__nav__item--active">Posts</a>
+    <a href="https://github.com/fate-lovely" class="header__nav__item" target="_blank">Github</a>
+    <a href="/about" class="header__nav__item">About</a>
+  </nav>
+</header>
+
+    <main class="main">
+      <nav class="sidebar">
+  
+  
+    <a class="sidebar__item " href="/web2.0/">Web2.0</a>
+  
+    <a class="sidebar__item " href="/golang/">Golang</a>
+  
+    <a class="sidebar__item " href="/linux/">Linux</a>
+  
+    <a class="sidebar__item " href="/mac/">Mac</a>
+  
+    <a class="sidebar__item " href="/misc/">MISC</a>
+  
+</nav>
+
+      <div class="container">
+        
+  <div class="list">
+    
+      <div class="list__item">
+        <h3 class="list__title">2016-04</h3>
+        <ul>
+          
+            <li class="list__post">
+              <span></span>
+              <a href="http://cjting.me/web2.0/first-chrome-extension-image-bed-on-weibo/">编写第一个Chrome插件——图床on微博</a>
+              <div>2016.04.06</div>
+            </li>
+          
+        </ul>
+      </div>
+    
+  </div>
+
+      </div>
+    </main>
+  
+  <script src="/js/init.js"></script>
+  <script type="text/javascript">
+    var script = document.createElement("script")
+    if(Global.isMobile) {
+      script.src = "/js/mobile.bundle.js"
+    } else {
+      script.src = "/js/desktop.bundle.js"
+    }
+    document.body.appendChild(script)
+  </script>
+  
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4f34ee3c85734c8235badd2b99b092a6";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</body>
+</html>

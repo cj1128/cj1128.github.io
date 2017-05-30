@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golang on CJ Ting&#39;s Blog</title>
+    <link>http://cjting.me/tags/golang/</link>
+    <description>Recent content in Golang on CJ Ting&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 12 Mar 2017 00:00:00 +0800</lastBuildDate>
+    
+	<atom:link href="http://cjting.me/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>使用Prometheus监控服务器性能</title>
+      <link>http://cjting.me/linux/use-prometheus-to-monitor-server/</link>
+      <pubDate>Sun, 12 Mar 2017 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/linux/use-prometheus-to-monitor-server/</guid>
+      <description>&lt;p&gt;最近一直在思考如何对线上服务做深度监控。基础的服务可用性监控很简单，定期Ping即可。但是怎样才能监控服务器的一些更加关键的数据呢？比如，每一个API Point的请求次数（QPS），最大响应时间，平均响应时间等。最终我希望实现的效果是有一个Dashboard，我可以清楚地看到各种参数曲线，对服务器的运行情况了然于胸。&lt;/p&gt;
+
+&lt;p&gt;绘制Dashboard不难，目前提供数据可视化的工具很多，随便选一个都能满足需要。关键问题是，怎样将整个流程打通？&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;服务器该以怎样的形式暴露出数据？&lt;/li&gt;
+&lt;li&gt;数据怎样被收集和存储起来？&lt;/li&gt;
+&lt;li&gt;存储起来的数据怎样提供给数据可视化工具？&lt;/li&gt;
+&lt;li&gt;怎样做到足够灵活，可以可视化自己感兴趣的任意数据？&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用pprof优化golang性能</title>
+      <link>http://cjting.me/golang/use-pprof-to-optimize-go/</link>
+      <pubDate>Mon, 14 Nov 2016 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/golang/use-pprof-to-optimize-go/</guid>
+      <description>&lt;p&gt;*Donald E.Knuth*说过一句非常著名的话，&lt;strong&gt;过早的优化是万恶之源&lt;/strong&gt;。原文如下：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;We should forget about small efficiencies, say about 97% of the time; premature optimization is the root of all evil.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;我是十分赞同这句话的，并且在开发过程中也深有体会。什么叫做*过早的优化*呢？即不需要考虑优化的时候你在考虑优化。这绝对不意味着可以任性地写代码，随意地选择数据结构和算法。这句话是告诉我们，在程序开发的早期阶段，程序员应该专注在程序的&lt;strong&gt;逻辑实现&lt;/strong&gt;上，而不是专注在程序的&lt;strong&gt;性能优化&lt;/strong&gt;上。用正确的数据结构和算法，优美合理的语句实现你要的功能。而不是满脑子在想：“这个函数是不是可以优化一下？”。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

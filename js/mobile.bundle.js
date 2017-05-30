@@ -1,0 +1,1 @@
+!function(e){function r(o){if(t[o])return t[o].exports;var a=t[o]={exports:{},id:o,loaded:!1};return e[o].call(a.exports,a,a.exports,r),a.loaded=!0,a.exports}var t={};return r.m=e,r.c=t,r.p="",r(0)}([function(e,r){var t=document.querySelector(".post__header");if(t){var o=t.getAttribute("data-cover");o=o.replace("large","bmiddle"),t.style.backgroundImage="url("+o+")"}}]);

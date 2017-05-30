@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mac on CJ Ting&#39;s Blog</title>
+    <link>http://cjting.me/tags/mac/</link>
+    <description>Recent content in Mac on CJ Ting&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 07 Oct 2013 00:00:00 +0800</lastBuildDate>
+    
+	<atom:link href="http://cjting.me/tags/mac/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>发现一款超级好用软件--Apptivate</title>
+      <link>http://cjting.me/mac/use-apptivate-to-quickly-focus/</link>
+      <pubDate>Mon, 07 Oct 2013 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/mac/use-apptivate-to-quickly-focus/</guid>
+      <description>&lt;p&gt;用mac这么长时间，尤其是写代码的时候，明显感觉到一个需要，就是&lt;strong&gt;快速聚焦&lt;/strong&gt;。一般我写代码的时候，这四个软件都会全屏开在那儿，分别是&lt;strong&gt;sublime&lt;/strong&gt;、&lt;strong&gt;dash&lt;/strong&gt;、&lt;strong&gt;chrome&lt;/strong&gt;、&lt;strong&gt;iterm&lt;/strong&gt;。他们是做什么的就不说了。这几个软件基本上是必备的。而且经常需要在其中“跳跃”。以前我想要切换软件，要么是四指上滑，然后点选，要么是四指不停平切。当这样的操作次数很多的时候，明显感到很麻烦。所以我一直在找一款能够&lt;strong&gt;快速切换&lt;/strong&gt;或者说&lt;strong&gt;快速聚焦&lt;/strong&gt;的软件。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

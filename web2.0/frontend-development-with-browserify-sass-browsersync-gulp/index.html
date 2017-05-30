@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+  <title>Browserify &#43; SASS &#43; BrowserSync &#43; Gulp高效前端开发环境配置 - CJ Ting's Blog</title>
+  <meta name="author" content="CJ Ting">
+  <meta name="description" content="Browserify &#43; SASS &#43; BrowserSync &#43; Gulp高效前端开发环境配置">
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/bundle.css">
+  <style type="text/css">
+    @font-face {
+      font-family: 'Roboto Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Roboto Mono'), local('RobotoMono-Regular'), url('/font/Roboto-Mono_400_normal.woff') format('woff');
+    }
+    @font-face {
+      font-family: 'Roboto Mono';
+      font-style: normal;
+      font-weight: 700;
+      src: local('Roboto Mono Bold'), local('RobotoMono-Bold'), url(' /font/Roboto-Mono_700_normal.woff') format('woff');
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="post">
+    <header class="post__header" data-cover="http://ww1.sinaimg.cn/large/9b85365djw1f7bmid1dvsj21kw0u27a9.jpg">
+      <a href="/">
+        HOME
+      </a>
+    </header>
+
+    <div class="post__body">
+      <h1 class="post__title">
+          Browserify &#43; SASS &#43; BrowserSync &#43; Gulp高效前端开发环境配置
+      </h1>
+
+      <div class="post__meta">
+        <div class='date'>
+          2015.09.24
+        </div>
+
+        <div class="tags">
+          
+            <span class="tag">browserify</span>
+          
+            <span class="tag">gulp</span>
+          
+        </div>
+      </div>
+
+      <div class="post__content">
+        <p>之前开发的前端应用都是些比较简单的页面，开发的时候一般就是sublime，然后命令行里面启动<code>sass --watch</code> 以及 <code>coffee --watch</code> 就行了，修改代码以后自动编译，但是浏览器需要手动刷新。凑合着也能用，所以也就一直这样没有去理会别的解决方案了。</p>
+
+<p>工作了以后，编写的应用规模变大了很多，而且前端的依赖也变得复杂了。传统的方式显然是解决不了问题的。这段时间，我一直在寻找一套高效的开发环境，要求如下：</p>
+
+<ul>
+<li>使用CommonJS进行依赖引用</li>
+<li>ES6支持</li>
+<li>React + JSX支持</li>
+<li>SASS支持</li>
+<li>修改以后自动高速编译，即便是很大的依赖</li>
+<li>修改JS、HTML以后浏览器自动刷新</li>
+<li>修改CSS浏览器使用Style Injection刷新</li>
+<li>生产环境下合并压缩</li>
+</ul>
+
+<p></p>
+
+<p>先后尝试了<code>Browserify + Gulp</code> 以及 <code>Webpack</code>的解决方案，最终还是选定Browserify + Gulp。完美满足了以上几个要求。</p>
+
+<p>第一次尝试使用了<code>Browserify + Gulp</code>，配合使用<code>BrowserSync</code>进行浏览器自动刷新以及<code>Style Injection</code>，使用<code>Notifier</code>在错误发生时推送通知，配置文件如下，<code>gulpfile.js</code>:</p>
+
+<pre><code class="language-javascript">var gulp = require(&quot;gulp&quot;)
+var sass = require(&quot;gulp-ruby-sass&quot;)
+var browserify = require(&quot;browserify&quot;)
+var reactify = require(&quot;reactify&quot;)
+var babelify = require(&quot;babelify&quot;)
+var vinylSource = require(&quot;vinyl-source-stream&quot;)
+var browserSync = require(&quot;browser-sync&quot;).create()
+var autoprefixer = require(&quot;gulp-autoprefixer&quot;)
+var cssnano = require(&quot;gulp-cssnano&quot;)
+var uglify = require(&quot;gulp-uglify&quot;)
+var buffer = require(&quot;vinyl-buffer&quot;);
+var notifier = require(&quot;node-notifier&quot;)
+var fs = require(&quot;fs&quot;)
+
+var source = {
+  script: [&quot;src/**/*.js&quot;, &quot;src/**/*.jsx&quot;],
+  style: &quot;sass/**/*.sass&quot;,
+};
+
+var dest = {
+  script: &quot;js/&quot;,
+  style: &quot;css/&quot;,
+};
+
+var pages = [&quot;dashboard&quot;, &quot;data-analysis&quot;, &quot;login&quot;, &quot;campaign-overall&quot;]
+var current = &quot;reporting&quot;
+
+gulp.task(&quot;serve&quot;, [&quot;sass&quot;, &quot;browserify&quot;], function() {
+  browserSync.init({
+    ghostMode: false,
+    server: &quot;./&quot;,
+  });
+  gulp.watch(source.style, [&quot;sass&quot;]);
+  gulp.watch(source.script, [&quot;script-watch&quot;]);
+  gulp.watch([&quot;./*.html&quot;], function() {
+    browserSync.reload();
+  });
+});
+
+gulp.task(&quot;sass&quot;, function() {
+  return sass(&quot;sass/&quot; + current + &quot;.sass&quot;, { style: &quot;expanded&quot; })
+        .on(&quot;error&quot;, function(err) {
+          console.error(&quot;Error!&quot;, err.message);
+        })
+        .pipe(browserSync.stream())
+        .pipe(gulp.dest(dest.style));
+});
+
+gulp.task(&quot;script-watch&quot;, [&quot;browserify&quot;], function() {
+  browserSync.reload();
+});
+
+gulp.task(&quot;browserify&quot;, function() {
+  return browserify(&quot;./src/&quot; + current + &quot;.jsx&quot;)
+      .transform(babelify)
+      .transform(reactify)
+      .bundle()
+        .on(&quot;error&quot;, function(err) {
+          var reg = /(.*\/)(.*)(?= while)/
+          if (reg.test(err.message)) {
+            notifier.notify({
+              title: &quot;Browserify Error!&quot;,
+              message: err.message.match(reg)[2],
+            })
+          }
+
+          console.log(&quot;[Error]: &quot; + err.message);
+          this.emit(&quot;end&quot;);
+        })
+        .pipe(vinylSource(current + &quot;.js&quot;))
+        .pipe(gulp.dest(dest.script))
+});
+
+gulp.task(&quot;build-js&quot;, function() {
+  pages.map(function(name, index) {
+    var filename = &quot;./src/&quot; + name + &quot;.jsx&quot;
+    if (!fs.existsSync(filename)) {
+      return
+    }
+
+    return browserify(filename)
+       .transform(babelify)
+       .transform(reactify)
+       .bundle()
+       .pipe(vinylSource(name + &quot;.js&quot;))
+       .pipe(buffer())
+       .pipe(uglify())
+       .pipe(gulp.dest(dest.script))
+  })
+})
+
+gulp.task(&quot;build-css&quot;, function() {
+  pages.map(function(name) {
+    var filename = &quot;./sass/&quot; + name + &quot;.sass&quot;
+    if (!fs.existsSync(filename)) {
+      return
+    }
+
+    return sass(filename, { style: &quot;expanded&quot; })
+            .on(&quot;error&quot;, function(err) {
+              console.error(&quot;Error!&quot;, err.message);
+            })
+            .pipe(autoprefixer({
+              browsers: [&quot;last 2 versions&quot;],
+              cascade: false,
+            }))
+            .pipe(cssnano())
+            .pipe(gulp.dest(dest.style));
+  })
+})
+
+gulp.task(&quot;build&quot;, [&quot;build-js&quot;, &quot;build-css&quot;])
+gulp.task(&quot;default&quot;, [&quot;serve&quot;]);
+</code></pre>
+
+<p>这个方案满足了以上所有需求，除了在监听文件变化时再次编译，基本上随着入口js文件变得越来越大，编译时间越来越长，后来每次修改需要等待8秒钟左右，这实在是让人无法接受，这促使了我寻找别的方案来把他换掉。</p>
+
+<p>第二次尝试使用了<code>Webpack</code>。用React的人不可能不知道Webpack，正好借此机会，好好去研究了一下Webpack。Webpack自带一个<code>webpack-dev-server</code>，能够实现自动刷新功能。SASS、ES6、JSX可以使用Loader进行处理。我摸索了一下配置方案如下（CSS使用了Stylus），<code>webpack.config.js</code>：</p>
+
+<pre><code class="language-javascript">var webpack = require(&quot;webpack&quot;)
+var path = require(&quot;path&quot;)
+
+module.exports = {
+  devtool: &quot;eval&quot;,
+  entry: {
+    &quot;campaign-overall&quot;: &quot;./src/campaign-overall.jsx&quot;,
+    vendors: [
+        &quot;jquery&quot;,
+        &quot;react&quot;,
+    ],
+  },
+  output: {
+    path: path.join(__dirname, &quot;./js&quot;),
+    filename: &quot;[name].js&quot;,
+    publicPath: &quot;/js/&quot;,
+  },
+  plugins: [
+    new webpack.optimize.CommonsChunkPlugin({
+      name: &quot;vendors&quot;,
+      filename: &quot;vendors.js&quot;,
+      minChunks: Infinity,
+    }),
+  ],
+  resolve: {
+    alias: {
+      &quot;highcharts&quot;: path.join(__dirname, &quot;assets/vendor/highcharts.js&quot;),
+    },
+  },
+  module: {
+    noParse: [
+        /highcharts/,
+    ],
+    loaders: [
+      {
+        test: /\.jsx$/,
+        loader: &quot;react-hot!jsx!babel&quot;,
+      },
+      {
+        test: /\.js$/,
+        loader: &quot;babel&quot;,
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.styl$/,
+        loader: &quot;style!css!stylus&quot;,
+      },
+      {
+        test: /\.css$/,
+        loader: &quot;style!css&quot;,
+      },
+      {
+        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+        loader: &quot;url?limit=10000&amp;mimetype=application/font-woff&quot;,
+      },
+      {
+        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+        loader: &quot;url?limit=10000&amp;mimetype=application/font-woff&quot;,
+      },
+      {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: &quot;url?limit=10000&amp;mimetype=application/octet-stream&quot;,
+      },
+      {
+        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+        loader: &quot;file&quot;,
+      },
+      {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        loader: &quot;url?limit=10000&amp;mimetype=image/svg+xml&quot;,
+      },
+    ],
+    resolve: {
+      extensions: [&quot;&quot;, &quot;.js&quot;, &quot;.jsx&quot;],
+    },
+  },
+}
+</code></pre>
+
+<p>通过使用<code>webpack-dev-server --hot --inline</code>配合<code>react-hot-loader</code>可以使用react的<code>Hot Module Replacement</code>来进行动态效果刷新（浏览器不刷新）。</p>
+
+<p>但是这个方案的缺点，我需要用CommonJS的方式去使用CSS，比如说在入口文件里面<code>import &quot;main.styl&quot;</code>。虽然有这篇很出名的文章，<a href="https://speakerdeck.com/vjeux/react-css-in-js">React: CSS in JS by vjeux</a>。里面的很多观点我都很赞同。比如CSS的隔离问题，确实十分头痛。但我不觉得用JS来写CSS是正确的解决方案。而且在预处理器的帮助下，文中提到的很多问题是可以解决的。</p>
+
+<p>在使用webpack的情况下，如果要使用单独的SASS，并能在修改以后进行<code>Style Injection</code>，刷新浏览器样式，需要使用Gulp之类的工具，但是这样的话，配置<code>webpack-dev-server</code>又很麻烦。</p>
+
+<p>webpack在watch情况下，重新编译的速度非常快。究其原因，无非是webpack缓存了上一次编译的结果。而browseriy的方案之所以重新编译慢，是因为每次gulp调用<code>browserify</code>的时候，都相当于重新完整编译了一次，自然是非常慢的。顺着这个思路，我便去找找看有没有browserify的缓存插件，果然被我找到了，Bingo!<code>browserify-incremental</code>。browserify-incremental会产生一个缓存文件，除了第一次（the very first），之后的所有编译都会非常快。</p>
+
+<p>最终的配置文件如下，<code>gulpfile.js</code>：</p>
+
+<pre><code class="language-javascript">var gulp = require(&quot;gulp&quot;)
+var sass = require(&quot;gulp-ruby-sass&quot;)
+var browserify = require(&quot;browserify&quot;)
+var reactify = require(&quot;reactify&quot;)
+var babelify = require(&quot;babelify&quot;)
+var vinylSource = require(&quot;vinyl-source-stream&quot;)
+var browserSync = require(&quot;browser-sync&quot;).create()
+var autoprefixer = require(&quot;gulp-autoprefixer&quot;)
+var cssnano = require(&quot;gulp-cssnano&quot;)
+var uglify = require(&quot;gulp-uglify&quot;)
+var buffer = require(&quot;vinyl-buffer&quot;)
+var notifier = require(&quot;node-notifier&quot;)
+var fs = require(&quot;fs&quot;)
+var browserifyInc = require(&quot;browserify-incremental&quot;)
+
+var source = {
+  script: [&quot;src/**/*.js&quot;, &quot;src/**/*.jsx&quot;],
+  style: &quot;sass/**/*.sass&quot;,
+}
+var dest = {
+  script: &quot;js/&quot;,
+  style: &quot;css/&quot;,
+}
+
+var current = &quot;new-campaign&quot;
+
+var pages = [
+    &quot;dashboard&quot;,
+    &quot;data-analysis&quot;,
+    &quot;login&quot;,
+    &quot;campaign-overall&quot;,
+    &quot;new-campaign&quot;,
+]
+
+gulp.task(&quot;serve&quot;, [&quot;sass&quot;, &quot;browserify&quot;], function() {
+  browserSync.init({
+    ghostMode: false,
+    server: &quot;./&quot;,
+  })
+  gulp.watch(source.style, [&quot;sass&quot;])
+  gulp.watch(source.script, [&quot;script-watch&quot;])
+  gulp.watch([&quot;./*.html&quot;], function() {
+    browserSync.reload()
+  })
+})
+
+gulp.task(&quot;sass&quot;, function() {
+  return sass(&quot;sass/&quot; + current + &quot;.sass&quot;, { style: &quot;expanded&quot; })
+        .on(&quot;error&quot;, function(err) {
+          notifier.notify({
+            title: &quot;SASS Error!&quot;,
+            message: err.message,
+          })
+          console.error(&quot;Error!&quot;, err.message)
+        })
+        .pipe(browserSync.stream())
+        .pipe(gulp.dest(dest.style))
+})
+
+gulp.task(&quot;script-watch&quot;, [&quot;browserify&quot;], function() {
+  browserSync.reload()
+})
+
+gulp.task(&quot;browserify&quot;, function() {
+  var currentFile = &quot;./src/&quot; + current + &quot;.jsx&quot;
+  return getBundler(currentFile)
+      .pipe(vinylSource(current + &quot;.js&quot;))
+      .pipe(gulp.dest(dest.script))
+})
+
+function getBundler(filename) {
+  var config = {
+    cache: {},
+    packageCache: {},
+    fullPaths: true,
+    cacheFile: &quot;./browserify-cache.json&quot;,
+  }
+  bundler = browserify(filename, config)
+      .transform(babelify)
+      .transform(reactify)
+
+  return browserifyInc(bundler)
+      .bundle()
+      .on(&quot;error&quot;, handleError)
+}
+
+function handleError(err) {
+  var reg = /(.*\/)(.*)(?= while)/
+  if (reg.test(err.message)) {
+    notifier.notify({
+      title: &quot;Browserify Error!&quot;,
+      message: err.message.match(reg)[2],
+    })
+  }
+
+  console.log(&quot;[Error]: &quot; + err.message)
+  this.emit(&quot;end&quot;)
+}
+
+gulp.task(&quot;build-js&quot;, function() {
+  pages.map(function(name, index) {
+    var filename = &quot;./src/&quot; + name + &quot;.jsx&quot;
+    if (!fs.existsSync(filename)) {
+      return
+    }
+
+    return getBundler(filename)
+       .pipe(vinylSource(name + &quot;.js&quot;))
+       .pipe(buffer())
+       .pipe(uglify())
+       .pipe(gulp.dest(dest.script))
+  })
+})
+
+gulp.task(&quot;build-css&quot;, function() {
+  pages.map(function(name) {
+    var filename = &quot;./sass/&quot; + name + &quot;.sass&quot;
+    if (!fs.existsSync(filename)) {
+      return
+    }
+
+    return sass(filename, { style: &quot;expanded&quot; })
+            .on(&quot;error&quot;, function(err) {
+              console.error(&quot;Error!&quot;, err.message)
+            })
+            .pipe(autoprefixer({
+              browsers: [&quot;last 2 versions&quot;],
+              cascade: false,
+            }))
+            .pipe(cssnano())
+            .pipe(gulp.dest(dest.style))
+  })
+})
+
+gulp.task(&quot;build&quot;, [&quot;build-js&quot;, &quot;build-css&quot;])
+gulp.task(&quot;default&quot;, [&quot;serve&quot;])
+</code></pre>
+
+<p>开发时只要启动<code>gulp</code>，自动编译然后打开浏览器，修改JS、HTML代码以后浏览器自动刷新（即便是很大的依赖也只有1s左右，事实上，因为缓存的原因，不管多大的依赖，编译时间都会非常短，因为一次修改的代码数量总是不多的），修改样式表自动刷新样式（使用Style Injection不刷新浏览器），生产部署时<code>gulp build</code>即可。在加上两个屏幕，可以做到这边修改那边立即刷新的效果。这是目前让我十分满意的解决方案。</p>
+
+<p>PS: <strong>注意BrowserSync 的<code>GhostMode</code>，开起这个选项以后，BrowserSync会自动模拟事件，比如你在一个Tab上滚动了页面，另一个打开该页面的Tab会自动滚动。这个特点会导致非常奇怪的Bug，比如你的事件只触发了一下，但是事件监听器却运行了两次，让人百思不得解。还记得那个夜晚花了很长时间才定位到是BrowserSync的问题。T_T</strong></p>
+      </div>
+
+      <div class="post__comments">
+        <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+        <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+        <script>
+        var cloudTieConfig = {
+          sourceId: "frontend-development-with-browserify-sass-browsersync-gulp2015-09-24 00:00:00 \x2b0800 CST",
+          productKey: "79ce150be00440d1bc3ff82aa7aad88c",
+          target: "cloud-tie-wrapper"
+        };
+        var yunManualLoad = true;
+        Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/init.js"></script>
+  <script type="text/javascript">
+    var script = document.createElement("script")
+    if(Global.isMobile) {
+      script.src = "/js/mobile.bundle.js"
+    } else {
+      script.src = "/js/desktop.bundle.js"
+    }
+    document.body.appendChild(script)
+  </script>
+  
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4f34ee3c85734c8235badd2b99b092a6";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</body>
+</html>

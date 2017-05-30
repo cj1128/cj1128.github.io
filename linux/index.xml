@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on CJ Ting&#39;s Blog</title>
+    <link>http://cjting.me/linux/</link>
+    <description>Recent content in Linux on CJ Ting&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 24 May 2017 06:54:54 +0800</lastBuildDate>
+    
+	<atom:link href="http://cjting.me/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>使用Prometheus监控服务器性能</title>
+      <link>http://cjting.me/linux/use-prometheus-to-monitor-server/</link>
+      <pubDate>Sun, 12 Mar 2017 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/linux/use-prometheus-to-monitor-server/</guid>
+      <description>&lt;p&gt;最近一直在思考如何对线上服务做深度监控。基础的服务可用性监控很简单，定期Ping即可。但是怎样才能监控服务器的一些更加关键的数据呢？比如，每一个API Point的请求次数（QPS），最大响应时间，平均响应时间等。最终我希望实现的效果是有一个Dashboard，我可以清楚地看到各种参数曲线，对服务器的运行情况了然于胸。&lt;/p&gt;
+
+&lt;p&gt;绘制Dashboard不难，目前提供数据可视化的工具很多，随便选一个都能满足需要。关键问题是，怎样将整个流程打通？&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;服务器该以怎样的形式暴露出数据？&lt;/li&gt;
+&lt;li&gt;数据怎样被收集和存储起来？&lt;/li&gt;
+&lt;li&gt;存储起来的数据怎样提供给数据可视化工具？&lt;/li&gt;
+&lt;li&gt;怎样做到足够灵活，可以可视化自己感兴趣的任意数据？&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

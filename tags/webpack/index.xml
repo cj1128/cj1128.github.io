@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Webpack on CJ Ting&#39;s Blog</title>
+    <link>http://cjting.me/tags/webpack/</link>
+    <description>Recent content in Webpack on CJ Ting&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 25 Jun 2016 00:00:00 +0800</lastBuildDate>
+    
+	<atom:link href="http://cjting.me/tags/webpack/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Webpack Long Term Caching 101</title>
+      <link>http://cjting.me/web2.0/webpack-long-term-caching-101/</link>
+      <pubDate>Sat, 25 Jun 2016 00:00:00 +0800</pubDate>
+      
+      <guid>http://cjting.me/web2.0/webpack-long-term-caching-101/</guid>
+      <description>&lt;p&gt;缓存是Web中无法回避的话题，不仅因为缓存非常重要，能极大地改善用户体验，而且因为缓存很难做好。一旦生产环境出现了缓存失效，那就是一个十分棘手的问题。&lt;/p&gt;
+
+&lt;p&gt;在各种缓存的方案中，基于hash的Long Term Caching（永久缓存）在我看来是最简单也是最高效。每一个资源名称上都带有自身内容的hash值，然后全部设置为永久缓存永不过期。所有资源的索引文件全部设置为永不缓存。这样就保证了当资源更新时，资源名称会变化，索引文件会引入新的资源名称，也就保证了缓存永远不会失效。&lt;/p&gt;
+
+&lt;p&gt;这个处理方案显然和前端自身的编码没有关系，而是需要打包工具的支持。以下我们就用webapck为例，详细讲述怎样一步步实现Long Term Caching。项目最终的仓库&lt;a href=&#34;https://github.com/fate-lovely/long-term-caching-demo.git&#34;&gt;long-term-caching-demo&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

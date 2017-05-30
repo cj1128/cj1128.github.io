@@ -1,23 +1,400 @@
----
-layout : page
-title : CJ Ting's blog
-page: index
----
-<div class="index__container">
-  <nav class="index__categories">
-    <a href="/" class="active">All</a>
-    <a href="/categories/web2.0.html">Web2.0</a>
-    <a href="/categories/golang.html">Golang</a>
-    <a href="/categories/unix.html">Unix</a>
-    <a href="/categories/misc.html">MISC</a>
-  </nav>
+<!doctype html>
+<html lang="en">
+<head>
+	<meta name="generator" content="Hugo 0.21-DEV" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+  <title>CJ Ting&#39;s Blog - CJ Ting's Blog</title>
+  <meta name="author" content="CJ Ting">
+  <meta name="description" content="CJ Ting&#39;s Blog">
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/bundle.css">
+  <style type="text/css">
+    @font-face {
+      font-family: 'Roboto Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Roboto Mono'), local('RobotoMono-Regular'), url('/font/Roboto-Mono_400_normal.woff') format('woff');
+    }
+    @font-face {
+      font-family: 'Roboto Mono';
+      font-style: normal;
+      font-weight: 700;
+      src: local('Roboto Mono Bold'), local('RobotoMono-Bold'), url(' /font/Roboto-Mono_700_normal.woff') format('woff');
+    }
+  </style>
+</head>
+<body>
+  
+    <header class="header">
+  <a href="/">
+    <img class="header__avatar" src="/image/avatar.jpeg">
+  </a>
 
-  <div class="index__posts-wrapper">
-    <div class="index__posts">
-      {% assign posts = site.posts %}
-      {% include themes/avia/all_posts %}
+
+
+  <nav class="header__nav">
+    <a href="/" class="header__nav__item header__nav__item--active">Posts</a>
+    <a href="https://github.com/fate-lovely" class="header__nav__item" target="_blank">Github</a>
+    <a href="/about" class="header__nav__item">About</a>
+  </nav>
+</header>
+
+    <main class="main">
+      <nav class="sidebar">
+  
+  
+    <a class="sidebar__item " href="/web2.0/">Web2.0</a>
+  
+    <a class="sidebar__item " href="/golang/">Golang</a>
+  
+    <a class="sidebar__item " href="/linux/">Linux</a>
+  
+    <a class="sidebar__item " href="/mac/">Mac</a>
+  
+    <a class="sidebar__item " href="/misc/">MISC</a>
+  
+</nav>
+
+      <div class="container">
+        
+  <div class="index">
+    
+    
+      <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/misc/how-git-generate-diff/">
+          Git是怎样生成diff的：Myers算法
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>diff是我们每天都要使用的一个功能，每次提交时，我都习惯先用<code>git diff --cached</code>看看这次提交更改了些什么，确定没问题，然后再<code>git commit</code>。git生成的diff非常直观，直观到我从来都没有去思考过diff是怎么生成的，觉得这应该是很简单的一件事，两个文件做个对比，不就行了。</p>
+
+<p></p>
+        </div>
+
+        <div class="index__item__meta">
+          
+          <a href="/misc/">
+            misc
+          </a>
+          <div>
+          </div>
+          <div>
+            2017.05.13
+          </div>
+        </div>
+      </div>
+    
+      <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/linux/use-prometheus-to-monitor-server/">
+          使用Prometheus监控服务器性能
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>最近一直在思考如何对线上服务做深度监控。基础的服务可用性监控很简单，定期Ping即可。但是怎样才能监控服务器的一些更加关键的数据呢？比如，每一个API Point的请求次数（QPS），最大响应时间，平均响应时间等。最终我希望实现的效果是有一个Dashboard，我可以清楚地看到各种参数曲线，对服务器的运行情况了然于胸。</p>
+
+<p>绘制Dashboard不难，目前提供数据可视化的工具很多，随便选一个都能满足需要。关键问题是，怎样将整个流程打通？</p>
+
+<ul>
+<li>服务器该以怎样的形式暴露出数据？</li>
+<li>数据怎样被收集和存储起来？</li>
+<li>存储起来的数据怎样提供给数据可视化工具？</li>
+<li>怎样做到足够灵活，可以可视化自己感兴趣的任意数据？</li>
+</ul>
+
+<p></p>
+        </div>
+
+        <div class="index__item__meta">
+          
+          <a href="/linux/">
+            linux
+          </a>
+          <div>
+          </div>
+          <div>
+            2017.03.12
+          </div>
+        </div>
+      </div>
+    
+      <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/golang/write-a-code-post-generator-with-go/">
+          使用Go编写代码明信片生成器
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>很早之前就看过到关于<a href="http://commits.io">commits.io</a>的一个帖子，这个站点专门制作代码明信片。什么是代码明信片呢？如下图。</p>
+
+<p><img src="http://ok2pw0x6d.bkt.clouddn.com/Fqam4K_lGEdyiyAxz4eRbiWlptvN.png" alt="" /></p>
+
+<p></p>
+        </div>
+
+        <div class="index__item__meta">
+          
+          <a href="/golang/">
+            golang
+          </a>
+          <div>
+          </div>
+          <div>
+            2017.02.18
+          </div>
+        </div>
+      </div>
+    
+      <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/web2.0/build-an-img-bed-on-qiniu/">
+          图床on七牛，简单好用的图床插件
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>最近在使用过程中发现<strong>图床on微博</strong>出了点问题，响应体的JSON解析错误，不用想都知道肯定是微博修改了响应体的数据结构（微博图片上传接口响应体是html tag和json混在一起，十分专业）。简单修复了一下，测试的时候却发现，微博的图片上传接口变得不再稳定了，经常404。看来微博图床是不能用了，正好我早就觉得微博不是个好图床。缺点如下：</p>
+
+<ol>
+<li>经常性的要重新登陆，麻烦死了</li>
+<li>无法获取到完整的上传图片列表</li>
+<li>无法删除上传的图片</li>
+<li>服务状态不可控，指不定什么时候接口就不能用了</li>
+</ol>
+
+<p></p>
+        </div>
+
+        <div class="index__item__meta">
+          
+          <a href="/web2.0/">
+            web2.0
+          </a>
+          <div>
+          </div>
+          <div>
+            2017.01.23
+          </div>
+        </div>
+      </div>
+    
+      <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/golang/use-pprof-to-optimize-go/">
+          使用pprof优化golang性能
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>*Donald E.Knuth*说过一句非常著名的话，<strong>过早的优化是万恶之源</strong>。原文如下：</p>
+
+<blockquote>
+<p>We should forget about small efficiencies, say about 97% of the time; premature optimization is the root of all evil.</p>
+</blockquote>
+
+<p>我是十分赞同这句话的，并且在开发过程中也深有体会。什么叫做*过早的优化*呢？即不需要考虑优化的时候你在考虑优化。这绝对不意味着可以任性地写代码，随意地选择数据结构和算法。这句话是告诉我们，在程序开发的早期阶段，程序员应该专注在程序的<strong>逻辑实现</strong>上，而不是专注在程序的<strong>性能优化</strong>上。用正确的数据结构和算法，优美合理的语句实现你要的功能。而不是满脑子在想：“这个函数是不是可以优化一下？”。</p>
+
+<p></p>
+        </div>
+
+        <div class="index__item__meta">
+          
+          <a href="/golang/">
+            golang
+          </a>
+          <div>
+          </div>
+          <div>
+            2016.11.14
+          </div>
+        </div>
+      </div>
+    
+      <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/web2.0/make-loading-animation-with-svg-morphing/">
+          使用SVG Morphing制作自己的加载动画
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>每一个需要让用户等待的应用都应该有加载界面，可以是简单的文本，比如<code>加载中…</code>，也可以是有趣的动画。当然，一个好玩的加载动画能够大大增加用户等待的耐心，谁喜欢枯燥的文字呢。所以，投入点时间寻找或者制作一个加载动画是很有意义的。感谢SVG和相关的动画技术，现在制作一款复杂的动画已经变得十分容易了。</p>
+
+<p>这里我使用SVG的形变技术(Shape Morphing)来做一个简单的矩形、三角形、圆形变换的动画。</p>
+
+<p></p>
+        </div>
+
+        <div class="index__item__meta">
+          
+          <a href="/web2.0/">
+            web2.0
+          </a>
+          <div>
+          </div>
+          <div>
+            2016.11.07
+          </div>
+        </div>
+      </div>
+    
+      <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/misc/build-log-system-with-elkb/">
+          从零开始搭建一个ELKB日志收集系统
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>当今的软件开发<strong>多核</strong>以及<strong>分布</strong>已经成为了常态，基本上稍大型的应用都是多台机器分布式部署。分布式在提高性能的同时也带来了很多问题，今天我们只讨论一点，那就是如何处理多台机器线上系统的日志。</p>
+
+<p>以我司的某个应用T为例，部署在了百度云5台机子上，其中一台拥有公网IP，使用了百度云提供的负载均衡服务。每次想要在日志中检索某个关键字时，基本步骤如下：</p>
+
+<ul>
+<li>打开五个shell，登陆拥有公网IP的那台机器</li>
+<li>在另外四个shell中分别登陆其他的内网机器</li>
+<li>对日志文件进行检索</li>
+</ul>
+
+<p></p>
+        </div>
+
+        <div class="index__item__meta">
+          
+          <a href="/misc/">
+            misc
+          </a>
+          <div>
+          </div>
+          <div>
+            2016.10.21
+          </div>
+        </div>
+      </div>
+    
+      <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/web2.0/build-a-https-site-from-scratch/">
+          从零开始搭建一个HTTPS网站
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>我们都知道HTTP是非常不安全的，不安全的根源在于HTTP是明文传输。你在谷歌搜索了一个关键词（假设Google使用HTTP），HTTP数据包从你的计算机传送到服务器的过程中，中间经过的任意一个设备都可以轻松解析你的数据包，获取你的关键词，你的隐私毫无保障。</p>
+
+<p>你的信息被人获取只是明文传输的其中一个问题。总体来说，明文传输有三个问题：</p>
+
+<ul>
+<li>窃听：第三方可以获取你的信息。</li>
+<li>篡改：第三方可以修改你的信息。</li>
+<li>冒充：第三方可以冒充你的身份。</li>
+</ul>
+
+<p></p>
+        </div>
+
+        <div class="index__item__meta">
+          
+          <a href="/web2.0/">
+            web2.0
+          </a>
+          <div>
+          </div>
+          <div>
+            2016.09.05
+          </div>
+        </div>
+      </div>
+    
+      <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/misc/use-dnsmasq-to-build-own-dns-server/">
+          使用Dnsmasq搭建内网DNS服务器
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>在日常开发过程中，我们经常要配置各种
+host，比如公司内部的各种服务，或者测试项目的时候暂时把生产环境URL配置到本地上等等。一般采取的方法都是每个人手动编辑自己的<code>/etc/hosts</code>文件。这个做法有两个缺点：</p>
+
+<ul>
+<li>手动编辑<code>/etc/hosts</code>文件非常麻烦，需要<code>sudo</code></li>
+<li>工作量重复，团队内每个人都要配置一遍</li>
+</ul>
+
+<p></p>
+        </div>
+
+        <div class="index__item__meta">
+          
+          <a href="/misc/">
+            misc
+          </a>
+          <div>
+          </div>
+          <div>
+            2016.08.20
+          </div>
+        </div>
+      </div>
+    
+      <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/web2.0/webpack-long-term-caching-101/">
+          Webpack Long Term Caching 101
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>缓存是Web中无法回避的话题，不仅因为缓存非常重要，能极大地改善用户体验，而且因为缓存很难做好。一旦生产环境出现了缓存失效，那就是一个十分棘手的问题。</p>
+
+<p>在各种缓存的方案中，基于hash的Long Term Caching（永久缓存）在我看来是最简单也是最高效。每一个资源名称上都带有自身内容的hash值，然后全部设置为永久缓存永不过期。所有资源的索引文件全部设置为永不缓存。这样就保证了当资源更新时，资源名称会变化，索引文件会引入新的资源名称，也就保证了缓存永远不会失效。</p>
+
+<p>这个处理方案显然和前端自身的编码没有关系，而是需要打包工具的支持。以下我们就用webapck为例，详细讲述怎样一步步实现Long Term Caching。项目最终的仓库<a href="https://github.com/fate-lovely/long-term-caching-demo.git">long-term-caching-demo</a>。</p>
+
+<p></p>
+        </div>
+
+        <div class="index__item__meta">
+          
+          <a href="/web2.0/">
+            web2.0
+          </a>
+          <div>
+          </div>
+          <div>
+            2016.06.25
+          </div>
+        </div>
+      </div>
+    
+
+    <div class="index__paginator">
+      
+        <a href="javascript:void(0)" disabled="disabled">Prev</a>
+      
+
+      <div class="index__paginator__info">
+        <span>1</span>
+        /
+        <span>3</span>
+      </div>
+
+      
+        <a href="/page/2/">Next</a>
+      
     </div>
   </div>
-</div>
 
+      </div>
+    </main>
+  
+  <script src="/js/init.js"></script>
+  <script type="text/javascript">
+    var script = document.createElement("script")
+    if(Global.isMobile) {
+      script.src = "/js/mobile.bundle.js"
+    } else {
+      script.src = "/js/desktop.bundle.js"
+    }
+    document.body.appendChild(script)
+  </script>
+  
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4f34ee3c85734c8235badd2b99b092a6";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
 
+</body>
+</html>
