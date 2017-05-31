@@ -88,11 +88,11 @@
 <li><p>当修改一块代码时，整块的删除然后新增，比删除新增交叉在一起要好，例如：</p>
 
 <pre><code class="language-text">  Good: - one            Bad: - one
-        * two                 + four
-        * three               - two
-        - four                + five
-        - five                + six
-        - six                 - three
+        - two                 + four
+        - three               - two
+        + four                + five
+        + five                + six
+        + six                 - three
 </code></pre></li>
 
 <li><p>新增或删除的内容应该和代码结构相呼应，例如下面的例子，左边我们可以很直观地看出新增了一个inspect方法。</p>
@@ -157,7 +157,7 @@
 
 <h2 id="myers算法">Myers算法</h2>
 
-<p>Myers算法就是一个能在大部分情况产生”最短的直观的“diff的一个算法。算法原理如下。</p>
+<p>Myers算法就是一个能在大部分情况产生”最短的直观的“diff的一个算法，算法原理如下。</p>
 
 <p>首先，定义参数<code>d</code>和<code>k</code>，d代表路径的长度，<code>k</code>代表当前坐标<code>x - y</code>的值。定义一个”最优坐标“的概念，最优坐标表示d和k值固定的情况下，x值最大的坐标。x大，表示向右走的多，表示优先删除。</p>
 
@@ -208,6 +208,8 @@
 <li>当我们找到一个d和k，到达目标坐标(n, m)时就跳出循环</li>
 <li>使用上面存储的v数组（每个d对应一个这样的数组），从终点反向得出路径</li>
 </ol>
+
+<p>最后补充一句，Git真正用的是标准Myers算法的一个变体。标准的算法有一个很大的缺点，就是空间消耗很大，因为我们需要存储每一个<code>d</code>对应的<code>v</code>数组。如果输入文件比较大，这样的空间开销是不能接受的。因此Myers在他的<a href="http://www.xmailserver.org/diff2.pdf">论文</a>中，同时提供了一个算法变体，这个变体需要的空间开销要小得多。但是在某些情况下，变体产生的diff会和标准算法有所不同。也就是说，如果你按照上面的算法实现的程序，出来的结果和<code>git diff</code>的结果有所不同是正常的。</p>
 
 <h2 id="参考资料">参考资料</h2>
 
