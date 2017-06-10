@@ -63,6 +63,36 @@
     
     
       <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/golang/migrate-to-hugo-from-jekyll/">
+          从Jekyll迁移到Hugo，Hugo不完全指南
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>最近这段时间一直在忙着迁移博客，把原本基于Jekyll的博客迁移到了Hugo上。</p>
+
+<p>之所以从Jekyll迁移的原因并不复杂，就是一个字：<strong>慢</strong>。Jekyll的速度实在是太慢了，我只有几十篇文章，在Watch模式下，每次改动，重新生成都要花费3秒钟，实在是太慢了。</p>
+
+<pre><code class="language-bash">Regenerating: 1 file(s) changed at 2017-05-14 10:37:16 ...done in 3.085089 seconds.
+Regenerating: 1 file(s) changed at 2017-05-14 10:37:20 ...done in 3.121783 seconds.
+</code></pre>
+
+<p></p>
+        </div>
+
+        <div class="index__item__meta">
+          
+          <a href="/golang/">
+            golang
+          </a>
+          <div>
+          </div>
+          <div>
+            2017.06.04
+          </div>
+        </div>
+      </div>
+    
+      <div class="index__item">
         <a class="index__item__title hvr-underline-from-left" href="/misc/how-git-generate-diff/">
           Git是怎样生成diff的：Myers算法
         </a>
@@ -322,34 +352,6 @@ host，比如公司内部的各种服务，或者测试项目的时候暂时把�
           </div>
           <div>
             2016.08.20
-          </div>
-        </div>
-      </div>
-    
-      <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/web2.0/webpack-long-term-caching-101/">
-          Webpack Long Term Caching 101
-        </a>
-
-        <div class="index__item__content post__content">
-          <p>缓存是Web中无法回避的话题，不仅因为缓存非常重要，能极大地改善用户体验，而且因为缓存很难做好。一旦生产环境出现了缓存失效，那就是一个十分棘手的问题。</p>
-
-<p>在各种缓存的方案中，基于hash的Long Term Caching（永久缓存）在我看来是最简单也是最高效。每一个资源名称上都带有自身内容的hash值，然后全部设置为永久缓存永不过期。所有资源的索引文件全部设置为永不缓存。这样就保证了当资源更新时，资源名称会变化，索引文件会引入新的资源名称，也就保证了缓存永远不会失效。</p>
-
-<p>这个处理方案显然和前端自身的编码没有关系，而是需要打包工具的支持。以下我们就用webapck为例，详细讲述怎样一步步实现Long Term Caching。项目最终的仓库<a href="https://github.com/fate-lovely/long-term-caching-demo.git">long-term-caching-demo</a>。</p>
-
-<p></p>
-        </div>
-
-        <div class="index__item__meta">
-          
-          <a href="/web2.0/">
-            web2.0
-          </a>
-          <div>
-          </div>
-          <div>
-            2016.06.25
           </div>
         </div>
       </div>
