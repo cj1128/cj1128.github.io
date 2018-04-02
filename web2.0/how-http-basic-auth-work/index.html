@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+  <title>HTTP Basic Auth是怎么样工作的 - CJ Ting's Blog</title>
+  <meta name="author" content="CJ Ting">
+  <meta name="description" content="HTTP Basic Auth是怎么样工作的">
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/bundle.css">
+  <style type="text/css">
+    @font-face {
+      font-family: 'Roboto Mono';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Roboto Mono'), local('RobotoMono-Regular'), url('/font/Roboto-Mono_400_normal.woff') format('woff');
+    }
+    @font-face {
+      font-family: 'Roboto Mono';
+      font-style: normal;
+      font-weight: 700;
+      src: local('Roboto Mono Bold'), local('RobotoMono-Bold'), url(' /font/Roboto-Mono_700_normal.woff') format('woff');
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="post">
+    <header class="post__header" data-cover="http://ww2.sinaimg.cn/large/9b85365dgw1f7brwadugzj21kw11x1kx.jpg">
+      <a href="/">
+        HOME
+      </a>
+    </header>
+
+    <div class="post__body">
+      <h1 class="post__title">
+          HTTP Basic Auth是怎么样工作的
+      </h1>
+
+      <div class="post__meta">
+        <div class='date'>
+          2018.03.31
+        </div>
+
+        <div class="tags">
+          
+        </div>
+      </div>
+
+      <div class="post__content">
+        <p><code>HTTP Basic Auth</code>是HTTP提供的一种验证方式，因为明文传输用户名和密码，非HTTPS环境下很不安全，一般用的非常少。但是在某些情况下用一用还是非常方便的，比如，一些静态站点例如文档系统可以使用HTTP Basic Auth进行简单地权限验证。</p>
+
+<p></p>
+
+<h2 id="流程">流程</h2>
+
+<p>HTTP Basic Auth使用两个HTTP Header实现，分别是<code>WWW-Authenticate</code>和<code>Authorization</code>。</p>
+
+<p>流程如下：</p>
+
+<ol>
+<li>客户端请求服务器页面，服务器返回<code>401</code>以及<code>WWW-Authenticate: Basic realm=&quot;site&quot;</code>。</li>
+<li>浏览器弹出对话框，提示用户输入用户名和密码。</li>
+<li>浏览器再次请求页面，携带<code>Authorization: Basic &lt;str&gt;</code>，其中，<code>str=base64(username:password)</code>。</li>
+<li>服务器返回正常页面。</li>
+</ol>
+
+<p>base64只是一个编码过程，而不是加密过程，因此，HTTP Basic Auth是在明文传输用户名和密码，中间设备很容易通过检查数据包获取用户名和密码。</p>
+
+<h2 id="realm">Realm</h2>
+
+<p>我们可以发现，<code>WWW-Authenticate</code>这个头携带了一个<code>realm</code>属性，这个属性用来标注页面所属的区域，具体定义见<a href="https://tools.ietf.org/html/rfc7235#section-2.2">RFC 7235</a>。一般情况下不用在意，随便填写或者不填写都可以。</p>
+
+<p>但是，如果你的网站有两个子目录，每个子目录有自己的用户名和密码的话，<code>realm</code>属性就比较重要了。这个属性会影响浏览器的密码自动填充过程。</p>
+
+<p>我们知道，访问一个HTTP Basic Auth的网站，第一次输入密码以后，之后访问就不再需要输入密码了，这是因为浏览器缓存了用户名和密码并且自动替我们填充了。</p>
+
+<p>关于浏览器在HTTP Basic Auth时的密码填充算法，我没有找到明确的描述，自己基于Chrome做了一些实验，总结如下。</p>
+
+<p>考虑下面的网站，有两个URL，每个URL的用户名和密码不相同。</p>
+
+<ul>
+<li><code>/a</code>: <code>username: a, password: a, realm: whatever</code></li>
+<li><code>/b</code>: <code>username: b, password b, realm: whatever</code></li>
+</ul>
+
+<ol>
+<li>用户访问<code>/a</code>，浏览器提示输密码，成功进入，浏览器将密码和<code>realm=whatever</code>关联</li>
+<li>用户访问<code>/b</code>，浏览器请求，发现401，同时<code>realm=whatever</code>，默认使用上一次输入的密码填充</li>
+<li>还是401，浏览器弹框提示用户输入，然后更新<code>realm=whatever</code>的密码关联</li>
+<li>用户访问<code>/a</code>，浏览器自动使用<code>realm=whatever</code>的密码进行填充（应该是缓存了相关信息，知道<code>/a</code>需要密码），收到401，弹框提示用户输入，更新<code>realm=whatever</code>的密码关联</li>
+<li>用户<code>/b</code>，和上面的流程一样，还是会导致弹框提示用户输入用户名和密码</li>
+</ol>
+
+<p>也就是说，如果两个子目录的用户名和密码不一样，但是<code>realm</code>一样的话，会导致在两个子目录进行切换时，不停地输入用户民和密码。</p>
+
+<p>如果<code>realm</code>不一样的话，就没有这个问题了，因为浏览器使用<code>realm</code>来关联用户名和密码。</p>
+
+<h2 id="如何清除用户名和密码">如何清除用户名和密码</h2>
+
+<p>因为浏览器会记住用户名和密码，然后替我们做“自动登录”，那么该怎么样才能“登出”呢？</p>
+
+<p>考虑这样一个场景，网站设置了多套用户名和密码，下发了部分给客户，结果客户反应说用户名和密码不对，那么此时，因为我已经登录成功了，无法再看到输入框，自然也无法测试。这个时候我们需要就是“登出”，清空浏览器的“HTTP Basic Auth缓存”。</p>
+
+<p>在Chrome中，我们只要在URL前面加上<code>user@</code>即可强制浏览器刷新它的缓存，弹出对话框。</p>
+
+<p>例如，网站为<code>http://www.a.com</code>，访问输入了密码以后，再使用<code>http://user@www.a.com</code>访问，就会重新弹出弹框。</p>
+      </div>
+
+      <div class="post__comments">
+        <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+<script>
+var sourceID = "how-http-basic-auth-work2018-03-31 19:40:48 \x2b0800 CST"
+console.log(sourceID)
+var cloudTieConfig = {
+  sourceId: sourceID,
+  productKey: "79ce150be00440d1bc3ff82aa7aad88c",
+  target: "cloud-tie-wrapper"
+};
+var yunManualLoad = true;
+Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
+</script>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/init.js"></script>
+  <script type="text/javascript">
+    var script = document.createElement("script")
+    if(Global.isMobile) {
+      script.src = "/js/mobile.bundle.js"
+    } else {
+      script.src = "/js/desktop.bundle.js"
+    }
+    document.body.appendChild(script)
+  </script>
+  
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4f34ee3c85734c8235badd2b99b092a6";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</body>
+</html>
