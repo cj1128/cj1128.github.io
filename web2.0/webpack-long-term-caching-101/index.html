@@ -276,23 +276,6 @@ location ~* \.(?:css|js|js\.map)$ {
 
 <p>以上的方法解决了我们永久缓存的需求，但是有一个很明显可以优化的地方。我们每次<code>npm run build</code>的时候，<code>vendors</code>代码都需要重新生成，而这个过程其实是没有必要的，因为<code>vendors</code>代码很少变化。怎样配置Webpack支持我们只需要生成一次<code>vendors</code>代码，从而加快编译时间，我会在下篇博客中讲述。</p>
       </div>
-
-      <div class="post__comments">
-        <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-<script>
-var sourceID = "webpack-long-term-caching-1012016-06-25 00:00:00 \x2b0800 CST"
-console.log(sourceID)
-var cloudTieConfig = {
-  sourceId: sourceID,
-  productKey: "79ce150be00440d1bc3ff82aa7aad88c",
-  target: "cloud-tie-wrapper"
-};
-var yunManualLoad = true;
-Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
-</script>
-
-      </div>
     </div>
   </div>
 
