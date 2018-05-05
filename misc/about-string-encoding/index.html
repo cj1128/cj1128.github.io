@@ -7,22 +7,12 @@
   <meta name="author" content="CJ Ting">
   <meta name="description" content="关于字符编码">
   <meta charset="utf-8" />
-  <link rel="stylesheet" href="/css/normalize.css">
-  <link rel="stylesheet" href="/css/bundle.css">
-  <style type="text/css">
-    @font-face {
-      font-family: 'Roboto Mono';
-      font-style: normal;
-      font-weight: 400;
-      src: local('Roboto Mono'), local('RobotoMono-Regular'), url('/font/Roboto-Mono_400_normal.woff') format('woff');
+  <link rel="stylesheet" href="/asset/main.css">
+  <script type="text/javascript">
+    window.PAGE = {
+      title: "关于字符编码",
     }
-    @font-face {
-      font-family: 'Roboto Mono';
-      font-style: normal;
-      font-weight: 700;
-      src: local('Roboto Mono Bold'), local('RobotoMono-Bold'), url(' /font/Roboto-Mono_700_normal.woff') format('woff');
-    }
-  </style>
+  </script>
 </head>
 <body>
   
@@ -93,19 +83,15 @@
 
 <p>打开文本文件的时候，如果不手动指定编码，大部分程序都会自动推测编码（怎么推测是另外一个话题了）。如果计算机推测的编码或者用户手动指定的编码和实际编码不符，那么自然就会出现“乱码”现象，也就是内容看上去乱七八糟，实际上在计算机看来，只是用特定的编码方式解码字符而已，只不过解码出来的字符不是你想要的。</p>
       </div>
+
+      <div id="post__comments">
+      </div>
     </div>
   </div>
 
-  <script src="/js/init.js"></script>
-  <script type="text/javascript">
-    var script = document.createElement("script")
-    if(Global.isMobile) {
-      script.src = "/js/mobile.bundle.js"
-    } else {
-      script.src = "/js/desktop.bundle.js"
-    }
-    document.body.appendChild(script)
-  </script>
+
+  <script src="/asset/main.js"></script>
+
   
   <script>
 var _hmt = _hmt || [];

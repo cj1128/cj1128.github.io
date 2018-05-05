@@ -7,22 +7,12 @@
   <meta name="author" content="CJ Ting">
   <meta name="description" content="使用Ngrok实现内网穿透">
   <meta charset="utf-8" />
-  <link rel="stylesheet" href="/css/normalize.css">
-  <link rel="stylesheet" href="/css/bundle.css">
-  <style type="text/css">
-    @font-face {
-      font-family: 'Roboto Mono';
-      font-style: normal;
-      font-weight: 400;
-      src: local('Roboto Mono'), local('RobotoMono-Regular'), url('/font/Roboto-Mono_400_normal.woff') format('woff');
+  <link rel="stylesheet" href="/asset/main.css">
+  <script type="text/javascript">
+    window.PAGE = {
+      title: "使用Ngrok实现内网穿透",
     }
-    @font-face {
-      font-family: 'Roboto Mono';
-      font-style: normal;
-      font-weight: 700;
-      src: local('Roboto Mono Bold'), local('RobotoMono-Bold'), url(' /font/Roboto-Mono_700_normal.woff') format('woff');
-    }
-  </style>
+  </script>
 </head>
 <body>
   
@@ -146,19 +136,15 @@ trust_host_root_certs: false
 
 <p>最后提一点：客户端和服务器连接是需要验证证书的。只有我们同时编译的客户端和服务器才能连接上。在新的电脑上重新编译客户端去连接一个已部署的服务器，是无法连接的。因此建议存档一份客户端程序。</p>
       </div>
+
+      <div id="post__comments">
+      </div>
     </div>
   </div>
 
-  <script src="/js/init.js"></script>
-  <script type="text/javascript">
-    var script = document.createElement("script")
-    if(Global.isMobile) {
-      script.src = "/js/mobile.bundle.js"
-    } else {
-      script.src = "/js/desktop.bundle.js"
-    }
-    document.body.appendChild(script)
-  </script>
+
+  <script src="/asset/main.js"></script>
+
   
   <script>
 var _hmt = _hmt || [];

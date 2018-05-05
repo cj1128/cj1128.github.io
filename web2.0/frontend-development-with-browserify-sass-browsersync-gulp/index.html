@@ -7,22 +7,12 @@
   <meta name="author" content="CJ Ting">
   <meta name="description" content="Browserify &#43; SASS &#43; BrowserSync &#43; Gulp高效前端开发环境配置">
   <meta charset="utf-8" />
-  <link rel="stylesheet" href="/css/normalize.css">
-  <link rel="stylesheet" href="/css/bundle.css">
-  <style type="text/css">
-    @font-face {
-      font-family: 'Roboto Mono';
-      font-style: normal;
-      font-weight: 400;
-      src: local('Roboto Mono'), local('RobotoMono-Regular'), url('/font/Roboto-Mono_400_normal.woff') format('woff');
+  <link rel="stylesheet" href="/asset/main.css">
+  <script type="text/javascript">
+    window.PAGE = {
+      title: "Browserify \x2b SASS \x2b BrowserSync \x2b Gulp高效前端开发环境配置",
     }
-    @font-face {
-      font-family: 'Roboto Mono';
-      font-style: normal;
-      font-weight: 700;
-      src: local('Roboto Mono Bold'), local('RobotoMono-Bold'), url(' /font/Roboto-Mono_700_normal.woff') format('woff');
-    }
-  </style>
+  </script>
 </head>
 <body>
   
@@ -424,19 +414,15 @@ gulp.task(&quot;default&quot;, [&quot;serve&quot;])
 
 <p>PS: <strong>注意BrowserSync 的<code>GhostMode</code>，开起这个选项以后，BrowserSync会自动模拟事件，比如你在一个Tab上滚动了页面，另一个打开该页面的Tab会自动滚动。这个特点会导致非常奇怪的Bug，比如你的事件只触发了一下，但是事件监听器却运行了两次，让人百思不得解。还记得那个夜晚花了很长时间才定位到是BrowserSync的问题。T_T</strong></p>
       </div>
+
+      <div id="post__comments">
+      </div>
     </div>
   </div>
 
-  <script src="/js/init.js"></script>
-  <script type="text/javascript">
-    var script = document.createElement("script")
-    if(Global.isMobile) {
-      script.src = "/js/mobile.bundle.js"
-    } else {
-      script.src = "/js/desktop.bundle.js"
-    }
-    document.body.appendChild(script)
-  </script>
+
+  <script src="/asset/main.js"></script>
+
   
   <script>
 var _hmt = _hmt || [];

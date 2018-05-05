@@ -7,22 +7,12 @@
   <meta name="author" content="CJ Ting">
   <meta name="description" content="Webpack Long Term Caching 101">
   <meta charset="utf-8" />
-  <link rel="stylesheet" href="/css/normalize.css">
-  <link rel="stylesheet" href="/css/bundle.css">
-  <style type="text/css">
-    @font-face {
-      font-family: 'Roboto Mono';
-      font-style: normal;
-      font-weight: 400;
-      src: local('Roboto Mono'), local('RobotoMono-Regular'), url('/font/Roboto-Mono_400_normal.woff') format('woff');
+  <link rel="stylesheet" href="/asset/main.css">
+  <script type="text/javascript">
+    window.PAGE = {
+      title: "Webpack Long Term Caching 101",
     }
-    @font-face {
-      font-family: 'Roboto Mono';
-      font-style: normal;
-      font-weight: 700;
-      src: local('Roboto Mono Bold'), local('RobotoMono-Bold'), url(' /font/Roboto-Mono_700_normal.woff') format('woff');
-    }
-  </style>
+  </script>
 </head>
 <body>
   
@@ -276,19 +266,15 @@ location ~* \.(?:css|js|js\.map)$ {
 
 <p>以上的方法解决了我们永久缓存的需求，但是有一个很明显可以优化的地方。我们每次<code>npm run build</code>的时候，<code>vendors</code>代码都需要重新生成，而这个过程其实是没有必要的，因为<code>vendors</code>代码很少变化。怎样配置Webpack支持我们只需要生成一次<code>vendors</code>代码，从而加快编译时间，我会在下篇博客中讲述。</p>
       </div>
+
+      <div id="post__comments">
+      </div>
     </div>
   </div>
 
-  <script src="/js/init.js"></script>
-  <script type="text/javascript">
-    var script = document.createElement("script")
-    if(Global.isMobile) {
-      script.src = "/js/mobile.bundle.js"
-    } else {
-      script.src = "/js/desktop.bundle.js"
-    }
-    document.body.appendChild(script)
-  </script>
+
+  <script src="/asset/main.js"></script>
+
   
   <script>
 var _hmt = _hmt || [];

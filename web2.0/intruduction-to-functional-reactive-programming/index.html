@@ -7,22 +7,12 @@
   <meta name="author" content="CJ Ting">
   <meta name="description" content="Functional Reactive Programming 简介">
   <meta charset="utf-8" />
-  <link rel="stylesheet" href="/css/normalize.css">
-  <link rel="stylesheet" href="/css/bundle.css">
-  <style type="text/css">
-    @font-face {
-      font-family: 'Roboto Mono';
-      font-style: normal;
-      font-weight: 400;
-      src: local('Roboto Mono'), local('RobotoMono-Regular'), url('/font/Roboto-Mono_400_normal.woff') format('woff');
+  <link rel="stylesheet" href="/asset/main.css">
+  <script type="text/javascript">
+    window.PAGE = {
+      title: "Functional Reactive Programming 简介",
     }
-    @font-face {
-      font-family: 'Roboto Mono';
-      font-style: normal;
-      font-weight: 700;
-      src: local('Roboto Mono Bold'), local('RobotoMono-Bold'), url(' /font/Roboto-Mono_700_normal.woff') format('woff');
-    }
-  </style>
+  </script>
 </head>
 <body>
   
@@ -365,19 +355,15 @@ function setResult(ok) {
 
 <p>最后，用户注册的完整代码包括UI和一个express的服务器可以在<a href="https://github.com/fate-lovely/frp-demo)">frp-demo</a>下载。</p>
       </div>
+
+      <div id="post__comments">
+      </div>
     </div>
   </div>
 
-  <script src="/js/init.js"></script>
-  <script type="text/javascript">
-    var script = document.createElement("script")
-    if(Global.isMobile) {
-      script.src = "/js/mobile.bundle.js"
-    } else {
-      script.src = "/js/desktop.bundle.js"
-    }
-    document.body.appendChild(script)
-  </script>
+
+  <script src="/asset/main.js"></script>
+
   
   <script>
 var _hmt = _hmt || [];
