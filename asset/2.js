@@ -1,1 +1,1 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[2],{9:function(e,o){const t=document.querySelector(".post__header");if(t){const e=t.getAttribute("data-cover");t.style.backgroundImage="url("+e.replace("large","bmiddle")+")"}}}]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[2],{6:function(e,o){const t=document.querySelector(".post__header");if(t){const e=t.getAttribute("data-cover");t.style.backgroundImage="url("+e.replace("large","bmiddle")+")"}}}]);
