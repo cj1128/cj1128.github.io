@@ -773,6 +773,48 @@ body {
 .index__paginator__info {
   padding: 0 20px;
 }
+.archive {
+  padding: 20px;
+  box-shadow: 0 2px 10px #9b9b9b;
+  border-radius: 5px;
+  max-width: 720px;
+  box-sizing: border-box;
+  margin: 20px auto;
+}
+.archive__item {
+  border-bottom: 1px solid #e2e2e2;
+  margin-bottom: 40px;
+}
+.archive__post {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+}
+.archive__post > span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #444a59;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+.archive__post > a {
+  text-decoration: none;
+  color: #444a59;
+  margin-right: 10px;
+  line-height: 1.6rem;
+}
+.archive__post > a:hover {
+  color: #0bb304;
+}
+.archive__post > a:last-of-type {
+  margin-left: auto;
+  font-size: 0.8rem;
+}
+.archive__post > div {
+  font-size: 0.8rem;
+  color: #999;
+}
 .page-about {
   max-width: 500px;
   padding: 0 20px;
