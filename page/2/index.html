@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.40.2" />
+	<meta name="generator" content="Hugo 0.41-DEV" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
   <title>CJ Ting&#39;s Blog - CJ Ting's Blog</title>
@@ -56,6 +56,38 @@
           
   <div class="index">
     
+    
+      <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/misc/build-log-system-with-elkb/">
+          从零开始搭建一个ELKB日志收集系统
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>当今的软件开发<strong>多核</strong>以及<strong>分布</strong>已经成为了常态，基本上稍大型的应用都是多台机器分布式部署。分布式在提高性能的同时也带来了很多问题，今天我们只讨论一点，那就是如何处理多台机器线上系统的日志。</p>
+
+<p>以我司的某个应用T为例，部署在了百度云5台机子上，其中一台拥有公网IP，使用了百度云提供的负载均衡服务。每次想要在日志中检索某个关键字时，基本步骤如下：</p>
+
+<ul>
+<li>打开五个shell，登陆拥有公网IP的那台机器</li>
+<li>在另外四个shell中分别登陆其他的内网机器</li>
+<li>对日志文件进行检索</li>
+</ul>
+
+<p></p>
+        </div>
+
+        <div class="index__item__meta">
+          
+          <a href="/misc/">
+            misc
+          </a>
+          <div>
+          </div>
+          <div>
+            2016.10.21
+          </div>
+        </div>
+      </div>
     
       <div class="index__item">
         <a class="index__item__title hvr-underline-from-left" href="/web2.0/build-a-https-site-from-scratch/">
@@ -333,34 +365,6 @@ g(200) == 203
           </div>
           <div>
             2015.06.16
-          </div>
-        </div>
-      </div>
-    
-      <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/misc/about-string-encoding/">
-          关于字符编码
-        </a>
-
-        <div class="index__item__content post__content">
-          <p>很早之前就碰到过&rdquo;乱码&rdquo;这个现象，当时非常困惑，完全不能理解发生了什么。</p>
-
-<p>上大学以后，虽然开始接触计算机，不过我就没看到过具体讲解字符编码的内容。对这个领域始终是感到非常模糊。</p>
-
-<p>不过，最近好像豁然开朗了一下，感觉突然就明白了这个问题。</p>
-
-<p></p>
-        </div>
-
-        <div class="index__item__meta">
-          
-          <a href="/misc/">
-            misc
-          </a>
-          <div>
-          </div>
-          <div>
-            2014.04.24
           </div>
         </div>
       </div>
