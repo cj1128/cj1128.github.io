@@ -290,6 +290,28 @@ Uncaught SyntaxError: Invalid regular expression: /[😆-😜]/: Range out of or
 
 <pre><code class="language-js">&quot;ë&quot;.normalize(&quot;NFC&quot;) === &quot;ë&quot;.normalize(&quot;NFC&quot;) // true
 </code></pre>
+
+<h2 id="reverse-the-string">Reverse the String</h2>
+
+<p>由于存在修饰字符，使得字符串取反变成了一个复杂的操作。</p>
+
+<p>如果不考虑非BMP字符，在JS中，对字符串取反的一般方式为<code>str.split(&quot;&quot;).reverse().join(&quot;&quot;)</code>。</p>
+
+<p>考虑到非BMP字符，我们可以使用<code>[...str].reverse().join(&quot;&quot;)</code>。</p>
+
+<p>但是，如果含有修饰字符的话，使用<code>...</code>一样无法返回正确的结果。</p>
+
+<pre><code class="language-js">[...&quot;mañana&quot;].reverse().join(&quot;&quot;) // &quot;anãnam&quot;
+</code></pre>
+
+<p>这里的问题在于对于<code>&quot;mañana&quot;</code>使用<code>...</code>产生的字符数组为<code>[&quot;m&quot;, &quot;a&quot;, &quot;n&quot;, &quot;̃&quot;, &quot;a&quot;, &quot;n&quot;, &quot;a&quot;]</code>，取反以后，修饰字符会跟在<code>a</code>的后面，从而产生<code>ã</code>。</p>
+
+<p>这个问题需要做手动做一些的处理，在取反之前，将修饰字符和被修饰的字符颠倒一下顺序，然后再取反就行了。我们可以直接使用<a href="https://github.com/mathiasbynens/esrever">esrever</a>库来处理。</p>
+
+<p>esrever的<code>reverse</code>函数具体实现可以看<a href="https://github.com/mathiasbynens/esrever/blob/14b34013dad49106ca08c0e65919f1fc8fea5331/src/esrever.js#L23">这里</a>。</p>
+
+<pre><code class="language-js">esrever.reverse(&quot;mañana&quot;) // &quot;anañam&quot;
+</code></pre>
       </div>
 
       <div id="post__comments">
