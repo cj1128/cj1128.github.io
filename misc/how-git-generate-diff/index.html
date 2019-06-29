@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
-  <title>Git是怎样生成diff的：Myers算法 - CJ Ting's Blog</title>
+  <title>Git 是怎样生成 diff 的：Myers 算法 - CJ Ting's Blog</title>
   <meta name="author" content="CJ Ting">
-  <meta name="description" content="Git是怎样生成diff的：Myers算法">
+  <meta name="description" content="Git 是怎样生成 diff 的：Myers 算法">
   <meta charset="utf-8" />
   <link rel="stylesheet" href="/asset/main.css">
   <link rel="stylesheet" type="text/css" href="/gitalk.css">
   <script src="/gitalk.min.js"></script>
   <script type="text/javascript">
     window.PAGE = {
-      title: "Git是怎样生成diff的：Myers算法",
+      title: "Git 是怎样生成 diff 的：Myers 算法",
     }
   </script>
 </head>
@@ -27,7 +27,7 @@
 
     <div class="post__body">
       <h1 class="post__title">
-          Git是怎样生成diff的：Myers算法
+          Git 是怎样生成 diff 的：Myers 算法
       </h1>
 
       <div class="post__meta">
@@ -47,17 +47,17 @@
       </div>
 
       <div class="post__content">
-        <p>diff是我们每天都要使用的一个功能，每次提交时，我都习惯先用<code>git diff --cached</code>看看这次提交更改了些什么，确定没问题，然后再<code>git commit</code>。git生成的diff非常直观，直观到我从来都没有去思考过diff是怎么生成的，觉得这应该是很简单的一件事，两个文件做个对比，不就行了。</p>
+        <p>diff 是我们每天都要使用的一个功能，每次提交时，我都习惯先用 <code>git diff --cached</code> 看看这次提交更改了些什么，确定没问题，然后再 <code>git commit</code>。git 生成的 diff 非常直观，直观到我从来都没有去思考过 diff 是怎么生成的，觉得这应该是很简单的一件事，两个文件做个对比，不就行了。</p>
 
 <p></p>
 
-<h2 id="什么是直观的diff">什么是直观的diff</h2>
+<h2 id="什么是直观的-diff">什么是直观的 diff</h2>
 
-<p>我们先简单定义一下什么是diff：diff就是目标文本和源文本之间的区别，也就是将源文本变成目标文本所需要的操作。</p>
+<p>我们先简单定义一下什么是 diff：diff 就是目标文本和源文本之间的区别，也就是将源文本变成目标文本所需要的操作。</p>
 
-<p>git为我们生成的diff是很直观易懂的，一看就知道我们对文件进行了哪些改动。但是，实际上，diff生成是一个非常复杂的问题。</p>
+<p>git 为我们生成的 diff 是很直观易懂的，一看就知道我们对文件进行了哪些改动。但是，实际上，diff 生成是一个非常复杂的问题。</p>
 
-<p>举个简单的例子，源文本为<code>ABCABBA</code>，目标文本为<code>CBABAC</code>，他们之间的diff其实有无穷多种（我们以字符为单位，一般情况下是以行为单位）。比如</p>
+<p>举个简单的例子，源文本为 <code>ABCABBA</code>，目标文本为 <code>CBABAC</code>，他们之间的 diff 其实有无穷多种（我们以字符为单位，一般情况下是以行为单位）。比如</p>
 
 <pre><code class="language-text">1.  - A       2.  - A       3.  + C
     - B           + C           - A
@@ -70,12 +70,12 @@
     + C           + C           + C
 </code></pre>
 
-<p>上面三种都是有效的diff，都可以将源文本变成目标文本，但是第二种和第三种没有第一种看起来“直观”。</p>
+<p>上面三种都是有效的 diff，都可以将源文本变成目标文本，但是第二种和第三种没有第一种看起来 “直观”。</p>
 
-<p>所以，我们需要个算法，生成“直观”的diff，怎么样才叫直观呢？</p>
+<p>所以，我们需要个算法，生成 “直观” 的 diff，怎么样才叫 “直观” 呢？</p>
 
 <ul>
-<li>删除后新增，比新增后删除要好，也就是说，上面的例子2比例子3看起来要直观</li>
+<li>删除后新增，比新增后删除要好，也就是说，上面的例子 2 比例子 3 看起来要直观</li>
 
 <li><p>当修改一块代码时，整块的删除然后新增，比删除新增交叉在一起要好，例如：</p>
 
@@ -87,7 +87,7 @@
         + six                 - three
 </code></pre></li>
 
-<li><p>新增或删除的内容应该和代码结构相呼应，例如下面的例子，左边我们可以很直观地看出新增了一个inspect方法。</p>
+<li><p>新增或删除的内容应该和代码结构相呼应，例如下面的例子，左边我们可以很直观地看出新增了一个inspect 方法。</p>
 
 <pre><code class="language-text">  Good: class Foo                   Bad:    class Foo
           def initialize(name)                def initialize(name)
@@ -101,19 +101,19 @@
 </code></pre></li>
 </ul>
 
-<p>除了直观以外，diff还需要短，这一点是好理解的，我们希望diff反应的是把源文本变成目标文本需要用的最少的操作。</p>
+<p>除了直观以外，diff 还需要短，这一点是好理解的，我们希望 diff 反应的是把源文本变成目标文本需要用的最少的操作。</p>
 
-<p>那么，现在的问题就是：怎样寻找最短的直观的diff？</p>
+<p>那么，现在的问题就是：怎样寻找最短的直观的 diff？</p>
 
-<h2 id="diff与图搜索">diff与图搜索</h2>
+<h2 id="diff-与图搜索">diff 与图搜索</h2>
 
-<p>”寻找最短的直观的diff”是一个非常模糊的问题，首先，我们需要把这个问题抽象为一个具体的数学问题，然后再来寻找算法解决。</p>
+<p>”寻找最短的直观的 diff” 是一个非常模糊的问题，首先，我们需要把这个问题抽象为一个具体的数学问题，然后再来寻找算法解决。</p>
 
-<p>抽象的过程交给算法科学家了，抽象的结果是：<strong>寻找diff的过程可以被表示为图搜索</strong>。</p>
+<p>抽象的过程交给算法科学家了，抽象的结果是：<strong>寻找 diff 的过程可以被表示为图搜索</strong>。</p>
 
-<p>什么意思呢？还是以两个字符串，src=<strong>ABCABBA</strong>，dst=<strong>CBABAC</strong>为例，根据这两个字符串我们可以构造下面一张图，横轴是src内容，纵轴是dst内容。</p>
+<p>什么意思呢？还是以两个字符串，src=<strong>ABCABBA</strong>，dst=<strong>CBABAC</strong> 为例，根据这两个字符串我们可以构造下面一张图，横轴是 src 内容，纵轴是 dst 内容。</p>
 
-<p>那么，图中每一条从左上角到右下角的路径，都表示一个diff。向右表示“删除”，向下表示”新增“，对角线则表示“原内容保持不动“。</p>
+<p>那么，图中每一条从左上角到右下角的路径，都表示一个 diff。向右表示“删除”，向下表示”新增“，对角线则表示“原内容保持不动“。</p>
 
 <p><img src="http://ww1.sinaimg.cn/large/9b85365dgy1ffjxfo7r42j20lm0nudhx" alt="" /></p>
 
@@ -127,7 +127,7 @@
 <li>(7, 5) -&gt; (7, 6)</li>
 </ol>
 
-<p>这条路径代表的diff如下。</p>
+<p>这条路径代表的 diff 如下。</p>
 
 <pre><code class="language-text">- A
 - B
@@ -140,38 +140,38 @@
 + C
 </code></pre>
 
-<p>现在，“寻找diff”这件事，被抽象成了“寻找图的路径”了。那么，“最短的直观的”diff对应的路径有什么特点呢？</p>
+<p>现在，“寻找 diff” 这件事，被抽象成了 “寻找图的路径” 了。那么，“最短的直观的” diff 对应的路径有什么特点呢？</p>
 
 <ul>
 <li>路径长度最短（对角线不算长度）</li>
 <li>先向右，再向下（先删除，后新增）</li>
 </ul>
 
-<h2 id="myers算法">Myers算法</h2>
+<h2 id="myers-算法">Myers 算法</h2>
 
-<p>Myers算法就是一个能在大部分情况产生”最短的直观的“diff的一个算法，算法原理如下。</p>
+<p>Myers 算法就是一个能在大部分情况产生 ”最短的直观的“ diff 的一个算法，算法原理如下。</p>
 
-<p>首先，定义参数<code>d</code>和<code>k</code>，d代表路径的长度，<code>k</code>代表当前坐标<code>x - y</code>的值。定义一个”最优坐标“的概念，最优坐标表示d和k值固定的情况下，x值最大的坐标。x大，表示向右走的多，表示优先删除。</p>
+<p>首先，定义参数 <code>d</code> 和 <code>k</code>，d 代表路径的长度，<code>k</code> 代表当前坐标 <code>x - y</code> 的值。定义一个 ”最优坐标“ 的概念，最优坐标表示 d 和 k 值固定的情况下，x 值最大的坐标。x 大，表示向右走的多，表示优先删除。</p>
 
-<p>还是用上面那张图为例。我们从坐标<code>(0, 0)</code>开始，此时，<code>d=0</code>，<code>k=0</code>，然后逐步增加<code>d</code>，计算每个<code>k</code>值下对应的最优坐标。</p>
+<p>还是用上面那张图为例。我们从坐标 <code>(0, 0)</code> 开始，此时，<code>d=0</code>，<code>k=0</code>，然后逐步增加 <code>d</code>，计算每个 <code>k</code> 值下对应的最优坐标。</p>
 
-<p>因为每一步要么向右（x + 1），要么向下（y + 1），要么就是对角线（x和y都+1)，所以，当d=1时，k只可能有两个取值，要么是<code>1</code>，要么是<code>-1</code>。</p>
+<p>因为每一步要么向右（x + 1），要么向下（y + 1），对角线不影响路径长度，所以，当 d=1 时，k 只可能有两个取值，要么是 <code>1</code>，要么是 <code>-1</code>。</p>
 
-<p>当<code>d=1</code>，<code>k=1</code>时，最优坐标是<code>(1, 0)</code>。</p>
+<p>当 <code>d=1</code>，<code>k=1</code> 时，最优坐标是 <code>(1, 0)</code>。</p>
 
-<p>当<code>d=1</code>，<code>k=-1</code>时，最优坐标是<code>(0, 1)</code>。</p>
+<p>当 <code>d=1</code>，<code>k=-1</code> 时，最优坐标是 <code>(0, 1)</code>。</p>
 
-<p>因为d=1时，k要么是1，要么是-1，当d=2时，表示在d=1的基础上再走一步，k只有三个可能的取值，分别是<code>-2</code>，<code>0</code>，<code>2</code>。</p>
+<p>因为 d=1 时，k 要么是 1，要么是 -1，当 d=2 时，表示在 d=1 的基础上再走一步，k 只有三个可能的取值，分别是 <code>-2</code>，<code>0</code>，<code>2</code>。</p>
 
-<p>当<code>d=2</code>，<code>k=-2</code>时，最优坐标是<code>(2, 4)</code>。</p>
+<p>当 <code>d=2</code>，<code>k=-2</code> 时，最优坐标是 <code>(2, 4)</code>。</p>
 
-<p>当<code>d=2</code>，<code>k=0</code>时，最优坐标是<code>(2, 2)</code>。</p>
+<p>当 <code>d=2</code>，<code>k=0</code> 时，最优坐标是 <code>(2, 2)</code>。</p>
 
-<p>当<code>d=2</code>，<code>k=2</code>时，最优坐标是<code>(3, 1)</code>。</p>
+<p>当 <code>d=2</code>，<code>k=2</code> 时，最优坐标是 <code>(3, 1)</code>。</p>
 
-<p>以此类推，直到我们找到一个<code>d</code>和<code>k</code>值，达到最终的目标坐标<code>(7, 6)</code>。</p>
+<p>以此类推，直到我们找到一个 <code>d</code> 和 <code>k</code> 值，达到最终的目标坐标 <code>(7, 6)</code>。</p>
 
-<p>下图横轴代表d，纵轴代表k，中间是最优坐标，从这张图可以清晰的看出，当<code>d=5</code>，<code>k=1</code>时，我们到达了目标坐标(7, 6)，因此，”最短的直观的“路径就是<code>(0, 0) -&gt; (1, 0) -&gt; (3, 1) -&gt; (5, 4) -&gt; (7, 5) -&gt; (7, 6)</code>，对应的diff如下。</p>
+<p>下图横轴代表 d，纵轴代表 k，中间是最优坐标，从这张图可以清晰的看出，当 <code>d=5</code>，<code>k=1</code> 时，我们到达了目标坐标 (7, 6)，因此，”最短的直观的“路径就是 <code>(0, 0) -&gt; (1, 0) -&gt; (3, 1) -&gt; (5, 4) -&gt; (7, 5) -&gt; (7, 6)</code>，对应的 diff 如下。</p>
 
 <pre><code class="language-text">- A
 - B
@@ -186,22 +186,22 @@
 
 <p><img src="http://ww1.sinaimg.cn/large/9b85365dgy1ffjz1967znj20p20k9gmg" alt="" /></p>
 
-<p>现在我们可以知道，其实Myers算法是一个典型的”动态规划“算法，也就是说，父问题的求解归结为子问题的求解。要知道d=5时所有k对应的最优坐标，必须先要知道d=4时所有k对应的最优坐标，要知道d=4时的答案，必须先求解d=3，以此类推，和01背包问题很是相似。</p>
+<p>现在我们可以知道，其实 Myers 算法是一个典型的 ”动态规划“ 算法，也就是说，父问题的求解归结为子问题的求解。要知道 d=5 时所有 k 对应的最优坐标，必须先要知道 d=4 时所有 k 对应的最优坐标，要知道 d=4 时的答案，必须先求解 d=3，以此类推，和 01 背包问题很是相似。</p>
 
 <h2 id="实现">实现</h2>
 
-<p>算法原理知道以后，实现便是一件简单的事情了，<a href="https://github.com/fate-lovely/myers-diff">myers-diff</a>仓库是我使用Go实现的一个版本。基本流程如下：</p>
+<p>算法原理知道以后，实现便是一件简单的事情了，<a href="https://github.com/fate-lovely/myers-diff">myers-diff</a> 仓库是我使用 Go 实现的一个版本，基本流程如下：</p>
 
 <ol>
-<li>迭代d，d的取值范围为0到n+m，其中n和m分别代表源文本和目标文本的长度（这里我们选择以行为单位）</li>
-<li>每个d内部，迭代k，k的取值范围为-d到d，以2为步长，也就是-d，-d + 2，-d + 2 + 2&hellip;</li>
-<li>使用一个数组v，以k值为索引，存储最优坐标的x值（这里使用hash也行，但是用数组效率更高一些，因为Go不支持使用负数做索引，所以需要创建一个自定义类型）</li>
-<li>将每个d对应的v数组存储起来，后面回溯的时候需要用</li>
-<li>当我们找到一个d和k，到达目标坐标(n, m)时就跳出循环</li>
-<li>使用上面存储的v数组（每个d对应一个这样的数组），从终点反向得出路径</li>
+<li>迭代 d，d 的取值范围为 0 到 n+m，其中 n 和 m 分别代表源文本和目标文本的长度（这里我们选择以行为单位）</li>
+<li>每个 d 内部，迭代 k，k 的取值范围为 -d 到 d，以 2 为步长，也就是 -d，-d + 2，-d + 2 + 2&hellip;</li>
+<li>使用一个数组 v，以 k 值为索引，存储最优坐标的 x 值（这里使用 map 也行，但是用数组效率更高一些，因为 Go 不支持使用负数做索引，所以需要创建一个自定义类型）</li>
+<li>将每个 d 对应的 v 数组存储起来，后面回溯的时候需要用</li>
+<li>当我们找到一个 d 和 k，到达目标坐标 (n, m) 时就跳出循环</li>
+<li>使用上面存储的 v 数组（每个 d 对应一个这样的数组），从终点反向得出路径</li>
 </ol>
 
-<p>最后补充一句，Git真正用的是标准Myers算法的一个变体。标准的算法有一个很大的缺点，就是空间消耗很大，因为我们需要存储每一个<code>d</code>对应的<code>v</code>数组。如果输入文件比较大，这样的空间开销是不能接受的。因此Myers在他的<a href="http://www.xmailserver.org/diff2.pdf">论文</a>中，同时提供了一个算法变体，这个变体需要的空间开销要小得多。但是在某些情况下，变体产生的diff会和标准算法有所不同。也就是说，如果你按照上面的算法实现的程序，出来的结果和<code>git diff</code>的结果有所不同是正常的。</p>
+<p>最后补充一句，Git 真正用的是标准 Myers 算法的一个变体。标准的算法有一个很大的缺点，就是空间消耗很大，因为我们需要存储每一个 <code>d</code> 对应的 <code>v</code> 数组。如果输入文件比较大，这样的空间开销是不能接受的。因此 Myers 在他的 <a href="http://www.xmailserver.org/diff2.pdf">论文</a> 中，同时提供了一个算法变体，这个变体需要的空间开销要小得多。但是在某些情况下，变体产生的 diff 会和标准算法有所不同。也就是说，如果你按照上面的算法实现的程序，出来的结果和 <code>git diff</code> 的结果有所不同是正常的。</p>
 
 <h2 id="参考资料">参考资料</h2>
 
