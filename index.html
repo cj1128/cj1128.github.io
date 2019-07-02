@@ -1,19 +1,19 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.41-DEV" />
+	<meta name="generator" content="Hugo 0.54.0" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
-  <title>CJ Ting&#39;s Blog - CJ Ting's Blog</title>
-  <meta name="author" content="CJ Ting">
-  <meta name="description" content="CJ Ting&#39;s Blog">
+  <title>CJ&#39;s Blog - CJ's Blog</title>
+  <meta name="author" content="CJ">
+  <meta name="description" content="CJ&#39;s Blog">
   <meta charset="utf-8" />
   <link rel="stylesheet" href="/asset/main.css">
   <link rel="stylesheet" type="text/css" href="/gitalk.css">
   <script src="/gitalk.min.js"></script>
   <script type="text/javascript">
     window.PAGE = {
-      title: "CJ Ting\x27s Blog",
+      title: "CJ\x27s Blog",
     }
   </script>
 </head>
@@ -42,7 +42,7 @@
   
     <a class="sidebar__item " href="/web2.0/">Web2.0</a>
   
-    <a class="sidebar__item " href="/golang/">Golang</a>
+    <a class="sidebar__item " href="/go/">Go</a>
   
     <a class="sidebar__item " href="/linux/">Linux</a>
   
@@ -58,18 +58,16 @@
     
     
       <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/misc/forward-proxy-and-reverse-proxy/">
+        <a class="index__item__title hvr-underline-from-left" href="/2018/08/11/forward-proxy-and-reverse-proxy/">
           正向代理与反向代理
         </a>
 
         <div class="index__item__content post__content">
-          <p>代理的英文叫做*Proxy*，是计算机中的常用软件。</p>
+          <p>代理的英文叫做 *Proxy*，是计算机中的常用软件。</p>
 
 <p>简单来说，代理的功能犹如它的名字所示：代替某人来处理某事。</p>
 
-<p>常见的代理分两种，正向代理和反向代理。不管哪种代理，它们都位于客户端和服务器之间，将我们传统的 <code>客户端 &lt;-&gt; 服务器</code>通信变成了<code>客户端 &lt;-&gt; 代理 &lt;-&gt; 服务器</code>通信。</p>
-
-<p></p>
+<p>常见的代理分两种，正向代理和反向代理。不管哪种代理，它们都位于客户端和服务器之间，将我们传统的 <code>客户端 &lt;-&gt; 服务器</code> 通信变成了 <code>客户端 &lt;-&gt; 代理 &lt;-&gt; 服务器</code> 通信。</p>
         </div>
 
         <div class="index__item__meta">
@@ -86,8 +84,8 @@
       </div>
     
       <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/web2.0/js-and-unicode/">
-          JavaScript与Unicode
+        <a class="index__item__title hvr-underline-from-left" href="/2018/07/22/js-and-unicode/">
+          JavaScript 与 Unicode
         </a>
 
         <div class="index__item__content post__content">
@@ -96,15 +94,13 @@
 <p>日常编码中可能并不一定能见到它的复杂性，下面是几个字符串操作，使用你最熟悉的编程语言，看看结果如何。</p>
 
 <ul>
-<li>逆转字符串<code>&quot;noël&quot;</code>，正确结果应该是<code>&quot;lëon&quot;</code></li>
-<li>获取字符串<code>&quot;noël&quot;</code>前三个字符，正确结果应该是<code>&quot;noë&quot;</code></li>
-<li>获取字符串<code>&quot;😸😾&quot;</code>的长度，正确答案应该是2</li>
-<li>字符串<code>&quot;noël&quot;</code>和字符串<code>&quot;noël&quot;</code>规整化以后应该相等（他们看起来一样，但是内部表示不一样，一个6字节，一个5字节，这里涉及到Unicode的规整化）</li>
+<li>逆转字符串 <code>&quot;noël&quot;</code>，正确结果应该是 <code>&quot;lëon&quot;</code></li>
+<li>获取字符串 <code>&quot;noël&quot;</code> 前三个字符，正确结果应该是 <code>&quot;noë&quot;</code></li>
+<li>获取字符串 <code>&quot;😸😾&quot;</code> 的长度，正确答案应该是 2</li>
+<li>字符串 <code>&quot;noël&quot;</code> 和字符串 <code>&quot;noël&quot;</code> 规整化以后应该相等（他们看起来一样，但是内部表示不一样，一个 6 字节，一个 5 字节，这里涉及到 Unicode 的规整化）</li>
 </ul>
 
-<p>对于大部分编程语言，包括Ruby，Python，JS，C#，Java等，上面的问题都无法全部返回正确结果。（但是，拥有超强Unicode支持的<a href="https://elixir-lang.org/">Elixir</a>可以。）</p>
-
-<p></p>
+<p>对于大部分编程语言，包括 Ruby，Python，JS，C#，Java 等，上面的问题都无法全部返回正确结果（但是，拥有超强 Unicode 支持的 <a href="https://elixir-lang.org/">Elixir</a> 可以）。</p>
         </div>
 
         <div class="index__item__meta">
@@ -121,18 +117,16 @@
       </div>
     
       <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/web2.0/dns-101/">
+        <a class="index__item__title hvr-underline-from-left" href="/2018/05/01/dns-101/">
           DNS 101
         </a>
 
         <div class="index__item__content post__content">
-          <p>DNS全称<code>Domain Name System</code>，是我们每天都在使用的基础互联网设施。</p>
+          <p>DNS 全称 <code>Domain Name System</code>，是我们每天都在使用的基础互联网设施。</p>
 
-<p>它被发明出来的原因很简单，计算机之间的通信用的是IP地址，是一串数字，人类记忆起来十分不方便，因此，我们给地址起个名字，然后将名字和IP之间的关系记录起来，这样，我们只用记住名字就行了。</p>
+<p>它被发明出来的原因很简单，计算机之间的通信用的是 IP 地址，是一串数字，人类记忆起来十分不方便，因此，我们给地址起个名字，然后将名字和 IP 之间的关系记录起来，这样，我们只用记住名字就行了。</p>
 
-<p>从上面可以看出，DNS系统类似我们日常使用的电话本，只不过里面存储的是域名和IP之间的关系。和人与电话之间的关系一样，一个域名可以有多个IP，一个IP也可以有多个域名。</p>
-
-<p></p>
+<p>从上面可以看出，DNS 系统类似我们日常使用的电话本，只不过里面存储的是域名和 IP 之间的关系。和人与电话之间的关系一样，一个域名可以有多个 IP，一个 IP 也可以有多个域名。</p>
         </div>
 
         <div class="index__item__meta">
@@ -149,14 +143,12 @@
       </div>
     
       <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/web2.0/how-http-basic-auth-work/">
-          HTTP Basic Auth是怎么样工作的
+        <a class="index__item__title hvr-underline-from-left" href="/2018/03/31/how-http-basic-auth-work/">
+          HTTP Basic Auth 是怎么样工作的
         </a>
 
         <div class="index__item__content post__content">
-          <p><code>HTTP Basic Auth</code>是HTTP提供的一种验证方式，因为明文传输用户名和密码，非HTTPS环境下很不安全，一般用的非常少。但是在某些情况下用一用还是非常方便的，比如，一些静态站点例如文档系统可以使用HTTP Basic Auth进行简单地权限验证。</p>
-
-<p></p>
+          <p><code>HTTP Basic Auth</code> 是 HTTP 提供的一种验证方式，因为明文传输用户名和密码，非 HTTPS 环境下很不安全，一般用的非常少。但是在某些情况下用一用还是非常方便的，比如，一些静态站点例如文档系统可以使用 HTTP Basic Auth 进行简单地权限验证。</p>
         </div>
 
         <div class="index__item__meta">
@@ -173,26 +165,24 @@
       </div>
     
       <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/golang/migrate-to-hugo-from-jekyll/">
-          从Jekyll迁移到Hugo，Hugo不完全指南
+        <a class="index__item__title hvr-underline-from-left" href="/2017/06/04/migrate-to-hugo-from-jekyll/">
+          从 Jekyll 迁移到 Hugo，Hugo 不完全指南
         </a>
 
         <div class="index__item__content post__content">
-          <p>最近这段时间一直在忙着迁移博客，把原本基于Jekyll的博客迁移到了Hugo上。</p>
+          <p>最近这段时间一直在忙着迁移博客，把原本基于 Jekyll 的博客迁移到了 Hugo 上。</p>
 
-<p>之所以从Jekyll迁移的原因并不复杂，就是一个字：<strong>慢</strong>。Jekyll的速度实在是太慢了，我只有几十篇文章，在Watch模式下，每次改动，重新生成都要花费3秒钟，实在是太慢了。</p>
+<p>之所以从 Jekyll 迁移的原因并不复杂，就是一个字：<strong>慢</strong>。Jekyll 的速度实在是太慢了，我只有几十篇文章，在 Watch 模式下，每次改动，重新生成都要花费 3 秒钟，实在是太慢了。</p>
 
 <pre><code class="language-bash">Regenerating: 1 file(s) changed at 2017-05-14 10:37:16 ...done in 3.085089 seconds.
 Regenerating: 1 file(s) changed at 2017-05-14 10:37:20 ...done in 3.121783 seconds.
 </code></pre>
-
-<p></p>
         </div>
 
         <div class="index__item__meta">
           
-          <a href="/golang/">
-            golang
+          <a href="/go/">
+            go
           </a>
           <div>
           </div>
@@ -203,14 +193,12 @@ Regenerating: 1 file(s) changed at 2017-05-14 10:37:20 ...done in 3.121783 secon
       </div>
     
       <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/misc/how-git-generate-diff/">
+        <a class="index__item__title hvr-underline-from-left" href="/2017/05/13/how-git-generate-diff/">
           Git 是怎样生成 diff 的：Myers 算法
         </a>
 
         <div class="index__item__content post__content">
           <p>diff 是我们每天都要使用的一个功能，每次提交时，我都习惯先用 <code>git diff --cached</code> 看看这次提交更改了些什么，确定没问题，然后再 <code>git commit</code>。git 生成的 diff 非常直观，直观到我从来都没有去思考过 diff 是怎么生成的，觉得这应该是很简单的一件事，两个文件做个对比，不就行了。</p>
-
-<p></p>
         </div>
 
         <div class="index__item__meta">
@@ -227,14 +215,14 @@ Regenerating: 1 file(s) changed at 2017-05-14 10:37:20 ...done in 3.121783 secon
       </div>
     
       <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/linux/use-prometheus-to-monitor-server/">
-          使用Prometheus监控服务器性能
+        <a class="index__item__title hvr-underline-from-left" href="/2017/03/12/use-prometheus-to-monitor-server/">
+          使用 Prometheus 监控服务器性能
         </a>
 
         <div class="index__item__content post__content">
-          <p>最近一直在思考如何对线上服务做深度监控。基础的服务可用性监控很简单，定期Ping即可。但是怎样才能监控服务器的一些更加关键的数据呢？比如，每一个API Point的请求次数（QPS），最大响应时间，平均响应时间等。最终我希望实现的效果是有一个Dashboard，我可以清楚地看到各种参数曲线，对服务器的运行情况了然于胸。</p>
+          <p>最近一直在思考如何对线上服务做深度监控。基础的服务可用性监控很简单，定期 Ping 即可。但是怎样才能监控服务器的一些更加关键的数据呢？比如，每一个 API Point 的请求次数（QPS），最大响应时间，平均响应时间等。最终我希望实现的效果是有一个 Dashboard，我可以清楚地看到各种参数曲线，对服务器的运行情况了然于胸。</p>
 
-<p>绘制Dashboard不难，目前提供数据可视化的工具很多，随便选一个都能满足需要。关键问题是，怎样将整个流程打通？</p>
+<p>绘制 Dashboard 不难，目前提供数据可视化的工具很多，随便选一个都能满足需要。关键问题是，怎样将整个流程打通？</p>
 
 <ul>
 <li>服务器该以怎样的形式暴露出数据？</li>
@@ -242,8 +230,6 @@ Regenerating: 1 file(s) changed at 2017-05-14 10:37:20 ...done in 3.121783 secon
 <li>存储起来的数据怎样提供给数据可视化工具？</li>
 <li>怎样做到足够灵活，可以可视化自己感兴趣的任意数据？</li>
 </ul>
-
-<p></p>
         </div>
 
         <div class="index__item__meta">
@@ -260,22 +246,20 @@ Regenerating: 1 file(s) changed at 2017-05-14 10:37:20 ...done in 3.121783 secon
       </div>
     
       <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/golang/write-a-code-post-generator-with-go/">
-          使用Go编写代码明信片生成器
+        <a class="index__item__title hvr-underline-from-left" href="/2017/02/18/write-a-code-post-generator-with-go/">
+          使用 Go 编写代码明信片生成器
         </a>
 
         <div class="index__item__content post__content">
-          <p>很早之前就看过到关于<a href="http://commits.io">commits.io</a>的一个帖子，这个站点专门制作代码明信片。什么是代码明信片呢？如下图。</p>
+          <p>很早之前就看过到关于 <a href="http://commits.io">commits.io</a> 的一个帖子，这个站点专门制作代码明信片。什么是代码明信片呢？如下图。</p>
 
-<p><img src="http://ok2pw0x6d.bkt.clouddn.com/Fqam4K_lGEdyiyAxz4eRbiWlptvN.png" alt="" /></p>
-
-<p></p>
+<p><img src="http://ww1.sinaimg.cn/large/007FEWc7ly1g1f3o6zdtwj30sj0ee45m" alt="" /></p>
         </div>
 
         <div class="index__item__meta">
           
-          <a href="/golang/">
-            golang
+          <a href="/go/">
+            go
           </a>
           <div>
           </div>
@@ -286,12 +270,14 @@ Regenerating: 1 file(s) changed at 2017-05-14 10:37:20 ...done in 3.121783 secon
       </div>
     
       <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/web2.0/build-an-img-bed-on-qiniu/">
+        <a class="index__item__title hvr-underline-from-left" href="/2017/01/23/build-an-img-bed-on-qiniu/">
           图床on七牛，简单好用的图床插件
         </a>
 
         <div class="index__item__content post__content">
-          <p>最近在使用过程中发现<strong>图床on微博</strong>出了点问题，响应体的JSON解析错误，不用想都知道肯定是微博修改了响应体的数据结构（微博图片上传接口响应体是html tag和json混在一起，十分专业）。简单修复了一下，测试的时候却发现，微博的图片上传接口变得不再稳定了，经常404。看来微博图床是不能用了，正好我早就觉得微博不是个好图床。缺点如下：</p>
+          <p>注：因为七牛 API 修改，编辑于 2019-03-25T16:20:00。</p>
+
+<p>最近在使用过程中发现 <strong>图床on微博</strong> 出了点问题，响应体的 JSON 解析错误，不用想都知道肯定是微博修改了响应体的数据结构（微博图片上传接口响应体是 html 和 json 混在一起，十分专业）。简单修复了一下，测试的时候却发现，微博的图片上传接口变得不再稳定了，经常 404。看来微博图床是不能用了，正好我早就觉得微博不是个好图床，缺点如下：</p>
 
 <ol>
 <li>经常性的要重新登陆，麻烦死了</li>
@@ -299,8 +285,6 @@ Regenerating: 1 file(s) changed at 2017-05-14 10:37:20 ...done in 3.121783 secon
 <li>无法删除上传的图片</li>
 <li>服务状态不可控，指不定什么时候接口就不能用了</li>
 </ol>
-
-<p></p>
         </div>
 
         <div class="index__item__meta">
@@ -317,26 +301,24 @@ Regenerating: 1 file(s) changed at 2017-05-14 10:37:20 ...done in 3.121783 secon
       </div>
     
       <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/golang/use-pprof-to-optimize-go/">
-          使用pprof优化golang性能
+        <a class="index__item__title hvr-underline-from-left" href="/2016/11/14/use-pprof-to-optimize-go/">
+          使用 pprof 优化 Golang 性能
         </a>
 
         <div class="index__item__content post__content">
-          <p>*Donald E.Knuth*说过一句非常著名的话，<strong>过早的优化是万恶之源</strong>。原文如下：</p>
+          <p><em>Donald E.Knuth</em> 说过一句非常著名的话，<strong>过早的优化是万恶之源</strong>，原文如下：</p>
 
 <blockquote>
 <p>We should forget about small efficiencies, say about 97% of the time; premature optimization is the root of all evil.</p>
 </blockquote>
 
-<p>我是十分赞同这句话的，并且在开发过程中也深有体会。什么叫做*过早的优化*呢？即不需要考虑优化的时候你在考虑优化。这绝对不意味着可以任性地写代码，随意地选择数据结构和算法。这句话是告诉我们，在程序开发的早期阶段，程序员应该专注在程序的<strong>逻辑实现</strong>上，而不是专注在程序的<strong>性能优化</strong>上。用正确的数据结构和算法，优美合理的语句实现你要的功能。而不是满脑子在想：“这个函数是不是可以优化一下？”。</p>
-
-<p></p>
+<p>我是十分赞同这句话的，并且在开发过程中也深有体会。什么叫做 <em>过早的优化</em> 呢？即不需要考虑优化的时候你在考虑优化。这绝对不意味着可以任性地写代码，随意地选择数据结构和算法。这句话是告诉我们，在程序开发的早期阶段，程序员应该专注在程序的 <strong>逻辑实现</strong> 上，而不是专注在程序的 <strong>性能优化</strong> 上。用正确的数据结构和算法，优美合理的语句实现你要的功能。而不是满脑子在想：“这个函数是不是可以优化一下？”。</p>
         </div>
 
         <div class="index__item__meta">
           
-          <a href="/golang/">
-            golang
+          <a href="/go/">
+            go
           </a>
           <div>
           </div>

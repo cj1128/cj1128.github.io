@@ -1,3 +1,3 @@
-# CJ Ting's Blog
+# CJ's Blog
 
-本仓库内容由Hugo引擎生成，源代码仓库为[blog-source](https://github.com/fate-lovely/blog-source)。
+本仓库内容由 Hugo 引擎生成，源代码仓库为 [blog-source](https://github.com/fate-lovely/blog-source)。

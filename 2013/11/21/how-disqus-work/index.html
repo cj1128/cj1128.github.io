@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+  <title>关于 Disqus 的作用原理 - CJ's Blog</title>
+  <meta name="author" content="CJ">
+  <meta name="description" content="关于 Disqus 的作用原理">
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="/asset/main.css">
+  <link rel="stylesheet" type="text/css" href="/gitalk.css">
+  <script src="/gitalk.min.js"></script>
+  <script type="text/javascript">
+    window.PAGE = {
+      title: "关于 Disqus 的作用原理",
+    }
+  </script>
+</head>
+<body>
+  
+  <div class="post">
+    <header class="post__header" data-cover="http://ww2.sinaimg.cn/large/9b85365dgw1f7brwadugzj21kw11x1kx.jpg">
+      <a href="/">
+        HOME
+      </a>
+    </header>
+
+    <div class="post__body">
+      <h1 class="post__title">
+          关于 Disqus 的作用原理
+      </h1>
+
+      <div class="post__meta">
+        <div class='date'>
+          2013.11.21
+        </div>
+
+        <div class="tags">
+          
+            <span class="tag">disqus</span>
+          
+        </div>
+      </div>
+
+      <div class="post__content">
+        <p>当初用 jekyll-bootstrap 做博客的时候，里面默认配置了 Disqus 的评论模块。当初懵懵懂懂，去 Disqus 官网按照提示填了字段以后，然后根据 Jekyll 配置文件 <code>_config.yml</code> 里面的字段 <code>short-name</code> 填了一下，然后评论模块就可以用了。我心里一直觉得不能理解，但是心里觉得可能很麻烦，就一直没有去钻研这个事情，今天有空，耐心看了官方文档，一切豁然开朗。</p>
+
+<p>当初对 Disqus 的了解，就是一个 <strong>云端评论中心</strong>。可以将你对一篇文章的评论存储在 Disqus 中，然后通过 JS 脚本调用这些评论。但是，我困惑的问题就是：<strong>Disqus 怎样将评论和相应的页面进行绑定?</strong></p>
+
+<p>当我在对一篇文章进行评论的时候,相应的评论会被传送到 Disqus 的云端进行存储，但是 Disqus 怎样识别出这个评论是属于这个页面的呢?可以看到，调用 Disqus 的源码很简单：</p>
+
+<pre><code class="language-javascript">(function() {
+  var dsq = document.createElement('script')
+  dsq.type = 'text/javascript'
+  dsq.async = true
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js'
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq)
+})();
+</code></pre>
+
+<p>其中，<code>short_name</code> 这个属性是在 Disqus 配置中心进行配置的，一个 short-name 对应于一个网址。</p>
+
+<p><img src="http://ww2.sinaimg.cn/large/9b85365djw1f23b14utehj20nk055dgd.jpg" alt="" /></p>
+
+<p>很显然，short-name 这个属性不能用来标识页面，每个页面这个属性都是这样的。那到底是什么在唯一标识页面?</p>
+
+<p>我在 Disqus 的 <strong>Home &gt; Developers &gt; JavaScript configuration variables</strong>这篇文章里面找到了如下的内容：</p>
+
+<p><strong>disqus_shortname</strong>:</p>
+
+<blockquote>
+<p>Tells the Disqus service your forum&rsquo;s shortname, which is the unique identifier for your website as registered on Disqus. If undefined, the Disqus embed will not load.</p>
+</blockquote>
+
+<p><strong>disqus_identifier</strong>:</p>
+
+<blockquote>
+<p>Tells the Disqus service how to identify the current page. When the Disqus embed is loaded, the identifier is used to look up the correct thread. If disqus_identifier is undefined, the page&rsquo;s URL will be used. The URL can be unreliable, such as when renaming an article slug or changing domains, so we recommend using your own unique way of identifying a thread.</p>
+</blockquote>
+
+<p>然后我终于明白了，其实不是没有配置，只是 jekyll-bootstrap 的文件里面没有列出这几个变量。</p>
+
+<p>上面说的很清楚：</p>
+
+<ul>
+<li><p>首先，<code>disqus_shortname</code> 用来表示一个网站，如果没有这个属性，Disqus 是无法加载的。这个属性是所有 Disqus 用户都是唯一的。即你无法创建一个和他人相同的 disqus_shortname，因为他用来唯一标识你的网站。</p></li>
+
+<li><p>其次，<code>disqus_identifier</code> 这个 JS 变量用来唯一表示当前页面，或者称为 <code>thread</code>。如果这个属性不进行设置的话，页面的 URL 将用来唯一标识这个页面，所有的评论将会与页面的 URL 进行绑定。</p></li>
+</ul>
+
+<p>现在就很清楚了，当你在一个页面上写评论的时候，Disqus 会将评论存储在你加载 Disqus 所设置的仓库里面，也就是 <code>disqus_shortname</code> 里面，并且与当前页面的 URL 或者你设置的 <code>disqus_identifier</code> 进行绑定。当你下一次进入这个页面的时候，Disqus 首先进入仓库，然后根据你这个的 identifier 寻找所对应的评论。</p>
+
+<p>那么，很明显，用 URL 是非常不稳定的。因为如果你一旦对页面改名字或者更改了路径等等等会修改 URL 的操作的话，那么所对应的评论就没有了。所以推荐每个页面都设置一下 <code>disqus_identifier</code> 进行唯一标识。</p>
+      </div>
+
+      <div id="post__comments">
+      </div>
+    </div>
+  </div>
+
+
+  <script src="/asset/main.js"></script>
+
+  
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4f34ee3c85734c8235badd2b99b092a6";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</body>
+</html>

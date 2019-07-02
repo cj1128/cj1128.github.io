@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+  <title>使用 CSS 绘制 Ruby 可爱的红宝石标志 - CJ's Blog</title>
+  <meta name="author" content="CJ">
+  <meta name="description" content="使用 CSS 绘制 Ruby 可爱的红宝石标志">
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="/asset/main.css">
+  <link rel="stylesheet" type="text/css" href="/gitalk.css">
+  <script src="/gitalk.min.js"></script>
+  <script type="text/javascript">
+    window.PAGE = {
+      title: "使用 CSS 绘制 Ruby 可爱的红宝石标志",
+    }
+  </script>
+</head>
+<body>
+  
+  <div class="post">
+    <header class="post__header" data-cover="http://ww3.sinaimg.cn/large/9b85365djw1f23bofx48nj20j1084a9z.jpg">
+      <a href="/">
+        HOME
+      </a>
+    </header>
+
+    <div class="post__body">
+      <h1 class="post__title">
+          使用 CSS 绘制 Ruby 可爱的红宝石标志
+      </h1>
+
+      <div class="post__meta">
+        <div class='date'>
+          2013.06.23
+        </div>
+
+        <div class="tags">
+          
+            <span class="tag">css</span>
+          
+            <span class="tag">ruby</span>
+          
+        </div>
+      </div>
+
+      <div class="post__content">
+        <p>有一次偶然逛 Dribbble，发现了这个可爱的红宝石标志。</p>
+
+<p><img src="http://ww3.sinaimg.cn/large/9b85365djw1f23bofx48nj20j1084a9z.jpg" alt="" /></p>
+
+<p>Ruby 的标志本来就很好看，加上这个配色，更加好看了。</p>
+
+<p>正好我一直想抽个时间做一个 Ruby 首页，自然是需要一个 Logo 的，于是就收藏了这张图片。本来想到时候简单的把图片贴上去就行了。没想到的是，我在逛 CodePen 的时候，竟然发现了一个用 CSS 写的一模一样的 Logo。有意思，当时一时没想明白是怎么实现的。正好那几天要考试，没时间研究源码，今天正好考完微积分，好好研究了一下。</p>
+
+<p>看完了源码，其实用到的技术特别简单，就是利用 CSS 来产生三角形，然后定位组合。关于 CSS 怎么产生三角形，这个很早之前我就研究过了，主要是利用 border 的一些性质。仔细观看 Ruby 那个 Logo 可以发现，其实就是由好多三角形构成，上面有五个，下面有三个，然后一个 Shadow。利用很简单的技术，可以做出很 amazing 的效果，其实，很多时候，缺的不是技术，是想法。</p>
+
+<p>今天下午我自己重新动手写了一个，本来觉得会很难，写完发现其实不难，但是首先要搞到一点数据。就是宝石中各个三角形的长宽高比例。这个难倒我了，我去 Google 变着关键词想把宝石的数学比例搜索出来，很遗憾，没找到，可能是太心急了，太过数学的文章都看不进去。只能投机取巧了，直接使用原作者的比例数据。因为如果比例弄错了，做出来的宝石会相当难看。</p>
+
+<p>一会我会贴出我“参考”源作者代码的数据。</p>
+
+<p>现在首先要知道 CSS 的 border 模型，就是如果一个元素的 width 和 height 都为 0 的时候，你设置了他的 border，会是一个什么情况。</p>
+
+<p><img src="http://ww4.sinaimg.cn/large/9b85365djw1f23book3izj20pb05qdfw.jpg" alt="" /></p>
+
+<pre><code class="language-html">&lt;div class=&quot;test_1&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;test_2&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;test_3&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;test&quot;&gt;Love is everything&lt;/div&gt;
+</code></pre>
+
+<pre><code class="language-css">.test_1 {
+  width: 0;
+  height: 0;
+  border: solid;
+  border-width: 80px;
+  border-color: #64b5c9  #89c7d7 #afd9e4 #d5ebf1;
+}
+
+.test_2 {
+  width: 0;
+  height: 0;
+  border: solid;
+  border-width: 0 80px 80px 80px;
+  border-color: transparent #bc42a8 #d88ccc #f2d8ee;
+}
+
+.test_3 {
+  width: 0;
+  height: 0;
+  border: solid;
+  border-width: border-width:0 0 80px 80px;
+  border-color: transparent transparent #5342bc #dbd8f2;
+}
+
+.test {
+  width: 200px;
+  border: solid 30px;
+  border-color: #e9c2c6 #c6e9eb  #ede1ca #efefcf;
+}
+</code></pre>
+
+<p>从上面示例可以看出，border 并不是大家可能想象以为的方形，其实上，border 的形状是一个梯形（如果元素有宽度和高度的话），当元素宽度和高度为零的时候，梯形变为三角形。上面展示的代码分别产生了四个，三个，两个三角形以及四个梯形。</p>
+
+<p>当三角形形成后，你可能只想用一个，利用颜色为 transparent 便可以隐去其他三角形，是不是很简单？</p>
+
+<p>当然，注意观察会发现，border 只能产生特定形状的三角形。而不是能产生任意形状。</p>
+
+<p>现在来贴数据，从上到下，从左到右，给八个三角形分别命名为 1-8 号。我来分别列出各自的数据。数据以三角形顶点为中心，分别为顶点左边长度，顶点右边长度，以及顶点到对边的高。</p>
+
+<table>
+<thead>
+<tr>
+<th align="center">序号</th>
+<th align="center">顶点左边长度</th>
+<th align="center">顶点右边长度</th>
+<th align="center">高</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">1</td>
+<td align="center">63</td>
+<td align="center">26</td>
+<td align="center">60</td>
+</tr>
+
+<tr>
+<td align="center">2</td>
+<td align="center">26</td>
+<td align="center">62.5</td>
+<td align="center">60</td>
+</tr>
+
+<tr>
+<td align="center">3</td>
+<td align="center">62.5</td>
+<td align="center">62.5</td>
+<td align="center">60</td>
+</tr>
+
+<tr>
+<td align="center">4</td>
+<td align="center">62.5</td>
+<td align="center">26</td>
+<td align="center">60</td>
+</tr>
+
+<tr>
+<td align="center">5</td>
+<td align="center">26</td>
+<td align="center">62.5</td>
+<td align="center">60</td>
+</tr>
+
+<tr>
+<td align="center">6</td>
+<td align="center">0</td>
+<td align="center">151.5</td>
+<td align="center">150</td>
+</tr>
+
+<tr>
+<td align="center">7</td>
+<td align="center">62.5</td>
+<td align="center">62.5</td>
+<td align="center">150</td>
+</tr>
+
+<tr>
+<td align="center">8</td>
+<td align="center">0</td>
+<td align="center">151.5</td>
+<td align="center">150</td>
+</tr>
+</tbody>
+</table>
+
+<p>现在我们来分析这个大大的红宝石。上面是五个三角形，我们可以设置两个 div，class 分别为 <code>top_1</code> 和 <code>top_2</code>。然后第一个 div 负责形成三个三角形，利用 <code>:before</code> 和 <code>:after</code> 伪元素便可以。第二个 div 负责形成两个三角形。只要一个 <code>:after</code> 就可以了。</p>
+
+<p>下面是三个三角形，一个 div 搞定。class 是 <code>bottom</code>。当然，下面左右边的三角形都是 border 不能直接产生的，我们利用产生大的直角三角形。然后定位，利用 z-index 覆盖。如果看不懂，参考源码。先贴出超级简单的 HTML 代码。</p>
+
+<pre><code class="language-html">&lt;div class=&quot;top_1&quot;&gt;
+&lt;div class=&quot;top_2&quot;&gt;
+&lt;div class=&quot;bottom&quot;&gt;
+</code></pre>
+
+<p>然后便是对着上面表格中的数据写 CSS 了。</p>
+
+<pre><code class="language-css">.top_1 {
+  width: 0;
+  height: 0;
+  border: solid;
+  /* 
+    最最核心的便是这个数据，一定要按照表格中的数字来
+    如果这个比例不多，图形会丑到你不忍直视
+    这个故事告诉我们，比例非常重要
+  */
+  border-width: 60px 62.5px 0 26px;   
+  border-color: #d94e4e transparent transparent transparent;
+  position: absolute;
+  left: 100px;
+}
+
+.top_1:before {
+  /* 不要忘记了这个，非常关键，忘记了就什么都看不见了 */
+  content: &quot;&quot;;  
+  width: 0;
+  height: 0;
+  border: solid;
+  border-width: 0 26px 60px 63px;
+  border-color: transparent transparent #ffb9b9 transparent;
+  position: absolute;
+  /* 定位数据需要自行调试 */
+  top: -60px;   
+  left: -89px;  
+}
+
+.top_1:after {
+  content: &quot;&quot;;
+  width: 0;
+  height: 0;
+  border: solid;
+  border-width: 0 62.5px 60px 62.5px;
+  border-color: transparent transparent #eb7474 transparent;
+  position: absolute;
+  top: -60px;
+}
+
+.bottom {
+  width: 0;
+  height: 0;
+  border: solid;
+  border-width: 150px 62.5px 0 62.5px;
+  border-color: #c54040 transparent transparent transparent;
+  position: absolute;
+  left: 125px;
+  top: 60px;
+}
+
+.bottom:before {
+  content: &quot;&quot;;
+  width: 0;
+  height: 0;
+  border: solid;
+  border-width: 150px 151.5px 0 0;
+  border-color: #a02828 transparent transparent transparent;
+  position: absolute;
+  z-index: -2;
+  top: -150px;
+}
+</code></pre>
+
+<p>OK，一个大大的萌萌的 Ruby 标志就搞定了~</p>
+      </div>
+
+      <div id="post__comments">
+      </div>
+    </div>
+  </div>
+
+
+  <script src="/asset/main.js"></script>
+
+  
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4f34ee3c85734c8235badd2b99b092a6";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</body>
+</html>
