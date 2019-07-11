@@ -52,7 +52,7 @@
 
 <p>在各种缓存的方案中，基于 hash 的 Long Term Caching（永久缓存）在我看来是最简单也是最高效。每一个资源名称上都带有自身内容的 hash 值，然后全部设置为永久缓存永不过期。所有资源的索引文件全部设置为永不缓存。这样就保证了当资源更新时，资源名称会变化，索引文件会引入新的资源名称，也就保证了缓存永远不会失效。</p>
 
-<p>这个处理方案显然和前端自身的编码没有关系，而是需要打包工具的支持。以下我们就用 webapck 为例，详细讲述怎样一步步实现 Long Term Caching。项目最终的仓库 <a href="https://github.com/fate-lovely/long-term-caching-demo.git">long-term-caching-demo</a>。</p>
+<p>这个处理方案显然和前端自身的编码没有关系，而是需要打包工具的支持。以下我们就用 webapck 为例，详细讲述怎样一步步实现 Long Term Caching。项目最终的仓库 <a href="https://github.com/cj1128/long-term-caching-demo.git">long-term-caching-demo</a>。</p>
 
 <h2 id="basic-project">Basic Project</h2>
 
