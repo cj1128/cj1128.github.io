@@ -7,8 +7,8 @@
   <meta name="author" content="CJ">
   <meta name="description" content="从 Jekyll 迁移到 Hugo，Hugo 不完全指南">
   <meta charset="utf-8" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="stylesheet" href="/asset/main.css">
   <link rel="stylesheet" type="text/css" href="/gitalk.css">
   <script src="/gitalk.min.js"></script>
@@ -22,7 +22,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://ww1.sinaimg.cn/large/9b85365dgy1fgfzerd930j212w0gojsk">
+    <header class="post__header" data-cover="http://asset.cjting.cn/FlKmTvbJZO1j12pQzImT2EbtVgac.jpeg">
       <a href="/">
         HOME
       </a>
@@ -225,7 +225,7 @@ echo &quot;# This is index page&quot; &gt;&gt; content/_index.md
 <p>git checkout skeleton</p>
 </blockquote>
 
-<p><img src="http://ww1.sinaimg.cn/large/9b85365dgy1fgesi9dqzwj20lz0ay0ss" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365dgy1fgesi9dqzwj20lz0ay0ss.jpg" alt="" /></p>
 
 <p>这里来梳理一下，当 Hugo 编译我们站点时，发现 <code>content/_index.md</code> 文件，Hugo 会使用 <code>layouts/index.html</code> 和 <code>layouts/_default/baseof.html</code> 模板来渲染这个文件，并将得到的 HTML 文件放在结果文件夹的根目录下，当我们访问首页时，就会看到这个文件。</p>
 
@@ -275,7 +275,7 @@ echo &quot;# This is index page&quot; &gt;&gt; content/_index.md
 
 <p>浏览器页面如下。</p>
 
-<p><img src="http://ww1.sinaimg.cn/large/9b85365dgy1fgeslx5j0ij20ly0bgglo" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365dgy1fgeslx5j0ij20ly0bgglo.jpg" alt="" /></p>
 
 <p>看起来，header 生效了，但是，为什么两个分类的名称叫做 <code>_index</code> 呢？这是因为，默认情况下，Hugo 会使用分类对应的源文件的 <code>title</code>属性，这个属性默认是文件名。</p>
 
@@ -310,7 +310,7 @@ echo &quot;# This is index page&quot; &gt;&gt; content/_index.md
 
 <p>模板代码的含义是根据日期和时间来渲染分类下的博文，效果如下。</p>
 
-<p><img src="http://ww1.sinaimg.cn/large/9b85365dgy1fgetkmelx0j20nl0azq30" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365dgy1fgetkmelx0j20nl0azq30.jpg" alt="" /></p>
 
 <h2 id="博文页">博文页</h2>
 
@@ -325,7 +325,7 @@ echo &quot;# This is index page&quot; &gt;&gt; content/_index.md
 
 <p>很简单，直接渲染博文内容，<code>http://localhost:1313/c1/p1/</code> 页面如下。</p>
 
-<p><img src="http://ww1.sinaimg.cn/large/9b85365dgy1fgetqxr6fhj20nl078mx4" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365dgy1fgetqxr6fhj20nl078mx4.jpg" alt="" /></p>
 
 <p>目前为止，我们的博客基本结构就搭建好了。</p>
 
@@ -357,7 +357,7 @@ echo &quot;# This is index page&quot; &gt;&gt; content/_index.md
 
 <p>引入 JS 的道理同上。至于具体的样式代码，这里就不再赘述了。最终效果如下。</p>
 
-<p><img src="http://ww1.sinaimg.cn/large/9b85365dgy1fgfz1ofshej20sj0e33ys" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365dgy1fgfz1ofshej20sj0e33ys.jpg" alt="" /></p>
 
 <blockquote>
 <p>git checkout final</p>

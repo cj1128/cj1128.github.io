@@ -7,8 +7,8 @@
   <meta name="author" content="CJ">
   <meta name="description" content="使用 SVG Morphing 制作自己的加载动画">
   <meta charset="utf-8" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="stylesheet" href="/asset/main.css">
   <link rel="stylesheet" type="text/css" href="/gitalk.css">
   <script src="/gitalk.min.js"></script>
@@ -22,7 +22,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://ww1.sinaimg.cn/large/9b85365djw1f9ji109m0jj21jk0rstb8.jpg">
+    <header class="post__header" data-cover="http://asset.cjting.cn/9b85365djw1f9ji109m0jj21jk0rstb8.jpg">
       <a href="/">
         HOME
       </a>
@@ -59,7 +59,7 @@
 
 <p>上面的动画里，有三个量在变换。图形的形状，图形的位置以及颜色。位置和颜色都是比较简单的，CSS Transition 就可以搞定。问题就是形状的变化比较复杂。形变技术理解起来比较简单，图形从一个形状变换到另一个形状，无非就是构成图形的顶点位置发生了变化。所以，只要将开始图形和结束图形的顶点之间的对应关系找到，然后对顶点进行 transition 就行了。从这可以看出，SVG 的形变必须要求开始图形和结束图形的顶点数一定要相同，如下所示。</p>
 
-<p><img src="http://ww2.sinaimg.cn/large/9b85365dgw1f9jdl0i3e2g20a008gh6t.gif" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365dgw1f9jdl0i3e2g20a008gh6t.gif" alt="" /></p>
 
 <p><p data-height="500" data-theme-id="light" data-slug-hash="XNJBOy" data-default-tab="result" data-user="fatelovely" data-embed-version="2" data-pen-title="SVG Morphing Demo" class="codepen">See the Pen <a href="http://codepen.io/fatelovely/pen/XNJBOy/">SVG Morphing Demo</a> by fatelovely (<a href="http://codepen.io/fatelovely">@fatelovely</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script></p>
@@ -162,11 +162,11 @@ nightmare.run(function(err) {
 
 <p>运行以后，可以在 loading 文件夹里面看到所有截屏出来的图片，将多余的图片剔除掉以后，上传到 <a href="http://gifcreator.me/">gifcreator</a> 上，调整一下速度，然后导出即可。</p>
 
-<p><img src="http://ww1.sinaimg.cn/large/9b85365djw1f9jheun5t8j20rt0r60yg.jpg" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365djw1f9jheun5t8j20rt0r60yg.jpg" alt="" /></p>
 
 <p>最终，GIF 效果如下。</p>
 
-<p><img width="100" src="http://ww1.sinaimg.cn/large/9b85365djw1f9jhfdkgy8g20b40b4wfc.gif"></p>
+<p><img width="100" src="http://asset.cjting.cn/9b85365djw1f9jhfdkgy8g20b40b4wfc.gif"></p>
       </div>
 
       <div id="post__comments">

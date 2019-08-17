@@ -7,8 +7,8 @@
   <meta name="author" content="CJ">
   <meta name="description" content="从零开始搭建一个 HTTPS 网站">
   <meta charset="utf-8" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="stylesheet" href="/asset/main.css">
   <link rel="stylesheet" type="text/css" href="/gitalk.css">
   <script src="/gitalk.min.js"></script>
@@ -22,7 +22,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://ww2.sinaimg.cn/large/9b85365djw1f7fb60zgzaj21kw11xgyy.jpg">
+    <header class="post__header" data-cover="http://asset.cjting.cn/9b85365djw1f7fb60zgzaj21kw11xgyy.jpg">
       <a href="/">
         HOME
       </a>
@@ -105,7 +105,7 @@
 
 <p>根据上面的论述，SSL/TLS 协议的核心便是怎样安全的生成一个 <em>对话密钥</em> 来加密之后的通信。这个过程称之为 *握手*。</p>
 
-<p><img src="http://ww2.sinaimg.cn/large/9b85365dgw1f7fdsr6gbzj20tv0m3q7r.jpg" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365dgw1f7fdsr6gbzj20tv0m3q7r.jpg" alt="" /></p>
 
 <p>握手一共有四次请求，注意，这些请求都是明文的（也没法加密）。</p>
 
@@ -227,11 +227,11 @@ firewall-cmd --reload
 
 <p>回车之后，<code>letsencrypt</code> 会进行一系列操作生成所需的证书文件，最后会有一个弹窗，提示你输入电子邮件地址，如果证书丢了，可以恢复。</p>
 
-<p><img src="http://ww4.sinaimg.cn/large/9b85365djw1f7hzf480y7j20sp0ap3zk.jpg" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365djw1f7hzf480y7j20sp0ap3zk.jpg" alt="" /></p>
 
 <p>最后，<code>letsencrypt</code> 的输出结果如下。</p>
 
-<p><img src="http://ww3.sinaimg.cn/large/9b85365djw1f7hzfmf062j20v60bj456.jpg" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365djw1f7hzfmf062j20v60bj456.jpg" alt="" /></p>
 
 <p>可以看到，最为关键的证书文件存放在 <code>/etc/letsencrypt/live/leaningmoon.io/fullchain.pem</code>。</p>
 
@@ -273,7 +273,7 @@ server {
 
 <p>重启 Nginx，<code>systemctl reload nginx</code>。再次访问网站，我们可以看到，我们的网站也多了一把可爱的小绿锁~</p>
 
-<p><img src="http://ww4.sinaimg.cn/large/9b85365dgw1f7hzuvhh4jj212h0bqgpx.jpg" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365dgw1f7hzuvhh4jj212h0bqgpx.jpg" alt="" /></p>
 
 <p><strong>参考链接</strong></p>
 

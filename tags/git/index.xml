@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>git on CJ&#39;s Blog</title>
+    <link>https://cjting.me/tags/git/</link>
+    <description>Recent content in git on CJ&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 13 May 2017 00:00:00 +0800</lastBuildDate>
+    
+	<atom:link href="https://cjting.me/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Git 是怎样生成 diff 的：Myers 算法</title>
+      <link>https://cjting.me/2017/05/13/how-git-generate-diff/</link>
+      <pubDate>Sat, 13 May 2017 00:00:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/2017/05/13/how-git-generate-diff/</guid>
+      <description>&lt;p&gt;diff 是我们每天都要使用的一个功能，每次提交时，我都习惯先用 &lt;code&gt;git diff --cached&lt;/code&gt; 看看这次提交更改了些什么，确定没问题，然后再 &lt;code&gt;git commit&lt;/code&gt;。git 生成的 diff 非常直观，直观到我从来都没有去思考过 diff 是怎么生成的，觉得这应该是很简单的一件事，两个文件做个对比，不就行了。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

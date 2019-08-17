@@ -7,8 +7,8 @@
   <meta name="author" content="CJ">
   <meta name="description" content="Git 是怎样生成 diff 的：Myers 算法">
   <meta charset="utf-8" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="stylesheet" href="/asset/main.css">
   <link rel="stylesheet" type="text/css" href="/gitalk.css">
   <script src="/gitalk.min.js"></script>
@@ -22,7 +22,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://ww1.sinaimg.cn/large/9b85365dgy1fg4ev5tx5aj21kw16oh4y">
+    <header class="post__header" data-cover="http://asset.cjting.cn/FvSatw-mAY94H60cISWGryzrCODq.jpeg">
       <a href="/">
         HOME
       </a>
@@ -118,7 +118,7 @@
 
 <p>那么，图中每一条从左上角到右下角的路径，都表示一个 diff。向右表示“删除”，向下表示”新增“，对角线则表示“原内容保持不动“。</p>
 
-<p><img src="http://ww1.sinaimg.cn/large/9b85365dgy1ffjxfo7r42j20lm0nudhx" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365dgy1ffjxfo7r42j20lm0nudhx.jpg" alt="" /></p>
 
 <p>比如，我们选择这样一条路径：</p>
 
@@ -187,7 +187,7 @@
 + C
 </code></pre>
 
-<p><img src="http://ww1.sinaimg.cn/large/9b85365dgy1ffjz1967znj20p20k9gmg" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365dgy1ffjz1967znj20p20k9gmg.jpg" alt="" /></p>
 
 <p>现在我们可以知道，其实 Myers 算法是一个典型的”动态规划“算法，也就是说，父问题的求解归结为子问题的求解。要知道 d=5 时所有 k 对应的最优坐标，必须先要知道 d=4 时所有 k 对应的最优坐标，要知道 d=4 时的答案，必须先求解 d=3，以此类推，和 01 背包问题很是相似。</p>
 

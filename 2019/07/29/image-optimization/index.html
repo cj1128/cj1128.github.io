@@ -7,8 +7,8 @@
   <meta name="author" content="CJ">
   <meta name="description" content="从图片优化说起">
   <meta charset="utf-8" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="stylesheet" href="/asset/main.css">
   <link rel="stylesheet" type="text/css" href="/gitalk.css">
   <script src="/gitalk.min.js"></script>
@@ -22,7 +22,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://ww1.sinaimg.cn/large/9b85365dgy1g5i35fgv7mj21900u0b2c">
+    <header class="post__header" data-cover="http://asset.cjting.cn/Fk_kBecsmewI-l6GwB9HsQBNQqsW.jpeg">
       <a href="/">
         HOME
       </a>
@@ -78,7 +78,7 @@ numfmt --field=2 --to=iec |\
 column -t | bat
 </code></pre>
 
-<p><img src="http://ww1.sinaimg.cn/large/9b85365dgy1g5i03r4vdnj20h7051wfj" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365dgy1g5i03r4vdnj20h7051wfj.jpg" alt="" /></p>
 
 <p>筛选出需要压缩的图片以后，接下来就是压缩、比对、调整参数。图片压缩的工具实在是太多了，Google <em>image compression tool</em> 选择会多得你眼花缭乱。</p>
 
@@ -119,15 +119,15 @@ const imageminSvgo = require(&quot;imagemin-svgo&quot;)
 
 <p>JPEG 根据显示方式的不同，分为两种。Progressive JPEG 会先加载模糊的整张图片，然后变的越来越清晰。</p>
 
-<p><img src="http://ww1.sinaimg.cn/large/9b85365dgy1g5hw2y2pipj21900u0kjq" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365dgy1g5hw2y2pipj21900u0kjq.jpg" alt="" /></p>
 
-<p><img src="http://ww1.sinaimg.cn/large/9b85365dgy1g5hw3pr599j20lc07ngu4" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365dgy1g5hw3pr599j20lc07ngu4.jpg" alt="" /></p>
 
 <p>而 Baseline JPEG 会先清晰地加载图片的一部分，然后慢慢显示剩余的部分。</p>
 
-<p><img src="http://ww1.sinaimg.cn/large/9b85365dgy1g5hw2y2pipj21900u0kjq" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365dgy1g5hw2y2pipj21900u0kjq.jpg" alt="" /></p>
 
-<p><img src="http://ww1.sinaimg.cn/large/9b85365dgy1g5hw39pw5bj20lc07n7b9" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365dgy1g5hw39pw5bj20lc07n7b9.jpg" alt="" /></p>
 
 <p>从视觉效果来说，Progressive JPEG 自然更好一些。但它也有一些缺点，比如它的解码速度比 Baseline JPEG 要慢，占用的 CPU 时间更多。</p>
 
@@ -170,7 +170,7 @@ const webps = await imagemin(images, {
 
 <p>oimg 的输出如下，可以很方便地看出压缩的效果如何。</p>
 
-<p><img src="http://ww1.sinaimg.cn/large/9b85365dgy1g5i0rjw4qpj20n402qaak" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365dgy1g5i0rjw4qpj20n402qaak.jpg" alt="" /></p>
 
 <h2 id="响应式图片">响应式图片</h2>
 

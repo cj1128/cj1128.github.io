@@ -7,8 +7,8 @@
   <meta name="author" content="CJ">
   <meta name="description" content="使用 Ngrok 实现内网穿透">
   <meta charset="utf-8" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="stylesheet" href="/asset/main.css">
   <link rel="stylesheet" type="text/css" href="/gitalk.css">
   <script src="/gitalk.min.js"></script>
@@ -22,7 +22,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://ww2.sinaimg.cn/large/9b85365djw1f7bk8tdwtej21kw0w0gry.jpg">
+    <header class="post__header" data-cover="http://asset.cjting.cn/9b85365djw1f7bk8tdwtej21kw0w0gry.jpg">
       <a href="/">
         HOME
       </a>
@@ -68,7 +68,7 @@
 
 <p>首先，我们可以手动添加 NAT 表项，大部分路由器里面都有这个设置项。我的 NETGEAR 路由器的设置页面如图所示。</p>
 
-<p><img src="http://ww2.sinaimg.cn/large/9b85365dgw1f43dxm3ux6j21gz0jo78u.jpg" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365dgw1f43dxm3ux6j21gz0jo78u.jpg" alt="" /></p>
 
 <p>另一种办法，是找一个公网服务器做中介。比如服务器 A，流程如下。</p>
 
@@ -98,7 +98,7 @@ openssl req -new -key server.key -subj &quot;/CN=[NGROK_BASE_DOMAIN]&quot; -out 
 openssl x509 -req -in server.csr -CA base.pem -CAkey base.key -CAcreateserial -days 10000 -out server.crt
 </code></pre>
 
-<p><img src="http://ww2.sinaimg.cn/large/9b85365djw1f439iat2lpj20qi0g5grx.jpg" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365djw1f439iat2lpj20qi0g5grx.jpg" alt="" /></p>
 
 <p>第三步，拷贝证书文件，然后编译相应的客户端和服务器程序。</p>
 
@@ -120,7 +120,7 @@ cd ~/ngrok
 
 <p>第五步，配置域名解析。解析 <code>[NGROK_BASE_DOMAIN]</code> 以及 <code>*.[NGROK_BASE_DOMAIN]</code> 地址到服务器上。我使用的是 DNSPOD，截图如下。</p>
 
-<p><img src="http://ww1.sinaimg.cn/large/9b85365djw1f43rtmytwvj20nn0bqwgl.jpg" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365djw1f43rtmytwvj20nn0bqwgl.jpg" alt="" /></p>
 
 <p>最后一步，配置客户端，启动客户端程序。客户端的默认配置文件位置是 <code>$HOME/.ngrok</code>，填入以下配置。</p>
 
@@ -135,7 +135,7 @@ trust_host_root_certs: false
 
 <p>客户端会转发本地 8080 端口的服务到 <code>test.[NGROK_BASE_DOMAIN]</code> 上。以我为例，只要我访问 <code>test.tunnel.cjting.me</code>，就可以看到开发主机上 8080 端口的内容。实现了外网访问内容的目标。</p>
 
-<p><img src="http://ww2.sinaimg.cn/large/9b85365dgw1f43t9r2wshj20iq06i74v.jpg" alt="" /></p>
+<p><img src="http://asset.cjting.cn/9b85365dgw1f43t9r2wshj20iq06i74v.jpg" alt="" /></p>
 
 <p>最后提一点：客户端和服务器连接是需要验证证书的。只有我们同时编译的客户端和服务器才能连接上。在新的电脑上重新编译客户端去连接一个已部署的服务器，是无法连接的。因此建议存档一份客户端程序。</p>
       </div>

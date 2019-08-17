@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>http on CJ&#39;s Blog</title>
+    <link>https://cjting.me/tags/http/</link>
+    <description>Recent content in http on CJ&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 31 Mar 2018 19:40:48 +0800</lastBuildDate>
+    
+	<atom:link href="https://cjting.me/tags/http/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>HTTP Basic Auth 是怎么样工作的</title>
+      <link>https://cjting.me/2018/03/31/how-http-basic-auth-work/</link>
+      <pubDate>Sat, 31 Mar 2018 19:40:48 +0800</pubDate>
+      
+      <guid>https://cjting.me/2018/03/31/how-http-basic-auth-work/</guid>
+      <description>&lt;p&gt;&lt;code&gt;HTTP Basic Auth&lt;/code&gt; 是 HTTP 提供的一种验证方式，因为明文传输用户名和密码，非 HTTPS 环境下很不安全，一般用的非常少。但是在某些情况下用一用还是非常方便的，比如，一些静态站点例如文档系统可以使用 HTTP Basic Auth 进行简单的权限验证。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

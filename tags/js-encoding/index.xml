@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>js encoding on CJ&#39;s Blog</title>
+    <link>https://cjting.me/tags/js-encoding/</link>
+    <description>Recent content in js encoding on CJ&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 22 Jul 2018 09:45:12 +0800</lastBuildDate>
+    
+	<atom:link href="https://cjting.me/tags/js-encoding/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>JavaScript 与 Unicode</title>
+      <link>https://cjting.me/2018/07/22/js-and-unicode/</link>
+      <pubDate>Sun, 22 Jul 2018 09:45:12 +0800</pubDate>
+      
+      <guid>https://cjting.me/2018/07/22/js-and-unicode/</guid>
+      <description>&lt;p&gt;字符串是任何一个编程语言中的重要概念，同时也是一个非常复杂的问题。&lt;/p&gt;
+
+&lt;p&gt;日常编码中可能并不一定能见到它的复杂性，下面是几个字符串操作，使用你最熟悉的编程语言，看看结果如何。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;逆转字符串 &lt;code&gt;&amp;quot;noël&amp;quot;&lt;/code&gt;，正确结果应该是 &lt;code&gt;&amp;quot;lëon&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取字符串 &lt;code&gt;&amp;quot;noël&amp;quot;&lt;/code&gt; 前三个字符，正确结果应该是 &lt;code&gt;&amp;quot;noë&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取字符串 &lt;code&gt;&amp;quot;😸😾&amp;quot;&lt;/code&gt; 的长度，正确答案应该是 2&lt;/li&gt;
+&lt;li&gt;字符串 &lt;code&gt;&amp;quot;noël&amp;quot;&lt;/code&gt; 和字符串 &lt;code&gt;&amp;quot;noël&amp;quot;&lt;/code&gt; 规整化以后应该相等（他们看起来一样，但是内部表示不一样，一个 6 字节，一个 5 字节，这里涉及到 Unicode 的规整化）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;对于大部分编程语言，包括 Ruby，Python，JS，C#，Java 等，上面的问题都无法全部返回正确结果（但是，拥有超强 Unicode 支持的 &lt;a href=&#34;https://elixir-lang.org/&#34;&gt;Elixir&lt;/a&gt; 可以）。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
