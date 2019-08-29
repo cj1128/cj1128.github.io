@@ -6,10 +6,37 @@
     <description>Recent content in Tags on CJ&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 29 Jul 2019 14:52:50 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 28 Aug 2019 15:55:08 +0800</lastBuildDate>
     
 	<atom:link href="https://cjting.me/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>linux</title>
+      <link>https://cjting.me/tags/linux/</link>
+      <pubDate>Wed, 28 Aug 2019 15:55:08 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>network</title>
+      <link>https://cjting.me/tags/network/</link>
+      <pubDate>Wed, 28 Aug 2019 15:55:08 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/network/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tcp</title>
+      <link>https://cjting.me/tags/tcp/</link>
+      <pubDate>Wed, 28 Aug 2019 15:55:08 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/tcp/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>compression</title>

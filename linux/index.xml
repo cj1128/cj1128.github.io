@@ -12,6 +12,17 @@
     
     
     <item>
+      <title>从一次 Connection Reset 说起，TCP 半连接队列与全连接队列</title>
+      <link>https://cjting.me/2019/08/28/tcp-queue/</link>
+      <pubDate>Wed, 28 Aug 2019 15:55:08 +0800</pubDate>
+      
+      <guid>https://cjting.me/2019/08/28/tcp-queue/</guid>
+      <description>&lt;p&gt;之前用 Go 编写过一个简单的服务器和客户端，用来测试 Go 的 HTTP 性能，无意中发现了一个奇怪的问题。&lt;/p&gt;
+
+&lt;p&gt;在我的 Mac 上客户端程序会非常稳定地遇到 &lt;em&gt;Connection Reset&lt;/em&gt; 的错误，让人一头雾水。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>使用 Prometheus 监控服务器性能</title>
       <link>https://cjting.me/2017/03/12/use-prometheus-to-monitor-server/</link>
       <pubDate>Sun, 12 Mar 2017 00:00:00 +0800</pubDate>
