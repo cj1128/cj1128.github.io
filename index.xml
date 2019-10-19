@@ -149,14 +149,14 @@ func do() {
 
 <ol>
 <li>Client: 发送 SYN，连接状态进入 <code>SYN_SENT</code></li>
-<li>Server: 收到 SYN, 创建连接状态为 <code>SYN_RCVD</code> 的 Socket，响应 SYN/ACK</li>
+<li>Server: 收到 SYN, 创建连接状态为 <code>SYN_RCVD/SYN_RECV</code> 的 Socket，响应 SYN/ACK</li>
 <li>Client: 收到 SYN/ACK，连接状态从 <code>SYN_SENT</code> 变为 <code>ESTABLISHED</code>，响应 ACK</li>
 <li>Server: 收到 ACK，连接状态变为 <code>ESTABLISHED</code></li>
 </ol>
 
 <p>此时，双方的 Socket 都已经进入了 <code>ESTABLISHED</code> 状态，接下来就可以开始交换数据了。</p>
 
-<p>从上面的过程中我们可以看出，Server 需要两个队列，分别存储 <code>SYN_SENT</code> 状态的连接和 <code>ESTABLISHED</code> 状态的连接，这就是半连接队列和全连接队列。</p>
+<p>从上面的过程中我们可以看出，Server 需要两个队列，分别存储 <code>SYN_RCVD</code> 状态的连接和 <code>ESTABLISHED</code> 状态的连接，这就是半连接队列和全连接队列。</p>
 
 <h2 id="somaxconn-tcp-max-syn-backlog">somaxconn &amp; tcp_max_syn_backlog</h2>
 
@@ -212,7 +212,7 @@ max_queue_length = 2^8 = 256
 
 <h2 id="半连接队列溢出-syn-flood">半连接队列溢出 &amp; SYN Flood</h2>
 
-<p>SYN Flood 的思路很简单，发送大量的 SYN 数据包给 Server，然后不回应 Server 响应的 SYN/ACK，这样，Server 端就会存在大量处于 <code>SYN_RCVD</code> 状态的连接，这样的连接会持续填充半连接队列，最终导致半连接队列溢出。</p>
+<p>SYN Flood 的思路很简单，发送大量的 SYN 数据包给 Server，然后不回应 Server 响应的 SYN/ACK，这样，Server 端就会存在大量处于 <code>SYN_RECV</code> 状态的连接，这样的连接会持续填充半连接队列，最终导致半连接队列溢出。</p>
 
 <p>当半连接队列溢出时，Server 收到了新的发起连接的 SYN：</p>
 
