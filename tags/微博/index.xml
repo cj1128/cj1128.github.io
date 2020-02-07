@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>微博 on CJ&#39;s Blog</title>
@@ -18,9 +18,7 @@
       
       <guid>https://cjting.me/2016/04/06/first-chrome-extension-image-bed-on-weibo/</guid>
       <description>&lt;p&gt;之前写博客需要的图片全部都是本地存储，非常麻烦。流程如下：先用截图工具截图（QQ 截图就很好用），然后移动到目标文件夹，然后在 Markdown 中输入绝对路径（Jekyll 生成站点以后路径会变化，所以不能使用相对路径）。除了麻烦以外，在 Markdown 中编写时还是看不到图的，因为路径不对。&lt;/p&gt;
-
 &lt;p&gt;上次花点时间把所有的图片全部迁移到微博图床了。在 Chrome Web Store 中搜索了一下，选了&lt;a href=&#34;https://chrome.google.com/webstore/detail/%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9A%E5%9B%BE%E5%BA%8A/fdfdnfpdplfbbnemmmoklbfjbhecpnhf?utm_source=chrome-ntp-icon&#34;&gt;新浪微博图床&lt;/a&gt;。功能是可以用的，不过有一些问题，最让我无法忍受的就是一点击按钮就会弹出一个 Chrome 的空白窗口，无法关闭，只有重启 Chrome 才行，这个实在是忍无可忍。&lt;/p&gt;
-
 &lt;p&gt;闲话不说了，总之我发现这是一次绝佳的自己造轮子的机会。自己造自己用多好玩，所以我准备自己写一个 Chrome 插件，来实现微博图床的功能。起什么名字好呢，恩，这真是一个世界难题。想了半天，决定叫做“图床on微博”吧，是的，我是 RoR 粉丝。&lt;/p&gt;</description>
     </item>
     

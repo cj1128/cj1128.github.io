@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>underhanded-c on CJ&#39;s Blog</title>
@@ -18,9 +18,7 @@
       
       <guid>https://cjting.me/2015/06/16/underhanded-c/</guid>
       <description>&lt;p&gt;这一切，都要从这篇文章说起，&lt;a href=&#34;http://www.codersnotes.com/notes/being-sneaky-in-c&#34;&gt;being-sneaky-in-c&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;通过这篇文章，我了解到，原来外国有一种比赛，叫做 *Underhanded C*（中文翻译：有猫腻的 C），完成规定的题目，要求是写出看起来毫无问题的代码，但是却偷偷的藏有 Bug 或者说后门。&lt;/p&gt;
-
+&lt;p&gt;通过这篇文章，我了解到，原来外国有一种比赛，叫做 &lt;em&gt;Underhanded C&lt;/em&gt;（中文翻译：有猫腻的 C），完成规定的题目，要求是写出看起来毫无问题的代码，但是却偷偷的藏有 Bug 或者说后门。&lt;/p&gt;
 &lt;p&gt;这篇文章说的就是作者参与了这个比赛，以及他的解决方案。&lt;/p&gt;</description>
     </item>
     

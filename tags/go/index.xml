@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>go on CJ&#39;s Blog</title>
@@ -18,8 +18,7 @@
       
       <guid>https://cjting.me/2017/02/18/write-a-code-post-generator-with-go/</guid>
       <description>&lt;p&gt;很早之前就看过到关于 &lt;a href=&#34;http://commits.io&#34;&gt;commits.io&lt;/a&gt; 的一个帖子，这个站点专门制作代码明信片。什么是代码明信片呢？如下图。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://asset.cjting.cn/007FEWc7ly1g1f3o6zdtwj30sj0ee45m.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;img src=&#34;http://asset.cjting.cn/007FEWc7ly1g1f3o6zdtwj30sj0ee45m.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>

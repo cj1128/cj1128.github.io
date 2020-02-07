@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>MISC on CJ&#39;s Blog</title>
@@ -17,10 +17,8 @@
       <pubDate>Sat, 11 Aug 2018 18:08:00 +0800</pubDate>
       
       <guid>https://cjting.me/2018/08/11/forward-proxy-and-reverse-proxy/</guid>
-      <description>&lt;p&gt;代理的英文叫做 *Proxy*，是计算机中的常用软件。&lt;/p&gt;
-
+      <description>&lt;p&gt;代理的英文叫做 &lt;em&gt;Proxy&lt;/em&gt;，是计算机中的常用软件。&lt;/p&gt;
 &lt;p&gt;简单来说，代理的功能犹如它的名字所示：代替某人来处理某事。&lt;/p&gt;
-
 &lt;p&gt;常见的代理分两种，正向代理和反向代理。不管哪种代理，它们都位于客户端和服务器之间，将我们传统的 &lt;code&gt;客户端 &amp;lt;-&amp;gt; 服务器&lt;/code&gt; 通信变成了 &lt;code&gt;客户端 &amp;lt;-&amp;gt; 代理 &amp;lt;-&amp;gt; 服务器&lt;/code&gt; 通信。&lt;/p&gt;</description>
     </item>
     
@@ -40,9 +38,7 @@
       
       <guid>https://cjting.me/2016/10/21/build-log-system-with-elkb/</guid>
       <description>&lt;p&gt;当今的软件开发 &lt;strong&gt;多核&lt;/strong&gt; 以及 &lt;strong&gt;分布&lt;/strong&gt; 已经成为了常态，基本上稍大型的应用都是多台机器分布式部署。分布式在提高性能的同时也带来了很多问题，今天我们只讨论一点，那就是如何处理多台机器线上系统的日志。&lt;/p&gt;
-
 &lt;p&gt;以我司的某个应用 T 为例，部署在了百度云 5 台机子上，其中一台拥有公网 IP，使用了百度云提供的负载均衡服务。每次想要在日志中检索某个关键字时，基本步骤如下：&lt;/p&gt;
-
 &lt;ul&gt;
 &lt;li&gt;打开五个 SSH，登陆拥有公网 IP 的那台机器&lt;/li&gt;
 &lt;li&gt;在另外四个 SSH 中分别登陆其他的内网机器&lt;/li&gt;
@@ -57,8 +53,7 @@
       
       <guid>https://cjting.me/2016/08/20/use-dnsmasq-to-build-own-dns-server/</guid>
       <description>&lt;p&gt;在日常开发过程中，我们经常要配置各种
- host，比如公司内部的各种服务，或者测试项目的时候暂时把生产环境 URL 配置到本地上等等。一般采取的方法都是每个人手动编辑自己的 &lt;code&gt;/etc/hosts&lt;/code&gt; 文件。这个做法有两个缺点：&lt;/p&gt;
-
+host，比如公司内部的各种服务，或者测试项目的时候暂时把生产环境 URL 配置到本地上等等。一般采取的方法都是每个人手动编辑自己的 &lt;code&gt;/etc/hosts&lt;/code&gt; 文件。这个做法有两个缺点：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;手动编辑 &lt;code&gt;/etc/hosts&lt;/code&gt; 文件非常麻烦，需要 &lt;code&gt;sudo&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;工作量重复，团队内每个人都要配置一遍&lt;/li&gt;
@@ -72,7 +67,6 @@
       
       <guid>https://cjting.me/2016/05/21/ngrok-tutorial/</guid>
       <description>&lt;p&gt;很多时候，我们都有这样的需求：需要将本地正在开发的服务暴露在公网上，也就是从外网直接访问我们本机上的服务。正常情况下，这是办不到的，因为我们的本机并没有公网 IP，我们的本机处在内网当中。&lt;/p&gt;
-
 &lt;p&gt;这里需要顺手提及一个知识：NAT 穿透。我们的机器一般都在路由器的内网当中，IP 地址基本上都是 &lt;code&gt;192.168.x.x&lt;/code&gt; 系列，我们并没有公网 IP，那么如何访问外网呢？我们打开浏览器访问 Google，Google 与我们主机之间如何通信？假设我们主机 IP 为 &lt;code&gt;192.168.0.100&lt;/code&gt;，路由器 LAN IP 为 &lt;code&gt;192.168.0.1&lt;/code&gt;，WAN IP 为 &lt;code&gt;211.22.145.234（这是一个公网IP）&lt;/code&gt;，Google 服务器 IP 为 &lt;code&gt;74.125.204.101&lt;/code&gt;，详细通信流程如下。&lt;/p&gt;</description>
     </item>
     
@@ -83,9 +77,7 @@
       
       <guid>https://cjting.me/2015/06/16/underhanded-c/</guid>
       <description>&lt;p&gt;这一切，都要从这篇文章说起，&lt;a href=&#34;http://www.codersnotes.com/notes/being-sneaky-in-c&#34;&gt;being-sneaky-in-c&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;通过这篇文章，我了解到，原来外国有一种比赛，叫做 *Underhanded C*（中文翻译：有猫腻的 C），完成规定的题目，要求是写出看起来毫无问题的代码，但是却偷偷的藏有 Bug 或者说后门。&lt;/p&gt;
-
+&lt;p&gt;通过这篇文章，我了解到，原来外国有一种比赛，叫做 &lt;em&gt;Underhanded C&lt;/em&gt;（中文翻译：有猫腻的 C），完成规定的题目，要求是写出看起来毫无问题的代码，但是却偷偷的藏有 Bug 或者说后门。&lt;/p&gt;
 &lt;p&gt;这篇文章说的就是作者参与了这个比赛，以及他的解决方案。&lt;/p&gt;</description>
     </item>
     
@@ -95,10 +87,8 @@
       <pubDate>Thu, 24 Apr 2014 00:00:00 +0800</pubDate>
       
       <guid>https://cjting.me/2014/04/24/about-string-encoding/</guid>
-      <description>&lt;p&gt;很早之前就碰到过&amp;rdquo;乱码&amp;rdquo;这个现象，当时非常困惑，完全不能理解发生了什么。&lt;/p&gt;
-
+      <description>&lt;p&gt;很早之前就碰到过&amp;quot;乱码&amp;quot;这个现象，当时非常困惑，完全不能理解发生了什么。&lt;/p&gt;
 &lt;p&gt;上大学以后，虽然开始接触计算机，不过我就没看到过具体讲解字符编码的内容。对这个领域始终是感到非常模糊。&lt;/p&gt;
-
 &lt;p&gt;不过，最近好像豁然开朗了一下，感觉突然就明白了这个问题。&lt;/p&gt;</description>
     </item>
     

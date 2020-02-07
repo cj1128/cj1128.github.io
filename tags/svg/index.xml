@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>svg on CJ&#39;s Blog</title>
@@ -18,7 +18,6 @@
       
       <guid>https://cjting.me/2016/11/07/make-loading-animation-with-svg-morphing/</guid>
       <description>&lt;p&gt;每一个需要让用户等待的应用都应该有加载界面，可以是简单的文本，比如 &lt;code&gt;加载中…&lt;/code&gt;，也可以是有趣的动画。当然，一个好玩的加载动画能够大大增加用户等待的耐心，谁喜欢枯燥的文字呢。所以，投入点时间寻找或者制作一个加载动画是很有意义的。感谢 SVG 和相关的动画技术，现在制作一款复杂的动画已经变得十分容易了。&lt;/p&gt;
-
 &lt;p&gt;这里我使用 SVG 的形变技术（Shape Morphing）来做一个简单的矩形、三角形、圆形变换的动画。&lt;/p&gt;</description>
     </item>
     

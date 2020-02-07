@@ -1,19 +1,29 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.55.6" />
+	<meta name="generator" content="Hugo 0.64.0" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
   <title>CJ&#39;s Blog - CJ's Blog</title>
   <meta name="author" content="CJ">
   <meta name="description" content="CJ&#39;s Blog">
   <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css">
+
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
   <link rel="alternate" type="application/rss+xml" href="https://cjting.me/index.xml" title="CJ's Blog" />
-  <link rel="stylesheet" href="/asset/main.css">
-  <link rel="stylesheet" type="text/css" href="/gitalk.css">
-  <script src="/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/notyf@3.1.0/notyf.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/notyf@3.1.0/notyf.min.css">
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/zoom-vanilla.js@2.0.6/css/zoom.css">
+
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-mml-chtml.js"></script>
   <script type="text/javascript">
@@ -22,6 +32,8 @@
       section: "",
     }
   </script>
+
+  <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
   
@@ -60,7 +72,7 @@
 
         <div class="container">
           
-  <div class="index">
+  <div class="index u-content-container">
     
     
       <div class="index__item">
@@ -70,9 +82,7 @@
 
         <div class="index__item__content post__content">
           <p>这一切，都要从这篇文章说起，<a href="http://www.codersnotes.com/notes/being-sneaky-in-c">being-sneaky-in-c</a>。</p>
-
-<p>通过这篇文章，我了解到，原来外国有一种比赛，叫做 *Underhanded C*（中文翻译：有猫腻的 C），完成规定的题目，要求是写出看起来毫无问题的代码，但是却偷偷的藏有 Bug 或者说后门。</p>
-
+<p>通过这篇文章，我了解到，原来外国有一种比赛，叫做 <em>Underhanded C</em>（中文翻译：有猫腻的 C），完成规定的题目，要求是写出看起来毫无问题的代码，但是却偷偷的藏有 Bug 或者说后门。</p>
 <p>这篇文章说的就是作者参与了这个比赛，以及他的解决方案。</p>
         </div>
 
@@ -95,10 +105,8 @@
         </a>
 
         <div class="index__item__content post__content">
-          <p>很早之前就碰到过&rdquo;乱码&rdquo;这个现象，当时非常困惑，完全不能理解发生了什么。</p>
-
+          <p>很早之前就碰到过&quot;乱码&quot;这个现象，当时非常困惑，完全不能理解发生了什么。</p>
 <p>上大学以后，虽然开始接触计算机，不过我就没看到过具体讲解字符编码的内容。对这个领域始终是感到非常模糊。</p>
-
 <p>不过，最近好像豁然开朗了一下，感觉突然就明白了这个问题。</p>
         </div>
 
@@ -138,6 +146,7 @@
     </main>
   
 
+  <script src="https://cdn.jsdelivr.net/npm/zoom-vanilla.js@2.0.6/dist/zoom-vanilla.min.js"></script>
   <script src="/asset/main.js"></script>
 
   

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
@@ -25,31 +25,26 @@
   <url>
     <loc>https://cjting.me/</loc>
     <lastmod>2019-08-28T15:55:08+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cjting.me/tags/</loc>
-    <lastmod>2019-08-28T15:55:08+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/linux/</loc>
     <lastmod>2019-08-28T15:55:08+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/network/</loc>
     <lastmod>2019-08-28T15:55:08+08:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/tags/</loc>
+    <lastmod>2019-08-28T15:55:08+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/tcp/</loc>
     <lastmod>2019-08-28T15:55:08+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -60,19 +55,16 @@
   <url>
     <loc>https://cjting.me/tags/compression/</loc>
     <lastmod>2019-07-29T14:52:50+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/image/</loc>
     <lastmod>2019-07-29T14:52:50+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/picture/</loc>
     <lastmod>2019-07-29T14:52:50+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -93,7 +85,6 @@
   <url>
     <loc>https://cjting.me/tags/js-encoding/</loc>
     <lastmod>2018-07-22T09:45:12+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -102,14 +93,23 @@
   </url>
   
   <url>
+    <loc>https://cjting.me/tags/dns/</loc>
+    <lastmod>2018-05-01T15:32:08+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://cjting.me/2018/05/01/dns-101/</loc>
     <lastmod>2018-05-01T15:32:08+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://cjting.me/tags/dns/</loc>
-    <lastmod>2018-05-01T15:32:08+08:00</lastmod>
-    <priority>0</priority>
+    <loc>https://cjting.me/tags/auth/</loc>
+    <lastmod>2018-03-31T19:40:48+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/tags/http/</loc>
+    <lastmod>2018-03-31T19:40:48+08:00</lastmod>
   </url>
   
   <url>
@@ -118,33 +118,18 @@
   </url>
   
   <url>
-    <loc>https://cjting.me/tags/auth/</loc>
-    <lastmod>2018-03-31T19:40:48+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cjting.me/tags/http/</loc>
-    <lastmod>2018-03-31T19:40:48+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://cjting.me/tags/golang/</loc>
     <lastmod>2017-06-04T15:46:33+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/hugo/</loc>
     <lastmod>2017-06-04T15:46:33+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/ssg/</loc>
     <lastmod>2017-06-04T15:46:33+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -158,38 +143,33 @@
   </url>
   
   <url>
-    <loc>https://cjting.me/2017/05/13/how-git-generate-diff/</loc>
-    <lastmod>2017-05-13T00:00:00+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://cjting.me/tags/diff/</loc>
     <lastmod>2017-05-13T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/git/</loc>
     <lastmod>2017-05-13T00:00:00+08:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/2017/05/13/how-git-generate-diff/</loc>
+    <lastmod>2017-05-13T00:00:00+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/myers/</loc>
     <lastmod>2017-05-13T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/monitor/</loc>
     <lastmod>2017-03-12T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/prometheus/</loc>
     <lastmod>2017-03-12T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -200,13 +180,11 @@
   <url>
     <loc>https://cjting.me/tags/codeposter/</loc>
     <lastmod>2017-02-18T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/go/</loc>
     <lastmod>2017-02-18T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -217,19 +195,16 @@
   <url>
     <loc>https://cjting.me/tags/chrome/</loc>
     <lastmod>2017-01-23T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/%E4%B8%83%E7%89%9B/</loc>
     <lastmod>2017-01-23T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/%E5%9B%BE%E5%BA%8A/</loc>
     <lastmod>2017-01-23T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -240,7 +215,6 @@
   <url>
     <loc>https://cjting.me/tags/pprof/</loc>
     <lastmod>2016-11-14T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -251,13 +225,11 @@
   <url>
     <loc>https://cjting.me/tags/animation/</loc>
     <lastmod>2016-11-07T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/svg/</loc>
     <lastmod>2016-11-07T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -268,31 +240,26 @@
   <url>
     <loc>https://cjting.me/tags/elasticsearch/</loc>
     <lastmod>2016-10-21T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/elk/</loc>
     <lastmod>2016-10-21T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/kibana/</loc>
     <lastmod>2016-10-21T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/log/</loc>
     <lastmod>2016-10-21T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/logstash/</loc>
     <lastmod>2016-10-21T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -303,19 +270,16 @@
   <url>
     <loc>https://cjting.me/tags/https/</loc>
     <lastmod>2016-09-05T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/ssl/</loc>
     <lastmod>2016-09-05T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/tls/</loc>
     <lastmod>2016-09-05T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -326,7 +290,6 @@
   <url>
     <loc>https://cjting.me/tags/dnsmasq/</loc>
     <lastmod>2016-08-20T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -337,13 +300,11 @@
   <url>
     <loc>https://cjting.me/tags/nat/</loc>
     <lastmod>2016-05-21T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/ngrok/</loc>
     <lastmod>2016-05-21T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -354,13 +315,11 @@
   <url>
     <loc>https://cjting.me/tags/react/</loc>
     <lastmod>2016-04-06T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/%E5%BE%AE%E5%8D%9A/</loc>
     <lastmod>2016-04-06T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -376,19 +335,21 @@
   <url>
     <loc>https://cjting.me/tags/functional-programming/</loc>
     <lastmod>2016-03-20T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/javascript/</loc>
     <lastmod>2016-03-20T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/rxjs/</loc>
     <lastmod>2016-03-20T00:00:00+08:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/tags/curry/</loc>
+    <lastmod>2016-01-17T00:00:00+08:00</lastmod>
   </url>
   
   <url>
@@ -397,9 +358,8 @@
   </url>
   
   <url>
-    <loc>https://cjting.me/tags/curry/</loc>
-    <lastmod>2016-01-17T00:00:00+08:00</lastmod>
-    <priority>0</priority>
+    <loc>https://cjting.me/tags/c/</loc>
+    <lastmod>2015-06-16T00:00:00+08:00</lastmod>
   </url>
   
   <url>
@@ -408,33 +368,23 @@
   </url>
   
   <url>
-    <loc>https://cjting.me/tags/c/</loc>
-    <lastmod>2015-06-16T00:00:00+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://cjting.me/tags/underhanded-c/</loc>
     <lastmod>2015-06-16T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/encoding/</loc>
     <lastmod>2014-04-24T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/string/</loc>
     <lastmod>2014-04-24T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/utf-8/</loc>
     <lastmod>2014-04-24T00:00:00+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -444,7 +394,6 @@
   
   <url>
     <loc>https://cjting.me/categories/</loc>
-    <priority>0</priority>
   </url>
   
 </urlset>

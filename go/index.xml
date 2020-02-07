@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go on CJ&#39;s Blog</title>
@@ -18,12 +18,10 @@
       
       <guid>https://cjting.me/2017/06/04/migrate-to-hugo-from-jekyll/</guid>
       <description>&lt;p&gt;最近这段时间一直在忙着迁移博客，把原本基于 Jekyll 的博客迁移到了 Hugo 上。&lt;/p&gt;
-
 &lt;p&gt;之所以从 Jekyll 迁移的原因并不复杂，就是一个字：&lt;strong&gt;慢&lt;/strong&gt;。Jekyll 的速度实在是太慢了，我只有几十篇文章，在 Watch 模式下，每次改动，重新生成都要花费 3 秒钟，实在是太慢了。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;Regenerating: 1 file(s) changed at 2017-05-14 10:37:16 ...done in 3.085089 seconds.
-Regenerating: 1 file(s) changed at 2017-05-14 10:37:20 ...done in 3.121783 seconds.
-&lt;/code&gt;&lt;/pre&gt;</description>
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;Regenerating: &lt;span style=&#34;color:#099&#34;&gt;1&lt;/span&gt; file&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;s&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt; changed at 2017-05-14 10:37:16 ...done in 3.085089 seconds.
+Regenerating: &lt;span style=&#34;color:#099&#34;&gt;1&lt;/span&gt; file&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;s&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt; changed at 2017-05-14 10:37:20 ...done in 3.121783 seconds.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -33,8 +31,7 @@ Regenerating: 1 file(s) changed at 2017-05-14 10:37:20 ...done in 3.121783 secon
       
       <guid>https://cjting.me/2017/02/18/write-a-code-post-generator-with-go/</guid>
       <description>&lt;p&gt;很早之前就看过到关于 &lt;a href=&#34;http://commits.io&#34;&gt;commits.io&lt;/a&gt; 的一个帖子，这个站点专门制作代码明信片。什么是代码明信片呢？如下图。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://asset.cjting.cn/007FEWc7ly1g1f3o6zdtwj30sj0ee45m.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;img src=&#34;http://asset.cjting.cn/007FEWc7ly1g1f3o6zdtwj30sj0ee45m.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -44,11 +41,9 @@ Regenerating: 1 file(s) changed at 2017-05-14 10:37:20 ...done in 3.121783 secon
       
       <guid>https://cjting.me/2016/11/14/use-pprof-to-optimize-go/</guid>
       <description>&lt;p&gt;&lt;em&gt;Donald E.Knuth&lt;/em&gt; 说过一句非常著名的话，&lt;strong&gt;过早的优化是万恶之源&lt;/strong&gt;，原文如下：&lt;/p&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;We should forget about small efficiencies, say about 97% of the time; premature optimization is the root of all evil.&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;我是十分赞同这句话的，并且在开发过程中也深有体会。什么叫做 &lt;em&gt;过早的优化&lt;/em&gt; 呢？即不需要考虑优化的时候你在考虑优化。这绝对不意味着可以任性地写代码，随意地选择数据结构和算法。这句话是告诉我们，在程序开发的早期阶段，程序员应该专注在程序的 &lt;strong&gt;逻辑实现&lt;/strong&gt; 上，而不是专注在程序的 &lt;strong&gt;性能优化&lt;/strong&gt; 上。用正确的数据结构和算法，优美合理的语句实现你要的功能。而不是满脑子在想：“这个函数是不是可以优化一下？”。&lt;/p&gt;</description>
     </item>
     

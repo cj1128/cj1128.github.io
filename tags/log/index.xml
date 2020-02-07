@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>log on CJ&#39;s Blog</title>
@@ -18,9 +18,7 @@
       
       <guid>https://cjting.me/2016/10/21/build-log-system-with-elkb/</guid>
       <description>&lt;p&gt;当今的软件开发 &lt;strong&gt;多核&lt;/strong&gt; 以及 &lt;strong&gt;分布&lt;/strong&gt; 已经成为了常态，基本上稍大型的应用都是多台机器分布式部署。分布式在提高性能的同时也带来了很多问题，今天我们只讨论一点，那就是如何处理多台机器线上系统的日志。&lt;/p&gt;
-
 &lt;p&gt;以我司的某个应用 T 为例，部署在了百度云 5 台机子上，其中一台拥有公网 IP，使用了百度云提供的负载均衡服务。每次想要在日志中检索某个关键字时，基本步骤如下：&lt;/p&gt;
-
 &lt;ul&gt;
 &lt;li&gt;打开五个 SSH，登陆拥有公网 IP 的那台机器&lt;/li&gt;
 &lt;li&gt;在另外四个 SSH 中分别登陆其他的内网机器&lt;/li&gt;
