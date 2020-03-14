@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>javascript on CJ&#39;s Blog</title>
@@ -18,11 +18,14 @@
       
       <guid>https://cjting.me/2016/03/20/intruduction-to-functional-reactive-programming/</guid>
       <description>&lt;p&gt;推荐阅读：&lt;/p&gt;
+
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=XRYN2xt11Ek&#34;&gt;Netflix JavaScript Talks - Async JavaScript with Reactive Extensions&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://gist.github.com/staltz/868e7e9bc2a7b8c1f754&#34;&gt;The introduction to Reactive Programming you&amp;rsquo;ve been missing&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+
 &lt;p&gt;HTML5Rocks 有一篇关于 &lt;a href=&#34;http://www.html5rocks.com/en/tutorials/es6/promises/&#34;&gt;Promise&lt;/a&gt; 的经典文章，通过引入这样一个问题来说明 Promise 的优越性，问题如下：&lt;/p&gt;
+
 &lt;blockquote&gt;
 &lt;p&gt;我们需要渲染一个故事，首先我们获取故事的 json，渲染标题 (story.heading)，然后再根据其中的 charpter url，获取每一章的内容，并显示。中间出了任何问题，显示错误信息。&lt;/p&gt;
 &lt;/blockquote&gt;</description>
@@ -35,17 +38,18 @@
       
       <guid>https://cjting.me/2016/01/17/javascript-infinite-currying/</guid>
       <description>&lt;p&gt;很久之前曾看到一个很有意思的 JS 问题，&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;color:#998;font-style:italic&#34;&gt;// 定义一个函数 add，满足如下性质：
-&lt;/span&gt;&lt;span style=&#34;color:#998;font-style:italic&#34;&gt;&lt;/span&gt;add(&lt;span style=&#34;color:#099&#34;&gt;1&lt;/span&gt;) &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#099&#34;&gt;1&lt;/span&gt;
-add(&lt;span style=&#34;color:#099&#34;&gt;1&lt;/span&gt;)(&lt;span style=&#34;color:#099&#34;&gt;2&lt;/span&gt;) &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#099&#34;&gt;3&lt;/span&gt;
-add(&lt;span style=&#34;color:#099&#34;&gt;1&lt;/span&gt;)(&lt;span style=&#34;color:#099&#34;&gt;2&lt;/span&gt;)(&lt;span style=&#34;color:#099&#34;&gt;3&lt;/span&gt;) &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#099&#34;&gt;6&lt;/span&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;// 定义一个函数 add，满足如下性质：
+add(1) == 1
+add(1)(2) == 3
+add(1)(2)(3) == 6
 ...
 
-&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;var&lt;/span&gt; g &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; add(&lt;span style=&#34;color:#099&#34;&gt;1&lt;/span&gt;)(&lt;span style=&#34;color:#099&#34;&gt;2&lt;/span&gt;)
-g(&lt;span style=&#34;color:#099&#34;&gt;100&lt;/span&gt;) &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#099&#34;&gt;103&lt;/span&gt;
-g(&lt;span style=&#34;color:#099&#34;&gt;200&lt;/span&gt;) &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#099&#34;&gt;203&lt;/span&gt;
+var g = add(1)(2)
+g(100) == 103
+g(200) == 203
 ...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     
   </channel>

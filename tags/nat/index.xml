@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>nat on CJ&#39;s Blog</title>
@@ -18,6 +18,7 @@
       
       <guid>https://cjting.me/2016/05/21/ngrok-tutorial/</guid>
       <description>&lt;p&gt;很多时候，我们都有这样的需求：需要将本地正在开发的服务暴露在公网上，也就是从外网直接访问我们本机上的服务。正常情况下，这是办不到的，因为我们的本机并没有公网 IP，我们的本机处在内网当中。&lt;/p&gt;
+
 &lt;p&gt;这里需要顺手提及一个知识：NAT 穿透。我们的机器一般都在路由器的内网当中，IP 地址基本上都是 &lt;code&gt;192.168.x.x&lt;/code&gt; 系列，我们并没有公网 IP，那么如何访问外网呢？我们打开浏览器访问 Google，Google 与我们主机之间如何通信？假设我们主机 IP 为 &lt;code&gt;192.168.0.100&lt;/code&gt;，路由器 LAN IP 为 &lt;code&gt;192.168.0.1&lt;/code&gt;，WAN IP 为 &lt;code&gt;211.22.145.234（这是一个公网IP）&lt;/code&gt;，Google 服务器 IP 为 &lt;code&gt;74.125.204.101&lt;/code&gt;，详细通信流程如下。&lt;/p&gt;</description>
     </item>
     

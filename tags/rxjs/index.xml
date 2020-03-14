@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>rxjs on CJ&#39;s Blog</title>
@@ -18,11 +18,14 @@
       
       <guid>https://cjting.me/2016/03/20/intruduction-to-functional-reactive-programming/</guid>
       <description>&lt;p&gt;推荐阅读：&lt;/p&gt;
+
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=XRYN2xt11Ek&#34;&gt;Netflix JavaScript Talks - Async JavaScript with Reactive Extensions&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://gist.github.com/staltz/868e7e9bc2a7b8c1f754&#34;&gt;The introduction to Reactive Programming you&amp;rsquo;ve been missing&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+
 &lt;p&gt;HTML5Rocks 有一篇关于 &lt;a href=&#34;http://www.html5rocks.com/en/tutorials/es6/promises/&#34;&gt;Promise&lt;/a&gt; 的经典文章，通过引入这样一个问题来说明 Promise 的优越性，问题如下：&lt;/p&gt;
+
 &lt;blockquote&gt;
 &lt;p&gt;我们需要渲染一个故事，首先我们获取故事的 json，渲染标题 (story.heading)，然后再根据其中的 charpter url，获取每一章的内容，并显示。中间出了任何问题，显示错误信息。&lt;/p&gt;
 &lt;/blockquote&gt;</description>

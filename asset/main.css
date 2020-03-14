@@ -220,6 +220,7 @@ body {
 .post__content a {
   text-decoration: none;
   color: #268bd2;
+  word-break: break-all;
 }
 
 .post__content a:hover {

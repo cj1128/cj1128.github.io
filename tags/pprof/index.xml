@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>pprof on CJ&#39;s Blog</title>
@@ -18,9 +18,11 @@
       
       <guid>https://cjting.me/2016/11/14/use-pprof-to-optimize-go/</guid>
       <description>&lt;p&gt;&lt;em&gt;Donald E.Knuth&lt;/em&gt; 说过一句非常著名的话，&lt;strong&gt;过早的优化是万恶之源&lt;/strong&gt;，原文如下：&lt;/p&gt;
+
 &lt;blockquote&gt;
 &lt;p&gt;We should forget about small efficiencies, say about 97% of the time; premature optimization is the root of all evil.&lt;/p&gt;
 &lt;/blockquote&gt;
+
 &lt;p&gt;我是十分赞同这句话的，并且在开发过程中也深有体会。什么叫做 &lt;em&gt;过早的优化&lt;/em&gt; 呢？即不需要考虑优化的时候你在考虑优化。这绝对不意味着可以任性地写代码，随意地选择数据结构和算法。这句话是告诉我们，在程序开发的早期阶段，程序员应该专注在程序的 &lt;strong&gt;逻辑实现&lt;/strong&gt; 上，而不是专注在程序的 &lt;strong&gt;性能优化&lt;/strong&gt; 上。用正确的数据结构和算法，优美合理的语句实现你要的功能。而不是满脑子在想：“这个函数是不是可以优化一下？”。&lt;/p&gt;</description>
     </item>
     

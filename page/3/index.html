@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.64.0" />
+	<meta name="generator" content="Hugo 0.55.6" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
   <title>CJ&#39;s Blog - CJ's Blog</title>
@@ -25,7 +25,14 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/zoom-vanilla.js@2.0.6/css/zoom.css">
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-mml-chtml.js"></script>
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [["$", "$"]],
+    },
+  }
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-chtml.js"></script>
   <script type="text/javascript">
     window.PAGE = {
       title: "CJ\x27s Blog",
@@ -82,7 +89,9 @@
 
         <div class="index__item__content post__content">
           <p>这一切，都要从这篇文章说起，<a href="http://www.codersnotes.com/notes/being-sneaky-in-c">being-sneaky-in-c</a>。</p>
-<p>通过这篇文章，我了解到，原来外国有一种比赛，叫做 <em>Underhanded C</em>（中文翻译：有猫腻的 C），完成规定的题目，要求是写出看起来毫无问题的代码，但是却偷偷的藏有 Bug 或者说后门。</p>
+
+<p>通过这篇文章，我了解到，原来外国有一种比赛，叫做 *Underhanded C*（中文翻译：有猫腻的 C），完成规定的题目，要求是写出看起来毫无问题的代码，但是却偷偷的藏有 Bug 或者说后门。</p>
+
 <p>这篇文章说的就是作者参与了这个比赛，以及他的解决方案。</p>
         </div>
 
@@ -105,8 +114,10 @@
         </a>
 
         <div class="index__item__content post__content">
-          <p>很早之前就碰到过&quot;乱码&quot;这个现象，当时非常困惑，完全不能理解发生了什么。</p>
+          <p>很早之前就碰到过&rdquo;乱码&rdquo;这个现象，当时非常困惑，完全不能理解发生了什么。</p>
+
 <p>上大学以后，虽然开始接触计算机，不过我就没看到过具体讲解字符编码的内容。对这个领域始终是感到非常模糊。</p>
+
 <p>不过，最近好像豁然开朗了一下，感觉突然就明白了这个问题。</p>
         </div>
 

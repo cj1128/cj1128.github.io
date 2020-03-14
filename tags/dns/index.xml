@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>dns on CJ&#39;s Blog</title>
@@ -18,7 +18,9 @@
       
       <guid>https://cjting.me/2018/05/01/dns-101/</guid>
       <description>&lt;p&gt;DNS 全称 &lt;code&gt;Domain Name System&lt;/code&gt;，是我们每天都在使用的基础互联网设施。&lt;/p&gt;
+
 &lt;p&gt;它被发明出来的原因很简单，计算机之间的通信用的是 IP 地址，是一串数字，人类记忆起来十分不方便，因此，我们给地址起个名字，然后将名字和 IP 之间的关系记录起来，这样，我们只用记住名字就行了。&lt;/p&gt;
+
 &lt;p&gt;从上面可以看出，DNS 系统类似我们日常使用的电话本，只不过里面存储的是域名和 IP 之间的关系。和人与电话之间的关系一样，一个域名可以有多个 IP，一个 IP 也可以有多个域名。&lt;/p&gt;</description>
     </item>
     
@@ -29,7 +31,8 @@
       
       <guid>https://cjting.me/2016/08/20/use-dnsmasq-to-build-own-dns-server/</guid>
       <description>&lt;p&gt;在日常开发过程中，我们经常要配置各种
-host，比如公司内部的各种服务，或者测试项目的时候暂时把生产环境 URL 配置到本地上等等。一般采取的方法都是每个人手动编辑自己的 &lt;code&gt;/etc/hosts&lt;/code&gt; 文件。这个做法有两个缺点：&lt;/p&gt;
+ host，比如公司内部的各种服务，或者测试项目的时候暂时把生产环境 URL 配置到本地上等等。一般采取的方法都是每个人手动编辑自己的 &lt;code&gt;/etc/hosts&lt;/code&gt; 文件。这个做法有两个缺点：&lt;/p&gt;
+
 &lt;ul&gt;
 &lt;li&gt;手动编辑 &lt;code&gt;/etc/hosts&lt;/code&gt; 文件非常麻烦，需要 &lt;code&gt;sudo&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;工作量重复，团队内每个人都要配置一遍&lt;/li&gt;

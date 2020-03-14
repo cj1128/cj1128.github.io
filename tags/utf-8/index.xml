@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>utf-8 on CJ&#39;s Blog</title>
@@ -17,8 +17,10 @@
       <pubDate>Thu, 24 Apr 2014 00:00:00 +0800</pubDate>
       
       <guid>https://cjting.me/2014/04/24/about-string-encoding/</guid>
-      <description>&lt;p&gt;很早之前就碰到过&amp;quot;乱码&amp;quot;这个现象，当时非常困惑，完全不能理解发生了什么。&lt;/p&gt;
+      <description>&lt;p&gt;很早之前就碰到过&amp;rdquo;乱码&amp;rdquo;这个现象，当时非常困惑，完全不能理解发生了什么。&lt;/p&gt;
+
 &lt;p&gt;上大学以后，虽然开始接触计算机，不过我就没看到过具体讲解字符编码的内容。对这个领域始终是感到非常模糊。&lt;/p&gt;
+
 &lt;p&gt;不过，最近好像豁然开朗了一下，感觉突然就明白了这个问题。&lt;/p&gt;</description>
     </item>
     

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>七牛 on CJ&#39;s Blog</title>
@@ -18,7 +18,9 @@
       
       <guid>https://cjting.me/2017/01/23/build-an-img-bed-on-qiniu/</guid>
       <description>&lt;p&gt;注：因为七牛 API 修改，编辑于 2019-03-25T16:20:00。&lt;/p&gt;
+
 &lt;p&gt;最近在使用过程中发现 &lt;strong&gt;图床on微博&lt;/strong&gt; 出了点问题，响应体的 JSON 解析错误，不用想都知道肯定是微博修改了响应体的数据结构（微博图片上传接口响应体是 html 和 json 混在一起，十分专业）。简单修复了一下，测试的时候却发现，微博的图片上传接口变得不再稳定了，经常 404。看来微博图床是不能用了，正好我早就觉得微博不是个好图床，缺点如下：&lt;/p&gt;
+
 &lt;ol&gt;
 &lt;li&gt;经常性的要重新登陆，麻烦死了&lt;/li&gt;
 &lt;li&gt;无法获取到完整的上传图片列表&lt;/li&gt;
