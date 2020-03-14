@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>golang on CJ&#39;s Blog</title>
+    <title>golang on CJ Ting&#39;s Blog</title>
     <link>https://cjting.me/tags/golang/</link>
-    <description>Recent content in golang on CJ&#39;s Blog</description>
+    <description>Recent content in golang on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sun, 04 Jun 2017 15:46:33 +0800</lastBuildDate>
