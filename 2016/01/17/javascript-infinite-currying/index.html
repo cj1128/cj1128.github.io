@@ -72,80 +72,65 @@
 
       <div class="post__content">
         <p>很久之前曾看到一个很有意思的 JS 问题，</p>
-
-<pre><code class="language-javascript">// 定义一个函数 add，满足如下性质：
-add(1) == 1
-add(1)(2) == 3
-add(1)(2)(3) == 6
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#998;font-style:italic">// 定义一个函数 add，满足如下性质：
+</span><span style="color:#998;font-style:italic"></span>add(<span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">1</span>
+add(<span style="color:#099">1</span>)(<span style="color:#099">2</span>) <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">3</span>
+add(<span style="color:#099">1</span>)(<span style="color:#099">2</span>)(<span style="color:#099">3</span>) <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">6</span>
 ...
 
-var g = add(1)(2)
-g(100) == 103
-g(200) == 203
+<span style="color:#000;font-weight:bold">var</span> g <span style="color:#000;font-weight:bold">=</span> add(<span style="color:#099">1</span>)(<span style="color:#099">2</span>)
+g(<span style="color:#099">100</span>) <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">103</span>
+g(<span style="color:#099">200</span>) <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">203</span>
 ...
-</code></pre>
-
-<p>乍一看，这应该是需要用到柯里化（Curry）的知识，但是好像又不够。当时忙别的事情就没管了，现在想起来，便认真研究了一下。</p>
-
+</code></pre></div><p>乍一看，这应该是需要用到柯里化（Curry）的知识，但是好像又不够。当时忙别的事情就没管了，现在想起来，便认真研究了一下。</p>
 <p>首先我们需要来说一下柯里化，柯里化是一个在函数编程中十分重要的概念，如果大家熟悉 <code>Haskell</code> 的话就知道 <code>Haskell</code> 中的函数都是默认柯里化的。JS 随便找一个函数编程库（比如 Ramda）肯定也会有柯里化，因为他实在是太重要了。这里我们用一个简单的例子来看看什么是柯里化。</p>
-
-<pre><code class="language-javascript">// f 是一个普通函数，接受两个参数，并返回他们相加的结果
-function f(x, y) {
-  return x + y
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#998;font-style:italic">// f 是一个普通函数，接受两个参数，并返回他们相加的结果
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">function</span> f(x, y) {
+  <span style="color:#000;font-weight:bold">return</span> x <span style="color:#000;font-weight:bold">+</span> y
 }
 
-// g 是一个柯里化函数，接受一个参数，返回一个新的函数
-function g(x) {
-  return function(y) {
-  	return x + y
+<span style="color:#998;font-style:italic">// g 是一个柯里化函数，接受一个参数，返回一个新的函数
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">function</span> g(x) {
+  <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">function</span>(y) {
+  	<span style="color:#000;font-weight:bold">return</span> x <span style="color:#000;font-weight:bold">+</span> y
   }
 }
 
-// 传统函数调用是接收多个参数返回一个值，而柯里化函数则是接收参数返回新的函数，新的函数又可以接受参数再返回新的函数，直至最后返回结果值
-// 使用柯里化函数的优势是我们可以&quot;部分应用&quot; (Partial Application)函数的参数，生成新的函数，这在函数编程中是至关重要的
-// g(1)(2) == 3
-// var add1 = g(1)
-// add1(100) == 101
-// var add100 = g(100)
-// add100(100) == 200
-</code></pre>
-
-<p>现在我们来分析上面的问题。</p>
-
+<span style="color:#998;font-style:italic">// 传统函数调用是接收多个参数返回一个值，而柯里化函数则是接收参数返回新的函数，新的函数又可以接受参数再返回新的函数，直至最后返回结果值
+</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// 使用柯里化函数的优势是我们可以&#34;部分应用&#34; (Partial Application)函数的参数，生成新的函数，这在函数编程中是至关重要的
+</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// g(1)(2) == 3
+</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// var add1 = g(1)
+</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// add1(100) == 101
+</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// var add100 = g(100)
+</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// add100(100) == 200
+</span></code></pre></div><p>现在我们来分析上面的问题。</p>
 <p>首先，<code>add(1) == 1</code>，说明 <code>add</code> 函数应该返回一个整数。但是 <code>add(1)(2) == 3</code> 表明毫无疑问 <code>add(1)</code> 返回的值应该是一个函数。所以现在我们的问题就变成了，有没有可能让一个函数等于一个整数呢？（注意比较操作符是松散的<code>==</code>，而不是严格<code>===</code>）。</p>
-
 <p>答案是有可能的。这里需要我们了解 JS 的一个小知识。那就是 <code>valueOf</code> 属性。当我们将一个对象和一个 Primitive 进行比较的时候，JS 会调用对象的 <code>valueOf</code> 方法获取一个 Primitive 值，然后再进行比较。</p>
-
-<pre><code class="language-javascript">var a = {}
-a.valueOf = function(){ return &quot;hello world!&quot; }
-a == &quot;hello world!&quot; // true
-a === &quot;hello world!&quot; // false，严格等于操作符会比较数据类型
-</code></pre>
-
-<p>从这里就可以看出，只要我们定义了对象 a 的 <code>valueOf</code> 方法，我们可以让他和任意的 Primitive 值相等。</p>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#000;font-weight:bold">var</span> a <span style="color:#000;font-weight:bold">=</span> {}
+a.valueOf <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">function</span>(){ <span style="color:#000;font-weight:bold">return</span> <span style="color:#d14">&#34;hello world!&#34;</span> }
+a <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&#34;hello world!&#34;</span> <span style="color:#998;font-style:italic">// true
+</span><span style="color:#998;font-style:italic"></span>a <span style="color:#000;font-weight:bold">===</span> <span style="color:#d14">&#34;hello world!&#34;</span> <span style="color:#998;font-style:italic">// false，严格等于操作符会比较数据类型
+</span></code></pre></div><p>从这里就可以看出，只要我们定义了对象 a 的 <code>valueOf</code> 方法，我们可以让他和任意的 Primitive 值相等。</p>
 <p>函数也是一个对象，所以这个问题的解决方法就很清楚了。每次返回的都是一个函数。这个函数的 <code>valueOf</code> 会返回传入参数的和。</p>
-
 <p>大家可以试试看自己实现，下面是我的实现～</p>
-
-<pre><code class="language-javascript">function total(args) {
-  return [].slice.call(args).reduce((t, c) =&gt; t + c, 0)
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#000;font-weight:bold">function</span> total(args) {
+  <span style="color:#000;font-weight:bold">return</span> [].slice.call(args).reduce((t, c) =&gt; t <span style="color:#000;font-weight:bold">+</span> c, <span style="color:#099">0</span>)
 }
 
-function add() {
-  function factor(value) {
-    var result = function(){
-      return factor(value + total(arguments))
+<span style="color:#000;font-weight:bold">function</span> add() {
+  <span style="color:#000;font-weight:bold">function</span> factor(value) {
+    <span style="color:#000;font-weight:bold">var</span> result <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">function</span>(){
+      <span style="color:#000;font-weight:bold">return</span> factor(value <span style="color:#000;font-weight:bold">+</span> total(arguments))
     }
-    result.value = value
-    result.valueOf = function(){ return this.value }
+    result.value <span style="color:#000;font-weight:bold">=</span> value
+    result.valueOf <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">function</span>(){ <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">this</span>.value }
 
-    return result
+    <span style="color:#000;font-weight:bold">return</span> result
   }
 
-  return factor(total(arguments))
+  <span style="color:#000;font-weight:bold">return</span> factor(total(arguments))
 }
-</code></pre>
+</code></pre></div>
       </div>
 
       <div id="post__comments">

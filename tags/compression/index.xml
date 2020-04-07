@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>compression on CJ Ting&#39;s Blog</title>
@@ -18,15 +18,10 @@
       
       <guid>https://cjting.me/2019/07/29/image-optimization/</guid>
       <description>&lt;p&gt;图片是大部分网页的重要组成部分，一般情况下，我们不会太关注这方面的问题，需要显示图片直接一个 &lt;code&gt;img&lt;/code&gt; 标签搞定。&lt;/p&gt;
-
 &lt;p&gt;但实际上，无论是对于提高加载速度，还是对于优化用户体验，优化图片都是一个重要的手段。&lt;/p&gt;
-
 &lt;p&gt;图片优化分成两个方面：&lt;/p&gt;
-
 &lt;p&gt;第一，图片压缩。在保证视觉效果的情况下，减少图片的体积。这个很有效，1M 和 100K 的图片，肉眼看起来几乎差不多，但却省了 90% 的流量，大大提高了加载速度。&lt;/p&gt;
-
 &lt;p&gt;第二，响应式图片。根据客户端的情况，选择最合适的图片返回给用户。用户是一个 500px 的设备，那么返回 1000px 的图给他就是浪费（假设物理像素和 CSS 像素是一比一）。&lt;/p&gt;
-
 &lt;p&gt;我们先来看图片压缩。&lt;/p&gt;</description>
     </item>
     

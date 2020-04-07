@@ -70,9 +70,7 @@
 
       <div class="post__content">
         <p>很多时候，我们都有这样的需求：需要将本地正在开发的服务暴露在公网上，也就是从外网直接访问我们本机上的服务。正常情况下，这是办不到的，因为我们的本机并没有公网 IP，我们的本机处在内网当中。</p>
-
 <p>这里需要顺手提及一个知识：NAT 穿透。我们的机器一般都在路由器的内网当中，IP 地址基本上都是 <code>192.168.x.x</code> 系列，我们并没有公网 IP，那么如何访问外网呢？我们打开浏览器访问 Google，Google 与我们主机之间如何通信？假设我们主机 IP 为 <code>192.168.0.100</code>，路由器 LAN IP 为 <code>192.168.0.1</code>，WAN IP 为 <code>211.22.145.234（这是一个公网IP）</code>，Google 服务器 IP 为 <code>74.125.204.101</code>，详细通信流程如下。</p>
-
 <ol>
 <li>主机构建 HTTP 请求数据包，目标 IP 为 74.125.204.101，目标端口 80，源 IP 为 192.168.0.100，源端口随机生成，假定为 5000。</li>
 <li>主机检查目标 IP 地址，发现不在一个网段，数据包丢给默认网关（192.168.0.1）。</li>
@@ -82,82 +80,50 @@
 <li>路由器 WAN 口收到数据包，目标端口为 5500，查询 NAT 表，发现对应的机器是 192.168.0.100:5000，所以修改目标 IP 为 192.168.0.100，目标端口为 5000，并通过 LAN 口发送给主机。</li>
 <li>主机接收到数据包，完成这一次通信。</li>
 </ol>
-
 <p>从上面可以看出，内网机器能够和外网通信，全靠拥有公网 IP 的路由器做交通枢纽。路由器通过查询 NAT 表，来确定数据包该发送给内网哪台机器。所以内网多台机器都可以通过这一台路由器和外网进行通信，这极大的节省了宝贵的公网 IP 资源。</p>
-
 <p>NAT 表项是在内网主动和外网通信的过程中构建的，如果外网主动访问内网，那么自然没有表项，也就访问不到。如果想要从外网访问内网，根据上面的原理我们可以有两种做法。</p>
-
 <p>首先，我们可以手动添加 NAT 表项，大部分路由器里面都有这个设置项。我的 NETGEAR 路由器的设置页面如图所示。</p>
-
-<p><img src="http://asset.cjting.cn/9b85365dgw1f43dxm3ux6j21gz0jo78u.jpg" alt="" /></p>
-
+<p><img src="http://asset.cjting.cn/9b85365dgw1f43dxm3ux6j21gz0jo78u.jpg" alt=""></p>
 <p>另一种办法，是找一个公网服务器做中介。比如服务器 A，流程如下。</p>
-
 <ul>
 <li>开发主机和服务器 A 构建一条连接</li>
 <li>用户访问服务器 A</li>
 <li>服务器 A 联系开发主机获取内容</li>
 <li>服务器 A 将获取到的内容发送给用户</li>
 </ul>
-
 <p>通过上面的流程，就实现了用户访问到了我们内网的内容。那么帮助我们实现这个功能的程序就是 Ngrok。通过在服务器上安装 Ngrok，我们就可以和本地主机构建一条隧道，来让外网用户访问本地主机的内容。</p>
-
 <p>以下是安装 Ngrok 的详细步骤。</p>
-
 <p>首先，下载代码。</p>
-
-<pre><code class="language-bash">git clone https://github.com/inconshreveable/ngrok.git
-cd ngrok
-</code></pre>
-
-<p>第二步，生成我们自己的证书。我们首先要想好一个基础域名（NGROK_BASE_DOMAIN)。比如我选择 <code>tunnel.cjting.me</code>，那么我之后就会使用 <code>*.tunnel.cjting.me</code> 来访问相应的本地服务。</p>
-
-<pre><code class="language-bash">openssl genrsa -out base.key 2048
-openssl req -new -x509 -nodes -key base.key -days 10000 -subj &quot;/CN=[NGROK_BASE_DOMAIN]&quot; -out base.pem
-openssl genrsa -out server.key 2048
-openssl req -new -key server.key -subj &quot;/CN=[NGROK_BASE_DOMAIN]&quot; -out server.csr
-openssl x509 -req -in server.csr -CA base.pem -CAkey base.key -CAcreateserial -days 10000 -out server.crt
-</code></pre>
-
-<p><img src="http://asset.cjting.cn/9b85365djw1f439iat2lpj20qi0g5grx.jpg" alt="" /></p>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">git clone https://github.com/inconshreveable/ngrok.git
+<span style="color:#0086b3">cd</span> ngrok
+</code></pre></div><p>第二步，生成我们自己的证书。我们首先要想好一个基础域名（NGROK_BASE_DOMAIN)。比如我选择 <code>tunnel.cjting.me</code>，那么我之后就会使用 <code>*.tunnel.cjting.me</code> 来访问相应的本地服务。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">openssl genrsa -out base.key <span style="color:#099">2048</span>
+openssl req -new -x509 -nodes -key base.key -days <span style="color:#099">10000</span> -subj <span style="color:#d14">&#34;/CN=[NGROK_BASE_DOMAIN]&#34;</span> -out base.pem
+openssl genrsa -out server.key <span style="color:#099">2048</span>
+openssl req -new -key server.key -subj <span style="color:#d14">&#34;/CN=[NGROK_BASE_DOMAIN]&#34;</span> -out server.csr
+openssl x509 -req -in server.csr -CA base.pem -CAkey base.key -CAcreateserial -days <span style="color:#099">10000</span> -out server.crt
+</code></pre></div><p><img src="http://asset.cjting.cn/9b85365djw1f439iat2lpj20qi0g5grx.jpg" alt=""></p>
 <p>第三步，拷贝证书文件，然后编译相应的客户端和服务器程序。</p>
-
-<pre><code class="language-bash">cp base.pem assets/client/tls/ngrokroot.crt
-GOOS=linux make release-linux # 服务器是 linux，我们需要交叉编译
-make release-client # 客户端运行在我们自己的机器上
-</code></pre>
-
-<p>第四步，将相应的文件传送到服务器上，并启动服务器程序。服务器程序需要第二部生成的 <code>server.crt</code> 和 <code>server.key</code>。</p>
-
-<pre><code class="language-bash">mkdir release
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">cp base.pem assets/client/tls/ngrokroot.crt
+<span style="color:#008080">GOOS</span><span style="color:#000;font-weight:bold">=</span>linux make release-linux <span style="color:#998;font-style:italic"># 服务器是 linux，我们需要交叉编译</span>
+make release-client <span style="color:#998;font-style:italic"># 客户端运行在我们自己的机器上</span>
+</code></pre></div><p>第四步，将相应的文件传送到服务器上，并启动服务器程序。服务器程序需要第二部生成的 <code>server.crt</code> 和 <code>server.key</code>。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">mkdir release
 cp bin/linux_amd64/ngrokd release/
 cp server.crt server.key release/
-scp -r release/ root@[host]:~/ngrok
-ssh root@[host]
-cd ~/ngrok
-./ngrokd -tlsKey=server.key -tlsCrt=server.crt -domain=&quot;[NGROK_BASE_DOMAIN]&quot; -httpAddr=&quot;:80&quot; -httpsAddr=&quot;:443&quot;
-</code></pre>
-
-<p>第五步，配置域名解析。解析 <code>[NGROK_BASE_DOMAIN]</code> 以及 <code>*.[NGROK_BASE_DOMAIN]</code> 地址到服务器上。我使用的是 DNSPOD，截图如下。</p>
-
-<p><img src="http://asset.cjting.cn/9b85365djw1f43rtmytwvj20nn0bqwgl.jpg" alt="" /></p>
-
+scp -r release/ root@<span style="color:#000;font-weight:bold">[</span>host<span style="color:#000;font-weight:bold">]</span>:~/ngrok
+ssh root@<span style="color:#000;font-weight:bold">[</span>host<span style="color:#000;font-weight:bold">]</span>
+<span style="color:#0086b3">cd</span> ~/ngrok
+./ngrokd -tlsKey<span style="color:#000;font-weight:bold">=</span>server.key -tlsCrt<span style="color:#000;font-weight:bold">=</span>server.crt -domain<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;[NGROK_BASE_DOMAIN]&#34;</span> -httpAddr<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;:80&#34;</span> -httpsAddr<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;:443&#34;</span>
+</code></pre></div><p>第五步，配置域名解析。解析 <code>[NGROK_BASE_DOMAIN]</code> 以及 <code>*.[NGROK_BASE_DOMAIN]</code> 地址到服务器上。我使用的是 DNSPOD，截图如下。</p>
+<p><img src="http://asset.cjting.cn/9b85365djw1f43rtmytwvj20nn0bqwgl.jpg" alt=""></p>
 <p>最后一步，配置客户端，启动客户端程序。客户端的默认配置文件位置是 <code>$HOME/.ngrok</code>，填入以下配置。</p>
-
-<pre><code class="language-yaml">server_addr: [NGROK_BASE_DOMAIN]:4443
-trust_host_root_certs: false
-</code></pre>
-
-<p>然后启动客户端。</p>
-
-<pre><code class="language-bash">./ngrok -subdomain test 8080
-</code></pre>
-
-<p>客户端会转发本地 8080 端口的服务到 <code>test.[NGROK_BASE_DOMAIN]</code> 上。以我为例，只要我访问 <code>test.tunnel.cjting.me</code>，就可以看到开发主机上 8080 端口的内容。实现了外网访问内容的目标。</p>
-
-<p><img src="http://asset.cjting.cn/9b85365dgw1f43t9r2wshj20iq06i74v.jpg" alt="" /></p>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000;font-weight:bold">server_addr</span>:<span style="color:#bbb"> </span>[NGROK_BASE_DOMAIN]:<span style="color:#099">4443</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#000;font-weight:bold">trust_host_root_certs</span>:<span style="color:#bbb"> </span><span style="color:#000;font-weight:bold">false</span><span style="color:#bbb">
+</span></code></pre></div><p>然后启动客户端。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">./ngrok -subdomain <span style="color:#0086b3">test</span> <span style="color:#099">8080</span>
+</code></pre></div><p>客户端会转发本地 8080 端口的服务到 <code>test.[NGROK_BASE_DOMAIN]</code> 上。以我为例，只要我访问 <code>test.tunnel.cjting.me</code>，就可以看到开发主机上 8080 端口的内容。实现了外网访问内容的目标。</p>
+<p><img src="http://asset.cjting.cn/9b85365dgw1f43t9r2wshj20iq06i74v.jpg" alt=""></p>
 <p>最后提一点：客户端和服务器连接是需要验证证书的。只有我们同时编译的客户端和服务器才能连接上。在新的电脑上重新编译客户端去连接一个已部署的服务器，是无法连接的。因此建议存档一份客户端程序。</p>
       </div>
 

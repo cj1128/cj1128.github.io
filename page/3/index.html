@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.55.6" />
+	<meta name="generator" content="Hugo 0.64.0" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
   <title>CJ Ting&#39;s Blog - CJ Ting's Blog</title>
@@ -89,18 +89,17 @@
 
         <div class="index__item__content post__content">
           <p>很久之前曾看到一个很有意思的 JS 问题，</p>
-
-<pre><code class="language-javascript">// 定义一个函数 add，满足如下性质：
-add(1) == 1
-add(1)(2) == 3
-add(1)(2)(3) == 6
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#998;font-style:italic">// 定义一个函数 add，满足如下性质：
+</span><span style="color:#998;font-style:italic"></span>add(<span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">1</span>
+add(<span style="color:#099">1</span>)(<span style="color:#099">2</span>) <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">3</span>
+add(<span style="color:#099">1</span>)(<span style="color:#099">2</span>)(<span style="color:#099">3</span>) <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">6</span>
 ...
 
-var g = add(1)(2)
-g(100) == 103
-g(200) == 203
+<span style="color:#000;font-weight:bold">var</span> g <span style="color:#000;font-weight:bold">=</span> add(<span style="color:#099">1</span>)(<span style="color:#099">2</span>)
+g(<span style="color:#099">100</span>) <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">103</span>
+g(<span style="color:#099">200</span>) <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">203</span>
 ...
-</code></pre>
+</code></pre></div>
         </div>
 
         <div class="index__item__meta">
@@ -123,9 +122,7 @@ g(200) == 203
 
         <div class="index__item__content post__content">
           <p>这一切，都要从这篇文章说起，<a href="http://www.codersnotes.com/notes/being-sneaky-in-c">being-sneaky-in-c</a>。</p>
-
-<p>通过这篇文章，我了解到，原来外国有一种比赛，叫做 *Underhanded C*（中文翻译：有猫腻的 C），完成规定的题目，要求是写出看起来毫无问题的代码，但是却偷偷的藏有 Bug 或者说后门。</p>
-
+<p>通过这篇文章，我了解到，原来外国有一种比赛，叫做 <em>Underhanded C</em>（中文翻译：有猫腻的 C），完成规定的题目，要求是写出看起来毫无问题的代码，但是却偷偷的藏有 Bug 或者说后门。</p>
 <p>这篇文章说的就是作者参与了这个比赛，以及他的解决方案。</p>
         </div>
 
@@ -148,10 +145,8 @@ g(200) == 203
         </a>
 
         <div class="index__item__content post__content">
-          <p>很早之前就碰到过&rdquo;乱码&rdquo;这个现象，当时非常困惑，完全不能理解发生了什么。</p>
-
+          <p>很早之前就碰到过&quot;乱码&quot;这个现象，当时非常困惑，完全不能理解发生了什么。</p>
 <p>上大学以后，虽然开始接触计算机，不过我就没看到过具体讲解字符编码的内容。对这个领域始终是感到非常模糊。</p>
-
 <p>不过，最近好像豁然开朗了一下，感觉突然就明白了这个问题。</p>
         </div>
 

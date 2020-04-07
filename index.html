@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.55.6" />
+	<meta name="generator" content="Hugo 0.64.0" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
   <title>CJ Ting&#39;s Blog - CJ Ting's Blog</title>
@@ -89,28 +89,20 @@
 
         <div class="index__item__content post__content">
           <p>1976 年以前，所有的加密都是如下方式：</p>
-
 <ul>
 <li>A 使用某种规则对信息进行处理</li>
 <li>B 使用同样的规则对处理过的信息进行复原</li>
 </ul>
-
 <p>这个方式很好理解，不论是非常简单的 ROT13 还是目前广泛使用的 AES，都是这种对称加密方式。</p>
-
 <p>但是这种方式有一个巨大的缺点，那就是 A 需要将对信息进行处理的规则（也就是秘钥）告诉给 B。怎样安全地传输秘钥就成了一个非常棘手的问题。</p>
-
 <p>那么存不存在一种方式，加密和解密使用不同的秘钥，彻底规避掉传输秘钥的问题？</p>
-
 <p>答案是存在的，感谢数学家和计算机科学家，RSA 就是这样一种非对称加密方式，也就是：</p>
-
 <ul>
 <li>使用算法可以生成两把钥匙 A 和 B</li>
 <li>使用 A 加密的信息，使用 B 可以解开</li>
 <li>使用 B 加密的信息，使用 A 可以解开</li>
 </ul>
-
 <p>日常使用中，我们把一把作为公钥，公开发布。一把作为私钥，自己保留。这样，任何人都可以使用我们的公钥加密信息发给我们，我们则可以使用自己的私钥解开。</p>
-
 <p>只要把私钥保存好，这个通信系统就非常安全。</p>
         </div>
 
@@ -134,7 +126,6 @@
 
         <div class="index__item__content post__content">
           <p>之前用 Go 编写过一个简单的服务器和客户端，用来测试 Go 的 HTTP 性能，无意中发现了一个奇怪的问题。</p>
-
 <p>在我的 Mac 上客户端程序会非常稳定地遇到 <em>Connection Reset</em> 的错误，让人一头雾水。</p>
         </div>
 
@@ -158,15 +149,10 @@
 
         <div class="index__item__content post__content">
           <p>图片是大部分网页的重要组成部分，一般情况下，我们不会太关注这方面的问题，需要显示图片直接一个 <code>img</code> 标签搞定。</p>
-
 <p>但实际上，无论是对于提高加载速度，还是对于优化用户体验，优化图片都是一个重要的手段。</p>
-
 <p>图片优化分成两个方面：</p>
-
 <p>第一，图片压缩。在保证视觉效果的情况下，减少图片的体积。这个很有效，1M 和 100K 的图片，肉眼看起来几乎差不多，但却省了 90% 的流量，大大提高了加载速度。</p>
-
 <p>第二，响应式图片。根据客户端的情况，选择最合适的图片返回给用户。用户是一个 500px 的设备，那么返回 1000px 的图给他就是浪费（假设物理像素和 CSS 像素是一比一）。</p>
-
 <p>我们先来看图片压缩。</p>
         </div>
 
@@ -189,10 +175,8 @@
         </a>
 
         <div class="index__item__content post__content">
-          <p>代理的英文叫做 *Proxy*，是计算机中的常用软件。</p>
-
+          <p>代理的英文叫做 <em>Proxy</em>，是计算机中的常用软件。</p>
 <p>简单来说，代理的功能犹如它的名字所示：代替某人来处理某事。</p>
-
 <p>常见的代理分两种，正向代理和反向代理。不管哪种代理，它们都位于客户端和服务器之间，将我们传统的 <code>客户端 &lt;-&gt; 服务器</code> 通信变成了 <code>客户端 &lt;-&gt; 代理 &lt;-&gt; 服务器</code> 通信。</p>
         </div>
 
@@ -216,16 +200,13 @@
 
         <div class="index__item__content post__content">
           <p>字符串是任何一个编程语言中的重要概念，同时也是一个非常复杂的问题。</p>
-
 <p>日常编码中可能并不一定能见到它的复杂性，下面是几个字符串操作，使用你最熟悉的编程语言，看看结果如何。</p>
-
 <ul>
 <li>逆转字符串 <code>&quot;noël&quot;</code>，正确结果应该是 <code>&quot;lëon&quot;</code></li>
 <li>获取字符串 <code>&quot;noël&quot;</code> 前三个字符，正确结果应该是 <code>&quot;noë&quot;</code></li>
 <li>获取字符串 <code>&quot;😸😾&quot;</code> 的长度，正确答案应该是 2</li>
 <li>字符串 <code>&quot;noël&quot;</code> 和字符串 <code>&quot;noël&quot;</code> 规整化以后应该相等（他们看起来一样，但是内部表示不一样，一个 6 字节，一个 5 字节，这里涉及到 Unicode 的规整化）</li>
 </ul>
-
 <p>对于大部分编程语言，包括 Ruby，Python，JS，C#，Java 等，上面的问题都无法全部返回正确结果（但是，拥有超强 Unicode 支持的 <a href="https://elixir-lang.org/">Elixir</a> 可以）。</p>
         </div>
 
@@ -249,9 +230,7 @@
 
         <div class="index__item__content post__content">
           <p>DNS 全称 <code>Domain Name System</code>，是我们每天都在使用的基础互联网设施。</p>
-
 <p>它被发明出来的原因很简单，计算机之间的通信用的是 IP 地址，是一串数字，人类记忆起来十分不方便，因此，我们给地址起个名字，然后将名字和 IP 之间的关系记录起来，这样，我们只用记住名字就行了。</p>
-
 <p>从上面可以看出，DNS 系统类似我们日常使用的电话本，只不过里面存储的是域名和 IP 之间的关系。和人与电话之间的关系一样，一个域名可以有多个 IP，一个 IP 也可以有多个域名。</p>
         </div>
 
@@ -297,12 +276,10 @@
 
         <div class="index__item__content post__content">
           <p>最近这段时间一直在忙着迁移博客，把原本基于 Jekyll 的博客迁移到了 Hugo 上。</p>
-
 <p>之所以从 Jekyll 迁移的原因并不复杂，就是一个字：<strong>慢</strong>。Jekyll 的速度实在是太慢了，我只有几十篇文章，在 Watch 模式下，每次改动，重新生成都要花费 3 秒钟，实在是太慢了。</p>
-
-<pre><code class="language-bash">Regenerating: 1 file(s) changed at 2017-05-14 10:37:16 ...done in 3.085089 seconds.
-Regenerating: 1 file(s) changed at 2017-05-14 10:37:20 ...done in 3.121783 seconds.
-</code></pre>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">Regenerating: <span style="color:#099">1</span> file<span style="color:#000;font-weight:bold">(</span>s<span style="color:#000;font-weight:bold">)</span> changed at 2017-05-14 10:37:16 ...done in 3.085089 seconds.
+Regenerating: <span style="color:#099">1</span> file<span style="color:#000;font-weight:bold">(</span>s<span style="color:#000;font-weight:bold">)</span> changed at 2017-05-14 10:37:20 ...done in 3.121783 seconds.
+</code></pre></div>
         </div>
 
         <div class="index__item__meta">
@@ -347,9 +324,7 @@ Regenerating: 1 file(s) changed at 2017-05-14 10:37:20 ...done in 3.121783 secon
 
         <div class="index__item__content post__content">
           <p>最近一直在思考如何对线上服务做深度监控。基础的服务可用性监控很简单，定期 Ping 即可。但是怎样才能监控服务器的一些更加关键的数据呢？比如，每一个 API Point 的请求次数（QPS），最大响应时间，平均响应时间等。最终我希望实现的效果是有一个 Dashboard，我可以清楚地看到各种参数曲线，对服务器的运行情况了然于胸。</p>
-
 <p>绘制 Dashboard 不难，目前提供数据可视化的工具很多，随便选一个都能满足需要。关键问题是，怎样将整个流程打通？</p>
-
 <ul>
 <li>服务器该以怎样的形式暴露出数据？</li>
 <li>数据怎样被收集和存储起来？</li>

@@ -72,64 +72,38 @@
 
       <div class="post__content">
         <p>最近这段时间一直在忙着迁移博客，把原本基于 Jekyll 的博客迁移到了 Hugo 上。</p>
-
 <p>之所以从 Jekyll 迁移的原因并不复杂，就是一个字：<strong>慢</strong>。Jekyll 的速度实在是太慢了，我只有几十篇文章，在 Watch 模式下，每次改动，重新生成都要花费 3 秒钟，实在是太慢了。</p>
-
-<pre><code class="language-bash">Regenerating: 1 file(s) changed at 2017-05-14 10:37:16 ...done in 3.085089 seconds.
-Regenerating: 1 file(s) changed at 2017-05-14 10:37:20 ...done in 3.121783 seconds.
-</code></pre>
-
-<p>我的机器是 i7 的 CPU，16G 的内存外加 256G 的 SSD。如此强的配置，如此简单的操作，竟然花费了 3 秒钟，我不知道这是 Ruby 的原因还是和 Jekyll 本身的实现有关系，我也不关心了。慢成这样，我只能换掉它了。</p>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">Regenerating: <span style="color:#099">1</span> file<span style="color:#000;font-weight:bold">(</span>s<span style="color:#000;font-weight:bold">)</span> changed at 2017-05-14 10:37:16 ...done in 3.085089 seconds.
+Regenerating: <span style="color:#099">1</span> file<span style="color:#000;font-weight:bold">(</span>s<span style="color:#000;font-weight:bold">)</span> changed at 2017-05-14 10:37:20 ...done in 3.121783 seconds.
+</code></pre></div><p>我的机器是 i7 的 CPU，16G 的内存外加 256G 的 SSD。如此强的配置，如此简单的操作，竟然花费了 3 秒钟，我不知道这是 Ruby 的原因还是和 Jekyll 本身的实现有关系，我也不关心了。慢成这样，我只能换掉它了。</p>
 <p>这里要插一句，如果你的 Jekyll 站点中使用了 npm 来管理 JS 依赖，一定要记得配置 Jekyll 让它忽略 <code>node_modules</code> 文件夹，否则会慢到你怀疑人生。</p>
-
 <h2 id="静态站点生成器">静态站点生成器</h2>
-
 <p>Jekyll 是目前最为流行的静态站点生成器 (Static Site Generator，后面简称为 SSG)，流行的原因我想一大半归功于 GitHub 的推广，Jekyll 是 GitHub Pages 默认的 SSG。</p>
-
 <p>在我看来，SSG 是一个十分有用的东西，因为它可以帮助我们快速生成静态网站。静态网站有很多优点，最为关键的是：</p>
-
 <ol>
 <li>开发部署维护简单，省时省力，精力可以专注在内容上。</li>
 <li>访问速度快，还有什么比直接返回已经渲染好的网页更快的呢？</li>
 </ol>
-
 <p>并不是每一个网站都需要一个 Server 来动态生成内容，也不是每一个网站都需要数据库。博客系统，文档系统，企业官网等等，都是静态网站的好用例。</p>
-
 <p>SSG 简单来说，就是根据配置和内容，生成静态网站。配置一般由全局配置，模板，以及 <code>FrontMatter</code> 构成。</p>
-
 <p>FrontMatter 指的是文章最前面的一段区域，一般由 <code>---</code> 分开，我们可以在这段区域中添加这篇文章携带的数据，数据格式一般是 YAML，如下所示。</p>
-
-<pre><code class="language-markdown">---
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-markdown" data-lang="markdown">---
 name: CJ
 date: 2017-06-09T11:01:08+08:00
 ---
 从这里开始是正文的内容。
-</code></pre>
-
-<p>后续在模板中，我们可以将这些数据读取出来做一些操作，比如，所有 <code>name</code> 属性为 <code>CJ</code> 的文章我们可以添加特别的 class 进行高亮，这就大大增加了渲染的灵活性。</p>
-
+</code></pre></div><p>后续在模板中，我们可以将这些数据读取出来做一些操作，比如，所有 <code>name</code> 属性为 <code>CJ</code> 的文章我们可以添加特别的 class 进行高亮，这就大大增加了渲染的灵活性。</p>
 <p>目前，最为流行的 SSG 是 <a href="https://jekyllrb.com/">Jekyll</a>，<a href="https://github.com/spf13/hugo">Hugo</a>，<a href="https://hexo.io/">Hexo</a> 这三个，不太流行的数不胜数，具体可以去看 <a href="https://www.staticgen.com/">Static Gen</a> 网站。</p>
-
 <p>不管是什么型号，工作原理都是一样的，掌握了一个，剩下的学习起来也很容易。鉴于我对 Golang 的喜爱，简单了解 Hugo 以后，就选择使用 Hugo 作为新的博客引擎了。</p>
-
 <p>Hugo 的优点很多，最为重要的自然是：<strong>快</strong>。相比于 Jekyll 要花费 3 秒钟，我的博客在 Hugo 下重新生成只要花费 30ms，足足快了 100 倍。</p>
-
 <p>下面，我们使用 Hugo 来做一个简单的博客系统 (My Blog)，了解一下 Hugo 的基本使用，最终项目在 <a href="https://github.com/cj1128/hugo-demo">hugo-demo</a> 仓库中。</p>
-
 <h2 id="安装">安装</h2>
-
 <p>首先，自然是安装 Hugo，如果你是 Mac,<code>brew install hugo</code>。</p>
-
 <p>如果你安装了 Go，<code>go get -u github.com/spf13/hugo</code>。</p>
-
 <p>其他情况，可以直接去 <a href="https://github.com/spf13/hugo/releases">Hugo Release</a> 页面，下载对应平台的二进制程序即可。</p>
-
 <h2 id="骨架">骨架</h2>
-
 <p>我们先使用 Hugo 生成我们的博客站点。</p>
-
-<pre><code class="language-bash"># hugo 支持多种配置格式，默认为 toml，使用 `-f` 来修改
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># hugo 支持多种配置格式，默认为 toml，使用 `-f` 来修改</span>
 hugo new site -f yaml my-blog 
 tree my-blog
 my-blog
@@ -141,11 +115,8 @@ my-blog
 ├── static
 └── themes
 
-6 directories, 1 file
-</code></pre>
-
-<p>一共六个文件夹，外加一个全局配置文件 <code>config.yaml</code>。</p>
-
+<span style="color:#099">6</span> directories, <span style="color:#099">1</span> file
+</code></pre></div><p>一共六个文件夹，外加一个全局配置文件 <code>config.yaml</code>。</p>
 <ul>
 <li><code>archetypes</code>：给不同的类型定义默认 FrontMatter，一般用不上</li>
 <li><code>content</code>：源文件</li>
@@ -154,242 +125,159 @@ my-blog
 <li><code>static</code>：静态资源，也就是不需要 Hugo 处理的静态资源，比如图片等</li>
 <li><code>themes</code>：第三方主题，将第三方主题拷贝到这个文件夹下即可使用</li>
 </ul>
-
 <p>比较常用的就是 content 和 layouts，一个存放内容，一个存放模板。</p>
-
 <p>Hugo 使用的模板为 Go 标准库中的 <code>text/template</code>，和所有其他模板系统一样，看看文档 <a href="https://gohugo.io/templates/go-templates/">Go Template Primer</a> 掌握基本函数即可。</p>
-
 <p><code>config.yaml</code> 中是全局配置，默认情况下，文章的 FrontMatter 数据格式为 TOML，我们将其改为 YAML，添加如下配置到 <code>config.yaml</code> 中。</p>
-
-<pre><code class="language-yaml">metaDataFormat: yaml
-</code></pre>
-
-<h2 id="内容">内容</h2>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000;font-weight:bold">metaDataFormat</span>:<span style="color:#bbb"> </span>yaml<span style="color:#bbb">
+</span></code></pre></div><h2 id="内容">内容</h2>
 <p>在 Hugo 中，所有的内容存放在 <code>content</code> 目录中，其中每一个目录称为一个 <code>section</code>，我们先来生成一些内容用于后面测试我们的模板。</p>
-
 <p>假设我们博客有两个分类，<code>c1</code> 和 <code>c2</code>，每个分类下有 1 篇文章。</p>
-
-<pre><code class="language-bash"># 使用 `hugo new` 指令来生成文章
-# 会自动替我们添加必需的 FrontMatter，比如 `date` 和 `title`
-# `hugo new` 指令会自动添加 `content` 路径前缀
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># 使用 `hugo new` 指令来生成文章</span>
+<span style="color:#998;font-style:italic"># 会自动替我们添加必需的 FrontMatter，比如 `date` 和 `title`</span>
+<span style="color:#998;font-style:italic"># `hugo new` 指令会自动添加 `content` 路径前缀</span>
 hugo new c1/_index.md
-echo &quot;# this is c1&quot; &gt;&gt; content/c1/_index.md
+<span style="color:#0086b3">echo</span> <span style="color:#d14">&#34;# this is c1&#34;</span> &gt;&gt; content/c1/_index.md
 hugo new c1/p1.md
-echo &quot;# this is post 1 for cat 1&quot; &gt;&gt; content/c1/p1.md
+<span style="color:#0086b3">echo</span> <span style="color:#d14">&#34;# this is post 1 for cat 1&#34;</span> &gt;&gt; content/c1/p1.md
 hugo new c2/_index.md
-echo &quot;# this is c2&quot; &gt;&gt; content/c2/_index.md
+<span style="color:#0086b3">echo</span> <span style="color:#d14">&#34;# this is c2&#34;</span> &gt;&gt; content/c2/_index.md
 hugo new c2/p1.md
-echo &quot;# this is post 1 for cat 2&quot; &gt;&gt; content/c2/p1.md
-</code></pre>
-
-<p>在 Hugo 中，一切东西都是 <code>Page</code>（页面），而每一个页面都对应一个源文件。比如，当我们访问 <code>/c1/</code> 时，对应的源文件是 <code>content/c1/_index.md</code>，当我们访问 <code>/c1/p1/</code> 时，对应的源文件则是 <code>content/c1/p1.md</code>。</p>
-
+<span style="color:#0086b3">echo</span> <span style="color:#d14">&#34;# this is post 1 for cat 2&#34;</span> &gt;&gt; content/c2/p1.md
+</code></pre></div><p>在 Hugo 中，一切东西都是 <code>Page</code>（页面），而每一个页面都对应一个源文件。比如，当我们访问 <code>/c1/</code> 时，对应的源文件是 <code>content/c1/_index.md</code>，当我们访问 <code>/c1/p1/</code> 时，对应的源文件则是 <code>content/c1/p1.md</code>。</p>
 <h2 id="模板">模板</h2>
-
 <p>现在，我们可以启动 Hugo 开发服务器来预览我们的站点了。</p>
-
-<pre><code class="language-bash"># 默认生成的文章都有 `draft: true` 属性，表示文章为草稿，Hugo 默认情况下忽略 drafts
-# `--buildDrafts` 告诉 Hugo 我们要渲染 Drafts
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># 默认生成的文章都有 `draft: true` 属性，表示文章为草稿，Hugo 默认情况下忽略 drafts</span>
+<span style="color:#998;font-style:italic"># `--buildDrafts` 告诉 Hugo 我们要渲染 Drafts</span>
 hugo server --buildDrafts
-</code></pre>
-
-<p>打开 1313 端口，我们会看到，什么都没有，嗯，这就对了。</p>
-
+</code></pre></div><p>打开 1313 端口，我们会看到，什么都没有，嗯，这就对了。</p>
 <p>为什么什么都没有呢，因为到目前为止，我们什么模板都没有编写，Hugo 要是能展现内容，那就奇怪了。</p>
-
 <p>这里提一下，别的教程可能都会让新手直接安装 Hugo 的某个主题，主题是别人写好的模板系统封装起来了。我觉得掌握 Hugo 的一个关键就是要弄清楚它的模板系统，因此，这里我们不使用任何主题，自己来编写每一个模板。</p>
-
 <p>在 Hugo 的模板系统中，页面分为两种类型，第一是列表型页面，这种页面对应的源文件是某个目录的 <code>_index.md</code>，比如，当我们访问 <code>/c1/</code> 时，Hugo 默认会使用 <code>list.html</code> 模板来渲染 <code>content/c1/_index.md</code> 文件。</p>
-
 <p>还有一种就是单纯的内容页面，这种页面对应的源文件是某个目录的普通文件。比如，当我们访问 <code>/c1/p1/</code> 时，Hugo 默认会使用 <code>single.html</code> 模板来渲染 <code>content/c1/p1.md</code> 文件。</p>
-
 <p>首页比较特殊，使用的模板名叫做 <code>index.html</code>。除此之外，我们还可以定义一个叫做 <code>baseof.html</code> 的模板，看名字就知道了，它是根模板。</p>
-
 <p>Hugo 的模板全部存放在 <code>layouts</code> 目录中，默认模板存放在 <code>_default</code> 文件夹中。每一个源文件可以通过 FrontMatter 来指定使用什么模板，如果不指定就使用默认模板。渲染模板时，都会自动绑定源文件对应的 <code>Page</code> 变量，我们可以通过这个变量获取我们需要的信息。</p>
-
 <p>先来编写 <code>baseof.html</code> 模板，新建 <code>layouts/_default/baseof.html</code> 文件。</p>
-
-<pre><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-&lt;head&gt;
-  &lt;meta charset=&quot;UTF-8&quot;&gt;
-  &lt;title&gt;My Blog&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-{{ block &quot;main&quot; . }}
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-html" data-lang="html"><span style="color:#999;font-weight:bold;font-style:italic">&lt;!DOCTYPE html&gt;</span>
+&lt;<span style="color:#000080">html</span> <span style="color:#008080">lang</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;en&#34;</span>&gt;
+&lt;<span style="color:#000080">head</span>&gt;
+  &lt;<span style="color:#000080">meta</span> <span style="color:#008080">charset</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;UTF-8&#34;</span>&gt;
+  &lt;<span style="color:#000080">title</span>&gt;My Blog&lt;/<span style="color:#000080">title</span>&gt;
+&lt;/<span style="color:#000080">head</span>&gt;
+&lt;<span style="color:#000080">body</span>&gt;
+{{ block &#34;main&#34; . }}
 {{ end }}
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-
-<p>Hugo 的模板有一个叫做 <code>block</code> 的机制，具体见 <a href="https://gohugo.io/templates/blocks/">Hugo Block</a>，简单来说，父模板可以定义渲染什么 block，然后子模板中可以定义 block 的内容。</p>
-
+&lt;/<span style="color:#000080">body</span>&gt;
+&lt;/<span style="color:#000080">html</span>&gt;
+</code></pre></div><p>Hugo 的模板有一个叫做 <code>block</code> 的机制，具体见 <a href="https://gohugo.io/templates/blocks/">Hugo Block</a>，简单来说，父模板可以定义渲染什么 block，然后子模板中可以定义 block 的内容。</p>
 <p>接下来编写 <code>index.html</code>，新建 <code>layouts/index.html</code> 文件。</p>
-
-<pre><code class="language-html">{{ define &quot;main&quot; }}
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-html" data-lang="html">{{ define &#34;main&#34; }}
   {{ .Content }}
 {{ end }}
-</code></pre>
-
-<p>首页的模板首先定义 <code>baseof.html</code> 中渲染的 <code>main</code> block，然后直接渲染 Page 变量的 <code>Content</code> 属性，也就是对应的源文件的内容。</p>
-
+</code></pre></div><p>首页的模板首先定义 <code>baseof.html</code> 中渲染的 <code>main</code> block，然后直接渲染 Page 变量的 <code>Content</code> 属性，也就是对应的源文件的内容。</p>
 <p>首页对应的源文件是 <code>content/_index.md</code>，我们来创建这个文件。</p>
-
-<pre><code class="language-bash">hugo new _index.md
-echo &quot;# This is index page&quot; &gt;&gt; content/_index.md
-</code></pre>
-
-<p>回到浏览器，可以看到页面自动刷新了。</p>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">hugo new _index.md
+<span style="color:#0086b3">echo</span> <span style="color:#d14">&#34;# This is index page&#34;</span> &gt;&gt; content/_index.md
+</code></pre></div><p>回到浏览器，可以看到页面自动刷新了。</p>
 <blockquote>
 <p>git checkout skeleton</p>
 </blockquote>
-
-<p><img src="http://asset.cjting.cn/9b85365dgy1fgesi9dqzwj20lz0ay0ss.jpg" alt="" /></p>
-
+<p><img src="http://asset.cjting.cn/9b85365dgy1fgesi9dqzwj20lz0ay0ss.jpg" alt=""></p>
 <p>这里来梳理一下，当 Hugo 编译我们站点时，发现 <code>content/_index.md</code> 文件，Hugo 会使用 <code>layouts/index.html</code> 和 <code>layouts/_default/baseof.html</code> 模板来渲染这个文件，并将得到的 HTML 文件放在结果文件夹的根目录下，当我们访问首页时，就会看到这个文件。</p>
-
 <p>现在，我们要规划一下博客的结构，然后一一实现。</p>
-
 <ul>
 <li>首页和分类页都需要一个顶部导航栏，显示所有的分类，点击跳转到对应的分类页。</li>
 <li>分类页根据时间列出所有的博文，点击跳转到对应的博文页。</li>
 <li>博文页展示博文内容。</li>
 </ul>
-
 <h2 id="导航栏">导航栏</h2>
-
 <p>由于首页和分类页都要用到导航栏，所以我们使用 Hugo 的 <code>Partial</code> 来做，Partial 简单来说，就是一个片段，可以在不同的模板中引用它。</p>
-
 <p>我们打算直接将 <code>content</code> 目录中的子目录（叫做 <code>section</code>）作为分类，首先，在全局配置中添加如下配置。</p>
-
-<pre><code class="language-yaml">SectionPagesMenu: main
-</code></pre>
-
-<p>Hugo 提供了一套复杂的菜单系统，这个配置告诉 Hugo，将所有的 section 都放入 <code>main</code> 这个菜单中，在模板中通过遍历 main 菜单，便可以渲染出所有的分类。</p>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000;font-weight:bold">SectionPagesMenu</span>:<span style="color:#bbb"> </span>main<span style="color:#bbb">
+</span></code></pre></div><p>Hugo 提供了一套复杂的菜单系统，这个配置告诉 Hugo，将所有的 section 都放入 <code>main</code> 这个菜单中，在模板中通过遍历 main 菜单，便可以渲染出所有的分类。</p>
 <p>新建文件，<code>layouts/partials/header.html</code>。</p>
-
-<pre><code class="language-html">&lt;header&gt;
-  &lt;nav&gt;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-html" data-lang="html">&lt;<span style="color:#000080">header</span>&gt;
+  &lt;<span style="color:#000080">nav</span>&gt;
     {{ range .Site.Menus.main }}
-      &lt;a class=&quot;{{if eq $.URL .URL}}active{{end}}&quot; href=&quot;{{ .URL }}&quot;&gt;
+      &lt;<span style="color:#000080">a</span> <span style="color:#008080">class</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;{{if eq $.URL .URL}}active{{end}}&#34;</span> <span style="color:#008080">href</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;{{ .URL }}&#34;</span>&gt;
         {{ .Name }}
-      &lt;/a&gt;
+      &lt;/<span style="color:#000080">a</span>&gt;
     {{ end }}
-  &lt;/nav&gt;
-&lt;/header&gt;
-</code></pre>
-
-<p>先把这个应用到首页上看看，编辑文件 <code>layouts/index.html</code>。</p>
-
-<pre><code class="language-html">{{ define &quot;main&quot; }}
-  &lt;main&gt;
-    {{ partial &quot;header&quot; . }}
-    &lt;article&gt;
+  &lt;/<span style="color:#000080">nav</span>&gt;
+&lt;/<span style="color:#000080">header</span>&gt;
+</code></pre></div><p>先把这个应用到首页上看看，编辑文件 <code>layouts/index.html</code>。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-html" data-lang="html">{{ define &#34;main&#34; }}
+  &lt;<span style="color:#000080">main</span>&gt;
+    {{ partial &#34;header&#34; . }}
+    &lt;<span style="color:#000080">article</span>&gt;
       {{ .Content }}
-    &lt;/article&gt;
-  &lt;/main&gt;
+    &lt;/<span style="color:#000080">article</span>&gt;
+  &lt;/<span style="color:#000080">main</span>&gt;
 {{ end }}
-</code></pre>
-
-<p>浏览器页面如下。</p>
-
-<p><img src="http://asset.cjting.cn/9b85365dgy1fgeslx5j0ij20ly0bgglo.jpg" alt="" /></p>
-
+</code></pre></div><p>浏览器页面如下。</p>
+<p><img src="http://asset.cjting.cn/9b85365dgy1fgeslx5j0ij20ly0bgglo.jpg" alt=""></p>
 <p>看起来，header 生效了，但是，为什么两个分类的名称叫做 <code>_index</code> 呢？这是因为，默认情况下，Hugo 会使用分类对应的源文件的 <code>title</code>属性，这个属性默认是文件名。</p>
-
 <p>编辑 <code>content/c1/_index.md</code> 文件和 <code>content/c2/_index.md</code> 文件的 <code>title</code> 属性，改为 <code>分类1</code> 和 <code>分类2</code>，这次就正确了。</p>
-
 <h2 id="分类页">分类页</h2>
-
 <p>点击这两个分类，发现内容是空白的，当然，分类页用的模板是 <code>list.html</code>，我们还没有编写。</p>
-
 <p>新建 <code>layouts/_default/list.html</code> 文件。</p>
-
-<pre><code class="language-html">{{ define &quot;main&quot; }}
-  {{ partial &quot;header&quot; . }}
-  &lt;div class=&quot;list&quot;&gt;
-    {{ range .Data.Pages.GroupByDate &quot;2006-01&quot; }}
-      &lt;div class=&quot;list__item&quot;&gt;
-        &lt;h3 class=&quot;list__title&quot;&gt;{{ .Key }}&lt;/h3&gt;
-        &lt;ul&gt;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-html" data-lang="html">{{ define &#34;main&#34; }}
+  {{ partial &#34;header&#34; . }}
+  &lt;<span style="color:#000080">div</span> <span style="color:#008080">class</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;list&#34;</span>&gt;
+    {{ range .Data.Pages.GroupByDate &#34;2006-01&#34; }}
+      &lt;<span style="color:#000080">div</span> <span style="color:#008080">class</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;list__item&#34;</span>&gt;
+        &lt;<span style="color:#000080">h3</span> <span style="color:#008080">class</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;list__title&#34;</span>&gt;{{ .Key }}&lt;/<span style="color:#000080">h3</span>&gt;
+        &lt;<span style="color:#000080">ul</span>&gt;
           {{ range .Pages }}
-            &lt;li class=&quot;list__post&quot;&gt;
-              &lt;span&gt;&lt;/span&gt;
-              &lt;a href=&quot;{{ .Permalink }}&quot;&gt;{{ .Title }}&lt;/a&gt;
-              &lt;div&gt;{{ .Date.Format &quot;2006.01.02&quot; }}&lt;/div&gt;
-            &lt;/li&gt;
+            &lt;<span style="color:#000080">li</span> <span style="color:#008080">class</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;list__post&#34;</span>&gt;
+              &lt;<span style="color:#000080">span</span>&gt;&lt;/<span style="color:#000080">span</span>&gt;
+              &lt;<span style="color:#000080">a</span> <span style="color:#008080">href</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;{{ .Permalink }}&#34;</span>&gt;{{ .Title }}&lt;/<span style="color:#000080">a</span>&gt;
+              &lt;<span style="color:#000080">div</span>&gt;{{ .Date.Format &#34;2006.01.02&#34; }}&lt;/<span style="color:#000080">div</span>&gt;
+            &lt;/<span style="color:#000080">li</span>&gt;
           {{ end }}
-        &lt;/ul&gt;
-      &lt;/div&gt;
+        &lt;/<span style="color:#000080">ul</span>&gt;
+      &lt;/<span style="color:#000080">div</span>&gt;
     {{ end }}
-  &lt;/div&gt;
+  &lt;/<span style="color:#000080">div</span>&gt;
 {{ end }}
-</code></pre>
-
-<p>模板代码的含义是根据日期和时间来渲染分类下的博文，效果如下。</p>
-
-<p><img src="http://asset.cjting.cn/9b85365dgy1fgetkmelx0j20nl0azq30.jpg" alt="" /></p>
-
+</code></pre></div><p>模板代码的含义是根据日期和时间来渲染分类下的博文，效果如下。</p>
+<p><img src="http://asset.cjting.cn/9b85365dgy1fgetkmelx0j20nl0azq30.jpg" alt=""></p>
 <h2 id="博文页">博文页</h2>
-
 <p>最后，便是展示单篇博文的博文页，使用的模板是 <code>single.html</code>，新建文件 <code>layouts/_default/single.html</code> 如下。</p>
-
-<pre><code class="language-html">{{ define &quot;main&quot; }}
-  &lt;article&gt;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-html" data-lang="html">{{ define &#34;main&#34; }}
+  &lt;<span style="color:#000080">article</span>&gt;
     {{ .Content }}
-  &lt;/article&gt;
+  &lt;/<span style="color:#000080">article</span>&gt;
 {{ end }}
-</code></pre>
-
-<p>很简单，直接渲染博文内容，<code>http://localhost:1313/c1/p1/</code> 页面如下。</p>
-
-<p><img src="http://asset.cjting.cn/9b85365dgy1fgetqxr6fhj20nl078mx4.jpg" alt="" /></p>
-
+</code></pre></div><p>很简单，直接渲染博文内容，<code>http://localhost:1313/c1/p1/</code> 页面如下。</p>
+<p><img src="http://asset.cjting.cn/9b85365dgy1fgetqxr6fhj20nl078mx4.jpg" alt=""></p>
 <p>目前为止，我们的博客基本结构就搭建好了。</p>
-
 <blockquote>
 <p>git checkout basic</p>
 </blockquote>
-
-<h2 id="css-js-及其他静态资源">CSS，JS 及其他静态资源</h2>
-
+<h2 id="cssjs-及其他静态资源">CSS，JS 及其他静态资源</h2>
 <p>现在剩下的工作便是使用 CSS 来美化我们的博客了。</p>
-
 <p>Hugo 根目录中的 <code>static</code> 目录用于存储各种静态文件，包括 CSS 和 JS，里面的内容在 Hugo 生成站点时会被原封不动拷贝到目标目录中（默认是 public）。</p>
-
 <p>新建 <code>static/main.css</code> 文件，修改 <code>layouts/_default/baseof.html</code> 基础模板引入这个文件。</p>
-
-<pre><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-&lt;head&gt;
-  &lt;meta charset=&quot;UTF-8&quot;&gt;
-  &lt;title&gt;My Blog&lt;/title&gt;
-  &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/main.css&quot;&gt;
-&lt;/head&gt;
-&lt;body&gt;
-{{ block &quot;main&quot; . }}
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-html" data-lang="html"><span style="color:#999;font-weight:bold;font-style:italic">&lt;!DOCTYPE html&gt;</span>
+&lt;<span style="color:#000080">html</span> <span style="color:#008080">lang</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;en&#34;</span>&gt;
+&lt;<span style="color:#000080">head</span>&gt;
+  &lt;<span style="color:#000080">meta</span> <span style="color:#008080">charset</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;UTF-8&#34;</span>&gt;
+  &lt;<span style="color:#000080">title</span>&gt;My Blog&lt;/<span style="color:#000080">title</span>&gt;
+  &lt;<span style="color:#000080">link</span> <span style="color:#008080">rel</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;stylesheet&#34;</span> <span style="color:#008080">type</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;text/css&#34;</span> <span style="color:#008080">href</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;/main.css&#34;</span>&gt;
+&lt;/<span style="color:#000080">head</span>&gt;
+&lt;<span style="color:#000080">body</span>&gt;
+{{ block &#34;main&#34; . }}
 {{ end }}
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-
-<p>引入 JS 的道理同上。至于具体的样式代码，这里就不再赘述了。最终效果如下。</p>
-
-<p><img src="http://asset.cjting.cn/9b85365dgy1fgfz1ofshej20sj0e33ys.jpg" alt="" /></p>
-
+&lt;/<span style="color:#000080">body</span>&gt;
+&lt;/<span style="color:#000080">html</span>&gt;
+</code></pre></div><p>引入 JS 的道理同上。至于具体的样式代码，这里就不再赘述了。最终效果如下。</p>
+<p><img src="http://asset.cjting.cn/9b85365dgy1fgfz1ofshej20sj0e33ys.jpg" alt=""></p>
 <blockquote>
 <p>git checkout final</p>
 </blockquote>
-
 <h2 id="发布">发布</h2>
-
 <p>最后一步便是发布，在项目根目录下运行 <code>hugo</code> 就可以将站点生成在 <code>public</code>文件夹中，丢给 Nginx 或者传到 Github 上随便你了。</p>
-
 <p>Hugo 官方有一篇文档 <a href="https://gohugo.io/tutorials/github-pages-blog#building-and-deployment">Hosting on GitHub Pages</a> 说明如何部署在 GitHub 上，说的很详细，这里就不再赘述了。</p>
-
 <p>最后，Hugo 确实是一个非常好用的 SSG，拥有速度快，模板灵活，结构清晰等各种优点，如果大家有兴趣，下一个静态站点项目可以试试用 Hugo 来构建。当然，再好的工具也不能解决人的懒惰，我要加油坚持写博客了~😉</p>
       </div>
 

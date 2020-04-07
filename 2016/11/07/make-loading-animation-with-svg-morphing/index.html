@@ -70,124 +70,89 @@
 
       <div class="post__content">
         <p>每一个需要让用户等待的应用都应该有加载界面，可以是简单的文本，比如 <code>加载中…</code>，也可以是有趣的动画。当然，一个好玩的加载动画能够大大增加用户等待的耐心，谁喜欢枯燥的文字呢。所以，投入点时间寻找或者制作一个加载动画是很有意义的。感谢 SVG 和相关的动画技术，现在制作一款复杂的动画已经变得十分容易了。</p>
-
 <p>这里我使用 SVG 的形变技术（Shape Morphing）来做一个简单的矩形、三角形、圆形变换的动画。</p>
-
-<p><p data-height="500" data-theme-id="light" data-slug-hash="QGwMXP" data-default-tab="result" data-user="fatelovely" data-embed-version="2" data-pen-title="SVG Morphing Loading Animation" class="codepen">See the Pen <a href="http://codepen.io/fatelovely/pen/QGwMXP/">SVG Morphing Loading Animation</a> by fatelovely (<a href="http://codepen.io/fatelovely">@fatelovely</a>) on <a href="http://codepen.io">CodePen</a>.</p>
-<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script></p>
-
+<!-- raw HTML omitted -->
 <h2 id="svg-shape-morphing">SVG Shape Morphing</h2>
-
 <p>上面的动画里，有三个量在变换。图形的形状，图形的位置以及颜色。位置和颜色都是比较简单的，CSS Transition 就可以搞定。问题就是形状的变化比较复杂。形变技术理解起来比较简单，图形从一个形状变换到另一个形状，无非就是构成图形的顶点位置发生了变化。所以，只要将开始图形和结束图形的顶点之间的对应关系找到，然后对顶点进行 transition 就行了。从这可以看出，SVG 的形变必须要求开始图形和结束图形的顶点数一定要相同，如下所示。</p>
-
-<p><img src="http://asset.cjting.cn/9b85365dgw1f9jdl0i3e2g20a008gh6t.gif" alt="" /></p>
-
-<p><p data-height="500" data-theme-id="light" data-slug-hash="XNJBOy" data-default-tab="result" data-user="fatelovely" data-embed-version="2" data-pen-title="SVG Morphing Demo" class="codepen">See the Pen <a href="http://codepen.io/fatelovely/pen/XNJBOy/">SVG Morphing Demo</a> by fatelovely (<a href="http://codepen.io/fatelovely">@fatelovely</a>) on <a href="http://codepen.io">CodePen</a>.</p>
-<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script></p>
-
+<p><img src="http://asset.cjting.cn/9b85365dgw1f9jdl0i3e2g20a008gh6t.gif" alt=""></p>
+<!-- raw HTML omitted -->
 <h2 id="gsap">GSAP</h2>
-
-<p>SVG 的形变有两种方式，第一是使用 *SMIL*，第二是使用 JS 库。SMIL 目前已经被废弃，这里我们使用大名鼎鼎的 <a href="http://greensock.com/gsap">GreenSock Animation Platform, GSAP</a> 动画库来实现。GSAP 是一个非常高级的动画库，功能强大接口简洁，我们使用 <a href="https://greensock.com/morphSVG">MorphSVGPlugin</a> 插件来完成 SVG 的形变功能。</p>
-
+<p>SVG 的形变有两种方式，第一是使用 <em>SMIL</em>，第二是使用 JS 库。SMIL 目前已经被废弃，这里我们使用大名鼎鼎的 <a href="http://greensock.com/gsap">GreenSock Animation Platform, GSAP</a> 动画库来实现。GSAP 是一个非常高级的动画库，功能强大接口简洁，我们使用 <a href="https://greensock.com/morphSVG">MorphSVGPlugin</a> 插件来完成 SVG 的形变功能。</p>
 <p>上面我说过，SVG 的形变动画要求开始图形和结束图形顶点数一样，但这并不意味着我们提供给 GSAP 的开始图形和结束图形顶点数必须一致。GSAP 的一大特点便是允许我们提供顶点数完全不一样的图形来进行形状变换，GSAP 内部会自己计算顶点并进行 transition。</p>
-
 <p>使用 GSAP 进行 SVG 形变非常简单，指定开始图形，指定结束图形以及顶点映射关系即可。顶点映射关系表示开始图形的哪一个顶点对应结束图形的第一个顶点，后面的顶点按顺序类推。</p>
-
 <p>关于顶点映射关系的问题，可以使用 GSAP 官方提供的一个工具 <a href="http://codepen.io/GreenSock/pen/LpxOqR">findShapeIndex</a> 来查看效果，非常直观。</p>
-
 <p>下面的代码表示从 <code>startShape</code> 形变到 <code>endShape</code> ，时间为 1 秒钟，同时开始图形的第三个顶点对应结束图形的第一个顶点。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#000;font-weight:bold">var</span> stratShape <span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">document</span>.getElementById(<span style="color:#d14">&#34;start&#34;</span>)
+<span style="color:#000;font-weight:bold">var</span> endShape <span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">document</span>.getElementById(<span style="color:#d14">&#34;end&#34;</span>)
 
-<pre><code class="language-javascript">var stratShape = document.getElementById(&quot;start&quot;)
-var endShape = document.getElementById(&quot;end&quot;)
-
-TweenLite.to(endShape, 1, {
-  morphSVG: endShape,
-  shapeIndex: 2,
+TweenLite.to(endShape, <span style="color:#099">1</span>, {
+  morphSVG<span style="color:#000;font-weight:bold">:</span> endShape,
+  shapeIndex<span style="color:#000;font-weight:bold">:</span> <span style="color:#099">2</span>,
 })
-</code></pre>
-
-<h2 id="loading-animation">Loading Animation</h2>
-
+</code></pre></div><h2 id="loading-animation">Loading Animation</h2>
 <p>根据上面的知识，我们来制作一个矩形、三角形、圆形之间的形变动画就变得非常简单了。首先，定义这三个图形，这里图形的位置都在 <code>0,0,100,100</code> 之间。注意隐藏 <code>triangle</code> 以及 <code>circle</code> ，只显示 <code>rect</code>。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-html" data-lang="html"> &lt;<span style="color:#000080">path</span> <span style="color:#008080">id</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;rect&#34;</span> <span style="color:#008080">fill</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;#1EB287&#34;</span> <span style="color:#008080">d</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;M 0,0
+</span><span style="color:#d14">                   C 50,0 50,0 100,0
+</span><span style="color:#d14">                   100,50 100,50 100,100
+</span><span style="color:#d14">                   50,100 50,100 0,100
+</span><span style="color:#d14">                   0,50 0,50 0,0
+</span><span style="color:#d14">                   Z&#34;</span>&gt;&lt;/<span style="color:#000080">path</span>&gt;
 
-<pre><code class="language-html"> &lt;path id=&quot;rect&quot; fill=&quot;#1EB287&quot; d=&quot;M 0,0
-                   C 50,0 50,0 100,0
-                   100,50 100,50 100,100
-                   50,100 50,100 0,100
-                   0,50 0,50 0,0
-                   Z&quot;&gt;&lt;/path&gt;
-
-&lt;path id=&quot;triangle&quot; fill=&quot;#188fc2&quot; d=&quot;M 25,50
-                   C 37.5,25 37.5,25 50,0
-                   75,50 75,50 100,100
-                   50,100 50,100 0,100
-                   12.5,75 12.5,75 25,50
-                   Z&quot;&gt;&lt;/path&gt;
-&lt;path id=&quot;circle&quot; fill=&quot;#bb625e&quot; d=&quot;M 50,0
-                   C 77.6,0 100,22.4 100,50
-                   100,77.6 77.6,100 50,100
-                   22.4,100, 0,77.6, 0,50
-                   0,22.4, 22.4,0, 50,0
-                   Z&quot;&gt;&lt;/path&gt;
-</code></pre>
-
-<p>然后，使用 GSAP 进行变换即可，因为涉及到一系列变换，矩形到三角形，三角形到圆形，圆形到矩形，我们使用 GSAP 提供的 <code>TimelineLite</code> 来调度时间使这三个变换顺序进行。</p>
-
-<pre><code class="language-javascript">var tl = new TimelineLite()
-var duration = 1
+&lt;<span style="color:#000080">path</span> <span style="color:#008080">id</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;triangle&#34;</span> <span style="color:#008080">fill</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;#188fc2&#34;</span> <span style="color:#008080">d</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;M 25,50
+</span><span style="color:#d14">                   C 37.5,25 37.5,25 50,0
+</span><span style="color:#d14">                   75,50 75,50 100,100
+</span><span style="color:#d14">                   50,100 50,100 0,100
+</span><span style="color:#d14">                   12.5,75 12.5,75 25,50
+</span><span style="color:#d14">                   Z&#34;</span>&gt;&lt;/<span style="color:#000080">path</span>&gt;
+&lt;<span style="color:#000080">path</span> <span style="color:#008080">id</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;circle&#34;</span> <span style="color:#008080">fill</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;#bb625e&#34;</span> <span style="color:#008080">d</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;M 50,0
+</span><span style="color:#d14">                   C 77.6,0 100,22.4 100,50
+</span><span style="color:#d14">                   100,77.6 77.6,100 50,100
+</span><span style="color:#d14">                   22.4,100, 0,77.6, 0,50
+</span><span style="color:#d14">                   0,22.4, 22.4,0, 50,0
+</span><span style="color:#d14">                   Z&#34;</span>&gt;&lt;/<span style="color:#000080">path</span>&gt;
+</code></pre></div><p>然后，使用 GSAP 进行变换即可，因为涉及到一系列变换，矩形到三角形，三角形到圆形，圆形到矩形，我们使用 GSAP 提供的 <code>TimelineLite</code> 来调度时间使这三个变换顺序进行。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#000;font-weight:bold">var</span> tl <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">new</span> TimelineLite()
+<span style="color:#000;font-weight:bold">var</span> duration <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>
 tl.to(rect, duration, {
-  morphSVG: triangle,
+  morphSVG<span style="color:#000;font-weight:bold">:</span> triangle,
 })
 tl.to(rect, duration, {
-  morphSVG: circle,
+  morphSVG<span style="color:#000;font-weight:bold">:</span> circle,
 })
 tl.to(rect, duration, {
-  morphSVG: rect,
+  morphSVG<span style="color:#000;font-weight:bold">:</span> rect,
 })
-</code></pre>
-
-<p>到了这里，形变就已经完成了。但是还缺少了颜色变换和位置变换。颜色和位置变换需要使用 GSAP 的 CSS 插件，增加一点代码即可，这里不再赘述了。</p>
-
+</code></pre></div><p>到了这里，形变就已经完成了。但是还缺少了颜色变换和位置变换。颜色和位置变换需要使用 GSAP 的 CSS 插件，增加一点代码即可，这里不再赘述了。</p>
 <h2 id="导出为-gif">导出为 GIF</h2>
-
 <p>SVG 的动画做好了，但并不是所有的平台都支持 SVG，并且每次使用动画都要加载一堆库和一堆代码也比较麻烦。最好的解决方案是导出为 GIF。</p>
-
 <p>比较简单的方法是使用 <a href="http://www.cockos.com/licecap/">LICEcap</a> 软件直接录制浏览器屏幕生成 GIF，缺点是控制度不高，不好微调。</p>
-
 <p>这里我使用 <a href="www.nightmarejs.org">Nightmare</a> 渲染我们的文档，然后自己截屏，最后合成为 GIF。</p>
-
 <p>Nightmare 是类似 Phantom 的一个 Headless Browser，特别适合这种类型的任务，优点是代码比 Phantom 要简洁。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#000;font-weight:bold">var</span> Nightmare <span style="color:#000;font-weight:bold">=</span> require(<span style="color:#d14">&#34;nightmare&#34;</span>)
+<span style="color:#000;font-weight:bold">var</span> nightmare <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">new</span> Nightmare({
+  width<span style="color:#000;font-weight:bold">:</span> <span style="color:#099">400</span>,
+  height<span style="color:#000;font-weight:bold">:</span> <span style="color:#099">400</span>,
+  titleBarStyle<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;hidden&#34;</span>, <span style="color:#998;font-style:italic">// 影藏标题栏，这样内容区和视口一样大
+</span><span style="color:#998;font-style:italic"></span>})
+  .<span style="color:#000;font-weight:bold">goto</span>(<span style="color:#d14">&#34;http://localhost:8080&#34;</span>) <span style="color:#998;font-style:italic">// 这是我们的动画页面
+</span><span style="color:#998;font-style:italic"></span>  .wait(<span style="color:#099">1000</span>)
 
-<pre><code class="language-javascript">var Nightmare = require(&quot;nightmare&quot;)
-var nightmare = new Nightmare({
-  width: 400,
-  height: 400,
-  titleBarStyle: &quot;hidden&quot;, // 影藏标题栏，这样内容区和视口一样大
+<span style="color:#000;font-weight:bold">for</span>(<span style="color:#000;font-weight:bold">var</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">60</span>; i<span style="color:#000;font-weight:bold">++</span>) {
+  nightmare.screenshot(<span style="color:#d14">&#34;loading/loading_&#34;</span> <span style="color:#000;font-weight:bold">+</span> i <span style="color:#000;font-weight:bold">+</span> <span style="color:#d14">&#34;.png&#34;</span>)
+  nightmare.wait(<span style="color:#099">16.6</span>)
 })
-  .goto(&quot;http://localhost:8080&quot;) // 这是我们的动画页面
-  .wait(1000)
 
-for(var i = 0; i &lt; 60; i++) {
-  nightmare.screenshot(&quot;loading/loading_&quot; + i + &quot;.png&quot;)
-  nightmare.wait(16.6)
-})
-
-nightmare.run(function(err) {
-  if(err) {
+nightmare.run(<span style="color:#000;font-weight:bold">function</span>(err) {
+  <span style="color:#000;font-weight:bold">if</span>(err) {
     console.log(err)
-  } else {
-    console.log(&quot;Done&quot;)
+  } <span style="color:#000;font-weight:bold">else</span> {
+    console.log(<span style="color:#d14">&#34;Done&#34;</span>)
   }
 })
-</code></pre>
-
-<p>运行以后，可以在 loading 文件夹里面看到所有截屏出来的图片，将多余的图片剔除掉以后，上传到 <a href="http://gifcreator.me/">gifcreator</a> 上，调整一下速度，然后导出即可。</p>
-
-<p><img src="http://asset.cjting.cn/9b85365djw1f9jheun5t8j20rt0r60yg.jpg" alt="" /></p>
-
+</code></pre></div><p>运行以后，可以在 loading 文件夹里面看到所有截屏出来的图片，将多余的图片剔除掉以后，上传到 <a href="http://gifcreator.me/">gifcreator</a> 上，调整一下速度，然后导出即可。</p>
+<p><img src="http://asset.cjting.cn/9b85365djw1f9jheun5t8j20rt0r60yg.jpg" alt=""></p>
 <p>最终，GIF 效果如下。</p>
-
-<p><img width="100" src="http://asset.cjting.cn/9b85365djw1f9jhfdkgy8g20b40b4wfc.gif"></p>
+<!-- raw HTML omitted -->
       </div>
 
       <div id="post__comments">
