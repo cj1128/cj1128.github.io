@@ -295,7 +295,7 @@ $$</p>
 <ul>
 <li>第一个 data 表示秘钥类型，和公钥第一部分相同</li>
 <li>第二个 data 为 RSA exponent，也就是 e</li>
-<li>第三个 data 为 RSA modulus，也就是 d</li>
+<li>第三个 data 为 RSA modulus，也就是 n</li>
 </ul>
 <p>根据上面的知识，我们可以很容易地解析 <code>rsa.pub</code> 文件，下文中提到的 <code>rsademo</code> 程序实现了公钥解析的逻辑。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ rsademo -parse rsa.pub
