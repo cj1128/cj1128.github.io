@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>sublime on CJ Ting&#39;s Blog</title>
+    <link>https://cjting.me/tags/sublime/</link>
+    <description>Recent content in sublime on CJ Ting&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 10 May 2020 10:04:40 +0800</lastBuildDate>
+    
+	<atom:link href="https://cjting.me/tags/sublime/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>编写第一个 Sublime 插件 —— BuildX</title>
+      <link>https://cjting.me/2020/05/10/write-a-sublime-plugin/</link>
+      <pubDate>Sun, 10 May 2020 10:04:40 +0800</pubDate>
+      
+      <guid>https://cjting.me/2020/05/10/write-a-sublime-plugin/</guid>
+      <description>&lt;p&gt;从我接触计算机开始到现在 Sublime 一直是我的主力编辑器，现代化的 UI、流畅的速度以及众多的插件，特别是各种开箱即用的特性，让他一直默默成为我的生产力助手。&lt;/p&gt;
+&lt;p&gt;我尽量避免使用各种 IDE，除非万不得以，有些工作不使用配套的工具十分麻烦，比如苹果的 XCode 和谷歌的 Android Studio。如果做 Android/iOS 开发，不用这些工具当然可以，但是绝对是不推荐的方案。第三方工具永远不会有官方的工具更新的快，同时，各种教程资料也不会针对第三方工具，一旦遇到问题只能靠自己解决，这个时间投入，是非常不值得的。&lt;/p&gt;
+&lt;p&gt;幸好我的主要技术栈都不需要 IDE，JS/HTML/CSS, C, Go 这些语言 IDE 当然可以有些帮助，但是和 IDE 的臃肿卡顿比起来，这些帮助就显得不重要了。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

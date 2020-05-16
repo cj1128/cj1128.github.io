@@ -34,7 +34,7 @@
   <script type="text/javascript">
     window.PAGE = {
       title: "从一次 Connection Reset 说起，TCP 半连接队列与全连接队列",
-      section: "linux",
+      section: "post",
     }
   </script>
 
@@ -55,10 +55,6 @@
       </h1>
 
       <div class="post__meta">
-        <div class='date'>
-          2019.08.28
-        </div>
-
         <div class="tags">
           
             <span class="tag">linux</span>
@@ -67,6 +63,10 @@
           
             <span class="tag">tcp</span>
           
+        </div>
+
+        <div class='date'>
+          2019.08.28
         </div>
       </div>
 
@@ -82,7 +82,7 @@
   <span style="color:#d14">&#34;net/http&#34;</span>
 )
 
-<span style="color:#000;font-weight:bold">var</span> content = []<span style="color:#0086b3">byte</span>(<span style="color:#d14">`</span><span style="color:#d14">hello world</span><span style="color:#d14">`</span>)
+<span style="color:#000;font-weight:bold">var</span> content = []<span style="color:#0086b3">byte</span>(<span style="color:#d14">`hello world`</span>)
 
 <span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>() {
   http.<span style="color:#900;font-weight:bold">HandleFunc</span>(<span style="color:#d14">&#34;/&#34;</span>, <span style="color:#000;font-weight:bold">func</span>(w http.ResponseWriter, r <span style="color:#000;font-weight:bold">*</span>http.Request) {
@@ -184,7 +184,7 @@ nr_table_entries <span style="color:#000;font-weight:bold">=</span> backlog
 nr_table_entries <span style="color:#000;font-weight:bold">=</span> min(backlog, sysctl_max_syn_backlog)
 nr_table_entries <span style="color:#000;font-weight:bold">=</span> max(nr_table_entries, <span style="color:#099">8</span>)
 <span style="color:#998;font-style:italic">// roundup_pow_of_two: 将参数向上取整到最小的 2^n
-</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// 注意这里存在一个 +1
+</span><span style="color:#998;font-style:italic">// 注意这里存在一个 +1
 </span><span style="color:#998;font-style:italic"></span>nr_table_entries <span style="color:#000;font-weight:bold">=</span> roundup_pow_of_two(nr_table_entries <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>)
 max_qlen_log <span style="color:#000;font-weight:bold">=</span> max(<span style="color:#099">3</span>, log2(nr_table_entries))
 max_queue_length <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">2</span><span style="color:#000;font-weight:bold">^</span>max_qlen_log
@@ -229,8 +229,8 @@ max_queue_length = 2^8 = 256
 <p>启动一个 <a href="https://gist.github.com/cj1128/e6620df2ea2e650164d7513b05c88c8c">simple-tcp-server</a> 来监听 8877 端口，<code>listen</code> 的 <code>backlog</code> 参数为 7, <code>somaxconn</code> 为默认值 128，<code>tcp_max_syn_backlog</code> 为默认值 1024，此时半连接队列的长度为 16。</p>
 <p>启动 <code>tcpdump</code> 监听 8877 端口相关的所有数据包 <code>tcpdump -tn -i lo port 8877</code>。</p>
 <p>启动 <code>scapy</code> 命令行工具，我们先来发送一个 SYN 包看看。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python">ip <span style="color:#000;font-weight:bold">=</span> IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">127.0.0.1</span><span style="color:#d14">&#34;</span>)
-tcp <span style="color:#000;font-weight:bold">=</span> TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">S</span><span style="color:#d14">&#34;</span>)
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python">ip <span style="color:#000;font-weight:bold">=</span> IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;127.0.0.1&#34;</span>)
+tcp <span style="color:#000;font-weight:bold">=</span> TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;S&#34;</span>)
 send(ip<span style="color:#000;font-weight:bold">/</span>tcp)
 </code></pre></div><p>我们会发现，tcpdump 显示收到一个 SYN 包，但是没有对应的 SYN/ACK 回复？？？</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">IP 127.0.0.1.ftp-data &gt; 127.0.0.1.8877: Flags [S], seq 0, win 8192, length 0
@@ -273,11 +273,11 @@ $ iptables -A OUTPUT -p tcp --tcp-flags RST RST -j DROP
 </code></pre></div><p>现在终于可以编写我们的攻击脚本了😈，很简单，循环发送 SYN 包即可。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python"><span style="color:#000;font-weight:bold">from</span> <span style="color:#555">time</span> <span style="color:#000;font-weight:bold">import</span> sleep
 <span style="color:#000;font-weight:bold">from</span> <span style="color:#555">random</span> <span style="color:#000;font-weight:bold">import</span> randint
-ip <span style="color:#000;font-weight:bold">=</span> IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">127.0.0.1</span><span style="color:#d14">&#34;</span>)
-tcp <span style="color:#000;font-weight:bold">=</span> TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">S</span><span style="color:#d14">&#34;</span>)
+ip <span style="color:#000;font-weight:bold">=</span> IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;127.0.0.1&#34;</span>)
+tcp <span style="color:#000;font-weight:bold">=</span> TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;S&#34;</span>)
 <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">attack</span>():
   <span style="color:#000;font-weight:bold">while</span> <span style="color:#999">True</span>:
-    ip<span style="color:#000;font-weight:bold">.</span>src<span style="color:#000;font-weight:bold">=</span>f<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">127.0.0.{randint(0, 255)}</span><span style="color:#d14">&#34;</span>
+    ip<span style="color:#000;font-weight:bold">.</span>src<span style="color:#000;font-weight:bold">=</span>f<span style="color:#d14">&#34;127.0.0.{randint(0, 255)}&#34;</span>
     send(ip<span style="color:#000;font-weight:bold">/</span>tcp)
     sleep(<span style="color:#099">0.01</span>)
 
@@ -296,17 +296,17 @@ attack() <span style="color:#998;font-style:italic"># 发送大量的 SYN 包给
 </ul>
 <p>我们来测试一下，首先，关闭 <code>net.ipv4.tcp_abort_on_overflow</code>，启动我们的 <a href="https://gist.github.com/cj1128/e6620df2ea2e650164d7513b05c88c8c">simple-tcp-server</a>，<code>listen</code> 的 <code>backlog</code> 参数是 1，<code>somaxconn</code> 为 128，因此，全连接队列的长度为 1。</p>
 <p>使用 Scapy 定义 <code>connect</code> 函数，函数内部我们手动实现了三次握手。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python">ip<span style="color:#000;font-weight:bold">=</span>IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">127.0.0.1</span><span style="color:#d14">&#34;</span>)
-tcp<span style="color:#000;font-weight:bold">=</span>TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">S</span><span style="color:#d14">&#34;</span>)
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python">ip<span style="color:#000;font-weight:bold">=</span>IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;127.0.0.1&#34;</span>)
+tcp<span style="color:#000;font-weight:bold">=</span>TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;S&#34;</span>)
 idx <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>
 
 <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">connect</span>():
   <span style="color:#000;font-weight:bold">global</span> idx
-  ip<span style="color:#000;font-weight:bold">.</span>src <span style="color:#000;font-weight:bold">=</span> f<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">127.0.0.{ idx }</span><span style="color:#d14">&#34;</span>
+  ip<span style="color:#000;font-weight:bold">.</span>src <span style="color:#000;font-weight:bold">=</span> f<span style="color:#d14">&#34;127.0.0.{ idx }&#34;</span>
   synack <span style="color:#000;font-weight:bold">=</span> sr1(ip<span style="color:#000;font-weight:bold">/</span>tcp)
-  ack <span style="color:#000;font-weight:bold">=</span> TCP(sport<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>dport, dport<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>sport, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">A</span><span style="color:#d14">&#34;</span>, seq<span style="color:#000;font-weight:bold">=</span><span style="color:#099">100</span>, ack<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>seq <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>)
+  ack <span style="color:#000;font-weight:bold">=</span> TCP(sport<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>dport, dport<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>sport, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;A&#34;</span>, seq<span style="color:#000;font-weight:bold">=</span><span style="color:#099">100</span>, ack<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>seq <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>)
   send(ip<span style="color:#000;font-weight:bold">/</span>ack)
-  idx <span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>
+  idx <span style="color:#000;font-weight:bold">+=</span> <span style="color:#099">1</span>
 </code></pre></div><p>因为我们的 Server 从不 accept，所以，每次发起连接后，全连接队列就会添加一项。</p>
 <p>使用 <code>netstat -tn | rg 8877</code> 查看 Socket 状态，同时使用 <code>tcpdump -tn -i lo port 8877</code> 抓包，然后我们手动触发 <code>connect</code> 函数。</p>
 <p>第一次，多了一条 <code>ESTABLISHED</code> 的连接，一切正常。</p>
@@ -318,7 +318,7 @@ idx <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">
 <p>猜想归猜想，我更想验证一下，验证的方式只能是一头扎进 Linux 浩瀚的源码海洋里了。我运气很好，找到了检查全连接队列是否溢出的函数叫做 <code>sk_acceptq_is_full</code>，它的定义如下，这是 <a href="https://elixir.bootlin.com/linux/v3.5/source/include/net/sock.h#L669">在线版本</a>。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#000;font-weight:bold">static</span> <span style="color:#000;font-weight:bold">inline</span> <span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">sk_acceptq_is_full</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">struct</span> sock <span style="color:#000;font-weight:bold">*</span>sk)
 {
-  <span style="color:#000;font-weight:bold">return</span> sk<span style="color:#000;font-weight:bold">-</span><span style="color:#000;font-weight:bold">&gt;</span>sk_ack_backlog <span style="color:#000;font-weight:bold">&gt;</span> sk<span style="color:#000;font-weight:bold">-</span><span style="color:#000;font-weight:bold">&gt;</span>sk_max_ack_backlog;
+  <span style="color:#000;font-weight:bold">return</span> sk<span style="color:#000;font-weight:bold">-&gt;</span>sk_ack_backlog <span style="color:#000;font-weight:bold">&gt;</span> sk<span style="color:#000;font-weight:bold">-&gt;</span>sk_max_ack_backlog;
 }
 </code></pre></div><p><code>sk-&gt;sk_ack_backlog</code> 是当前的全连接队列长度，<code>sk-&gt;sk_max_ack_backlog</code> 是配置的全连接队列最大长度，猜想验证了。</p>
 <p>这里顺手提一下 <code>ss</code> 这个工具，一个现代化的用于取代 <code>netstat</code> 的工具，使用它，我们可以看到全连接队列的长度。</p>

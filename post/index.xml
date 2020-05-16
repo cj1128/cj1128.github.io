@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on CJ Ting&#39;s Blog</title>
+    <link>https://cjting.me/post/</link>
+    <description>Recent content in Posts on CJ Ting&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 10 May 2020 10:04:40 +0800</lastBuildDate>
+    
+	<atom:link href="https://cjting.me/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>编写第一个 Sublime 插件 —— BuildX</title>
+      <link>https://cjting.me/2020/05/10/write-a-sublime-plugin/</link>
+      <pubDate>Sun, 10 May 2020 10:04:40 +0800</pubDate>
+      
+      <guid>https://cjting.me/2020/05/10/write-a-sublime-plugin/</guid>
+      <description>&lt;p&gt;从我接触计算机开始到现在 Sublime 一直是我的主力编辑器，现代化的 UI、流畅的速度以及众多的插件，特别是各种开箱即用的特性，让他一直默默成为我的生产力助手。&lt;/p&gt;
+&lt;p&gt;我尽量避免使用各种 IDE，除非万不得以，有些工作不使用配套的工具十分麻烦，比如苹果的 XCode 和谷歌的 Android Studio。如果做 Android/iOS 开发，不用这些工具当然可以，但是绝对是不推荐的方案。第三方工具永远不会有官方的工具更新的快，同时，各种教程资料也不会针对第三方工具，一旦遇到问题只能靠自己解决，这个时间投入，是非常不值得的。&lt;/p&gt;
+&lt;p&gt;幸好我的主要技术栈都不需要 IDE，JS/HTML/CSS, C, Go 这些语言 IDE 当然可以有些帮助，但是和 IDE 的臃肿卡顿比起来，这些帮助就显得不重要了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>RSA 的原理与实现</title>
+      <link>https://cjting.me/2020/03/13/rsa/</link>
+      <pubDate>Fri, 13 Mar 2020 19:24:07 +0800</pubDate>
+      
+      <guid>https://cjting.me/2020/03/13/rsa/</guid>
+      <description>&lt;p&gt;1976 年以前，所有的加密都是如下方式：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A 使用某种规则对信息进行处理&lt;/li&gt;
+&lt;li&gt;B 使用同样的规则对处理过的信息进行复原&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这个方式很好理解，不论是非常简单的 ROT13 还是目前广泛使用的 AES，都是这种对称加密方式。&lt;/p&gt;
+&lt;p&gt;但是这种方式有一个巨大的缺点，那就是 A 需要将对信息进行处理的规则（也就是秘钥）告诉给 B。怎样安全地传输秘钥就成了一个非常棘手的问题。&lt;/p&gt;
+&lt;p&gt;那么存不存在一种方式，加密和解密使用不同的秘钥，彻底规避掉传输秘钥的问题？&lt;/p&gt;
+&lt;p&gt;答案是存在的，感谢数学家和计算机科学家，RSA 就是这样一种非对称加密方式，也就是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用算法可以生成两把钥匙 A 和 B&lt;/li&gt;
+&lt;li&gt;使用 A 加密的信息，使用 B 可以解开&lt;/li&gt;
+&lt;li&gt;使用 B 加密的信息，使用 A 可以解开&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;日常使用中，我们把一把作为公钥，公开发布。一把作为私钥，自己保留。这样，任何人都可以使用我们的公钥加密信息发给我们，我们则可以使用自己的私钥解开。&lt;/p&gt;
+&lt;p&gt;只要把私钥保存好，这个通信系统就非常安全。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>从一次 Connection Reset 说起，TCP 半连接队列与全连接队列</title>
+      <link>https://cjting.me/2019/08/28/tcp-queue/</link>
+      <pubDate>Wed, 28 Aug 2019 15:55:08 +0800</pubDate>
+      
+      <guid>https://cjting.me/2019/08/28/tcp-queue/</guid>
+      <description>&lt;p&gt;之前用 Go 编写过一个简单的服务器和客户端，用来测试 Go 的 HTTP 性能，无意中发现了一个奇怪的问题。&lt;/p&gt;
+&lt;p&gt;在我的 Mac 上客户端程序会非常稳定地遇到 &lt;em&gt;Connection Reset&lt;/em&gt; 的错误，让人一头雾水。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>从图片优化说起</title>
+      <link>https://cjting.me/2019/07/29/image-optimization/</link>
+      <pubDate>Mon, 29 Jul 2019 14:52:50 +0800</pubDate>
+      
+      <guid>https://cjting.me/2019/07/29/image-optimization/</guid>
+      <description>&lt;p&gt;图片是大部分网页的重要组成部分，一般情况下，我们不会太关注这方面的问题，需要显示图片直接一个 &lt;code&gt;img&lt;/code&gt; 标签搞定。&lt;/p&gt;
+&lt;p&gt;但实际上，无论是对于提高加载速度，还是对于优化用户体验，优化图片都是一个重要的手段。&lt;/p&gt;
+&lt;p&gt;图片优化分成两个方面：&lt;/p&gt;
+&lt;p&gt;第一，图片压缩。在保证视觉效果的情况下，减少图片的体积。这个很有效，1M 和 100K 的图片，肉眼看起来几乎差不多，但却省了 90% 的流量，大大提高了加载速度。&lt;/p&gt;
+&lt;p&gt;第二，响应式图片。根据客户端的情况，选择最合适的图片返回给用户。用户是一个 500px 的设备，那么返回 1000px 的图给他就是浪费。&lt;/p&gt;
+&lt;p&gt;我们先来看图片压缩。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>正向代理与反向代理</title>
+      <link>https://cjting.me/2018/08/11/forward-proxy-and-reverse-proxy/</link>
+      <pubDate>Sat, 11 Aug 2018 18:08:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/2018/08/11/forward-proxy-and-reverse-proxy/</guid>
+      <description>&lt;p&gt;代理的英文叫做 &lt;em&gt;Proxy&lt;/em&gt;，是计算机中的常用软件。&lt;/p&gt;
+&lt;p&gt;简单来说，代理的功能犹如它的名字所示：代替某人来处理某事。&lt;/p&gt;
+&lt;p&gt;常见的代理分两种，正向代理和反向代理。不管哪种代理，它们都位于客户端和服务器之间，将我们传统的 &lt;code&gt;客户端 &amp;lt;-&amp;gt; 服务器&lt;/code&gt; 通信变成了 &lt;code&gt;客户端 &amp;lt;-&amp;gt; 代理 &amp;lt;-&amp;gt; 服务器&lt;/code&gt; 通信。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>JavaScript 与 Unicode</title>
+      <link>https://cjting.me/2018/07/22/js-and-unicode/</link>
+      <pubDate>Sun, 22 Jul 2018 09:45:12 +0800</pubDate>
+      
+      <guid>https://cjting.me/2018/07/22/js-and-unicode/</guid>
+      <description>&lt;p&gt;字符串是任何一个编程语言中的重要概念，同时也是一个非常复杂的问题。&lt;/p&gt;
+&lt;p&gt;日常编码中可能并不一定能见到它的复杂性，下面是几个字符串操作，使用你最熟悉的编程语言，看看结果如何。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;逆转字符串 &lt;code&gt;&amp;quot;noël&amp;quot;&lt;/code&gt;，正确结果应该是 &lt;code&gt;&amp;quot;lëon&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取字符串 &lt;code&gt;&amp;quot;noël&amp;quot;&lt;/code&gt; 前三个字符，正确结果应该是 &lt;code&gt;&amp;quot;noë&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取字符串 &lt;code&gt;&amp;quot;😸😾&amp;quot;&lt;/code&gt; 的长度，正确答案应该是 2&lt;/li&gt;
+&lt;li&gt;字符串 &lt;code&gt;&amp;quot;noël&amp;quot;&lt;/code&gt; 和字符串 &lt;code&gt;&amp;quot;noël&amp;quot;&lt;/code&gt; 规整化以后应该相等（他们看起来一样，但是内部表示不一样，一个 6 字节，一个 5 字节，这里涉及到 Unicode 的规整化）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于大部分编程语言，包括 Ruby，Python，JS，C#，Java 等，上面的问题都无法全部返回正确结果（但是，拥有超强 Unicode 支持的 &lt;a href=&#34;https://elixir-lang.org/&#34;&gt;Elixir&lt;/a&gt; 可以）。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>DNS 101</title>
+      <link>https://cjting.me/2018/05/01/dns-101/</link>
+      <pubDate>Tue, 01 May 2018 15:32:08 +0800</pubDate>
+      
+      <guid>https://cjting.me/2018/05/01/dns-101/</guid>
+      <description>&lt;p&gt;DNS 全称 &lt;code&gt;Domain Name System&lt;/code&gt;，是我们每天都在使用的基础互联网设施。&lt;/p&gt;
+&lt;p&gt;它被发明出来的原因很简单，计算机之间的通信用的是 IP 地址，是一串数字，人类记忆起来十分不方便，因此，我们给地址起个名字，然后将名字和 IP 之间的关系记录起来，这样，我们只用记住名字就行了。&lt;/p&gt;
+&lt;p&gt;从上面可以看出，DNS 系统类似我们日常使用的电话本，只不过里面存储的是域名和 IP 之间的关系。和人与电话之间的关系一样，一个域名可以有多个 IP，一个 IP 也可以有多个域名。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>HTTP Basic Auth 是怎么样工作的</title>
+      <link>https://cjting.me/2018/03/31/how-http-basic-auth-work/</link>
+      <pubDate>Sat, 31 Mar 2018 19:40:48 +0800</pubDate>
+      
+      <guid>https://cjting.me/2018/03/31/how-http-basic-auth-work/</guid>
+      <description>&lt;p&gt;&lt;code&gt;HTTP Basic Auth&lt;/code&gt; 是 HTTP 提供的一种验证方式，因为明文传输用户名和密码，非 HTTPS 环境下很不安全，一般用的非常少。但是在某些情况下用一用还是非常方便的，比如，一些静态站点例如文档系统可以使用 HTTP Basic Auth 进行简单的权限验证。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>从 Jekyll 迁移到 Hugo，Hugo 不完全指南</title>
+      <link>https://cjting.me/2017/06/04/migrate-to-hugo-from-jekyll/</link>
+      <pubDate>Sun, 04 Jun 2017 15:46:33 +0800</pubDate>
+      
+      <guid>https://cjting.me/2017/06/04/migrate-to-hugo-from-jekyll/</guid>
+      <description>&lt;p&gt;最近这段时间一直在忙着迁移博客，把原本基于 Jekyll 的博客迁移到了 Hugo 上。&lt;/p&gt;
+&lt;p&gt;之所以从 Jekyll 迁移的原因并不复杂，就是一个字：&lt;strong&gt;慢&lt;/strong&gt;。Jekyll 的速度实在是太慢了，我只有几十篇文章，在 Watch 模式下，每次改动，重新生成都要花费 3 秒钟，实在是太慢了。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;Regenerating: &lt;span style=&#34;color:#099&#34;&gt;1&lt;/span&gt; file&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;s&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt; changed at 2017-05-14 10:37:16 ...done in 3.085089 seconds.
+Regenerating: &lt;span style=&#34;color:#099&#34;&gt;1&lt;/span&gt; file&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;(&lt;/span&gt;s&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;)&lt;/span&gt; changed at 2017-05-14 10:37:20 ...done in 3.121783 seconds.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>Git 是怎样生成 diff 的：Myers 算法</title>
+      <link>https://cjting.me/2017/05/13/how-git-generate-diff/</link>
+      <pubDate>Sat, 13 May 2017 00:00:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/2017/05/13/how-git-generate-diff/</guid>
+      <description>&lt;p&gt;diff 是我们每天都要使用的一个功能，每次提交时，我都习惯先用 &lt;code&gt;git diff --cached&lt;/code&gt; 看看这次提交更改了些什么，确定没问题，然后再 &lt;code&gt;git commit&lt;/code&gt;。git 生成的 diff 非常直观，直观到我从来都没有去思考过 diff 是怎么生成的，觉得这应该是很简单的一件事，两个文件做个对比，不就行了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用 Prometheus 监控服务器性能</title>
+      <link>https://cjting.me/2017/03/12/use-prometheus-to-monitor-server/</link>
+      <pubDate>Sun, 12 Mar 2017 00:00:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/2017/03/12/use-prometheus-to-monitor-server/</guid>
+      <description>&lt;p&gt;最近一直在思考如何对线上服务做深度监控。基础的服务可用性监控很简单，定期 Ping 即可。但是怎样才能监控服务器的一些更加关键的数据呢？比如，每一个 API Point 的请求次数（QPS），最大响应时间，平均响应时间等。最终我希望实现的效果是有一个 Dashboard，我可以清楚地看到各种参数曲线，对服务器的运行情况了然于胸。&lt;/p&gt;
+&lt;p&gt;绘制 Dashboard 不难，目前提供数据可视化的工具很多，随便选一个都能满足需要。关键问题是，怎样将整个流程打通？&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;服务器该以怎样的形式暴露出数据？&lt;/li&gt;
+&lt;li&gt;数据怎样被收集和存储起来？&lt;/li&gt;
+&lt;li&gt;存储起来的数据怎样提供给数据可视化工具？&lt;/li&gt;
+&lt;li&gt;怎样做到足够灵活，可以可视化自己感兴趣的任意数据？&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用 Go 编写代码明信片生成器</title>
+      <link>https://cjting.me/2017/02/18/write-a-code-post-generator-with-go/</link>
+      <pubDate>Sat, 18 Feb 2017 00:00:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/2017/02/18/write-a-code-post-generator-with-go/</guid>
+      <description>&lt;p&gt;很早之前就看过到关于 &lt;a href=&#34;http://commits.io&#34;&gt;commits.io&lt;/a&gt; 的一个帖子，这个站点专门制作代码明信片。什么是代码明信片呢？如下图。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://asset.cjting.cn/007FEWc7ly1g1f3o6zdtwj30sj0ee45m.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>图床on七牛，简单好用的图床插件</title>
+      <link>https://cjting.me/2017/01/23/build-an-img-bed-on-qiniu/</link>
+      <pubDate>Mon, 23 Jan 2017 00:00:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/2017/01/23/build-an-img-bed-on-qiniu/</guid>
+      <description>&lt;p&gt;注：因为七牛 API 修改，编辑于 2019-03-25T16:20:00。&lt;/p&gt;
+&lt;p&gt;最近在使用过程中发现 &lt;strong&gt;图床on微博&lt;/strong&gt; 出了点问题，响应体的 JSON 解析错误，不用想都知道肯定是微博修改了响应体的数据结构（微博图片上传接口响应体是 html 和 json 混在一起，十分专业）。简单修复了一下，测试的时候却发现，微博的图片上传接口变得不再稳定了，经常 404。看来微博图床是不能用了，正好我早就觉得微博不是个好图床，缺点如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;经常性的要重新登陆，麻烦死了&lt;/li&gt;
+&lt;li&gt;无法获取到完整的上传图片列表&lt;/li&gt;
+&lt;li&gt;无法删除上传的图片&lt;/li&gt;
+&lt;li&gt;服务状态不可控，指不定什么时候接口就不能用了&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用 pprof 优化 Golang 性能</title>
+      <link>https://cjting.me/2016/11/14/use-pprof-to-optimize-go/</link>
+      <pubDate>Mon, 14 Nov 2016 00:00:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/2016/11/14/use-pprof-to-optimize-go/</guid>
+      <description>&lt;p&gt;&lt;em&gt;Donald E.Knuth&lt;/em&gt; 说过一句非常著名的话，&lt;strong&gt;过早的优化是万恶之源&lt;/strong&gt;，原文如下：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;We should forget about small efficiencies, say about 97% of the time; premature optimization is the root of all evil.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;我是十分赞同这句话的，并且在开发过程中也深有体会。什么叫做 &lt;em&gt;过早的优化&lt;/em&gt; 呢？即不需要考虑优化的时候你在考虑优化。这绝对不意味着可以任性地写代码，随意地选择数据结构和算法。这句话是告诉我们，在程序开发的早期阶段，程序员应该专注在程序的 &lt;strong&gt;逻辑实现&lt;/strong&gt; 上，而不是专注在程序的 &lt;strong&gt;性能优化&lt;/strong&gt; 上。用正确的数据结构和算法，优美合理的语句实现你要的功能。而不是满脑子在想：“这个函数是不是可以优化一下？”。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用 SVG Morphing 制作自己的加载动画</title>
+      <link>https://cjting.me/2016/11/07/make-loading-animation-with-svg-morphing/</link>
+      <pubDate>Mon, 07 Nov 2016 00:00:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/2016/11/07/make-loading-animation-with-svg-morphing/</guid>
+      <description>&lt;p&gt;每一个需要让用户等待的应用都应该有加载界面，可以是简单的文本，比如 &lt;code&gt;加载中…&lt;/code&gt;，也可以是有趣的动画。当然，一个好玩的加载动画能够大大增加用户等待的耐心，谁喜欢枯燥的文字呢。所以，投入点时间寻找或者制作一个加载动画是很有意义的。感谢 SVG 和相关的动画技术，现在制作一款复杂的动画已经变得十分容易了。&lt;/p&gt;
+&lt;p&gt;这里我使用 SVG 的形变技术（Shape Morphing）来做一个简单的矩形、三角形、圆形变换的动画。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>从零开始搭建一个 ELKB 日志收集系统</title>
+      <link>https://cjting.me/2016/10/21/build-log-system-with-elkb/</link>
+      <pubDate>Fri, 21 Oct 2016 00:00:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/2016/10/21/build-log-system-with-elkb/</guid>
+      <description>&lt;p&gt;当今的软件开发 &lt;strong&gt;多核&lt;/strong&gt; 以及 &lt;strong&gt;分布&lt;/strong&gt; 已经成为了常态，基本上稍大型的应用都是多台机器分布式部署。分布式在提高性能的同时也带来了很多问题，今天我们只讨论一点，那就是如何处理多台机器线上系统的日志。&lt;/p&gt;
+&lt;p&gt;以我司的某个应用 T 为例，部署在了百度云 5 台机子上，其中一台拥有公网 IP，使用了百度云提供的负载均衡服务。每次想要在日志中检索某个关键字时，基本步骤如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;打开五个 SSH，登陆拥有公网 IP 的那台机器&lt;/li&gt;
+&lt;li&gt;在另外四个 SSH 中分别登陆其他的内网机器&lt;/li&gt;
+&lt;li&gt;对日志文件进行检索&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>从零开始搭建一个 HTTPS 网站</title>
+      <link>https://cjting.me/2016/09/05/build-a-https-site-from-scratch/</link>
+      <pubDate>Mon, 05 Sep 2016 00:00:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/2016/09/05/build-a-https-site-from-scratch/</guid>
+      <description>&lt;p&gt;我们都知道 HTTP 是非常不安全的，不安全的根源在于 HTTP 是明文传输。你在谷歌搜索了一个关键词（假设 Google 使用 HTTP），HTTP 数据包从你的计算机传送到服务器的过程中，中间经过的任意一个设备都可以轻松解析你的数据包，获取你的关键词，你的隐私毫无保障。&lt;/p&gt;
+&lt;p&gt;你的信息被人获取只是明文传输的其中一个问题。总体来说，明文传输有三个问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;窃听：第三方可以获取你的信息&lt;/li&gt;
+&lt;li&gt;篡改：第三方可以修改你的信息&lt;/li&gt;
+&lt;li&gt;冒充：第三方可以冒充你的身份&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用 Dnsmasq 搭建内网 DNS 服务器</title>
+      <link>https://cjting.me/2016/08/20/use-dnsmasq-to-build-own-dns-server/</link>
+      <pubDate>Sat, 20 Aug 2016 00:00:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/2016/08/20/use-dnsmasq-to-build-own-dns-server/</guid>
+      <description>&lt;p&gt;在日常开发过程中，我们经常要配置各种
+host，比如公司内部的各种服务，或者测试项目的时候暂时把生产环境 URL 配置到本地上等等。一般采取的方法都是每个人手动编辑自己的 &lt;code&gt;/etc/hosts&lt;/code&gt; 文件。这个做法有两个缺点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;手动编辑 &lt;code&gt;/etc/hosts&lt;/code&gt; 文件非常麻烦，需要 &lt;code&gt;sudo&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;工作量重复，团队内每个人都要配置一遍&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用 Ngrok 实现内网穿透</title>
+      <link>https://cjting.me/2016/05/21/ngrok-tutorial/</link>
+      <pubDate>Sat, 21 May 2016 00:00:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/2016/05/21/ngrok-tutorial/</guid>
+      <description>&lt;p&gt;很多时候，我们都有这样的需求：需要将本地正在开发的服务暴露在公网上，也就是从外网直接访问我们本机上的服务。正常情况下，这是办不到的，因为我们的本机并没有公网 IP，我们的本机处在内网当中。&lt;/p&gt;
+&lt;p&gt;这里需要顺手提及一个知识：NAT 穿透。我们的机器一般都在路由器的内网当中，IP 地址基本上都是 &lt;code&gt;192.168.x.x&lt;/code&gt; 系列，我们并没有公网 IP，那么如何访问外网呢？我们打开浏览器访问 Google，Google 与我们主机之间如何通信？假设我们主机 IP 为 &lt;code&gt;192.168.0.100&lt;/code&gt;，路由器 LAN IP 为 &lt;code&gt;192.168.0.1&lt;/code&gt;，WAN IP 为 &lt;code&gt;211.22.145.234（这是一个公网IP）&lt;/code&gt;，Google 服务器 IP 为 &lt;code&gt;74.125.204.101&lt;/code&gt;，详细通信流程如下。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>编写第一个 Chrome 插件 —— 图床on微博</title>
+      <link>https://cjting.me/2016/04/06/first-chrome-extension-image-bed-on-weibo/</link>
+      <pubDate>Wed, 06 Apr 2016 00:00:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/2016/04/06/first-chrome-extension-image-bed-on-weibo/</guid>
+      <description>&lt;p&gt;之前写博客需要的图片全部都是本地存储，非常麻烦。流程如下：先用截图工具截图（QQ 截图就很好用），然后移动到目标文件夹，然后在 Markdown 中输入绝对路径（Jekyll 生成站点以后路径会变化，所以不能使用相对路径）。除了麻烦以外，在 Markdown 中编写时还是看不到图的，因为路径不对。&lt;/p&gt;
+&lt;p&gt;上次花点时间把所有的图片全部迁移到微博图床了。在 Chrome Web Store 中搜索了一下，选了&lt;a href=&#34;https://chrome.google.com/webstore/detail/%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9A%E5%9B%BE%E5%BA%8A/fdfdnfpdplfbbnemmmoklbfjbhecpnhf?utm_source=chrome-ntp-icon&#34;&gt;新浪微博图床&lt;/a&gt;。功能是可以用的，不过有一些问题，最让我无法忍受的就是一点击按钮就会弹出一个 Chrome 的空白窗口，无法关闭，只有重启 Chrome 才行，这个实在是忍无可忍。&lt;/p&gt;
+&lt;p&gt;闲话不说了，总之我发现这是一次绝佳的自己造轮子的机会。自己造自己用多好玩，所以我准备自己写一个 Chrome 插件，来实现微博图床的功能。起什么名字好呢，恩，这真是一个世界难题。想了半天，决定叫做“图床on微博”吧，是的，我是 RoR 粉丝。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Functional Reactive Programming 简介</title>
+      <link>https://cjting.me/2016/03/20/intruduction-to-functional-reactive-programming/</link>
+      <pubDate>Sun, 20 Mar 2016 00:00:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/2016/03/20/intruduction-to-functional-reactive-programming/</guid>
+      <description>&lt;p&gt;推荐阅读：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=XRYN2xt11Ek&#34;&gt;Netflix JavaScript Talks - Async JavaScript with Reactive Extensions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://gist.github.com/staltz/868e7e9bc2a7b8c1f754&#34;&gt;The introduction to Reactive Programming you&amp;rsquo;ve been missing&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;HTML5Rocks 有一篇关于 &lt;a href=&#34;http://www.html5rocks.com/en/tutorials/es6/promises/&#34;&gt;Promise&lt;/a&gt; 的经典文章，通过引入这样一个问题来说明 Promise 的优越性，问题如下：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;我们需要渲染一个故事，首先我们获取故事的 json，渲染标题 (story.heading)，然后再根据其中的 charpter url，获取每一章的内容，并显示。中间出了任何问题，显示错误信息。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>JavaScript Infinite Currying</title>
+      <link>https://cjting.me/2016/01/17/javascript-infinite-currying/</link>
+      <pubDate>Sun, 17 Jan 2016 00:00:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/2016/01/17/javascript-infinite-currying/</guid>
+      <description>&lt;p&gt;很久之前曾看到一个很有意思的 JS 问题，&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;color:#998;font-style:italic&#34;&gt;// 定义一个函数 add，满足如下性质：
+&lt;/span&gt;&lt;span style=&#34;color:#998;font-style:italic&#34;&gt;&lt;/span&gt;add(&lt;span style=&#34;color:#099&#34;&gt;1&lt;/span&gt;) &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#099&#34;&gt;1&lt;/span&gt;
+add(&lt;span style=&#34;color:#099&#34;&gt;1&lt;/span&gt;)(&lt;span style=&#34;color:#099&#34;&gt;2&lt;/span&gt;) &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#099&#34;&gt;3&lt;/span&gt;
+add(&lt;span style=&#34;color:#099&#34;&gt;1&lt;/span&gt;)(&lt;span style=&#34;color:#099&#34;&gt;2&lt;/span&gt;)(&lt;span style=&#34;color:#099&#34;&gt;3&lt;/span&gt;) &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#099&#34;&gt;6&lt;/span&gt;
+...
+
+&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;var&lt;/span&gt; g &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;=&lt;/span&gt; add(&lt;span style=&#34;color:#099&#34;&gt;1&lt;/span&gt;)(&lt;span style=&#34;color:#099&#34;&gt;2&lt;/span&gt;)
+g(&lt;span style=&#34;color:#099&#34;&gt;100&lt;/span&gt;) &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#099&#34;&gt;103&lt;/span&gt;
+g(&lt;span style=&#34;color:#099&#34;&gt;200&lt;/span&gt;) &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#099&#34;&gt;203&lt;/span&gt;
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>Underhanded C, 有猫腻的 C</title>
+      <link>https://cjting.me/2015/06/16/underhanded-c/</link>
+      <pubDate>Tue, 16 Jun 2015 00:00:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/2015/06/16/underhanded-c/</guid>
+      <description>&lt;p&gt;这一切，都要从这篇文章说起，&lt;a href=&#34;http://www.codersnotes.com/notes/being-sneaky-in-c&#34;&gt;Being Sneaky in C&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;通过这篇文章，我了解到，原来外国有一种比赛，叫做 &lt;em&gt;Underhanded C&lt;/em&gt;（中文翻译：有猫腻的 C），完成规定的题目，要求是写出看起来毫无问题的代码，但是却偷偷的藏有 Bug 或者说后门。&lt;/p&gt;
+&lt;p&gt;这篇文章说的就是作者参与了这个比赛，以及他的解决方案。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>关于字符编码</title>
+      <link>https://cjting.me/2014/04/24/about-string-encoding/</link>
+      <pubDate>Thu, 24 Apr 2014 00:00:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/2014/04/24/about-string-encoding/</guid>
+      <description>&lt;p&gt;很早之前就碰到过&amp;quot;乱码&amp;quot;这个现象，当时非常困惑，完全不能理解发生了什么。&lt;/p&gt;
+&lt;p&gt;上大学以后，虽然开始接触计算机，不过我就没看到过具体讲解字符编码的内容。对这个领域始终是感到非常模糊。&lt;/p&gt;
+&lt;p&gt;不过，最近好像豁然开朗了一下，感觉突然就明白了这个问题。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

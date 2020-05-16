@@ -34,7 +34,7 @@
   <script type="text/javascript">
     window.PAGE = {
       title: "使用 SVG Morphing 制作自己的加载动画",
-      section: "web2.0",
+      section: "post",
     }
   </script>
 
@@ -55,10 +55,6 @@
       </h1>
 
       <div class="post__meta">
-        <div class='date'>
-          2016.11.07
-        </div>
-
         <div class="tags">
           
             <span class="tag">svg</span>
@@ -66,16 +62,22 @@
             <span class="tag">animation</span>
           
         </div>
+
+        <div class='date'>
+          2016.11.07
+        </div>
       </div>
 
       <div class="post__content">
         <p>每一个需要让用户等待的应用都应该有加载界面，可以是简单的文本，比如 <code>加载中…</code>，也可以是有趣的动画。当然，一个好玩的加载动画能够大大增加用户等待的耐心，谁喜欢枯燥的文字呢。所以，投入点时间寻找或者制作一个加载动画是很有意义的。感谢 SVG 和相关的动画技术，现在制作一款复杂的动画已经变得十分容易了。</p>
 <p>这里我使用 SVG 的形变技术（Shape Morphing）来做一个简单的矩形、三角形、圆形变换的动画。</p>
-<!-- raw HTML omitted -->
+<p data-height="500" data-theme-id="light" data-slug-hash="QGwMXP" data-default-tab="result" data-user="fatelovely" data-embed-version="2" data-pen-title="SVG Morphing Loading Animation" class="codepen">See the Pen <a href="http://codepen.io/fatelovely/pen/QGwMXP/">SVG Morphing Loading Animation</a> by fatelovely (<a href="http://codepen.io/fatelovely">@fatelovely</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 <h2 id="svg-shape-morphing">SVG Shape Morphing</h2>
 <p>上面的动画里，有三个量在变换。图形的形状，图形的位置以及颜色。位置和颜色都是比较简单的，CSS Transition 就可以搞定。问题就是形状的变化比较复杂。形变技术理解起来比较简单，图形从一个形状变换到另一个形状，无非就是构成图形的顶点位置发生了变化。所以，只要将开始图形和结束图形的顶点之间的对应关系找到，然后对顶点进行 transition 就行了。从这可以看出，SVG 的形变必须要求开始图形和结束图形的顶点数一定要相同，如下所示。</p>
 <p><img src="http://asset.cjting.cn/9b85365dgw1f9jdl0i3e2g20a008gh6t.gif" alt=""></p>
-<!-- raw HTML omitted -->
+<p data-height="500" data-theme-id="light" data-slug-hash="XNJBOy" data-default-tab="result" data-user="fatelovely" data-embed-version="2" data-pen-title="SVG Morphing Demo" class="codepen">See the Pen <a href="http://codepen.io/fatelovely/pen/XNJBOy/">SVG Morphing Demo</a> by fatelovely (<a href="http://codepen.io/fatelovely">@fatelovely</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 <h2 id="gsap">GSAP</h2>
 <p>SVG 的形变有两种方式，第一是使用 <em>SMIL</em>，第二是使用 JS 库。SMIL 目前已经被废弃，这里我们使用大名鼎鼎的 <a href="http://greensock.com/gsap">GreenSock Animation Platform, GSAP</a> 动画库来实现。GSAP 是一个非常高级的动画库，功能强大接口简洁，我们使用 <a href="https://greensock.com/morphSVG">MorphSVGPlugin</a> 插件来完成 SVG 的形变功能。</p>
 <p>上面我说过，SVG 的形变动画要求开始图形和结束图形顶点数一样，但这并不意味着我们提供给 GSAP 的开始图形和结束图形顶点数必须一致。GSAP 的一大特点便是允许我们提供顶点数完全不一样的图形来进行形状变换，GSAP 内部会自己计算顶点并进行 transition。</p>
@@ -152,7 +154,7 @@ nightmare.run(<span style="color:#000;font-weight:bold">function</span>(err) {
 </code></pre></div><p>运行以后，可以在 loading 文件夹里面看到所有截屏出来的图片，将多余的图片剔除掉以后，上传到 <a href="http://gifcreator.me/">gifcreator</a> 上，调整一下速度，然后导出即可。</p>
 <p><img src="http://asset.cjting.cn/9b85365djw1f9jheun5t8j20rt0r60yg.jpg" alt=""></p>
 <p>最终，GIF 效果如下。</p>
-<!-- raw HTML omitted -->
+<img width="100" src="http://asset.cjting.cn/9b85365djw1f9jhfdkgy8g20b40b4wfc.gif">
       </div>
 
       <div id="post__comments">

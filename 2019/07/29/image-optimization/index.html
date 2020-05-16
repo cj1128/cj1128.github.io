@@ -34,7 +34,7 @@
   <script type="text/javascript">
     window.PAGE = {
       title: "从图片优化说起",
-      section: "web2.0",
+      section: "post",
     }
   </script>
 
@@ -55,10 +55,6 @@
       </h1>
 
       <div class="post__meta">
-        <div class='date'>
-          2019.07.29
-        </div>
-
         <div class="tags">
           
             <span class="tag">image</span>
@@ -68,6 +64,10 @@
             <span class="tag">compression</span>
           
         </div>
+
+        <div class='date'>
+          2019.07.29
+        </div>
       </div>
 
       <div class="post__content">
@@ -75,7 +75,7 @@
 <p>但实际上，无论是对于提高加载速度，还是对于优化用户体验，优化图片都是一个重要的手段。</p>
 <p>图片优化分成两个方面：</p>
 <p>第一，图片压缩。在保证视觉效果的情况下，减少图片的体积。这个很有效，1M 和 100K 的图片，肉眼看起来几乎差不多，但却省了 90% 的流量，大大提高了加载速度。</p>
-<p>第二，响应式图片。根据客户端的情况，选择最合适的图片返回给用户。用户是一个 500px 的设备，那么返回 1000px 的图给他就是浪费（假设物理像素和 CSS 像素是一比一）。</p>
+<p>第二，响应式图片。根据客户端的情况，选择最合适的图片返回给用户。用户是一个 500px 的设备，那么返回 1000px 的图给他就是浪费。</p>
 <p>我们先来看图片压缩。</p>
 <h2 id="图片压缩">图片压缩</h2>
 <p>压缩的第一步是筛选出需要压缩的图片。如果图片本身就已经足够小了，那么再压缩的意义就不大。</p>
@@ -162,7 +162,7 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
 <li>是否希望根据客户端情况返回不同的图片 <strong>尺寸</strong> ？</li>
 <li>是否希望优化高 <strong>分辨率</strong> 设备的体验？</li>
 </ul>
-<p>在 <code>picture</code> 标签出来之前，这些只能通过 JS 来实现，不仅代码而且丑陋能力也不全。但是现在，针对这些问题，我们有了一个完整的优雅的解决方案。</p>
+<p>在 <code>picture</code> 标签出来之前，这些只能通过 JS 来实现，不仅代码丑陋而且能力也不全。但是现在，针对这些问题，我们有了一个完整的优雅的解决方案。</p>
 <h3 id="picture-标签">picture 标签</h3>
 <p><code>picture</code> 是 HTML5 新引入的标签，基本用法如下。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-html" data-lang="html">&lt;<span style="color:#000080">picture</span>&gt;
@@ -183,7 +183,7 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
   &gt;
 
   &lt;<span style="color:#000080">img</span>
-    <span style="color:#008080">src</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;img-center.jpg&#34;</span> 
+    <span style="color:#008080">src</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;img-center.jpg&#34;</span>
   &gt;
 &lt;/<span style="color:#000080">picture</span>&gt;
 </code></pre></div><h3 id="动态格式">动态格式</h3>
@@ -196,7 +196,7 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
   &gt;
 
   &lt;<span style="color:#000080">img</span>
-    <span style="color:#008080">src</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;img.jpg&#34;</span> 
+    <span style="color:#008080">src</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;img.jpg&#34;</span>
   &gt;
 &lt;/<span style="color:#000080">picture</span>&gt;
 </code></pre></div><h3 id="动态尺寸">动态尺寸</h3>
@@ -222,10 +222,10 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
 <p>使用了如下的代码，浏览器会自动根据显示器的 DPI 来决定下载图片的哪个版本。</p>
 <p>在低 DPI 设备上，例如桌面显示器，浏览器会使用 img-200.jpg，而在高 DPI 设备上，例如手机，浏览器会使用 img-400.jpg。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-html" data-lang="html">&lt;<span style="color:#000080">img</span>
-  <span style="color:#008080">srcset</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;img-200.jpg, 
+  <span style="color:#008080">srcset</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;img-200.jpg,
 </span><span style="color:#d14">          img-300.jpg 1.5x,
 </span><span style="color:#d14">          img-400.jpg 2x&#34;</span>
-  <span style="color:#008080">src</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;img-400.jpg&#34;</span> 
+  <span style="color:#008080">src</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;img-400.jpg&#34;</span>
 &gt;
 
 &lt;<span style="color:#000080">style</span> <span style="color:#008080">type</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;text/css&#34;</span>&gt;
