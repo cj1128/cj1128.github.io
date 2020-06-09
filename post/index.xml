@@ -6,10 +6,21 @@
     <description>Recent content in Posts on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 10 May 2020 10:04:40 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 07 Jun 2020 17:17:58 +0800</lastBuildDate>
     
 	<atom:link href="https://cjting.me/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>用 C 实现一个 CHIP-8 模拟器</title>
+      <link>https://cjting.me/2020/06/07/chip8-emulator/</link>
+      <pubDate>Sun, 07 Jun 2020 17:17:58 +0800</pubDate>
+      
+      <guid>https://cjting.me/2020/06/07/chip8-emulator/</guid>
+      <description>&lt;p&gt;很早之前我就想写一个 GBA 模拟器，因为小时候的 GBA 游戏给我留下了深刻的印象。&lt;/p&gt;
+&lt;p&gt;口袋妖怪、孤岛求生、牧场物语这些 GBA 的经典游戏，在那个时候还玩着小霸王的我眼中，无异于打开了新世界的大门，原来游戏可以这样的有趣。&lt;/p&gt;
+&lt;p&gt;因为对 GBA 的喜欢，所以有了编写一个 GBA 模拟器的想法。看过一些资料以后，我决定从最简单的 CHIP-8 开始练手。CHIP-8 是一个功能完整的平台，可以运行多个游戏，同时它的设计又非常简单，很适合新手入门。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>编写第一个 Sublime 插件 —— BuildX</title>

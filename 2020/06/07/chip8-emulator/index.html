@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+  <title>用 C 实现一个 CHIP-8 模拟器 - CJ Ting's Blog</title>
+  <meta name="author" content="CJ Ting">
+  <meta name="description" content="用 C 实现一个 CHIP-8 模拟器">
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css">
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/notyf@3.1.0/notyf.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/notyf@3.1.0/notyf.min.css">
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/zoom-vanilla.js@2.0.6/css/zoom.css">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [["$", "$"]],
+    },
+  }
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-chtml.js"></script>
+  <script type="text/javascript">
+    window.PAGE = {
+      title: "用 C 实现一个 CHIP-8 模拟器",
+      section: "post",
+    }
+  </script>
+
+  <link rel="stylesheet" href="/asset/main.css">
+</head>
+<body>
+  
+  <div class="post">
+    <header class="post__header" data-cover="http://asset.cjting.cn/FrxGU8-3EO8dEfXB-zxLk_L3b4pK.png">
+      <a href="/">
+        HOME
+      </a>
+    </header>
+
+    <div class="post__body">
+      <h1 class="post__title">
+          用 C 实现一个 CHIP-8 模拟器
+      </h1>
+
+      <div class="post__meta">
+        <div class="tags">
+          
+            <span class="tag">chip8 emulator c</span>
+          
+        </div>
+
+        <div class='date'>
+          2020.06.07
+        </div>
+      </div>
+
+      <div class="post__content">
+        <p>很早之前我就想写一个 GBA 模拟器，因为小时候的 GBA 游戏给我留下了深刻的印象。</p>
+<p>口袋妖怪、孤岛求生、牧场物语这些 GBA 的经典游戏，在那个时候还玩着小霸王的我眼中，无异于打开了新世界的大门，原来游戏可以这样的有趣。</p>
+<p>因为对 GBA 的喜欢，所以有了编写一个 GBA 模拟器的想法。看过一些资料以后，我决定从最简单的 CHIP-8 开始练手。CHIP-8 是一个功能完整的平台，可以运行多个游戏，同时它的设计又非常简单，很适合新手入门。</p>
+<h2 id="chip-8">CHIP-8</h2>
+<p>我们先来简单了解一下 CHIP-8。</p>
+<p><a href="https://en.wikipedia.org/wiki/CHIP-8">CHIP-8</a> 是 70 年代中期由 Joseph Weisbecker 发明的一个虚拟机，发明的初衷是为了让编写电子游戏更加方便。</p>
+<p>任何一个虚拟机都离不开这几样：指令集、寄存器、内存、输入、输出。</p>
+<p>CHIP-8 的指令集含有 35 条指令，每个指令长度固定为 2 个字节。</p>
+<p>CHIP-8 一共可以访问 4KB 的内存，地址从 <code>0x000 ~ 0xfff</code>，这里面有一些地址是保留给内部使用的。</p>
+<p>CHIP-8 有 16 个 8-bit 的寄存器，记做 <code>V0</code> ~ <code>VF</code>。</p>
+<p>输入方面 CHIP-8 有一个 16 键的键盘，布局如下：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">1 2 3 C
+4 5 6 D
+7 8 9 E
+A 0 B F
+</code></pre></div><p>指令集中有相关指令可以查询某个键是否被按下了。</p>
+<p>CHIP-8 有一个 64x32 像素的屏幕用于输出画面，每个像素只有一个 bit，也就是只能显示两种颜色，0 为黑色 1 为白色，和大部分绘图系统一样，左上角的坐标为 (0, 0)。</p>
+<p>CHIP-8 的绘图指令非常简单，指定了三个参数，<code>x</code>, <code>y</code> 以及 <code>n</code>。绘图的流程是从内存中读取 n 个字节，每个字节为一行，从 (x, y) 开始与原有的像素进行 xor 运算。</p>
+<p>同时，CHIP-8 内置了一套字体 Bitmap (Font Sprite) 用于绘制 0 ~ F 这 16 个字符。每个字符的分辨率为 4x5，占用 5 个字节，每个字节只有高四位存储了数据，低四位没有用上。</p>
+<p>除了绘图以外，CHIP-8 也可以输出非常简单的声音。CHIP-8 有两个 8-bit 定时器，分别是 delay timer 和 sound timer，它们都按照 60hz 的频率递减直到减为 0。</p>
+<p>其中 sound timer 用来控制 CHIP-8 发出声音。当 sound timer 不为 0 的时候，CHIP-8 会发出一个声音，具体的声音由实现来定。</p>
+<p>我们的目标是编写一个 CHIP-8 模拟器在我们的系统上来模拟 CHIP-8 虚拟机，从而可以运行 CHIP-8 程序，</p>
+<p>最终完成时的效果如下，图中在运行的程序是俄罗斯方块。</p>
+<p><img src="http://asset.cjting.cn/FtbhROUInp7O-OOHurKuK6fVQ7VK.png" alt=""></p>
+<h2 id="spec">Spec</h2>
+<p>上面只是简单介绍了一下 CHIP-8，如果要着手编写模拟器，我们需要更加详细的 Spec，以下是我主要参考的两个资料：</p>
+<ul>
+<li><a href="http://devernay.free.fr/hacks/chip8/C8TECH10.HTM">CHIP-8 Technical Reference</a></li>
+<li><a href="https://github.com/mattmikolay/chip-8/wiki/CHIP%E2%80%908-Instruction-Set">CHIP‐8 Instruction Set</a></li>
+</ul>
+<p>第一个资料比较全面系统地阐述了 CHIP-8 的各个方面。</p>
+<p>第二个资料主要是指令集的部分，它的排版看起来更加友好。</p>
+<p>在这两个资料的基础上，再通过 Google 厘清一些细节问题，最终我用来开发模拟器的 Spec 如下：</p>
+<ul>
+<li>内存为 4K
+<ul>
+<li><code>0x0 ~ 0x1ff</code>: 内部保留</li>
+<li><code>0x200 ~ 0xe9f</code>: 程序可以自由使用</li>
+<li><code>0xea0 ~ 0xeff</code>: 保留给栈以及其他内部应用</li>
+<li><code>0xf00 ~ 0xfff</code>: 保留给屏幕显示使用</li>
+</ul>
+</li>
+<li>64x32 分辨率的显示屏，每个像素占用 1 bit，一共 256 个字节，对应内存地址为 <code>0xf00 ~ 0xfff</code></li>
+<li>Font Sprite 的数据存储在 <code>0x0</code> ，一共 16 个字符 80 个字节，具体数据上面的资料中有</li>
+<li>两个 8-bit 的定时器，一个 delay timer 一个 sound timer，按照 60hz 的频率递减直到 0</li>
+<li>16 个 8-bit 的通用寄存器 <code>V0</code> ~ <code>VF</code></li>
+<li>一个 16-bit 的程序计数器 <code>PC</code></li>
+<li>一个 8-bit 的栈寄存器 <code>SP</code>，指向当前栈的顶端</li>
+<li>栈起始地址为 <code>0xea0</code>，往上递增，可以存储 16 个 16-bit 的值，每个值是一个返回地址，用于实现函数调用</li>
+<li>一个 16-bit 的地址寄存器 <code>I</code></li>
+<li>35 条指令，每条指定固定为 2 个字节，这里是 <a href="https://github.com/mattmikolay/chip-8/wiki/CHIP%E2%80%908-Instruction-Set">指令列表</a>
+<ul>
+<li><code>8XYE</code>: 这里的英文容易误解，<code>VF</code> 存储的是移位之前的 <code>VX</code> 而不是 <code>VY</code></li>
+<li><code>8XY6</code>: 同上</li>
+<li><code>FX55</code>: 根据测试发现，不需要增加 <code>I</code> 寄存器</li>
+<li><code>FX65</code>: 同上</li>
+</ul>
+</li>
+<li>键盘按照如下方式映射
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">1 2 3 C        1 2 3 4
+4 5 6 D   -&gt;   Q W E R
+7 8 9 E        A S D F
+A 0 B F        Z X C V
+</code></pre></div></li>
+</ul>
+<h2 id="design">Design</h2>
+<p>有了 Spec，接下来就是考虑怎么实现了。</p>
+<p>因为 CHIP-8 涉及到屏幕显示和声音，选择实现技术其实就是选择怎样处理输入输出，我能想到如下几个选项：</p>
+<ul>
+<li>使用终端，使用不同的字符来表示白色和黑色，使用终端的 beep 来发出声音</li>
+<li>使用平台 Native 技术</li>
+<li>使用跨平台的库比如 SDL</li>
+<li>使用浏览器</li>
+</ul>
+<p>考虑到我练手的目的是为了以后编写更加复杂的 GBA 模拟器，所以 SDL 自然就是最好的选择了，可以简单跨平台的同时又提供强大的能力。语言方面我选择直接使用 C，不用其他的 Binding 了，我喜欢 C 的操控感。</p>
+<p>输入方面，使用 SDL 的事件我们可以很轻松的获取到键盘信息。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c">SDL_Event e;
+<span style="color:#000;font-weight:bold">while</span>(SDL_PollEvent(<span style="color:#000;font-weight:bold">&amp;</span>e)) {
+  <span style="color:#000;font-weight:bold">if</span>(e.type <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> SDL_KEYDOWN) {
+    <span style="color:#000;font-weight:bold">switch</span>(e.key.keysym.sym) {
+      <span style="color:#000;font-weight:bold">case</span> <span style="color:#900;font-weight:bold">SDLK_1</span>:
+        ...
+    }
+  }
+}
+</code></pre></div><p>显示方面，我们可以先创建一个 Texture，然后直接写入像素数据到 Texture 中。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">*</span>rawPixels;
+<span style="color:#458;font-weight:bold">int</span> pitch;
+SDL_LockTexture(screenTexture, <span style="color:#0086b3">NULL</span>, <span style="color:#000;font-weight:bold">&amp;</span>rawPixels, <span style="color:#000;font-weight:bold">&amp;</span>pitch);
+
+u32(<span style="color:#000;font-weight:bold">*</span>pixels)[pitch <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">4</span>] <span style="color:#000;font-weight:bold">=</span> rawPixels;
+
+<span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> y <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; y <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">64</span>; y<span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">+</span>) {
+  <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> x <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; x <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">32</span>; x<span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">+</span>) {
+    pixels[y][x] <span style="color:#000;font-weight:bold">=</span>  ...
+  }
+}
+
+SDL_UnlockTexture(screenTexture);
+</code></pre></div><p>声音方面，可以通过 <code>SDL_QueueAudio</code> 函数来播放一段声音。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#458;font-weight:bold">float</span> <span style="color:#000;font-weight:bold">*</span>buf <span style="color:#000;font-weight:bold">=</span> malloc(bufLength)
+
+<span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> sampleCount; i<span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">+</span>) {
+  buf[i] <span style="color:#000;font-weight:bold">=</span> ...
+}
+
+SDL_QueueAudio(audioDevice, buf, bufLength);
+</code></pre></div><h2 id="the-last">The Last</h2>
+<p>编写好以后，我们可以使用如下两个 ROM 来简单测试我们的模拟器：</p>
+<ul>
+<li><a href="https://github.com/cj1128/chip8-emulator/blob/master/rom/BC_test.ch8">BC Test</a></li>
+<li><a href="https://github.com/cj1128/chip8-emulator/blob/master/rom/test_opcode.ch8">Test Opcode</a></li>
+</ul>
+<p>如果一切正常，运行以后屏幕上会有相应的提示。</p>
+<p>最后，有一些细节问题可能并不怎么被提及，但是在开发中很重要。</p>
+<ul>
+<li>一定要记得使用 <code>SDL_Delay</code> 让出 CPU 时间，否则你的模拟器会占用太多的 CPU</li>
+<li>使用 <code>VSYNC</code> 来阻止 Screen Tearing</li>
+<li>显示器刷新一般是 60hz，所以屏幕更新调用应该也是 60hz</li>
+<li>模拟器运行速度可以使用参数控制，我测试下来 1000hz 体验很流畅</li>
+<li>绘图的时候注意 Clipping，否则很容易导致 Segmentation Fault</li>
+</ul>
+<p>以下两个仓库分别是 Go 和 C++ 的实现，当某个 feature 没有头绪时，可以用来参考，Go 的实现比较完整，C++ 的实现相对粗糙一些。</p>
+<ul>
+<li>Go: <a href="https://github.com/massung/CHIP-8">https://github.com/massung/CHIP-8</a></li>
+<li>C++: <a href="https://code.austinmorlan.com/austin/chip8-emulator">https://code.austinmorlan.com/austin/chip8-emulator</a></li>
+</ul>
+<p>最终我的 C 实现代码在这里 <a href="https://github.com/cj1128/chip8-emulator">chip8-emulator</a>。</p>
+<p>CHIP-8 是一个非常好的练手项目，需要阅读手册，查阅资料，理解虚拟机的工作原理，读取键盘输入并输出声音图像，完成以后还可以用来玩很多游戏~ 祝大家 Happy Coding 🎉</p>
+      </div>
+
+      <div id="post__comments">
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/zoom-vanilla.js@2.0.6/dist/zoom-vanilla.min.js"></script>
+  <script src="/asset/main.js"></script>
+
+  
+  <script>
+    (function() {
+      var _hmt = _hmt || [];
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4f34ee3c85734c8235badd2b99b092a6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+  
+  <div style="display: none">
+    <script type="text/javascript" src="https://s23.cnzz.com/z_stat.php?id=1277776204&web_id=1277776204"></script>
+  </div>
+</body>
+</html>

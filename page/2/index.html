@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.65.3" />
+	<meta name="generator" content="Hugo 0.64.0" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
   <title>CJ Ting&#39;s Blog - CJ Ting's Blog</title>
@@ -66,6 +66,22 @@
           
   <div class="index u-content-container">
     
+    
+      <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/2017/05/13/how-git-generate-diff/">
+          Git 是怎样生成 diff 的：Myers 算法
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>diff 是我们每天都要使用的一个功能，每次提交时，我都习惯先用 <code>git diff --cached</code> 看看这次提交更改了些什么，确定没问题，然后再 <code>git commit</code>。git 生成的 diff 非常直观，直观到我从来都没有去思考过 diff 是怎么生成的，觉得这应该是很简单的一件事，两个文件做个对比，不就行了。</p>
+        </div>
+
+        <div class="index__item__meta">
+          <div>
+            2017.05.13
+          </div>
+        </div>
+      </div>
     
       <div class="index__item">
         <a class="index__item__title hvr-underline-from-left" href="/2017/03/12/use-prometheus-to-monitor-server/">
@@ -245,24 +261,6 @@ host，比如公司内部的各种服务，或者测试项目的时候暂时把�
         <div class="index__item__meta">
           <div>
             2016.05.21
-          </div>
-        </div>
-      </div>
-    
-      <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/2016/04/06/first-chrome-extension-image-bed-on-weibo/">
-          编写第一个 Chrome 插件 —— 图床on微博
-        </a>
-
-        <div class="index__item__content post__content">
-          <p>之前写博客需要的图片全部都是本地存储，非常麻烦。流程如下：先用截图工具截图（QQ 截图就很好用），然后移动到目标文件夹，然后在 Markdown 中输入绝对路径（Jekyll 生成站点以后路径会变化，所以不能使用相对路径）。除了麻烦以外，在 Markdown 中编写时还是看不到图的，因为路径不对。</p>
-<p>上次花点时间把所有的图片全部迁移到微博图床了。在 Chrome Web Store 中搜索了一下，选了<a href="https://chrome.google.com/webstore/detail/%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9A%E5%9B%BE%E5%BA%8A/fdfdnfpdplfbbnemmmoklbfjbhecpnhf?utm_source=chrome-ntp-icon">新浪微博图床</a>。功能是可以用的，不过有一些问题，最让我无法忍受的就是一点击按钮就会弹出一个 Chrome 的空白窗口，无法关闭，只有重启 Chrome 才行，这个实在是忍无可忍。</p>
-<p>闲话不说了，总之我发现这是一次绝佳的自己造轮子的机会。自己造自己用多好玩，所以我准备自己写一个 Chrome 插件，来实现微博图床的功能。起什么名字好呢，恩，这真是一个世界难题。想了半天，决定叫做“图床on微博”吧，是的，我是 RoR 粉丝。</p>
-        </div>
-
-        <div class="index__item__meta">
-          <div>
-            2016.04.06
           </div>
         </div>
       </div>

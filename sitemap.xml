@@ -3,17 +3,32 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://cjting.me/post/</loc>
-    <lastmod>2020-05-10T10:04:40+08:00</lastmod>
+    <loc>https://cjting.me/tags/chip8-emulator-c/</loc>
+    <lastmod>2020-06-07T17:17:58+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://cjting.me/tags/sublime/</loc>
-    <lastmod>2020-05-10T10:04:40+08:00</lastmod>
+    <loc>https://cjting.me/</loc>
+    <lastmod>2020-06-07T17:17:58+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/post/</loc>
+    <lastmod>2020-06-07T17:17:58+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/</loc>
+    <lastmod>2020-06-07T17:17:58+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/2020/06/07/chip8-emulator/</loc>
+    <lastmod>2020-06-07T17:17:58+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/tags/sublime/</loc>
     <lastmod>2020-05-10T10:04:40+08:00</lastmod>
   </url>
   
@@ -58,11 +73,6 @@
   </url>
   
   <url>
-    <loc>https://cjting.me/tags/c/</loc>
-    <lastmod>2019-07-29T14:52:50+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://cjting.me/tags/compression/</loc>
     <lastmod>2019-07-29T14:52:50+08:00</lastmod>
   </url>
@@ -103,11 +113,6 @@
   </url>
   
   <url>
-    <loc>https://cjting.me/</loc>
-    <lastmod>2018-06-04T16:12:33+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://cjting.me/tags/dns/</loc>
     <lastmod>2018-05-01T15:32:08+08:00</lastmod>
   </url>
@@ -130,11 +135,6 @@
   <url>
     <loc>https://cjting.me/2018/03/31/how-http-basic-auth-work/</loc>
     <lastmod>2018-03-31T19:40:48+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://cjting.me/tags/go/</loc>
-    <lastmod>2017-06-04T15:46:33+08:00</lastmod>
   </url>
   
   <url>
@@ -199,6 +199,11 @@
   
   <url>
     <loc>https://cjting.me/tags/codeposter/</loc>
+    <lastmod>2017-02-18T00:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/tags/go/</loc>
     <lastmod>2017-02-18T00:00:00+08:00</lastmod>
   </url>
   
@@ -370,6 +375,11 @@
   <url>
     <loc>https://cjting.me/2016/01/17/javascript-infinite-currying/</loc>
     <lastmod>2016-01-17T00:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/tags/c/</loc>
+    <lastmod>2015-06-16T00:00:00+08:00</lastmod>
   </url>
   
   <url>

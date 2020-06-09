@@ -150,7 +150,7 @@ set tabstop=2
 
 <span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">ExampleCommand</span>(sublime_plugin<span style="color:#000;font-weight:bold">.</span>TextCommand):
   <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">run</span>(<span style="color:#999">self</span>, edit):
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>insert(edit, <span style="color:#099">0</span>, <span style="color:#d14">&#34;Hello, World!&#34;</span>)
+    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>insert(edit, <span style="color:#099">0</span>, <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">Hello, World!</span><span style="color:#d14">&#34;</span>)
 </code></pre></div><p>Sublime 提供了几个基础类用于我们继承来实现一些基本功能，比如 <code>TextCommand</code> 用于实现文本操作，<code>EventListener</code> 实现事件监听。</p>
 <p>这个默认插件定义了 <code>ExampleCommand</code>，每次运行时，调用 view 的 <code>insert</code> 方法插入 <code>Hello, World!</code> 字符串到 0 位置，也就是最前面。</p>
 <p>定义了 Command 以后，我们绑定一个快捷键到这个 Command 就可以运行它。在 Command Paletee，输入 <code>Preferences: Key Bindings</code> 打开快捷键配置，输入以下配置：</p>
@@ -173,7 +173,7 @@ set tabstop=2
   <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">run</span>(<span style="color:#999">self</span>, edit):
     selections <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>sel()
     <span style="color:#000;font-weight:bold">if</span> <span style="color:#0086b3">len</span>(selections) <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">1</span> <span style="color:#000;font-weight:bold">and</span> selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>begin() <span style="color:#000;font-weight:bold">==</span> selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>end():
-      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>insert(edit, selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>begin(), <span style="color:#d14">&#34;Hello, World!&#34;</span>)
+      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>insert(edit, selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>begin(), <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">Hello, World!</span><span style="color:#d14">&#34;</span>)
 </code></pre></div><p><img src="http://asset.cjting.cn/Fv7cIbgvITQv5GEasA4W04435vxI.gif" alt=""></p>
 <h2 id="buildx">BuildX</h2>
 <p>现在我们来看看怎样实现一个插件实现我想要的 构建、侧边显示错误信息、快速跳转错误行 的功能。我给这个插件起名叫做 BuildX。</p>
@@ -203,7 +203,7 @@ set tabstop=2
 </code></pre></div><p>BuildX 插件：</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python"><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">BuildXListener</span>(sublime_plugin<span style="color:#000;font-weight:bold">.</span>EventListener):
   <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_query_context</span>(<span style="color:#999">self</span>, view, key, <span style="color:#000;font-weight:bold">*</span>args):
-    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#39;for_buildx&#39;</span>:
+    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">for_buildx</span><span style="color:#d14">&#39;</span>:
       <span style="color:#998;font-style:italic"># 取消执行快捷键对应的 Command</span>
       <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">None</span>
 
@@ -225,10 +225,10 @@ set tabstop=2
     <span style="color:#998;font-style:italic"># 到了这里说明 Exec Panel 的内容更新了</span>
 
   <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_query_context</span>(<span style="color:#999">self</span>, view, key, <span style="color:#000;font-weight:bold">*</span>args):
-    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#39;for_buildx&#39;</span>:
+    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">for_buildx</span><span style="color:#d14">&#39;</span>:
       <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">None</span>
 
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14">&#39;exec&#39;</span>)
+    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">exec</span><span style="color:#d14">&#39;</span>)
 
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">True</span>
 </code></pre></div><h3 id="创建-target-view">创建 Target View</h3>
@@ -249,15 +249,15 @@ set tabstop=2
     <span style="color:#998;font-style:italic"># 创建 target view</span>
     <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view <span style="color:#000;font-weight:bold">is</span> <span style="color:#999">None</span>:
       <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>window<span style="color:#000;font-weight:bold">.</span>new_file()
-      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_name(<span style="color:#d14">&#39;Build Output&#39;</span>)
+      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_name(<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">Build Output</span><span style="color:#d14">&#39;</span>)
       <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_scratch(<span style="color:#999">True</span>)
 
   <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_query_context</span>(<span style="color:#999">self</span>, view, key, <span style="color:#000;font-weight:bold">*</span>args):
-    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#39;for_buildx&#39;</span>:
+    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">for_buildx</span><span style="color:#d14">&#39;</span>:
       <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">None</span>
 
     <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>window <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14">&#39;exec&#39;</span>)
+    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">exec</span><span style="color:#d14">&#39;</span>)
 
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">True</span>
 </code></pre></div><p>这样每次构建时，如果没有 Target View，就会新建一个。</p>
@@ -289,21 +289,21 @@ set tabstop=2
     <span style="color:#998;font-style:italic"># 创建 target view</span>
     <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view <span style="color:#000;font-weight:bold">is</span> <span style="color:#999">None</span>:
       <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>window<span style="color:#000;font-weight:bold">.</span>new_file()
-      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_name(<span style="color:#d14">&#39;Build Output&#39;</span>)
+      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_name(<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">Build Output</span><span style="color:#d14">&#39;</span>)
       <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_scratch(<span style="color:#999">True</span>)
 
     <span style="color:#998;font-style:italic"># 复制内容到 target view</span>
     new_pos <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>size()
     region <span style="color:#000;font-weight:bold">=</span> sublime<span style="color:#000;font-weight:bold">.</span>Region(<span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>last_pos, new_pos)
     content <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>substr(region)
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>run_command(<span style="color:#d14">&#39;content_replace&#39;</span>, {<span style="color:#d14">&#39;start&#39;</span>: <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>last_pos, <span style="color:#d14">&#39;end&#39;</span>: new_pos, <span style="color:#d14">&#39;text&#39;</span>: content})
+    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>run_command(<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">content_replace</span><span style="color:#d14">&#39;</span>, {<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">start</span><span style="color:#d14">&#39;</span>: <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>last_pos, <span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">end</span><span style="color:#d14">&#39;</span>: new_pos, <span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">text</span><span style="color:#d14">&#39;</span>: content})
 
   <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_query_context</span>(<span style="color:#999">self</span>, view, key, <span style="color:#000;font-weight:bold">*</span>args):
-    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#39;for_buildxy&#39;</span>:
+    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">for_buildxy</span><span style="color:#d14">&#39;</span>:
       <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">None</span>
 
     <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>window <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14">&#39;exec&#39;</span>)
+    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">exec</span><span style="color:#d14">&#39;</span>)
 
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">True</span>
 </code></pre></div><p>到了这里，核心功能就已经有了，构建的输出可以在 Target View 中显示，从现在开始我们就可以摆脱底部的 Exec Panel 了。</p>

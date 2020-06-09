@@ -6,13 +6,164 @@
     <description>Recent content on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 04 Jun 2018 16:12:33 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 07 Jun 2020 17:17:58 +0800</lastBuildDate>
     
         <atom:link href="https://cjting.me/index.xml" rel="self" type="application/rss+xml" />
     
     
       
     
+      
+    
+      
+    
+      
+    
+      
+        <item>
+          <title>用 C 实现一个 CHIP-8 模拟器</title>
+          <link>https://cjting.me/2020/06/07/chip8-emulator/</link>
+          <pubDate>Sun, 07 Jun 2020 17:17:58 +0800</pubDate>
+          
+
+          <guid>https://cjting.me/2020/06/07/chip8-emulator/</guid>
+
+          <description><![CDATA[
+            
+            <img src="http://asset.cjting.cn/FrxGU8-3EO8dEfXB-zxLk_L3b4pK.png" class="webfeedsFeaturedVisual">
+
+            <p>很早之前我就想写一个 GBA 模拟器，因为小时候的 GBA 游戏给我留下了深刻的印象。</p>
+<p>口袋妖怪、孤岛求生、牧场物语这些 GBA 的经典游戏，在那个时候还玩着小霸王的我眼中，无异于打开了新世界的大门，原来游戏可以这样的有趣。</p>
+<p>因为对 GBA 的喜欢，所以有了编写一个 GBA 模拟器的想法。看过一些资料以后，我决定从最简单的 CHIP-8 开始练手。CHIP-8 是一个功能完整的平台，可以运行多个游戏，同时它的设计又非常简单，很适合新手入门。</p>
+<h2 id="chip-8">CHIP-8</h2>
+<p>我们先来简单了解一下 CHIP-8。</p>
+<p><a href="https://en.wikipedia.org/wiki/CHIP-8">CHIP-8</a> 是 70 年代中期由 Joseph Weisbecker 发明的一个虚拟机，发明的初衷是为了让编写电子游戏更加方便。</p>
+<p>任何一个虚拟机都离不开这几样：指令集、寄存器、内存、输入、输出。</p>
+<p>CHIP-8 的指令集含有 35 条指令，每个指令长度固定为 2 个字节。</p>
+<p>CHIP-8 一共可以访问 4KB 的内存，地址从 <code>0x000 ~ 0xfff</code>，这里面有一些地址是保留给内部使用的。</p>
+<p>CHIP-8 有 16 个 8-bit 的寄存器，记做 <code>V0</code> ~ <code>VF</code>。</p>
+<p>输入方面 CHIP-8 有一个 16 键的键盘，布局如下：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">1 2 3 C
+4 5 6 D
+7 8 9 E
+A 0 B F
+</code></pre></div><p>指令集中有相关指令可以查询某个键是否被按下了。</p>
+<p>CHIP-8 有一个 64x32 像素的屏幕用于输出画面，每个像素只有一个 bit，也就是只能显示两种颜色，0 为黑色 1 为白色，和大部分绘图系统一样，左上角的坐标为 (0, 0)。</p>
+<p>CHIP-8 的绘图指令非常简单，指定了三个参数，<code>x</code>, <code>y</code> 以及 <code>n</code>。绘图的流程是从内存中读取 n 个字节，每个字节为一行，从 (x, y) 开始与原有的像素进行 xor 运算。</p>
+<p>同时，CHIP-8 内置了一套字体 Bitmap (Font Sprite) 用于绘制 0 ~ F 这 16 个字符。每个字符的分辨率为 4x5，占用 5 个字节，每个字节只有高四位存储了数据，低四位没有用上。</p>
+<p>除了绘图以外，CHIP-8 也可以输出非常简单的声音。CHIP-8 有两个 8-bit 定时器，分别是 delay timer 和 sound timer，它们都按照 60hz 的频率递减直到减为 0。</p>
+<p>其中 sound timer 用来控制 CHIP-8 发出声音。当 sound timer 不为 0 的时候，CHIP-8 会发出一个声音，具体的声音由实现来定。</p>
+<p>我们的目标是编写一个 CHIP-8 模拟器在我们的系统上来模拟 CHIP-8 虚拟机，从而可以运行 CHIP-8 程序，</p>
+<p>最终完成时的效果如下，图中在运行的程序是俄罗斯方块。</p>
+<p><img src="http://asset.cjting.cn/FtbhROUInp7O-OOHurKuK6fVQ7VK.png" alt=""></p>
+<h2 id="spec">Spec</h2>
+<p>上面只是简单介绍了一下 CHIP-8，如果要着手编写模拟器，我们需要更加详细的 Spec，以下是我主要参考的两个资料：</p>
+<ul>
+<li><a href="http://devernay.free.fr/hacks/chip8/C8TECH10.HTM">CHIP-8 Technical Reference</a></li>
+<li><a href="https://github.com/mattmikolay/chip-8/wiki/CHIP%E2%80%908-Instruction-Set">CHIP‐8 Instruction Set</a></li>
+</ul>
+<p>第一个资料比较全面系统地阐述了 CHIP-8 的各个方面。</p>
+<p>第二个资料主要是指令集的部分，它的排版看起来更加友好。</p>
+<p>在这两个资料的基础上，再通过 Google 厘清一些细节问题，最终我用来开发模拟器的 Spec 如下：</p>
+<ul>
+<li>内存为 4K
+<ul>
+<li><code>0x0 ~ 0x1ff</code>: 内部保留</li>
+<li><code>0x200 ~ 0xe9f</code>: 程序可以自由使用</li>
+<li><code>0xea0 ~ 0xeff</code>: 保留给栈以及其他内部应用</li>
+<li><code>0xf00 ~ 0xfff</code>: 保留给屏幕显示使用</li>
+</ul>
+</li>
+<li>64x32 分辨率的显示屏，每个像素占用 1 bit，一共 256 个字节，对应内存地址为 <code>0xf00 ~ 0xfff</code></li>
+<li>Font Sprite 的数据存储在 <code>0x0</code> ，一共 16 个字符 80 个字节，具体数据上面的资料中有</li>
+<li>两个 8-bit 的定时器，一个 delay timer 一个 sound timer，按照 60hz 的频率递减直到 0</li>
+<li>16 个 8-bit 的通用寄存器 <code>V0</code> ~ <code>VF</code></li>
+<li>一个 16-bit 的程序计数器 <code>PC</code></li>
+<li>一个 8-bit 的栈寄存器 <code>SP</code>，指向当前栈的顶端</li>
+<li>栈起始地址为 <code>0xea0</code>，往上递增，可以存储 16 个 16-bit 的值，每个值是一个返回地址，用于实现函数调用</li>
+<li>一个 16-bit 的地址寄存器 <code>I</code></li>
+<li>35 条指令，每条指定固定为 2 个字节，这里是 <a href="https://github.com/mattmikolay/chip-8/wiki/CHIP%E2%80%908-Instruction-Set">指令列表</a>
+<ul>
+<li><code>8XYE</code>: 这里的英文容易误解，<code>VF</code> 存储的是移位之前的 <code>VX</code> 而不是 <code>VY</code></li>
+<li><code>8XY6</code>: 同上</li>
+<li><code>FX55</code>: 根据测试发现，不需要增加 <code>I</code> 寄存器</li>
+<li><code>FX65</code>: 同上</li>
+</ul>
+</li>
+<li>键盘按照如下方式映射
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">1 2 3 C        1 2 3 4
+4 5 6 D   -&gt;   Q W E R
+7 8 9 E        A S D F
+A 0 B F        Z X C V
+</code></pre></div></li>
+</ul>
+<h2 id="design">Design</h2>
+<p>有了 Spec，接下来就是考虑怎么实现了。</p>
+<p>因为 CHIP-8 涉及到屏幕显示和声音，选择实现技术其实就是选择怎样处理输入输出，我能想到如下几个选项：</p>
+<ul>
+<li>使用终端，使用不同的字符来表示白色和黑色，使用终端的 beep 来发出声音</li>
+<li>使用平台 Native 技术</li>
+<li>使用跨平台的库比如 SDL</li>
+<li>使用浏览器</li>
+</ul>
+<p>考虑到我练手的目的是为了以后编写更加复杂的 GBA 模拟器，所以 SDL 自然就是最好的选择了，可以简单跨平台的同时又提供强大的能力。语言方面我选择直接使用 C，不用其他的 Binding 了，我喜欢 C 的操控感。</p>
+<p>输入方面，使用 SDL 的事件我们可以很轻松的获取到键盘信息。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c">SDL_Event e;
+<span style="color:#000;font-weight:bold">while</span>(SDL_PollEvent(<span style="color:#000;font-weight:bold">&amp;</span>e)) {
+  <span style="color:#000;font-weight:bold">if</span>(e.type <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> SDL_KEYDOWN) {
+    <span style="color:#000;font-weight:bold">switch</span>(e.key.keysym.sym) {
+      <span style="color:#000;font-weight:bold">case</span> <span style="color:#900;font-weight:bold">SDLK_1</span>:
+        ...
+    }
+  }
+}
+</code></pre></div><p>显示方面，我们可以先创建一个 Texture，然后直接写入像素数据到 Texture 中。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">*</span>rawPixels;
+<span style="color:#458;font-weight:bold">int</span> pitch;
+SDL_LockTexture(screenTexture, <span style="color:#0086b3">NULL</span>, <span style="color:#000;font-weight:bold">&amp;</span>rawPixels, <span style="color:#000;font-weight:bold">&amp;</span>pitch);
+
+u32(<span style="color:#000;font-weight:bold">*</span>pixels)[pitch <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">4</span>] <span style="color:#000;font-weight:bold">=</span> rawPixels;
+
+<span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> y <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; y <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">64</span>; y<span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">+</span>) {
+  <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> x <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; x <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">32</span>; x<span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">+</span>) {
+    pixels[y][x] <span style="color:#000;font-weight:bold">=</span>  ...
+  }
+}
+
+SDL_UnlockTexture(screenTexture);
+</code></pre></div><p>声音方面，可以通过 <code>SDL_QueueAudio</code> 函数来播放一段声音。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#458;font-weight:bold">float</span> <span style="color:#000;font-weight:bold">*</span>buf <span style="color:#000;font-weight:bold">=</span> malloc(bufLength)
+
+<span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> sampleCount; i<span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">+</span>) {
+  buf[i] <span style="color:#000;font-weight:bold">=</span> ...
+}
+
+SDL_QueueAudio(audioDevice, buf, bufLength);
+</code></pre></div><h2 id="the-last">The Last</h2>
+<p>编写好以后，我们可以使用如下两个 ROM 来简单测试我们的模拟器：</p>
+<ul>
+<li><a href="https://github.com/cj1128/chip8-emulator/blob/master/rom/BC_test.ch8">BC Test</a></li>
+<li><a href="https://github.com/cj1128/chip8-emulator/blob/master/rom/test_opcode.ch8">Test Opcode</a></li>
+</ul>
+<p>如果一切正常，运行以后屏幕上会有相应的提示。</p>
+<p>最后，有一些细节问题可能并不怎么被提及，但是在开发中很重要。</p>
+<ul>
+<li>一定要记得使用 <code>SDL_Delay</code> 让出 CPU 时间，否则你的模拟器会占用太多的 CPU</li>
+<li>使用 <code>VSYNC</code> 来阻止 Screen Tearing</li>
+<li>显示器刷新一般是 60hz，所以屏幕更新调用应该也是 60hz</li>
+<li>模拟器运行速度可以使用参数控制，我测试下来 1000hz 体验很流畅</li>
+<li>绘图的时候注意 Clipping，否则很容易导致 Segmentation Fault</li>
+</ul>
+<p>以下两个仓库分别是 Go 和 C++ 的实现，当某个 feature 没有头绪时，可以用来参考，Go 的实现比较完整，C++ 的实现相对粗糙一些。</p>
+<ul>
+<li>Go: <a href="https://github.com/massung/CHIP-8">https://github.com/massung/CHIP-8</a></li>
+<li>C++: <a href="https://code.austinmorlan.com/austin/chip8-emulator">https://code.austinmorlan.com/austin/chip8-emulator</a></li>
+</ul>
+<p>最终我的 C 实现代码在这里 <a href="https://github.com/cj1128/chip8-emulator">chip8-emulator</a>。</p>
+<p>CHIP-8 是一个非常好的练手项目，需要阅读手册，查阅资料，理解虚拟机的工作原理，读取键盘输入并输出声音图像，完成以后还可以用来玩很多游戏~ 祝大家 Happy Coding 🎉</p>
+          ]]>
+          </description>
+        </item>
       
     
       
@@ -113,7 +264,7 @@ set tabstop=2
 
 <span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">ExampleCommand</span>(sublime_plugin<span style="color:#000;font-weight:bold">.</span>TextCommand):
   <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">run</span>(<span style="color:#999">self</span>, edit):
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>insert(edit, <span style="color:#099">0</span>, <span style="color:#d14">&#34;Hello, World!&#34;</span>)
+    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>insert(edit, <span style="color:#099">0</span>, <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">Hello, World!</span><span style="color:#d14">&#34;</span>)
 </code></pre></div><p>Sublime 提供了几个基础类用于我们继承来实现一些基本功能，比如 <code>TextCommand</code> 用于实现文本操作，<code>EventListener</code> 实现事件监听。</p>
 <p>这个默认插件定义了 <code>ExampleCommand</code>，每次运行时，调用 view 的 <code>insert</code> 方法插入 <code>Hello, World!</code> 字符串到 0 位置，也就是最前面。</p>
 <p>定义了 Command 以后，我们绑定一个快捷键到这个 Command 就可以运行它。在 Command Paletee，输入 <code>Preferences: Key Bindings</code> 打开快捷键配置，输入以下配置：</p>
@@ -136,7 +287,7 @@ set tabstop=2
   <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">run</span>(<span style="color:#999">self</span>, edit):
     selections <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>sel()
     <span style="color:#000;font-weight:bold">if</span> <span style="color:#0086b3">len</span>(selections) <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">1</span> <span style="color:#000;font-weight:bold">and</span> selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>begin() <span style="color:#000;font-weight:bold">==</span> selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>end():
-      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>insert(edit, selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>begin(), <span style="color:#d14">&#34;Hello, World!&#34;</span>)
+      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>insert(edit, selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>begin(), <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">Hello, World!</span><span style="color:#d14">&#34;</span>)
 </code></pre></div><p><img src="http://asset.cjting.cn/Fv7cIbgvITQv5GEasA4W04435vxI.gif" alt=""></p>
 <h2 id="buildx">BuildX</h2>
 <p>现在我们来看看怎样实现一个插件实现我想要的 构建、侧边显示错误信息、快速跳转错误行 的功能。我给这个插件起名叫做 BuildX。</p>
@@ -166,7 +317,7 @@ set tabstop=2
 </code></pre></div><p>BuildX 插件：</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python"><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">BuildXListener</span>(sublime_plugin<span style="color:#000;font-weight:bold">.</span>EventListener):
   <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_query_context</span>(<span style="color:#999">self</span>, view, key, <span style="color:#000;font-weight:bold">*</span>args):
-    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#39;for_buildx&#39;</span>:
+    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">for_buildx</span><span style="color:#d14">&#39;</span>:
       <span style="color:#998;font-style:italic"># 取消执行快捷键对应的 Command</span>
       <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">None</span>
 
@@ -188,10 +339,10 @@ set tabstop=2
     <span style="color:#998;font-style:italic"># 到了这里说明 Exec Panel 的内容更新了</span>
 
   <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_query_context</span>(<span style="color:#999">self</span>, view, key, <span style="color:#000;font-weight:bold">*</span>args):
-    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#39;for_buildx&#39;</span>:
+    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">for_buildx</span><span style="color:#d14">&#39;</span>:
       <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">None</span>
 
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14">&#39;exec&#39;</span>)
+    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">exec</span><span style="color:#d14">&#39;</span>)
 
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">True</span>
 </code></pre></div><h3 id="创建-target-view">创建 Target View</h3>
@@ -212,15 +363,15 @@ set tabstop=2
     <span style="color:#998;font-style:italic"># 创建 target view</span>
     <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view <span style="color:#000;font-weight:bold">is</span> <span style="color:#999">None</span>:
       <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>window<span style="color:#000;font-weight:bold">.</span>new_file()
-      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_name(<span style="color:#d14">&#39;Build Output&#39;</span>)
+      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_name(<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">Build Output</span><span style="color:#d14">&#39;</span>)
       <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_scratch(<span style="color:#999">True</span>)
 
   <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_query_context</span>(<span style="color:#999">self</span>, view, key, <span style="color:#000;font-weight:bold">*</span>args):
-    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#39;for_buildx&#39;</span>:
+    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">for_buildx</span><span style="color:#d14">&#39;</span>:
       <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">None</span>
 
     <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>window <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14">&#39;exec&#39;</span>)
+    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">exec</span><span style="color:#d14">&#39;</span>)
 
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">True</span>
 </code></pre></div><p>这样每次构建时，如果没有 Target View，就会新建一个。</p>
@@ -252,21 +403,21 @@ set tabstop=2
     <span style="color:#998;font-style:italic"># 创建 target view</span>
     <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view <span style="color:#000;font-weight:bold">is</span> <span style="color:#999">None</span>:
       <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>window<span style="color:#000;font-weight:bold">.</span>new_file()
-      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_name(<span style="color:#d14">&#39;Build Output&#39;</span>)
+      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_name(<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">Build Output</span><span style="color:#d14">&#39;</span>)
       <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_scratch(<span style="color:#999">True</span>)
 
     <span style="color:#998;font-style:italic"># 复制内容到 target view</span>
     new_pos <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>size()
     region <span style="color:#000;font-weight:bold">=</span> sublime<span style="color:#000;font-weight:bold">.</span>Region(<span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>last_pos, new_pos)
     content <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>substr(region)
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>run_command(<span style="color:#d14">&#39;content_replace&#39;</span>, {<span style="color:#d14">&#39;start&#39;</span>: <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>last_pos, <span style="color:#d14">&#39;end&#39;</span>: new_pos, <span style="color:#d14">&#39;text&#39;</span>: content})
+    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>run_command(<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">content_replace</span><span style="color:#d14">&#39;</span>, {<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">start</span><span style="color:#d14">&#39;</span>: <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>last_pos, <span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">end</span><span style="color:#d14">&#39;</span>: new_pos, <span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">text</span><span style="color:#d14">&#39;</span>: content})
 
   <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_query_context</span>(<span style="color:#999">self</span>, view, key, <span style="color:#000;font-weight:bold">*</span>args):
-    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#39;for_buildxy&#39;</span>:
+    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">for_buildxy</span><span style="color:#d14">&#39;</span>:
       <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">None</span>
 
     <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>window <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14">&#39;exec&#39;</span>)
+    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">exec</span><span style="color:#d14">&#39;</span>)
 
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">True</span>
 </code></pre></div><p>到了这里，核心功能就已经有了，构建的输出可以在 Target View 中显示，从现在开始我们就可以摆脱底部的 Exec Panel 了。</p>
@@ -761,7 +912,7 @@ Decrypt result: <span style="color:#099">1024</span>
   <span style="color:#d14">&#34;net/http&#34;</span>
 )
 
-<span style="color:#000;font-weight:bold">var</span> content = []<span style="color:#0086b3">byte</span>(<span style="color:#d14">`hello world`</span>)
+<span style="color:#000;font-weight:bold">var</span> content = []<span style="color:#0086b3">byte</span>(<span style="color:#d14">`</span><span style="color:#d14">hello world</span><span style="color:#d14">`</span>)
 
 <span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>() {
   http.<span style="color:#900;font-weight:bold">HandleFunc</span>(<span style="color:#d14">&#34;/&#34;</span>, <span style="color:#000;font-weight:bold">func</span>(w http.ResponseWriter, r <span style="color:#000;font-weight:bold">*</span>http.Request) {
@@ -863,7 +1014,7 @@ nr_table_entries <span style="color:#000;font-weight:bold">=</span> backlog
 nr_table_entries <span style="color:#000;font-weight:bold">=</span> min(backlog, sysctl_max_syn_backlog)
 nr_table_entries <span style="color:#000;font-weight:bold">=</span> max(nr_table_entries, <span style="color:#099">8</span>)
 <span style="color:#998;font-style:italic">// roundup_pow_of_two: 将参数向上取整到最小的 2^n
-</span><span style="color:#998;font-style:italic">// 注意这里存在一个 +1
+</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// 注意这里存在一个 +1
 </span><span style="color:#998;font-style:italic"></span>nr_table_entries <span style="color:#000;font-weight:bold">=</span> roundup_pow_of_two(nr_table_entries <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>)
 max_qlen_log <span style="color:#000;font-weight:bold">=</span> max(<span style="color:#099">3</span>, log2(nr_table_entries))
 max_queue_length <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">2</span><span style="color:#000;font-weight:bold">^</span>max_qlen_log
@@ -908,8 +1059,8 @@ max_queue_length = 2^8 = 256
 <p>启动一个 <a href="https://gist.github.com/cj1128/e6620df2ea2e650164d7513b05c88c8c">simple-tcp-server</a> 来监听 8877 端口，<code>listen</code> 的 <code>backlog</code> 参数为 7, <code>somaxconn</code> 为默认值 128，<code>tcp_max_syn_backlog</code> 为默认值 1024，此时半连接队列的长度为 16。</p>
 <p>启动 <code>tcpdump</code> 监听 8877 端口相关的所有数据包 <code>tcpdump -tn -i lo port 8877</code>。</p>
 <p>启动 <code>scapy</code> 命令行工具，我们先来发送一个 SYN 包看看。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python">ip <span style="color:#000;font-weight:bold">=</span> IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;127.0.0.1&#34;</span>)
-tcp <span style="color:#000;font-weight:bold">=</span> TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;S&#34;</span>)
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python">ip <span style="color:#000;font-weight:bold">=</span> IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">127.0.0.1</span><span style="color:#d14">&#34;</span>)
+tcp <span style="color:#000;font-weight:bold">=</span> TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">S</span><span style="color:#d14">&#34;</span>)
 send(ip<span style="color:#000;font-weight:bold">/</span>tcp)
 </code></pre></div><p>我们会发现，tcpdump 显示收到一个 SYN 包，但是没有对应的 SYN/ACK 回复？？？</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">IP 127.0.0.1.ftp-data &gt; 127.0.0.1.8877: Flags [S], seq 0, win 8192, length 0
@@ -952,11 +1103,11 @@ $ iptables -A OUTPUT -p tcp --tcp-flags RST RST -j DROP
 </code></pre></div><p>现在终于可以编写我们的攻击脚本了😈，很简单，循环发送 SYN 包即可。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python"><span style="color:#000;font-weight:bold">from</span> <span style="color:#555">time</span> <span style="color:#000;font-weight:bold">import</span> sleep
 <span style="color:#000;font-weight:bold">from</span> <span style="color:#555">random</span> <span style="color:#000;font-weight:bold">import</span> randint
-ip <span style="color:#000;font-weight:bold">=</span> IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;127.0.0.1&#34;</span>)
-tcp <span style="color:#000;font-weight:bold">=</span> TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;S&#34;</span>)
+ip <span style="color:#000;font-weight:bold">=</span> IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">127.0.0.1</span><span style="color:#d14">&#34;</span>)
+tcp <span style="color:#000;font-weight:bold">=</span> TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">S</span><span style="color:#d14">&#34;</span>)
 <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">attack</span>():
   <span style="color:#000;font-weight:bold">while</span> <span style="color:#999">True</span>:
-    ip<span style="color:#000;font-weight:bold">.</span>src<span style="color:#000;font-weight:bold">=</span>f<span style="color:#d14">&#34;127.0.0.{randint(0, 255)}&#34;</span>
+    ip<span style="color:#000;font-weight:bold">.</span>src<span style="color:#000;font-weight:bold">=</span>f<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">127.0.0.{randint(0, 255)}</span><span style="color:#d14">&#34;</span>
     send(ip<span style="color:#000;font-weight:bold">/</span>tcp)
     sleep(<span style="color:#099">0.01</span>)
 
@@ -975,17 +1126,17 @@ attack() <span style="color:#998;font-style:italic"># 发送大量的 SYN 包给
 </ul>
 <p>我们来测试一下，首先，关闭 <code>net.ipv4.tcp_abort_on_overflow</code>，启动我们的 <a href="https://gist.github.com/cj1128/e6620df2ea2e650164d7513b05c88c8c">simple-tcp-server</a>，<code>listen</code> 的 <code>backlog</code> 参数是 1，<code>somaxconn</code> 为 128，因此，全连接队列的长度为 1。</p>
 <p>使用 Scapy 定义 <code>connect</code> 函数，函数内部我们手动实现了三次握手。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python">ip<span style="color:#000;font-weight:bold">=</span>IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;127.0.0.1&#34;</span>)
-tcp<span style="color:#000;font-weight:bold">=</span>TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;S&#34;</span>)
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python">ip<span style="color:#000;font-weight:bold">=</span>IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">127.0.0.1</span><span style="color:#d14">&#34;</span>)
+tcp<span style="color:#000;font-weight:bold">=</span>TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">S</span><span style="color:#d14">&#34;</span>)
 idx <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>
 
 <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">connect</span>():
   <span style="color:#000;font-weight:bold">global</span> idx
-  ip<span style="color:#000;font-weight:bold">.</span>src <span style="color:#000;font-weight:bold">=</span> f<span style="color:#d14">&#34;127.0.0.{ idx }&#34;</span>
+  ip<span style="color:#000;font-weight:bold">.</span>src <span style="color:#000;font-weight:bold">=</span> f<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">127.0.0.{ idx }</span><span style="color:#d14">&#34;</span>
   synack <span style="color:#000;font-weight:bold">=</span> sr1(ip<span style="color:#000;font-weight:bold">/</span>tcp)
-  ack <span style="color:#000;font-weight:bold">=</span> TCP(sport<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>dport, dport<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>sport, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;A&#34;</span>, seq<span style="color:#000;font-weight:bold">=</span><span style="color:#099">100</span>, ack<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>seq <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>)
+  ack <span style="color:#000;font-weight:bold">=</span> TCP(sport<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>dport, dport<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>sport, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">A</span><span style="color:#d14">&#34;</span>, seq<span style="color:#000;font-weight:bold">=</span><span style="color:#099">100</span>, ack<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>seq <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>)
   send(ip<span style="color:#000;font-weight:bold">/</span>ack)
-  idx <span style="color:#000;font-weight:bold">+=</span> <span style="color:#099">1</span>
+  idx <span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>
 </code></pre></div><p>因为我们的 Server 从不 accept，所以，每次发起连接后，全连接队列就会添加一项。</p>
 <p>使用 <code>netstat -tn | rg 8877</code> 查看 Socket 状态，同时使用 <code>tcpdump -tn -i lo port 8877</code> 抓包，然后我们手动触发 <code>connect</code> 函数。</p>
 <p>第一次，多了一条 <code>ESTABLISHED</code> 的连接，一切正常。</p>
@@ -997,7 +1148,7 @@ idx <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">
 <p>猜想归猜想，我更想验证一下，验证的方式只能是一头扎进 Linux 浩瀚的源码海洋里了。我运气很好，找到了检查全连接队列是否溢出的函数叫做 <code>sk_acceptq_is_full</code>，它的定义如下，这是 <a href="https://elixir.bootlin.com/linux/v3.5/source/include/net/sock.h#L669">在线版本</a>。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#000;font-weight:bold">static</span> <span style="color:#000;font-weight:bold">inline</span> <span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">sk_acceptq_is_full</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">struct</span> sock <span style="color:#000;font-weight:bold">*</span>sk)
 {
-  <span style="color:#000;font-weight:bold">return</span> sk<span style="color:#000;font-weight:bold">-&gt;</span>sk_ack_backlog <span style="color:#000;font-weight:bold">&gt;</span> sk<span style="color:#000;font-weight:bold">-&gt;</span>sk_max_ack_backlog;
+  <span style="color:#000;font-weight:bold">return</span> sk<span style="color:#000;font-weight:bold">-</span><span style="color:#000;font-weight:bold">&gt;</span>sk_ack_backlog <span style="color:#000;font-weight:bold">&gt;</span> sk<span style="color:#000;font-weight:bold">-</span><span style="color:#000;font-weight:bold">&gt;</span>sk_max_ack_backlog;
 }
 </code></pre></div><p><code>sk-&gt;sk_ack_backlog</code> 是当前的全连接队列长度，<code>sk-&gt;sk_max_ack_backlog</code> 是配置的全连接队列最大长度，猜想验证了。</p>
 <p>这里顺手提一下 <code>ss</code> 这个工具，一个现代化的用于取代 <code>netstat</code> 的工具，使用它，我们可以看到全连接队列的长度。</p>
@@ -1034,8 +1185,6 @@ $ iptables -A OUTPUT -p tcp --tcp-flags RST RST --dport <span style="color:#099"
           ]]>
           </description>
         </item>
-      
-    
       
     
       
@@ -1512,7 +1661,7 @@ puny.ucs2.decode(<span style="color:#d14">&#34;😜&#34;</span>).length <span st
 <p>第二个问题是正则中的范围。范围中如果使用了非 BMP 字符，JS 会报错。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#009926">/[😆-😜]/</span>.test(<span style="color:#d14">&#34;😜&#34;</span>)
 Uncaught SyntaxError<span style="color:#000;font-weight:bold">:</span> Invalid regular expression<span style="color:#000;font-weight:bold">:</span> <span style="color:#009926">/[😆-😜]/</span><span style="color:#000;font-weight:bold">:</span> Range out <span style="color:#000;font-weight:bold">of</span> order <span style="color:#000;font-weight:bold">in</span> character <span style="color:#000;font-weight:bold">class</span>
-    at <span style="color:#000;font-weight:bold">&lt;</span>anonymous<span style="color:#000;font-weight:bold">&gt;:</span><span style="color:#099">1</span><span style="color:#000;font-weight:bold">:</span><span style="color:#099">1</span>
+    at <span style="color:#000;font-weight:bold">&lt;</span>anonymous<span style="color:#000;font-weight:bold">&gt;</span><span style="color:#000;font-weight:bold">:</span><span style="color:#099">1</span><span style="color:#000;font-weight:bold">:</span><span style="color:#099">1</span>
 </code></pre></div><p>出错的原因在于 <code>/[😆-😜]/</code> 在 JS 中等价于 <code>/[\uD83D\uDE06-\uD83D\uDE1C]/</code>，而 <code>\uDE06-\uD83D</code> 会被解释为一个范围，而这个范围的起始值比结束值要大，因此错误。</p>
 <p>解决方法同样有两个。第一，改写正则。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#009926">/\uD83D[\uDE06-\uDE1C]/</span>.test(<span style="color:#d14">&#34;😆&#34;</span>) <span style="color:#998;font-style:italic">// true
@@ -1547,8 +1696,6 @@ Uncaught SyntaxError<span style="color:#000;font-weight:bold">:</span> Invalid r
           ]]>
           </description>
         </item>
-      
-    
       
     
       
@@ -1801,8 +1948,6 @@ cjting.me.              <span style="color:#099">86400</span>   IN      NS      
           ]]>
           </description>
         </item>
-      
-    
       
     
       
@@ -2217,17 +2362,17 @@ http_request_count(endpoint=&#34;/c&#34;) 3
 </code></pre></div><h3 id="配置">配置</h3>
 <p>Prometheus 使用 YAML 进行配置。<code>global</code> 配置一些全局信息，<code>scrape_configs</code> 配置具体想要抓取的目标。这段配置的含义是：启动一个叫做 <code>go-test</code> 的任务，每隔五秒钟，访问 <code>localhost:8888/metrics</code> 获取数据。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000;font-weight:bold">global</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#000;font-weight:bold">scrape_interval</span>:<span style="color:#bbb">     </span>15s<span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># By default, scrape targets every 15 seconds.</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#bbb">  </span><span style="color:#000;font-weight:bold">scrape_interval</span>:<span style="color:#bbb"> </span><span style="color:#bbb">    </span>15s<span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># By default, scrape targets every 15 seconds.</span><span style="color:#bbb">
 </span><span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#998;font-style:italic"># Attach these labels to any time series or alerts when communicating with</span><span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#998;font-style:italic"># external systems (federation, remote storage, Alertmanager).</span><span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#000;font-weight:bold">external_labels</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#000;font-weight:bold">monitor</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#39;codelab-monitor&#39;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#bbb">    </span><span style="color:#000;font-weight:bold">monitor</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#39;codelab-monitor&#39;</span><span style="color:#bbb">
 </span><span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#998;font-style:italic"># A scrape configuration containing exactly one endpoint to scrape:</span><span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#998;font-style:italic"># Here it&#39;s Prometheus itself.</span><span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#000;font-weight:bold">scrape_configs</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#998;font-style:italic"># The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#bbb">  </span><span style="color:#998;font-style:italic"># The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.</span><span style="color:#bbb">
 </span><span style="color:#bbb">  </span>- <span style="color:#000;font-weight:bold">job_name</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#39;go-test&#39;</span><span style="color:#bbb">
 </span><span style="color:#bbb">    </span><span style="color:#000;font-weight:bold">metrics_path</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#34;/metrics&#34;</span><span style="color:#bbb">
 </span><span style="color:#bbb">
@@ -2235,7 +2380,7 @@ http_request_count(endpoint=&#34;/c&#34;) 3
 </span><span style="color:#bbb">    </span><span style="color:#000;font-weight:bold">scrape_interval</span>:<span style="color:#bbb"> </span>5s<span style="color:#bbb">
 </span><span style="color:#bbb">
 </span><span style="color:#bbb">    </span><span style="color:#000;font-weight:bold">static_configs</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">      </span>- <span style="color:#000;font-weight:bold">targets</span>:<span style="color:#bbb"> </span>[<span style="color:#d14">&#39;localhost:8888&#39;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#bbb">      </span>- <span style="color:#000;font-weight:bold">targets</span>:<span style="color:#bbb"> </span>[<span style="color:#d14">&#39;localhost:8888&#39;</span>]<span style="color:#bbb">
 </span></code></pre></div><h3 id="测试程序">测试程序</h3>
 <p>我们来写一个程序测试一下 Prometheus 的功能。虽然可以手动返回 Prometheus 需要的数据，但是使用开发好的客户端会更加方便。</p>
 <p>这里我们使用 Go 语言，编写一个简单的服务器和客户端。客户端会以一个稳定的速度请求服务器的 <code>/test</code> 路径，但是每两分钟会加大流量，持续 30 秒再回到之前的水平。服务器 95% 的情况下会花费 50ms 进行响应，还有 5% 的情况下会花费 100ms。</p>
@@ -2363,6 +2508,8 @@ http_request_count(endpoint=&#34;/c&#34;) 3
           ]]>
           </description>
         </item>
+      
+    
       
     
       
@@ -3034,7 +3181,7 @@ input <span style="color:#000;font-weight:bold">{</span>
 <span style="color:#000;font-weight:bold">}</span>
 
 filter <span style="color:#000;font-weight:bold">{</span>
-  <span style="color:#000;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">[</span>type<span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&#34;nginx&#34;</span> <span style="color:#000;font-weight:bold">{</span> <span style="color:#998;font-style:italic"># 这里的type是日志类型，我们在后面的filebeat中设定</span>
+  <span style="color:#000;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">[</span>type<span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#34;nginx&#34;</span> <span style="color:#000;font-weight:bold">{</span> <span style="color:#998;font-style:italic"># 这里的type是日志类型，我们在后面的filebeat中设定</span>
     grok <span style="color:#000;font-weight:bold">{</span>
       <span style="color:#008080">match</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#000;font-weight:bold">{</span> <span style="color:#d14">&#34;message&#34;</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#d14">&#34;%{COMBINEDAPACHELOG} %{QS:gzip_ratio}&#34;</span> <span style="color:#000;font-weight:bold">}</span> <span style="color:#998;font-style:italic"># 使用自带的pattern即可，注意空格</span>
       <span style="color:#008080">remove_field</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#000;font-weight:bold">[</span><span style="color:#d14">&#34;beat&#34;</span>, <span style="color:#d14">&#34;input_type&#34;</span>, <span style="color:#d14">&#34;message&#34;</span>, <span style="color:#d14">&#34;offset&#34;</span>, <span style="color:#d14">&#34;tags&#34;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#998;font-style:italic"># filebeat添加的字段，我们不需要</span>
@@ -3842,12 +3989,12 @@ g(<span style="color:#099">200</span>) <span style="color:#000;font-weight:bold"
 }
 
 <span style="color:#998;font-style:italic">// 传统函数调用是接收多个参数返回一个值，而柯里化函数则是接收参数返回新的函数，新的函数又可以接受参数再返回新的函数，直至最后返回结果值
-</span><span style="color:#998;font-style:italic">// 使用柯里化函数的优势是我们可以&#34;部分应用&#34; (Partial Application)函数的参数，生成新的函数，这在函数编程中是至关重要的
-</span><span style="color:#998;font-style:italic">// g(1)(2) == 3
-</span><span style="color:#998;font-style:italic">// var add1 = g(1)
-</span><span style="color:#998;font-style:italic">// add1(100) == 101
-</span><span style="color:#998;font-style:italic">// var add100 = g(100)
-</span><span style="color:#998;font-style:italic">// add100(100) == 200
+</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// 使用柯里化函数的优势是我们可以&#34;部分应用&#34; (Partial Application)函数的参数，生成新的函数，这在函数编程中是至关重要的
+</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// g(1)(2) == 3
+</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// var add1 = g(1)
+</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// add1(100) == 101
+</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// var add100 = g(100)
+</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// add100(100) == 200
 </span></code></pre></div><p>现在我们来分析上面的问题。</p>
 <p>首先，<code>add(1) == 1</code>，说明 <code>add</code> 函数应该返回一个整数。但是 <code>add(1)(2) == 3</code> 表明毫无疑问 <code>add(1)</code> 返回的值应该是一个函数。所以现在我们的问题就变成了，有没有可能让一个函数等于一个整数呢？（注意比较操作符是松散的<code>==</code>，而不是严格<code>===</code>）。</p>
 <p>答案是有可能的。这里需要我们了解 JS 的一个小知识。那就是 <code>valueOf</code> 属性。当我们将一个对象和一个 Primitive 进行比较的时候，JS 会调用对象的 <code>valueOf</code> 方法获取一个 Primitive 值，然后再进行比较。</p>
@@ -3882,6 +4029,8 @@ a <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&
       
     
       
+    
+      
         <item>
           <title>Underhanded C, 有猫腻的 C</title>
           <link>https://cjting.me/2015/06/16/underhanded-c/</link>
@@ -3911,7 +4060,7 @@ a <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&
 <span style="color:#000;font-weight:bold">*</span>block1 <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">100</span>;
 free(block1);
 uint8 <span style="color:#000;font-weight:bold">*</span>block2 <span style="color:#000;font-weight:bold">=</span> (uint8 <span style="color:#000;font-weight:bold">*</span>)malloc(<span style="color:#099">1000</span>); <span style="color:#998;font-style:italic">// this time, it&#39;s very likely that block2 == block1
-</span><span style="color:#998;font-style:italic"></span>assert(<span style="color:#000;font-weight:bold">*</span>block2 <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">100</span>); <span style="color:#998;font-style:italic">// we can get previous value
+</span><span style="color:#998;font-style:italic"></span>assert(<span style="color:#000;font-weight:bold">*</span>block2 <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#099">100</span>); <span style="color:#998;font-style:italic">// we can get previous value
 </span></code></pre></div><p><code>malloc</code> 是一个常用的堆内存管理函数，不过却有一些非常严重的问题，以上就是一个例子。安全问题往往都在细微之处，但是却都非常致命，上一次非常著名的 HeartBleed 心脏滴血漏洞也是一个细微的问题导致的。</p>
 <p>作者利用这个 bug，巧妙的将 surveil 的信息保留了下来。每一个决定需要被 surveil 的 piu，都被加密（异或 0x69）然后写入文件（加密是在一个 copy 上完成的）。</p>
 <p>当决策过程结束以后，接下来就会做关键词过滤（比如 fuck -&gt; love, shit -&gt; stuff，哈哈）在这个过程中，又会分配内存复制 piu 进行操作，此时得到的内存块就是决策过程中使用的内存块，内存中的信息都被保留在那里没有清除。因为被监视（surveiled）的 piu 会和 0x69 异或，所以最后一个字节会是 0x69（C 的字符串最后一个字节都是 0），而没有被监视的最后一个字节则是 0。</p>

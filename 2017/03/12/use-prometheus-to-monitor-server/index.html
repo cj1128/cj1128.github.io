@@ -96,17 +96,17 @@ http_request_count(endpoint=&#34;/c&#34;) 3
 </code></pre></div><h3 id="配置">配置</h3>
 <p>Prometheus 使用 YAML 进行配置。<code>global</code> 配置一些全局信息，<code>scrape_configs</code> 配置具体想要抓取的目标。这段配置的含义是：启动一个叫做 <code>go-test</code> 的任务，每隔五秒钟，访问 <code>localhost:8888/metrics</code> 获取数据。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000;font-weight:bold">global</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#000;font-weight:bold">scrape_interval</span>:<span style="color:#bbb">     </span>15s<span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># By default, scrape targets every 15 seconds.</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#bbb">  </span><span style="color:#000;font-weight:bold">scrape_interval</span>:<span style="color:#bbb"> </span><span style="color:#bbb">    </span>15s<span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># By default, scrape targets every 15 seconds.</span><span style="color:#bbb">
 </span><span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#998;font-style:italic"># Attach these labels to any time series or alerts when communicating with</span><span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#998;font-style:italic"># external systems (federation, remote storage, Alertmanager).</span><span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#000;font-weight:bold">external_labels</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#000;font-weight:bold">monitor</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#39;codelab-monitor&#39;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#bbb">    </span><span style="color:#000;font-weight:bold">monitor</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#39;codelab-monitor&#39;</span><span style="color:#bbb">
 </span><span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#998;font-style:italic"># A scrape configuration containing exactly one endpoint to scrape:</span><span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#998;font-style:italic"># Here it&#39;s Prometheus itself.</span><span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#000;font-weight:bold">scrape_configs</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#998;font-style:italic"># The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#bbb">  </span><span style="color:#998;font-style:italic"># The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.</span><span style="color:#bbb">
 </span><span style="color:#bbb">  </span>- <span style="color:#000;font-weight:bold">job_name</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#39;go-test&#39;</span><span style="color:#bbb">
 </span><span style="color:#bbb">    </span><span style="color:#000;font-weight:bold">metrics_path</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#34;/metrics&#34;</span><span style="color:#bbb">
 </span><span style="color:#bbb">
@@ -114,7 +114,7 @@ http_request_count(endpoint=&#34;/c&#34;) 3
 </span><span style="color:#bbb">    </span><span style="color:#000;font-weight:bold">scrape_interval</span>:<span style="color:#bbb"> </span>5s<span style="color:#bbb">
 </span><span style="color:#bbb">
 </span><span style="color:#bbb">    </span><span style="color:#000;font-weight:bold">static_configs</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">      </span>- <span style="color:#000;font-weight:bold">targets</span>:<span style="color:#bbb"> </span>[<span style="color:#d14">&#39;localhost:8888&#39;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#bbb">      </span>- <span style="color:#000;font-weight:bold">targets</span>:<span style="color:#bbb"> </span>[<span style="color:#d14">&#39;localhost:8888&#39;</span>]<span style="color:#bbb">
 </span></code></pre></div><h3 id="测试程序">测试程序</h3>
 <p>我们来写一个程序测试一下 Prometheus 的功能。虽然可以手动返回 Prometheus 需要的数据，但是使用开发好的客户端会更加方便。</p>
 <p>这里我们使用 Go 语言，编写一个简单的服务器和客户端。客户端会以一个稳定的速度请求服务器的 <code>/test</code> 路径，但是每两分钟会加大流量，持续 30 秒再回到之前的水平。服务器 95% 的情况下会花费 50ms 进行响应，还有 5% 的情况下会花费 100ms。</p>
