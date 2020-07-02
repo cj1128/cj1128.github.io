@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
 
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
@@ -38,6 +39,9 @@
     }
   </script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
   <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
@@ -49,33 +53,35 @@
       </a>
     </header>
 
-    <div class="post__body">
-      <h1 class="post__title">
-          从零开始搭建一个 ELKB 日志收集系统
-      </h1>
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              从零开始搭建一个 ELKB 日志收集系统
+          </h1>
 
-      <div class="post__meta">
-        <div class="tags">
-          
-            <span class="tag">log</span>
-          
-            <span class="tag">elk</span>
-          
-            <span class="tag">logstash</span>
-          
-            <span class="tag">elasticsearch</span>
-          
-            <span class="tag">kibana</span>
-          
-        </div>
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">log</span>
+              
+                <span class="tag">elk</span>
+              
+                <span class="tag">logstash</span>
+              
+                <span class="tag">elasticsearch</span>
+              
+                <span class="tag">kibana</span>
+              
+            </div>
 
-        <div class='date'>
-          2016.10.21
-        </div>
-      </div>
+            <div class='date'>
+              2016.10.21
+            </div>
+          </div>
 
-      <div class="post__content">
-        <p>当今的软件开发 <strong>多核</strong> 以及 <strong>分布</strong> 已经成为了常态，基本上稍大型的应用都是多台机器分布式部署。分布式在提高性能的同时也带来了很多问题，今天我们只讨论一点，那就是如何处理多台机器线上系统的日志。</p>
+          <div class="post__content">
+            <p>当今的软件开发 <strong>多核</strong> 以及 <strong>分布</strong> 已经成为了常态，基本上稍大型的应用都是多台机器分布式部署。分布式在提高性能的同时也带来了很多问题，今天我们只讨论一点，那就是如何处理多台机器线上系统的日志。</p>
 <p>以我司的某个应用 T 为例，部署在了百度云 5 台机子上，其中一台拥有公网 IP，使用了百度云提供的负载均衡服务。每次想要在日志中检索某个关键字时，基本步骤如下：</p>
 <ul>
 <li>打开五个 SSH，登陆拥有公网 IP 的那台机器</li>
@@ -311,9 +317,14 @@ outpugst <span style="color:#000;font-weight:bold">{</span>
 <p>接下来我们需要产生点日志，然后在 Kibana 中能查看到就说明系统工作正常了。我们用 curl 随便请求一下 client 上的 Nginx 来产生一点日志。然后，打开 Kibana，<code>http://[server ip]:5601</code>。刚进去的时候，我们先要配置一下 Kibana 的 <code>Index Pattern</code>，告诉 Kibana 我们想看哪个 Index 的数据，输入 <code>nginx*</code> 即可，然后点击 <code>Discover</code> 浏览数据。</p>
 <p>最终效果如下，我们可以在 Kibana 中浏览我们的 Nginx 日志，并进行任意搜索。</p>
 <p><img src="http://asset.cjting.cn/9b85365djw1f8zwhs3j5vj21h50mijxx.jpg" alt=""></p>
-      </div>
+          </div>
 
-      <div id="post__comments">
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
       </div>
     </div>
   </div>

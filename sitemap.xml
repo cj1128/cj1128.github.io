@@ -3,22 +3,32 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://cjting.me/tags/chip8-emulator-c/</loc>
-    <lastmod>2020-06-07T17:17:58+08:00</lastmod>
+    <loc>https://cjting.me/</loc>
+    <lastmod>2020-07-01T23:47:32+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://cjting.me/</loc>
-    <lastmod>2020-06-07T17:17:58+08:00</lastmod>
+    <loc>https://cjting.me/tags/js-crawler/</loc>
+    <lastmod>2020-07-01T23:47:32+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://cjting.me/post/</loc>
-    <lastmod>2020-06-07T17:17:58+08:00</lastmod>
+    <lastmod>2020-07-01T23:47:32+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/</loc>
+    <lastmod>2020-07-01T23:47:32+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/2020/07/01/douyu-crawler-and-font-anti-crawling/</loc>
+    <lastmod>2020-07-01T23:47:32+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/tags/chip8-emulator-c/</loc>
     <lastmod>2020-06-07T17:17:58+08:00</lastmod>
   </url>
   

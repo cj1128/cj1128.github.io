@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
 
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
@@ -38,6 +39,9 @@
     }
   </script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
   <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
@@ -49,29 +53,31 @@
       </a>
     </header>
 
-    <div class="post__body">
-      <h1 class="post__title">
-          关于字符编码
-      </h1>
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              关于字符编码
+          </h1>
 
-      <div class="post__meta">
-        <div class="tags">
-          
-            <span class="tag">string</span>
-          
-            <span class="tag">encoding</span>
-          
-            <span class="tag">utf-8</span>
-          
-        </div>
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">string</span>
+              
+                <span class="tag">encoding</span>
+              
+                <span class="tag">utf-8</span>
+              
+            </div>
 
-        <div class='date'>
-          2014.04.24
-        </div>
-      </div>
+            <div class='date'>
+              2014.04.24
+            </div>
+          </div>
 
-      <div class="post__content">
-        <p>很早之前就碰到过&quot;乱码&quot;这个现象，当时非常困惑，完全不能理解发生了什么。</p>
+          <div class="post__content">
+            <p>很早之前就碰到过&quot;乱码&quot;这个现象，当时非常困惑，完全不能理解发生了什么。</p>
 <p>上大学以后，虽然开始接触计算机，不过我就没看到过具体讲解字符编码的内容。对这个领域始终是感到非常模糊。</p>
 <p>不过，最近好像豁然开朗了一下，感觉突然就明白了这个问题。</p>
 <p>下面我来解释一下我所理解的字符编码。</p>
@@ -89,9 +95,14 @@
 <p>现在来说说为什么要有乱码。</p>
 <p>当计算机打开一个文本文件的时候，他必须要知道这个是什么编码的。否则无法解码，因为在计算机眼中，一切都是二进制字节（我想起了 CSAPP 中的一句话：<em>Information Is Bits + Context</em>）。但是不同的编码下相同的字节有不同的含义。同样是 0xABCD，在某一个编码下可能表示“丁“，在另一个编码下可能表示的就是“王”了。</p>
 <p>打开文本文件的时候，如果不手动指定编码，大部分程序都会自动推测编码（怎么推测是另外一个话题了）。如果计算机推测的编码或者用户手动指定的编码和实际编码不符，那么自然就会出现“乱码”现象，也就是内容看上去乱七八糟，实际上在计算机看来，只是用特定的编码方式解码字符而已，只不过解码出来的字符不是你想要的。</p>
-      </div>
+          </div>
 
-      <div id="post__comments">
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
       </div>
     </div>
   </div>

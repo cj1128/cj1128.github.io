@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
 
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
@@ -38,6 +39,9 @@
     }
   </script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
   <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
@@ -49,27 +53,29 @@
       </a>
     </header>
 
-    <div class="post__body">
-      <h1 class="post__title">
-          Underhanded C, 有猫腻的 C
-      </h1>
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              Underhanded C, 有猫腻的 C
+          </h1>
 
-      <div class="post__meta">
-        <div class="tags">
-          
-            <span class="tag">underhanded-c</span>
-          
-            <span class="tag">c</span>
-          
-        </div>
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">underhanded-c</span>
+              
+                <span class="tag">c</span>
+              
+            </div>
 
-        <div class='date'>
-          2015.06.16
-        </div>
-      </div>
+            <div class='date'>
+              2015.06.16
+            </div>
+          </div>
 
-      <div class="post__content">
-        <p>这一切，都要从这篇文章说起，<a href="http://www.codersnotes.com/notes/being-sneaky-in-c">Being Sneaky in C</a>。</p>
+          <div class="post__content">
+            <p>这一切，都要从这篇文章说起，<a href="http://www.codersnotes.com/notes/being-sneaky-in-c">Being Sneaky in C</a>。</p>
 <p>通过这篇文章，我了解到，原来外国有一种比赛，叫做 <em>Underhanded C</em>（中文翻译：有猫腻的 C），完成规定的题目，要求是写出看起来毫无问题的代码，但是却偷偷的藏有 Bug 或者说后门。</p>
 <p>这篇文章说的就是作者参与了这个比赛，以及他的解决方案。</p>
 <p>我先来解释一下这道题目：</p>
@@ -111,9 +117,14 @@ uint8 <span style="color:#000;font-weight:bold">*</span>block2 <span style="colo
 </code></pre></div><p>注意 piu 结构体中 <code>piu_text_uft8</code> 是 641 个字节，而 <code>filter_data</code> 中则是 640 个字节。所以复制的时候，最后一个字节复制到 <code>filter_data</code> 中属于 stamp 的字段，覆盖其最低位的字节。所以最后，用户通过观察时间字段的最低位是否是0x69就可以判断消息有没有被监听。</p>
 <p>下载源代码，运行 test，会发现，得到的时间比当前时间稍微慢了一点，大概几分钟，那是因为时间字段最后一个字节要么被清零，要么被设置为 0x69 了。这个 bug 真是巧妙。</p>
 <p>这真是一个有意思的比赛，官网上 <a href="http://www.underhanded-c.org">UnderhandedC</a> 还有很多其他的解答，大家有兴趣可以自己去看看。</p>
-      </div>
+          </div>
 
-      <div id="post__comments">
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
       </div>
     </div>
   </div>

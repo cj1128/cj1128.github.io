@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
 
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
@@ -38,6 +39,9 @@
     }
   </script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
   <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
@@ -49,27 +53,29 @@
       </a>
     </header>
 
-    <div class="post__body">
-      <h1 class="post__title">
-          使用 Go 编写代码明信片生成器
-      </h1>
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              使用 Go 编写代码明信片生成器
+          </h1>
 
-      <div class="post__meta">
-        <div class="tags">
-          
-            <span class="tag">codeposter</span>
-          
-            <span class="tag">go</span>
-          
-        </div>
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">codeposter</span>
+              
+                <span class="tag">go</span>
+              
+            </div>
 
-        <div class='date'>
-          2017.02.18
-        </div>
-      </div>
+            <div class='date'>
+              2017.02.18
+            </div>
+          </div>
 
-      <div class="post__content">
-        <p>很早之前就看过到关于 <a href="http://commits.io">commits.io</a> 的一个帖子，这个站点专门制作代码明信片。什么是代码明信片呢？如下图。</p>
+          <div class="post__content">
+            <p>很早之前就看过到关于 <a href="http://commits.io">commits.io</a> 的一个帖子，这个站点专门制作代码明信片。什么是代码明信片呢？如下图。</p>
 <p><img src="http://asset.cjting.cn/007FEWc7ly1g1f3o6zdtwj30sj0ee45m.jpg" alt=""></p>
 <p>背景是代码，然后中间印上指定的图案，就是一幅代码明信片了。看起来有点意思，将自己的得意作品做成一个代码明信片打印出来挂在办公室将是一个非常不错的装逼选择😉。</p>
 <p>当时我就在想，这东西挺有意思，有空自己做一个，当然，事情一多也就忘记了。最近，我又看到了一个帖子，<a href="http://www.east5th.co/blog/2017/02/13/build-your-own-code-poster-with-elixir/">Build your own code poster with elixir</a>，是说怎样用 Elixir 来制作代码明信片的。Elixir 是我最近正在研究的语言，不过我觉得它不适合拿来干这个，这种程序，拿 Go 做一个 CLI 最爽，编译好了就可以发放给亲朋好友体验了。说干就干，再不能拖延了。</p>
@@ -118,9 +124,14 @@
 <p><img src="http://asset.cjting.cn/007FEWc7ly1g1f3oqy7ldj30m80l4n55.jpg" alt=""></p>
 <p><img src="http://asset.cjting.cn/007FEWc7ly1g1f3ox5d2gj30m70l37ce.jpg" alt=""></p>
 <p><img src="http://asset.cjting.cn/007FEWc7ly1g1f3p3nf61j30m70l3wmc.jpg" alt=""></p>
-      </div>
+          </div>
 
-      <div id="post__comments">
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
       </div>
     </div>
   </div>

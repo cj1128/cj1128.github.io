@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
 
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
@@ -38,6 +39,9 @@
     }
   </script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
   <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
@@ -49,27 +53,29 @@
       </a>
     </header>
 
-    <div class="post__body">
-      <h1 class="post__title">
-          使用 SVG Morphing 制作自己的加载动画
-      </h1>
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              使用 SVG Morphing 制作自己的加载动画
+          </h1>
 
-      <div class="post__meta">
-        <div class="tags">
-          
-            <span class="tag">svg</span>
-          
-            <span class="tag">animation</span>
-          
-        </div>
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">svg</span>
+              
+                <span class="tag">animation</span>
+              
+            </div>
 
-        <div class='date'>
-          2016.11.07
-        </div>
-      </div>
+            <div class='date'>
+              2016.11.07
+            </div>
+          </div>
 
-      <div class="post__content">
-        <p>每一个需要让用户等待的应用都应该有加载界面，可以是简单的文本，比如 <code>加载中…</code>，也可以是有趣的动画。当然，一个好玩的加载动画能够大大增加用户等待的耐心，谁喜欢枯燥的文字呢。所以，投入点时间寻找或者制作一个加载动画是很有意义的。感谢 SVG 和相关的动画技术，现在制作一款复杂的动画已经变得十分容易了。</p>
+          <div class="post__content">
+            <p>每一个需要让用户等待的应用都应该有加载界面，可以是简单的文本，比如 <code>加载中…</code>，也可以是有趣的动画。当然，一个好玩的加载动画能够大大增加用户等待的耐心，谁喜欢枯燥的文字呢。所以，投入点时间寻找或者制作一个加载动画是很有意义的。感谢 SVG 和相关的动画技术，现在制作一款复杂的动画已经变得十分容易了。</p>
 <p>这里我使用 SVG 的形变技术（Shape Morphing）来做一个简单的矩形、三角形、圆形变换的动画。</p>
 <p data-height="500" data-theme-id="light" data-slug-hash="QGwMXP" data-default-tab="result" data-user="fatelovely" data-embed-version="2" data-pen-title="SVG Morphing Loading Animation" class="codepen">See the Pen <a href="http://codepen.io/fatelovely/pen/QGwMXP/">SVG Morphing Loading Animation</a> by fatelovely (<a href="http://codepen.io/fatelovely">@fatelovely</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
@@ -155,9 +161,14 @@ nightmare.run(<span style="color:#000;font-weight:bold">function</span>(err) {
 <p><img src="http://asset.cjting.cn/9b85365djw1f9jheun5t8j20rt0r60yg.jpg" alt=""></p>
 <p>最终，GIF 效果如下。</p>
 <img width="100" src="http://asset.cjting.cn/9b85365djw1f9jhfdkgy8g20b40b4wfc.gif">
-      </div>
+          </div>
 
-      <div id="post__comments">
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
       </div>
     </div>
   </div>

@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
 
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
@@ -38,6 +39,9 @@
     }
   </script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
   <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
@@ -49,23 +53,25 @@
       </a>
     </header>
 
-    <div class="post__body">
-      <h1 class="post__title">
-          正向代理与反向代理
-      </h1>
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              正向代理与反向代理
+          </h1>
 
-      <div class="post__meta">
-        <div class="tags">
-          
-        </div>
+          <div class="post__meta">
+            <div class="tags">
+              
+            </div>
 
-        <div class='date'>
-          2018.08.11
-        </div>
-      </div>
+            <div class='date'>
+              2018.08.11
+            </div>
+          </div>
 
-      <div class="post__content">
-        <p>代理的英文叫做 <em>Proxy</em>，是计算机中的常用软件。</p>
+          <div class="post__content">
+            <p>代理的英文叫做 <em>Proxy</em>，是计算机中的常用软件。</p>
 <p>简单来说，代理的功能犹如它的名字所示：代替某人来处理某事。</p>
 <p>常见的代理分两种，正向代理和反向代理。不管哪种代理，它们都位于客户端和服务器之间，将我们传统的 <code>客户端 &lt;-&gt; 服务器</code> 通信变成了 <code>客户端 &lt;-&gt; 代理 &lt;-&gt; 服务器</code> 通信。</p>
 <h2 id="正向代理">正向代理</h2>
@@ -141,9 +147,14 @@
 <p><img src="http://asset.cjting.cn/FkC-GZsJPKErvn7WW3GVdhfhB9aE.jpg" alt=""></p>
 <p>想象这样一个场景：在一个阳光明媚的午后，你发现你的邻居在蹭你的网，你并没有选择修改密码，而是默默地启动这个恶作剧代理，配置你的路由器，使用 iptables 将蹭网流量转发到这个代理。于此同时，你的邻居发现，前一刻还十分精彩的互联网世界，突然颠倒了，他苦苦思索，他不知所措，他深深地被这个世界的恶意所伤害。</p>
 <p>关于恶作剧代理的具体代码可以去 GitHub 仓库 <a href="https://github.com/cj1128/squid-trick-proxy-demo">squid-trick-proxy-demo</a> 上查看。</p>
-      </div>
+          </div>
 
-      <div id="post__comments">
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
       </div>
     </div>
   </div>

@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
 
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
@@ -38,6 +39,9 @@
     }
   </script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
   <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
@@ -49,29 +53,31 @@
       </a>
     </header>
 
-    <div class="post__body">
-      <h1 class="post__title">
-          JavaScript Infinite Currying
-      </h1>
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              JavaScript Infinite Currying
+          </h1>
 
-      <div class="post__meta">
-        <div class="tags">
-          
-            <span class="tag">javascript</span>
-          
-            <span class="tag">functional-programming</span>
-          
-            <span class="tag">curry</span>
-          
-        </div>
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">javascript</span>
+              
+                <span class="tag">functional-programming</span>
+              
+                <span class="tag">curry</span>
+              
+            </div>
 
-        <div class='date'>
-          2016.01.17
-        </div>
-      </div>
+            <div class='date'>
+              2016.01.17
+            </div>
+          </div>
 
-      <div class="post__content">
-        <p>很久之前曾看到一个很有意思的 JS 问题，</p>
+          <div class="post__content">
+            <p>很久之前曾看到一个很有意思的 JS 问题，</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#998;font-style:italic">// 定义一个函数 add，满足如下性质：
 </span><span style="color:#998;font-style:italic"></span>add(<span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">1</span>
 add(<span style="color:#099">1</span>)(<span style="color:#099">2</span>) <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">3</span>
@@ -131,9 +137,14 @@ a <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&
   <span style="color:#000;font-weight:bold">return</span> factor(total(arguments))
 }
 </code></pre></div>
-      </div>
+          </div>
 
-      <div id="post__comments">
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
       </div>
     </div>
   </div>

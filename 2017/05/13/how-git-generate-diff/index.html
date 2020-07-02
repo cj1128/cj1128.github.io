@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
 
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
@@ -38,6 +39,9 @@
     }
   </script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
   <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
@@ -49,29 +53,31 @@
       </a>
     </header>
 
-    <div class="post__body">
-      <h1 class="post__title">
-          Git 是怎样生成 diff 的：Myers 算法
-      </h1>
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              Git 是怎样生成 diff 的：Myers 算法
+          </h1>
 
-      <div class="post__meta">
-        <div class="tags">
-          
-            <span class="tag">git</span>
-          
-            <span class="tag">diff</span>
-          
-            <span class="tag">myers</span>
-          
-        </div>
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">git</span>
+              
+                <span class="tag">diff</span>
+              
+                <span class="tag">myers</span>
+              
+            </div>
 
-        <div class='date'>
-          2017.05.13
-        </div>
-      </div>
+            <div class='date'>
+              2017.05.13
+            </div>
+          </div>
 
-      <div class="post__content">
-        <p>diff 是我们每天都要使用的一个功能，每次提交时，我都习惯先用 <code>git diff --cached</code> 看看这次提交更改了些什么，确定没问题，然后再 <code>git commit</code>。git 生成的 diff 非常直观，直观到我从来都没有去思考过 diff 是怎么生成的，觉得这应该是很简单的一件事，两个文件做个对比，不就行了。</p>
+          <div class="post__content">
+            <p>diff 是我们每天都要使用的一个功能，每次提交时，我都习惯先用 <code>git diff --cached</code> 看看这次提交更改了些什么，确定没问题，然后再 <code>git commit</code>。git 生成的 diff 非常直观，直观到我从来都没有去思考过 diff 是怎么生成的，觉得这应该是很简单的一件事，两个文件做个对比，不就行了。</p>
 <h2 id="什么是直观的-diff">什么是直观的 diff</h2>
 <p>我们先简单定义一下什么是 diff：diff 就是目标文本和源文本之间的区别，也就是将源文本变成目标文本所需要的操作。</p>
 <p>git 为我们生成的 diff 是很直观易懂的，一看就知道我们对文件进行了哪些改动。但是，实际上，diff 生成是一个非常复杂的问题。</p>
@@ -183,9 +189,14 @@
 <ul>
 <li><a href="https://blog.jcoglan.com/2017/02/12/the-myers-diff-algorithm-part-1/">The Myers diff algorithm: part 1</a></li>
 </ul>
-      </div>
+          </div>
 
-      <div id="post__comments">
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
       </div>
     </div>
   </div>

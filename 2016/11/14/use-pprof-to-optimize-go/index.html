@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
 
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
@@ -38,6 +39,9 @@
     }
   </script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
   <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
@@ -49,27 +53,29 @@
       </a>
     </header>
 
-    <div class="post__body">
-      <h1 class="post__title">
-          使用 pprof 优化 Golang 性能
-      </h1>
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              使用 pprof 优化 Golang 性能
+          </h1>
 
-      <div class="post__meta">
-        <div class="tags">
-          
-            <span class="tag">golang</span>
-          
-            <span class="tag">pprof</span>
-          
-        </div>
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">golang</span>
+              
+                <span class="tag">pprof</span>
+              
+            </div>
 
-        <div class='date'>
-          2016.11.14
-        </div>
-      </div>
+            <div class='date'>
+              2016.11.14
+            </div>
+          </div>
 
-      <div class="post__content">
-        <p><em>Donald E.Knuth</em> 说过一句非常著名的话，<strong>过早的优化是万恶之源</strong>，原文如下：</p>
+          <div class="post__content">
+            <p><em>Donald E.Knuth</em> 说过一句非常著名的话，<strong>过早的优化是万恶之源</strong>，原文如下：</p>
 <blockquote>
 <p>We should forget about small efficiencies, say about 97% of the time; premature optimization is the root of all evil.</p>
 </blockquote>
@@ -228,9 +234,14 @@ Showing top <span style="color:#099">5</span> nodes out of <span style="color:#0
 <p><img src="http://asset.cjting.cn/9b85365dgw1f9xi9qhf6uj211m0idjvs.jpg" alt=""></p>
 <p>性能再次得到了提升，由 5460ms 降低到了 3610ms。初步看来，已经没有了明显可以优化的地方了。到此为止，我们的程序性能已经得到了 170% 的提升！我们并没有怎么努力，只不过是生成了 Profiling 文件，一眼看出问题在哪儿，然后针对性地优化而已。</p>
 <p>感谢 Golang 提供了这套超赞的 pprof 工具，性能调优变得如此轻松和愉悦。这里我所举的只是 pprof 功能的冰山一角，pprof 的强大功能远不止这些。比如可以使用 <code>list</code> 指令查看函数的源码中每一行代码的开销以及使用 <code>weblist</code> 指令查看函数汇编以后每一句汇编指令的开销等等。不仅是 CPU Profiling，pprof 同样支持 Memory Profiling，可以帮助你检查程序中内存的分配情况。总之，在 pprof 的帮助下，程序的开销信息变得一清二楚，优化自然变得轻而易举。</p>
-      </div>
+          </div>
 
-      <div id="post__comments">
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
       </div>
     </div>
   </div>

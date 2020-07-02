@@ -12,6 +12,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
 
   <link rel="alternate" type="application/rss+xml" href="https://cjting.me/index.xml" title="CJ Ting's Blog" />
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
@@ -39,6 +40,9 @@
       section: "",
     }
   </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
 
   <link rel="stylesheet" href="/asset/main.css">
 </head>
@@ -68,6 +72,26 @@
           
   <div class="index u-content-container">
     
+    
+      <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/2017/06/04/migrate-to-hugo-from-jekyll/">
+          从 Jekyll 迁移到 Hugo，Hugo 不完全指南
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>最近这段时间一直在忙着迁移博客，把原本基于 Jekyll 的博客迁移到了 Hugo 上。</p>
+<p>之所以从 Jekyll 迁移的原因并不复杂，就是一个字：<strong>慢</strong>。Jekyll 的速度实在是太慢了，我只有几十篇文章，在 Watch 模式下，每次改动，重新生成都要花费 3 秒钟，实在是太慢了。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">Regenerating: <span style="color:#099">1</span> file<span style="color:#000;font-weight:bold">(</span>s<span style="color:#000;font-weight:bold">)</span> changed at 2017-05-14 10:37:16 ...done in 3.085089 seconds.
+Regenerating: <span style="color:#099">1</span> file<span style="color:#000;font-weight:bold">(</span>s<span style="color:#000;font-weight:bold">)</span> changed at 2017-05-14 10:37:20 ...done in 3.121783 seconds.
+</code></pre></div>
+        </div>
+
+        <div class="index__item__meta">
+          <div>
+            2017.06.04
+          </div>
+        </div>
+      </div>
     
       <div class="index__item">
         <a class="index__item__title hvr-underline-from-left" href="/2017/05/13/how-git-generate-diff/">
@@ -246,23 +270,6 @@ host，比如公司内部的各种服务，或者测试项目的时候暂时把�
         <div class="index__item__meta">
           <div>
             2016.08.20
-          </div>
-        </div>
-      </div>
-    
-      <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/2016/05/21/ngrok-tutorial/">
-          使用 Ngrok 实现内网穿透
-        </a>
-
-        <div class="index__item__content post__content">
-          <p>很多时候，我们都有这样的需求：需要将本地正在开发的服务暴露在公网上，也就是从外网直接访问我们本机上的服务。正常情况下，这是办不到的，因为我们的本机并没有公网 IP，我们的本机处在内网当中。</p>
-<p>这里需要顺手提及一个知识：NAT 穿透。我们的机器一般都在路由器的内网当中，IP 地址基本上都是 <code>192.168.x.x</code> 系列，我们并没有公网 IP，那么如何访问外网呢？我们打开浏览器访问 Google，Google 与我们主机之间如何通信？假设我们主机 IP 为 <code>192.168.0.100</code>，路由器 LAN IP 为 <code>192.168.0.1</code>，WAN IP 为 <code>211.22.145.234（这是一个公网IP）</code>，Google 服务器 IP 为 <code>74.125.204.101</code>，详细通信流程如下。</p>
-        </div>
-
-        <div class="index__item__meta">
-          <div>
-            2016.05.21
           </div>
         </div>
       </div>

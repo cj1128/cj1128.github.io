@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
 
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
@@ -38,6 +39,9 @@
     }
   </script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
   <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
@@ -49,25 +53,27 @@
       </a>
     </header>
 
-    <div class="post__body">
-      <h1 class="post__title">
-          RSA 的原理与实现
-      </h1>
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              RSA 的原理与实现
+          </h1>
 
-      <div class="post__meta">
-        <div class="tags">
-          
-            <span class="tag">rsa openssl ssh</span>
-          
-        </div>
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">rsa openssl ssh</span>
+              
+            </div>
 
-        <div class='date'>
-          2020.03.13
-        </div>
-      </div>
+            <div class='date'>
+              2020.03.13
+            </div>
+          </div>
 
-      <div class="post__content">
-        <p>1976 年以前，所有的加密都是如下方式：</p>
+          <div class="post__content">
+            <p>1976 年以前，所有的加密都是如下方式：</p>
 <ul>
 <li>A 使用某种规则对信息进行处理</li>
 <li>B 使用同样的规则对处理过的信息进行复原</li>
@@ -128,7 +134,7 @@ $$</p>
 <p>第一步，随机选择两个大质数 p 和 q，并计算他们的乘积 n。在日常应用中，出于安全考虑，一般要求 n 换算成二进制要大于 2048 位。</p>
 <p>这里因为是演示，我们使用比较小的数，选择 p = 7 以及 q = 9，所以 n = 63。</p>
 <p>第二步，计算 n 的欧拉函数 $\phi(n)$。</p>
-<p>根据公式，$\phi(n) = (p-1)(q-1)$，我么可以得知 $\phi(63) = 6 \times 8 = 48。</p>
+<p>根据公式，$\phi(n) = (p-1)(q-1)$，我么可以得知 $\phi(63) = 6 \times 8 = 48$。</p>
 <p>第三步，选择一个数 e 使得 e 与 $\phi(n)$ 互质。很多文章会提到 $1 &lt; e &lt; \phi(n)$，其实这并不严谨，只是工程上的考虑，在数学上来说，e 随便选择，只要与 $\phi(n)$ 互质即可，具体可以参考 <a href="https://crypto.stackexchange.com/questions/5729/can-the-encryption-exponent-e-be-greater-than-%CF%95n">Can the encryption exponent e be greater than ϕ(N)?</a>.</p>
 <p>在日常应用中，我们一般选择 65537。<strong>选择一个已知的数字不会降低 RSA 的安全性</strong>。</p>
 <p>这里，我们选择 e = 5。</p>
@@ -486,9 +492,14 @@ Decrypt result: <span style="color:#099">1024</span>
 <li><a href="https://blog.oddbit.com/post/2011-05-08-converting-openssh-public-keys/">https://blog.oddbit.com/post/2011-05-08-converting-openssh-public-keys/</a></li>
 <li><a href="https://eli.thegreenplace.net/2019/rsa-theory-and-implementation/">https://eli.thegreenplace.net/2019/rsa-theory-and-implementation/</a></li>
 </ul>
-      </div>
+          </div>
 
-      <div id="post__comments">
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
       </div>
     </div>
   </div>

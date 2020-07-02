@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
 
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
@@ -38,6 +39,9 @@
     }
   </script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
   <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
@@ -49,25 +53,27 @@
       </a>
     </header>
 
-    <div class="post__body">
-      <h1 class="post__title">
-          JavaScript 与 Unicode
-      </h1>
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              JavaScript 与 Unicode
+          </h1>
 
-      <div class="post__meta">
-        <div class="tags">
-          
-            <span class="tag">js encoding</span>
-          
-        </div>
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">js encoding</span>
+              
+            </div>
 
-        <div class='date'>
-          2018.07.22
-        </div>
-      </div>
+            <div class='date'>
+              2018.07.22
+            </div>
+          </div>
 
-      <div class="post__content">
-        <p>字符串是任何一个编程语言中的重要概念，同时也是一个非常复杂的问题。</p>
+          <div class="post__content">
+            <p>字符串是任何一个编程语言中的重要概念，同时也是一个非常复杂的问题。</p>
 <p>日常编码中可能并不一定能见到它的复杂性，下面是几个字符串操作，使用你最熟悉的编程语言，看看结果如何。</p>
 <ul>
 <li>逆转字符串 <code>&quot;noël&quot;</code>，正确结果应该是 <code>&quot;lëon&quot;</code></li>
@@ -123,7 +129,6 @@
 <p>还是以 emoji <code>😜</code> 为例，码点为 <code>0x1F61C</code>，在区间 <code>0x10000 - 0x1FFFFF</code> 之中，需要使用四个字节进行编码。首先将其转换为二进制，填充为 21 位，结果是 <code>0_0001_1111_0110_0001_1100</code>，然后将这 21 位按照上述说明填入，结果是 <code>1111_0000</code>，<code>1001_1111</code>，<code>1001_1000</code>，<code>1001_1100</code>，换成 16 进制便是 <code>0xF0 0x9F 0x98 0x9C</code>，这就是 <code>😜</code> 的 UTF8 编码。</p>
 <p>UTF8 因为它的灵活性，尤其是与 ASCII 的兼容性，目前已经成为事实上的标准。对于编码问题的处理很简单，<strong>一律选择使用 UTF8 即可</strong>。</p>
 <h2 id="js-中的字符串问题和解决方法">JS 中的字符串问题和解决方法</h2>
-<h3 id="js-的字符串和字符">JS 的字符串和字符</h3>
 <p>JS 中的字符串，我们可以认为是 <strong>理解 Surrogate Pair 的 UCS-2</strong>。</p>
 <p>这是因为，JS 中的字符串，我们可以使用 Surrogate Pair 来编码非 BMP 字符，这是 UTF16 的特性，单纯的 UCS-2 是不能理解 Surrogate Pair 的。</p>
 <p>但是 JS 中的字符允许无效的 Surrogate Pair，比如 <code>&quot;\uDFFF\uD800&quot;</code>，或者单个 Surrogate，比如 <code>&quot;\uD800&quot;</code> 。因此 JS 中的字符也不是 UTF16，单纯的 UTF16 是不允许上面的字符串的。</p>
@@ -213,9 +218,14 @@ Uncaught SyntaxError<span style="color:#000;font-weight:bold">:</span> Invalid r
 <p>esrever 的 <code>reverse</code> 函数具体实现可以看<a href="https://github.com/mathiasbynens/esrever/blob/14b34013dad49106ca08c0e65919f1fc8fea5331/src/esrever.js#L23">这里</a>。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js">esrever.reverse(<span style="color:#d14">&#34;mañana&#34;</span>) <span style="color:#998;font-style:italic">// &#34;anañam&#34;
 </span></code></pre></div>
-      </div>
+          </div>
 
-      <div id="post__comments">
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
       </div>
     </div>
   </div>

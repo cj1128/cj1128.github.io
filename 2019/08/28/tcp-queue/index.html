@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
 
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
@@ -38,6 +39,9 @@
     }
   </script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
   <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
@@ -49,29 +53,31 @@
       </a>
     </header>
 
-    <div class="post__body">
-      <h1 class="post__title">
-          从一次 Connection Reset 说起，TCP 半连接队列与全连接队列
-      </h1>
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              从一次 Connection Reset 说起，TCP 半连接队列与全连接队列
+          </h1>
 
-      <div class="post__meta">
-        <div class="tags">
-          
-            <span class="tag">linux</span>
-          
-            <span class="tag">network</span>
-          
-            <span class="tag">tcp</span>
-          
-        </div>
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">linux</span>
+              
+                <span class="tag">network</span>
+              
+                <span class="tag">tcp</span>
+              
+            </div>
 
-        <div class='date'>
-          2019.08.28
-        </div>
-      </div>
+            <div class='date'>
+              2019.08.28
+            </div>
+          </div>
 
-      <div class="post__content">
-        <p>之前用 Go 编写过一个简单的服务器和客户端，用来测试 Go 的 HTTP 性能，无意中发现了一个奇怪的问题。</p>
+          <div class="post__content">
+            <p>之前用 Go 编写过一个简单的服务器和客户端，用来测试 Go 的 HTTP 性能，无意中发现了一个奇怪的问题。</p>
 <p>在我的 Mac 上客户端程序会非常稳定地遇到 <em>Connection Reset</em> 的错误，让人一头雾水。</p>
 <h2 id="奇怪的-connection-reset">奇怪的 Connection Reset</h2>
 <p>Server 代码如下：</p>
@@ -352,9 +358,14 @@ $ iptables -A OUTPUT -p tcp --tcp-flags RST RST --dport <span style="color:#099"
 <li><a href="http://veithen.io/2014/01/01/how-tcp-backlog-works-in-linux.html">How TCP backlog works in Linux</a></li>
 <li><a href="https://my.oschina.net/moooofly/blog/666048">源码分析 TCP 协议中的 SYN queue 和 accept queue 处理</a></li>
 </ul>
-      </div>
+          </div>
 
-      <div id="post__comments">
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
       </div>
     </div>
   </div>

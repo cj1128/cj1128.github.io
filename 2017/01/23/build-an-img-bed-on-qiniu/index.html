@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
 
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
@@ -38,6 +39,9 @@
     }
   </script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
   <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
@@ -49,29 +53,31 @@
       </a>
     </header>
 
-    <div class="post__body">
-      <h1 class="post__title">
-          图床on七牛，简单好用的图床插件
-      </h1>
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              图床on七牛，简单好用的图床插件
+          </h1>
 
-      <div class="post__meta">
-        <div class="tags">
-          
-            <span class="tag">图床</span>
-          
-            <span class="tag">七牛</span>
-          
-            <span class="tag">chrome</span>
-          
-        </div>
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">图床</span>
+              
+                <span class="tag">七牛</span>
+              
+                <span class="tag">chrome</span>
+              
+            </div>
 
-        <div class='date'>
-          2017.01.23
-        </div>
-      </div>
+            <div class='date'>
+              2017.01.23
+            </div>
+          </div>
 
-      <div class="post__content">
-        <p>注：因为七牛 API 修改，编辑于 2019-03-25T16:20:00。</p>
+          <div class="post__content">
+            <p>注：因为七牛 API 修改，编辑于 2019-03-25T16:20:00。</p>
 <p>最近在使用过程中发现 <strong>图床on微博</strong> 出了点问题，响应体的 JSON 解析错误，不用想都知道肯定是微博修改了响应体的数据结构（微博图片上传接口响应体是 html 和 json 混在一起，十分专业）。简单修复了一下，测试的时候却发现，微博的图片上传接口变得不再稳定了，经常 404。看来微博图床是不能用了，正好我早就觉得微博不是个好图床，缺点如下：</p>
 <ol>
 <li>经常性的要重新登陆，麻烦死了</li>
@@ -185,9 +191,14 @@ Authorization:  QBox &lt;AccessToken&gt;
 }
 </code></pre></div><p>到这里，核心功能就做好了，剩下的就是 UI 层面的事情，在 <em>图床on微博</em> 的基础上，将历史记录功能优化成了和 Unsplash 一样的三栏显示。最终效果如下所示，关于插件的安装使用仓库 README 中有详细说明，<a href="https://github.com/cj1128/pic-on-qiniu">仓库地址</a>。</p>
 <p><img src="http://asset.cjting.cn/007FEWc7ly1g1f3v5j3f4g31810jcnpd.gif" alt=""></p>
-      </div>
+          </div>
 
-      <div id="post__comments">
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
       </div>
     </div>
   </div>

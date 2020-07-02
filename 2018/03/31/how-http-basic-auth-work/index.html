@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
 
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
@@ -38,6 +39,9 @@
     }
   </script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
   <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
@@ -49,27 +53,29 @@
       </a>
     </header>
 
-    <div class="post__body">
-      <h1 class="post__title">
-          HTTP Basic Auth 是怎么样工作的
-      </h1>
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              HTTP Basic Auth 是怎么样工作的
+          </h1>
 
-      <div class="post__meta">
-        <div class="tags">
-          
-            <span class="tag">http</span>
-          
-            <span class="tag">auth</span>
-          
-        </div>
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">http</span>
+              
+                <span class="tag">auth</span>
+              
+            </div>
 
-        <div class='date'>
-          2018.03.31
-        </div>
-      </div>
+            <div class='date'>
+              2018.03.31
+            </div>
+          </div>
 
-      <div class="post__content">
-        <p><code>HTTP Basic Auth</code> 是 HTTP 提供的一种验证方式，因为明文传输用户名和密码，非 HTTPS 环境下很不安全，一般用的非常少。但是在某些情况下用一用还是非常方便的，比如，一些静态站点例如文档系统可以使用 HTTP Basic Auth 进行简单的权限验证。</p>
+          <div class="post__content">
+            <p><code>HTTP Basic Auth</code> 是 HTTP 提供的一种验证方式，因为明文传输用户名和密码，非 HTTPS 环境下很不安全，一般用的非常少。但是在某些情况下用一用还是非常方便的，比如，一些静态站点例如文档系统可以使用 HTTP Basic Auth 进行简单的权限验证。</p>
 <h2 id="流程">流程</h2>
 <p>HTTP Basic Auth 使用两个 HTTP Header 实现，分别是 <code>WWW-Authenticate</code> 和 <code>Authorization</code>。</p>
 <p>流程如下：</p>
@@ -104,9 +110,14 @@
 <p>考虑这样一个场景，网站设置了多套用户名和密码，下发了部分给客户，结果客户反应说用户名和密码不对，那么此时，因为我已经登录成功了，无法再看到输入框，自然也无法测试。这个时候我们需要就是“登出”，清空浏览器的 “HTTP Basic Auth 缓存”。</p>
 <p>在 Chrome 中，我们只要在 URL 前面加上 <code>user@</code> 即可强制浏览器刷新它的缓存，弹出对话框。</p>
 <p>例如，网站为 <code>http://www.a.com</code>，访问输入了密码以后，再使用 <code>http://user@www.a.com</code> 访问，就会重新弹出弹框。</p>
-      </div>
+          </div>
 
-      <div id="post__comments">
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
       </div>
     </div>
   </div>

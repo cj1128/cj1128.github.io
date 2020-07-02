@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
 
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
@@ -38,6 +39,9 @@
     }
   </script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
   <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
@@ -49,25 +53,27 @@
       </a>
     </header>
 
-    <div class="post__body">
-      <h1 class="post__title">
-          DNS 101
-      </h1>
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              DNS 101
+          </h1>
 
-      <div class="post__meta">
-        <div class="tags">
-          
-            <span class="tag">dns</span>
-          
-        </div>
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">dns</span>
+              
+            </div>
 
-        <div class='date'>
-          2018.05.01
-        </div>
-      </div>
+            <div class='date'>
+              2018.05.01
+            </div>
+          </div>
 
-      <div class="post__content">
-        <p>DNS 全称 <code>Domain Name System</code>，是我们每天都在使用的基础互联网设施。</p>
+          <div class="post__content">
+            <p>DNS 全称 <code>Domain Name System</code>，是我们每天都在使用的基础互联网设施。</p>
 <p>它被发明出来的原因很简单，计算机之间的通信用的是 IP 地址，是一串数字，人类记忆起来十分不方便，因此，我们给地址起个名字，然后将名字和 IP 之间的关系记录起来，这样，我们只用记住名字就行了。</p>
 <p>从上面可以看出，DNS 系统类似我们日常使用的电话本，只不过里面存储的是域名和 IP 之间的关系。和人与电话之间的关系一样，一个域名可以有多个 IP，一个 IP 也可以有多个域名。</p>
 <h2 id="基本概念">基本概念</h2>
@@ -83,7 +89,7 @@
 <li><code>NS</code>: 域名对应的域名服务器域名，有点绕，简单来说，你想知道 A 域名的信息，需要去问 A 域名的 NS 记录对应的域名</li>
 <li><code>CNAME</code>: 域名的 <code>Canonical Name</code>，类似于文件系统中的链接</li>
 </ul>
-<p>这里是<a href="https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml#dns-parameters-2">完整的记录列表</a>。</p>
+<p>这里是 <a href="https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml#dns-parameters-2">完整的记录列表</a>。</p>
 <p>当我们购买了域名以后，就可以在服务商提供的配置系统中设置域名的相关记录。一般来说，服务商会默认配置两条 <code>NS</code> 记录到他们的域名服务器，当然，我们也可以修改这个记录，使用第三方域名服务器，比如 <a href="https://www.dnspod.cn/">DNSPod</a>。</p>
 <h2 id="分级结构">分级结构</h2>
 <p>互联网的规模太大，域名数量更是数不胜数，一台 DNS Server 将这些数据都存储下来是不现实的，因此 DNS 在设计的时候，采用的是分级结构，每一部分存储下一级的相关信息。</p>
@@ -209,7 +215,7 @@ cjting.me.              <span style="color:#099">86400</span>   IN      NS      
 </ul>
 <ol start="4">
 <li>192.168.0.100 -&gt; 199.9.14.201: <code>.me</code> 的 A 记录是什么？</li>
-<li>199.9.14.201 -&gt; dig: <code>.me</code> 的 NS 记录是 <code>a2.nic.me</code>, <code>b0.nic.me</code>&hellip;</li>
+<li>199.9.14.201 -&gt; 192.168.0.1: <code>.me</code> 的 NS 记录是 <code>a2.nic.me</code>, <code>b0.nic.me</code>&hellip;</li>
 <li></li>
 </ol>
 <ul>
@@ -238,9 +244,14 @@ cjting.me.              <span style="color:#099">86400</span>   IN      NS      
 <li>至此整个过程结束</li>
 </ol>
 <p>可以看出，一共进行了 <code>1 + 1 + 13 * 2 + 1 + 1 + 5 * 2 + 1 + 1 + 2 * 2 + 1 + 1 = 48</code> 次通信（请求+响应），可见，如果不进行缓存的话，DNS 是多么地浪费资源。</p>
-      </div>
+          </div>
 
-      <div id="post__comments">
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
       </div>
     </div>
   </div>

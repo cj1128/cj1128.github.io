@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
 
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
@@ -38,6 +39,9 @@
     }
   </script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
   <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
@@ -49,30 +53,32 @@
       </a>
     </header>
 
-    <div class="post__body">
-      <h1 class="post__title">
-          编写第一个 Sublime 插件 —— BuildX
-      </h1>
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              编写第一个 Sublime 插件 —— BuildX
+          </h1>
 
-      <div class="post__meta">
-        <div class="tags">
-          
-            <span class="tag">sublime</span>
-          
-            <span class="tag">texteditor</span>
-          
-        </div>
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">sublime</span>
+              
+                <span class="tag">texteditor</span>
+              
+            </div>
 
-        <div class='date'>
-          2020.05.10
-        </div>
-      </div>
+            <div class='date'>
+              2020.05.10
+            </div>
+          </div>
 
-      <div class="post__content">
-        <p>从我接触计算机开始到现在 Sublime 一直是我的主力编辑器，现代化的 UI、流畅的速度以及众多的插件，特别是各种开箱即用的特性，让他一直默默成为我的生产力助手。</p>
+          <div class="post__content">
+            <p>从我接触计算机开始到现在 Sublime 一直是我的主力编辑器，现代化的 UI、流畅的速度以及众多的插件，特别是各种开箱即用的特性，让他一直默默成为我的生产力助手。</p>
 <p>我尽量避免使用各种 IDE，除非万不得以，有些工作不使用配套的工具十分麻烦，比如苹果的 XCode 和谷歌的 Android Studio。如果做 Android/iOS 开发，不用这些工具当然可以，但是绝对是不推荐的方案。第三方工具永远不会有官方的工具更新的快，同时，各种教程资料也不会针对第三方工具，一旦遇到问题只能靠自己解决，这个时间投入，是非常不值得的。</p>
 <p>幸好我的主要技术栈都不需要 IDE，JS/HTML/CSS, C, Go 这些语言 IDE 当然可以有些帮助，但是和 IDE 的臃肿卡顿比起来，这些帮助就显得不重要了。</p>
-<h2 id="sublime--vim">Sublime &amp;&amp; Vim</h2>
+<h2 id="sublimevim">Sublime/Vim</h2>
 <p>虽然 Sublime 满足了我的各种需要，但是我心里其实一直在积累换掉他的想法，原因是我觉得 Sublime 的定制性不够。当然，现在回过头看，这是一个偏见，或者说这个论点不够站得住脚。</p>
 <p>因为 Sublime 是闭源的关系，再加上各种讨论也不多，不像 Vim/Emacs 我时常能在各种论坛上看到帖子讨论他们，给人的感觉是社区很不活跃。所以我也一直没有花时间去了解 Sublime 的插件系统和 API。一般都是遇到问题的时候才去 Package Control 上找一找有没有现成的插件。</p>
 <p>顺手提一下，Package Control 在国内被墙了，需要在配置里面开启一下 <code>http_proxy</code> 和 <code>https_proxy</code>。</p>
@@ -88,7 +94,7 @@
 <li>足够大的社区</li>
 <li>对 Vim 的知识积累会带来价值，越使用，越了解，越熟练。</li>
 </ul>
-<p>有一次在看 <a href="https://handmadehero.org/">Handmade Hero</a> 时，我实在太想要 Emacs 中那个构建、显示错误信息、跳转到错误行 这个功能了，大大解放了生产力。</p>
+<p>有一次在看 <a href="https://handmadehero.org/">Handmade Hero</a> 时，我实在太想要 Emacs 中那个 <strong>构建、显示错误信息、跳转到错误行</strong> 这个功能了，大大解放了生产力。</p>
 <p><img src="http://asset.cjting.cn/lq6s1RwXWtdSZunK3V4AFhpO5kEL.gif" alt=""></p>
 <p>Sublime 自带的构建系统可以构建也可以跳转到错误行，但是，构建信息是显示在底部的而不是侧边，看起来非常不方便。我使用了 <a href="https://packagecontrol.io/packages/sublime-text-2-buildview">sublime text 2 buildview</a> 这个插件将构建信息显示到侧边，但是这个插件又不能跳转到错误行，以至于每次我都要自己看错误信息，然后手动跳转，别提多烦了。</p>
 <p>Sublime 默认的构建是输出在底部，位置无法调整：</p>
@@ -125,7 +131,7 @@ set tabstop=2
 <p>未来不够明朗？现在的 Sublime 已经足够优秀了，未来不更新了都没关系，他只是一个工具，工具的使命是帮助我完成任务。何况 Sublime 现在背后的公司 Sublime HQ 看起来发展的不错，毕竟 Sulbime 销量很好，赚到了钱才有动力开发更好的软件。再说，Sublime 未来完全可以像 Textmate 那样直接开源。</p>
 <p>所以，我担心的那些问题其实并不成立，Sublime 作为一个优秀的工具，他有他的不足，任何工具都会有所不足，解决这些不足的方法并不总是换掉这个工具。</p>
 <p>既然 Sublime 已有的插件不能满足我的需求，为什么不能自己开发一款？抱着这个态度，我读了一下 Sublime 的插件文档，学习了一些插件的源码，我发现，Sublime 的插件系统设计的很好，接口文档也很清楚，我想要的功能，实现起来很简单。</p>
-<h2 id="sublime--plugin-system">Sublime &amp;&amp; Plugin System</h2>
+<h2 id="sublime-plugin-system">Sublime Plugin System</h2>
 <p>先来简单介绍一下 Sublime 的插件体系。</p>
 <p>首先，Sublime 的插件使用的是 Python，比起 Vimscript 来说实在是舒服太多了。</p>
 <p>Sublime 所有的插件都在 Sublime 的插件目录下。打开 Command Palette，输入 <code>Preferences: Browse Packages</code> 就可以打开插件目录。在 Mac 上，这个目录是 <code>/Users/__USERNAME__/Library/Application Support/Sublime Text 3/Packages</code>。</p>
@@ -261,7 +267,7 @@ set tabstop=2
 
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">True</span>
 </code></pre></div><p>这样每次构建时，如果没有 Target View，就会新建一个。</p>
-<h4 id="拷贝-exec-panel-中的内容">拷贝 Exec Panel 中的内容</h4>
+<h3 id="拷贝-exec-panel-中的内容">拷贝 Exec Panel 中的内容</h3>
 <p>最后，我们要做的就是在 <code>on_modified</code> 的时候拷贝内容到我们的 Target View 中。</p>
 <p>首先，我们通过 <code>view.substr</code> 函数读取到 Exec Panel 中的内容，然后使用 <code>view.replace</code> 函数将该内容写到 Target View 中。</p>
 <p>因为 <code>view.replace</code> 需要一个 <code>Edit</code> 对象，所以我们需要创建一个 TextCommand 来执行这个方法。</p>
@@ -324,9 +330,14 @@ set tabstop=2
 <p>XKCD 的这幅漫画很能引发思考，在你动手 切换工具/造工具/改进工具 的时候，一定要评估一下你投入的时间以及节省的时间是否匹配。</p>
 <p><img src="http://asset.cjting.cn/Ft_ZecIdlpHJGqhla063FcO3txrv.png" alt=""></p>
 <p>如果说一个任务你每天做一次，每次耗费 6 分钟，你觉得很慢，动手改进，改进到了 1 分钟，那么这次改进带来的提升是节省了 5 分钟，以五年为例，一共为你节省了 6 天。问题是，将一个工具从 6 分钟改进到 1 分钟如此巨大的性能提升 6 天内你能搞定吗？如果搞不定的话，就要好好想想了。</p>
-      </div>
+          </div>
 
-      <div id="post__comments">
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
       </div>
     </div>
   </div>

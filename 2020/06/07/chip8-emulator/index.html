@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
 
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
@@ -38,6 +39,9 @@
     }
   </script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
   <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
@@ -49,25 +53,27 @@
       </a>
     </header>
 
-    <div class="post__body">
-      <h1 class="post__title">
-          用 C 实现一个 CHIP-8 模拟器
-      </h1>
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              用 C 实现一个 CHIP-8 模拟器
+          </h1>
 
-      <div class="post__meta">
-        <div class="tags">
-          
-            <span class="tag">chip8 emulator c</span>
-          
-        </div>
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">chip8 emulator c</span>
+              
+            </div>
 
-        <div class='date'>
-          2020.06.07
-        </div>
-      </div>
+            <div class='date'>
+              2020.06.07
+            </div>
+          </div>
 
-      <div class="post__content">
-        <p>很早之前我就想写一个 GBA 模拟器，因为小时候的 GBA 游戏给我留下了深刻的印象。</p>
+          <div class="post__content">
+            <p>很早之前我就想写一个 GBA 模拟器，因为小时候的 GBA 游戏给我留下了深刻的印象。</p>
 <p>口袋妖怪、孤岛求生、牧场物语这些 GBA 的经典游戏，在那个时候还玩着小霸王的我眼中，无异于打开了新世界的大门，原来游戏可以这样的有趣。</p>
 <p>因为对 GBA 的喜欢，所以有了编写一个 GBA 模拟器的想法。看过一些资料以后，我决定从最简单的 CHIP-8 开始练手。CHIP-8 是一个功能完整的平台，可以运行多个游戏，同时它的设计又非常简单，很适合新手入门。</p>
 <h2 id="chip-8">CHIP-8</h2>
@@ -196,9 +202,14 @@ SDL_QueueAudio(audioDevice, buf, bufLength);
 </ul>
 <p>最终我的 C 实现代码在这里 <a href="https://github.com/cj1128/chip8-emulator">chip8-emulator</a>。</p>
 <p>CHIP-8 是一个非常好的练手项目，需要阅读手册，查阅资料，理解虚拟机的工作原理，读取键盘输入并输出声音图像，完成以后还可以用来玩很多游戏~ 祝大家 Happy Coding 🎉</p>
-      </div>
+          </div>
 
-      <div id="post__comments">
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
       </div>
     </div>
   </div>

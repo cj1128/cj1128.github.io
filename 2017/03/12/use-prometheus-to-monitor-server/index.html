@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
 
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
@@ -38,6 +39,9 @@
     }
   </script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
   <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
@@ -49,29 +53,31 @@
       </a>
     </header>
 
-    <div class="post__body">
-      <h1 class="post__title">
-          使用 Prometheus 监控服务器性能
-      </h1>
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              使用 Prometheus 监控服务器性能
+          </h1>
 
-      <div class="post__meta">
-        <div class="tags">
-          
-            <span class="tag">prometheus</span>
-          
-            <span class="tag">monitor</span>
-          
-            <span class="tag">golang</span>
-          
-        </div>
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">prometheus</span>
+              
+                <span class="tag">monitor</span>
+              
+                <span class="tag">golang</span>
+              
+            </div>
 
-        <div class='date'>
-          2017.03.12
-        </div>
-      </div>
+            <div class='date'>
+              2017.03.12
+            </div>
+          </div>
 
-      <div class="post__content">
-        <p>最近一直在思考如何对线上服务做深度监控。基础的服务可用性监控很简单，定期 Ping 即可。但是怎样才能监控服务器的一些更加关键的数据呢？比如，每一个 API Point 的请求次数（QPS），最大响应时间，平均响应时间等。最终我希望实现的效果是有一个 Dashboard，我可以清楚地看到各种参数曲线，对服务器的运行情况了然于胸。</p>
+          <div class="post__content">
+            <p>最近一直在思考如何对线上服务做深度监控。基础的服务可用性监控很简单，定期 Ping 即可。但是怎样才能监控服务器的一些更加关键的数据呢？比如，每一个 API Point 的请求次数（QPS），最大响应时间，平均响应时间等。最终我希望实现的效果是有一个 Dashboard，我可以清楚地看到各种参数曲线，对服务器的运行情况了然于胸。</p>
 <p>绘制 Dashboard 不难，目前提供数据可视化的工具很多，随便选一个都能满足需要。关键问题是，怎样将整个流程打通？</p>
 <ul>
 <li>服务器该以怎样的形式暴露出数据？</li>
@@ -239,9 +245,14 @@ http_request_count(endpoint=&#34;/c&#34;) 3
 <p>同理，在 Query 中输入 <code>http_request_duration</code> 就可以得到响应时间曲线。通过使用 Prometheus 提供的操作符和函数，我们可以对数据进行我们想要的任意可视化，十分灵活。</p>
 <p>在这两个工具的配合使用下，对服务器信息的监控变得非常简单。首先，服务器定义一个 HTTP 接口，暴露出想要监控的数据，然后使用 Prometheus 收集并存储这些数据，最后在 Grafana 中绘制这些数据。一个完整的监控方案就诞生了。</p>
 <p>当然，在实际系统中，还缺少了一个环节，那就是报警。监控发现问题以后，需要马上报警通知相关的维护人员。这是另外一个话题了，以后再介绍。</p>
-      </div>
+          </div>
 
-      <div id="post__comments">
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
       </div>
     </div>
   </div>

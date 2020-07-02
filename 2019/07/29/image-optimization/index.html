@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
 
   <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
@@ -38,6 +39,9 @@
     }
   </script>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
   <link rel="stylesheet" href="/asset/main.css">
 </head>
 <body>
@@ -49,29 +53,31 @@
       </a>
     </header>
 
-    <div class="post__body">
-      <h1 class="post__title">
-          从图片优化说起
-      </h1>
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              从图片优化说起
+          </h1>
 
-      <div class="post__meta">
-        <div class="tags">
-          
-            <span class="tag">image</span>
-          
-            <span class="tag">picture</span>
-          
-            <span class="tag">compression</span>
-          
-        </div>
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">image</span>
+              
+                <span class="tag">picture</span>
+              
+                <span class="tag">compression</span>
+              
+            </div>
 
-        <div class='date'>
-          2019.07.29
-        </div>
-      </div>
+            <div class='date'>
+              2019.07.29
+            </div>
+          </div>
 
-      <div class="post__content">
-        <p>图片是大部分网页的重要组成部分，一般情况下，我们不会太关注这方面的问题，需要显示图片直接一个 <code>img</code> 标签搞定。</p>
+          <div class="post__content">
+            <p>图片是大部分网页的重要组成部分，一般情况下，我们不会太关注这方面的问题，需要显示图片直接一个 <code>img</code> 标签搞定。</p>
 <p>但实际上，无论是对于提高加载速度，还是对于优化用户体验，优化图片都是一个重要的手段。</p>
 <p>图片优化分成两个方面：</p>
 <p>第一，图片压缩。在保证视觉效果的情况下，减少图片的体积。这个很有效，1M 和 100K 的图片，肉眼看起来几乎差不多，但却省了 90% 的流量，大大提高了加载速度。</p>
@@ -117,7 +123,7 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
   })
 })()
 </code></pre></div><p>注意，<code>quality</code> 参数需要自己测试去确定，怎样在质量和尺寸中权衡，每个团队有自己的标准。</p>
-<h3 id="progressive-jpeg-vs-baseline-jpeg">Progressive JPEG VS Baseline JPEG</h3>
+<h3 id="progressive-vs-baseline">Progressive VS Baseline</h3>
 <p>JPEG 根据显示方式的不同，分为两种。Progressive JPEG 会先加载模糊的整张图片，然后变的越来越清晰。</p>
 <p><img src="http://asset.cjting.cn/9b85365dgy1g5hw2y2pipj21900u0kjq.jpg" alt=""></p>
 <p><img src="http://asset.cjting.cn/9b85365dgy1g5hw3pr599j20lc07ngu4.jpg" alt=""></p>
@@ -300,9 +306,14 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
 <li><a href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images">MDN: Responsive images</a></li>
 <li><a href="https://images.guide">images.guide</a></li>
 </ul>
-      </div>
+          </div>
 
-      <div id="post__comments">
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
       </div>
     </div>
   </div>
