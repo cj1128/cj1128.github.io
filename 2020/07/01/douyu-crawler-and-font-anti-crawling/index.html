@@ -127,7 +127,7 @@
 <p>这两个问题都不太好解决，我们先谈第一个。</p>
 <p>斗鱼的这个关注人数很明显是 JS 渲染的，我们有两条路可以走：</p>
 <ul>
-<li>使用 Headless Browser。也就是使用一个完整的浏览器来渲染整个页面，然后获取 DOM 中的值。这个是兜底办法，永远可行，但是缺点是效率太差，大家可以看一下打开斗鱼直播间页面的速度，正常情况下没个 5s 是不行的。</li>
+<li>使用 Headless Browser。也就是使用一个完整的浏览器来渲染整个页面，然后获取 DOM 中的值。这个是兜底办法，永远可行，但是缺点是效率太差。大家可以看一下打开斗鱼直播间页面的速度，正常情况下等到关注人数显示的时候至少需要 5 秒钟。</li>
 <li>我们找到数据源。找到斗鱼的 JS 是请求了哪个接口获取到了数据，然后直接请求该接口。</li>
 </ul>
 <p>第二个办法的效率会高很多，但是同时也困难很多。因为 JS 通过什么手段获取了数据实在是灵活性太高了，有太多的办法：</p>
@@ -170,7 +170,7 @@
   <span class="post__tip__span">T</span>ip: 其实在大部分情况下，使用关键词搜索一下 HAR 是很有效的手段，很容易找到对应的接口。
 </div>
 <p>既然此路不通，我们换个思路，请求到了数据以后，JS 代码一定会调用相关 API 去修改 DOM，能不能监听到这个动作？在它修改 DOM 的时候打上断点，这样就可以通过调用栈知道是哪段 JS 在做此操作，然后顺腾摸瓜找到对应的接口。</p>
-<p>答案是是可以的，通过使用 <code>MutationObserver</code> 我们可以任意监听 DOM 的修改事件。</p>
+<p>答案是是可以的，通过使用 <code>MutationObserver</code> 我们可以监听任意 DOM 的修改事件。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#000;font-weight:bold">new</span> MutationObserver((mutations, observer) =&gt; {
   <span style="color:#000;font-weight:bold">const</span> el <span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">document</span>.querySelector(<span style="color:#d14">&#34;span.Title-followNum&#34;</span>)
   <span style="color:#000;font-weight:bold">if</span> (el <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">null</span>) {
@@ -180,7 +180,7 @@
     }).observe(el, {childList<span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">true</span>, subtree<span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">true</span>})
   }
 }).observe(<span style="color:#0086b3">document</span>, {childList<span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">true</span>, subtree<span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">true</span>})
-</code></pre></div><p>通过 <a href="https://www.tampermonkey.net/">Tampermonkey</a> 加载上面的代码，刷新，等待断点的触发。</p>
+</code></pre></div><p>通过 <a href="https://www.tampermonkey.net/">Tampermonkey</a> 加载上面的代码，刷新，等待断点触发。</p>
 <p><img src="http://asset.cjting.cn/FiL0ZC_TXcbRcuw8HwUUUn65oB9w.png" alt=""></p>
 <p>从上面的调用栈可以看出，数据来源自 WebSocket。</p>
 <p>去 Network 面板中看一下，果然是这样。</p>
@@ -195,7 +195,7 @@
 <p>客户端发送的消息如下：</p>
 <p><img src="http://asset.cjting.cn/FuQwIkMoJdPyskwe1E_jFezsbBkk.png" alt=""></p>
 <p>虽然是二进制消息，但是可以看到消息主体都是可读的文本，很明显，斗鱼这里是自己实现了一个内部协议格式。</p>
-<p>开头 12 个自己字节暂时不清楚什么含义，然后紧跟着一段键值对数据，使用 <code>@=</code> 连接键和值，使用 <code>/</code> 分割，最后跟上 <code>/\x00</code>。</p>
+<p>开头 12 个字节暂时不清楚什么含义，然后紧跟着一段键值对数据，使用 <code>@=</code> 连接键和值，使用 <code>/</code> 分割，最后跟上 <code>/\x00</code>。</p>
 <p>多查看几个直播间以后，对于开头的 12 个字节，我们不难分析出前四个字节和消息长度有关，使用 Little Endian，中间四个字节和前四个字节相同，而最后四个字节是固定值 <code>0xb1020000</code>。</p>
 <p>上面的消息长度是 287 个字节，而 <code>0x0000011b = 283</code>，所以，长度编码的值实际上是整个消息的长度减去 4。</p>
 <p>这里设计其实挺奇怪的，长度信息比实际长度少了四个字节，同时开头又多了四个字节的冗余数据，怎么看怎么都像是设计失误，第二个四字节是多余的。</p>
