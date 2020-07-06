@@ -3023,8 +3023,8 @@ http_request_count(endpoint=&#34;/c&#34;) 3
 
             <p>很早之前就看过到关于 <a href="http://commits.io">commits.io</a> 的一个帖子，这个站点专门制作代码明信片。什么是代码明信片呢？如下图。</p>
 <p><img src="http://asset.cjting.cn/007FEWc7ly1g1f3o6zdtwj30sj0ee45m.jpg" alt=""></p>
-<p>背景是代码，然后中间印上指定的图案，就是一幅代码明信片了。看起来有点意思，将自己的得意作品做成一个代码明信片打印出来挂在办公室将是一个非常不错的装逼选择😉。</p>
-<p>当时我就在想，这东西挺有意思，有空自己做一个，当然，事情一多也就忘记了。最近，我又看到了一个帖子，<a href="http://www.east5th.co/blog/2017/02/13/build-your-own-code-poster-with-elixir/">Build your own code poster with elixir</a>，是说怎样用 Elixir 来制作代码明信片的。Elixir 是我最近正在研究的语言，不过我觉得它不适合拿来干这个，这种程序，拿 Go 做一个 CLI 最爽，编译好了就可以发放给亲朋好友体验了。说干就干，再不能拖延了。</p>
+<p>背景是代码，然后中间印上指定的图案，就是一幅代码明信片了。看起来有点意思，将自己的得意作品做成一个代码明信片打印出来挂在办公室将是一个非常不错的装饰选择 😉。</p>
+<p>当时我就在想，这东西挺有意思，有空自己做一个，当然，事情一多也就忘记了。最近，我又看到了一个帖子，<a href="http://www.east5th.co/blog/2017/02/13/build-your-own-code-poster-with-elixir/">Build your own code poster with elixir</a>，是说怎样用 Elixir 来制作代码明信片的。Elixir 是我最近正在研究的语言，不过我觉得它不适合拿来干这个，这种程序，拿 Go 做一个 CLI 最合适，编译好了就可以发放给亲朋好友体验了。说干就干，再不能拖延了。</p>
 <p>一个程序，无非是：输入、处理、输出。老话说的好，<strong>程序就是数据结构 + 算法</strong>。数据结构用来表示数据，算法用来处理数据。我们先来看看我们要开发的代码明信片程序的这三个方面分别是什么。</p>
 <h2 id="输入">输入</h2>
 <ul>
