@@ -6,10 +6,27 @@
     <description>Recent content in Posts on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 01 Jul 2020 23:47:32 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 16 Aug 2020 11:30:23 +0800</lastBuildDate>
     
 	<atom:link href="https://cjting.me/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Shell 启动类型探究 ── login &amp;&amp; interactive</title>
+      <link>https://cjting.me/2020/08/16/shell-init-type/</link>
+      <pubDate>Sun, 16 Aug 2020 11:30:23 +0800</pubDate>
+      
+      <guid>https://cjting.me/2020/08/16/shell-init-type/</guid>
+      <description>&lt;p&gt;Shell 对程序员来说是必不可少的生产力工具。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;$ figlet &amp;lt;&amp;lt;&amp;lt; &amp;#34;Hello Shell&amp;#34;
+ _   _      _ _         ____  _          _ _
+| | | | ___| | | ___   / ___|| |__   ___| | |
+| |_| |/ _ \ | |/ _ \  \___ \| &amp;#39;_ \ / _ \ | |
+|  _  |  __/ | | (_) |  ___) | | | |  __/ | |
+|_| |_|\___|_|_|\___/  |____/|_| |_|\___|_|_|
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
     
     <item>
       <title>斗鱼关注人数爬取 ── 字体反爬的攻与防</title>

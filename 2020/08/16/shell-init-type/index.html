@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+  <title>Shell 启动类型探究 ── login &amp;&amp; interactive - CJ Ting's Blog</title>
+  <meta name="author" content="CJ Ting">
+  <meta name="description" content="Shell 启动类型探究 ── login &amp;&amp; interactive">
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css">
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/notyf@3.1.0/notyf.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/notyf@3.1.0/notyf.min.css">
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/zoom-vanilla.js@2.0.6/css/zoom.css">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [["$", "$"]],
+    },
+  }
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-chtml.js"></script>
+  <script type="text/javascript">
+    window.PAGE = {
+      title: "Shell 启动类型探究 ── login \x26\x26 interactive",
+      section: "post",
+    }
+  </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
+  <link rel="stylesheet" href="/asset/main.css">
+</head>
+<body>
+  
+  <div class="post">
+    <header class="post__header" data-cover="http://asset.cjting.cn/FgNP1hv-An94wEaBmEuMraLR457-.jpg">
+      <a href="/">
+        HOME
+      </a>
+    </header>
+
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              Shell 启动类型探究 ── login &amp;&amp; interactive
+          </h1>
+
+          <div class="post__meta">
+            <div class="tags">
+              
+            </div>
+
+            <div class='date'>
+              2020.08.16
+            </div>
+          </div>
+
+          <div class="post__content">
+            <p>Shell 对程序员来说是必不可少的生产力工具。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">$ figlet &lt;&lt;&lt; &#34;Hello Shell&#34;
+ _   _      _ _         ____  _          _ _
+| | | | ___| | | ___   / ___|| |__   ___| | |
+| |_| |/ _ \ | |/ _ \  \___ \| &#39;_ \ / _ \ | |
+|  _  |  __/ | | (_) |  ___) | | | |  __/ | |
+|_| |_|\___|_|_|\___/  |____/|_| |_|\___|_|_|
+
+</code></pre></div><p>下面这条指令可以查看 Shell 中我们最常用的 10 条命令，大家可以试一试。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ <span style="color:#0086b3">history</span> | awk <span style="color:#d14">&#39;{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] &#34; &#34; CMD[a]/count*100 &#34;% &#34; a;}&#39;</span> | grep -v <span style="color:#d14">&#34;./&#34;</span> | column -c3 -s <span style="color:#d14">&#34; &#34;</span> -t | sort -nr | nl |  head -n10
+ <span style="color:#099">1</span>  <span style="color:#099">429</span>  16.6473%    ls
+ <span style="color:#099">2</span>  <span style="color:#099">235</span>  9.11913%    vim
+ <span style="color:#099">3</span>  <span style="color:#099">204</span>  7.91618%    gss
+ <span style="color:#099">4</span>  <span style="color:#099">186</span>  7.21769%    yarn
+ <span style="color:#099">5</span>  <span style="color:#099">169</span>  6.55801%    <span style="color:#0086b3">cd</span>
+ <span style="color:#099">6</span>  <span style="color:#099">86</span>   3.33721%    j
+ <span style="color:#099">7</span>  <span style="color:#099">75</span>   2.91036%    git
+ <span style="color:#099">8</span>  <span style="color:#099">64</span>   2.48351%    subl
+ <span style="color:#099">9</span>  <span style="color:#099">49</span>   1.90144%    rg
+<span style="color:#099">10</span>  <span style="color:#099">49</span>   1.90144%    glog
+</code></pre></div><p>没想到我最常用的是 <code>ls</code>，不过也挺合理的，毕竟做任何操作之前习惯性的 ls 一下。(我的 ls 实际上链接到了 <a href="https://github.com/ogham/exa">exa</a>)。</p>
+<p>关于 Shell 有太多的话题可以谈了：</p>
+<ul>
+<li>各种 Shell 的特性区别：Bash/Zsh/Fish/Csh&hellip;</li>
+<li>Shell 中的各种概念：Command/Function/Alias/Environment Variable/Built-in Command&hellip;</li>
+<li>怎样配置一个让大家都羡慕的提示符：<a href="https://github.com/denysdovhan/spaceship-prompt">spaceship-prompt</a>, <a href="https://github.com/b-ryan/powerline-shell">powerline-shell</a>&hellip;</li>
+<li>Shell 的编程特性：If/While/Variable/Array&hellip;</li>
+<li>各种极大提高生产力的工具：Oh My Zsh/Ripgrep/Exa/Htop&hellip;</li>
+<li>Windows 上的 Shell 配置：Windows Terminal/PowerShell/MSYS2/MinGW&hellip;</li>
+</ul>
+<p>这些，都不是这篇博客的主题 😉 这篇博客我想谈一个比较细节的话题：Shell 的启动类型。</p>
+<p>第一次遇到这个问题大约是在五年前，有一次去朋友家玩耍，朋友问了我一个问题：为什么他的脚本在执行时提示找不到 <code>node</code> 指令，而他在终端中输入 <code>node</code> 是没有问题的。</p>
+<p>当时我隐约感觉到是 Shell 启动类型不同导致的问题，但是具体的机制我说不上来。</p>
+<p>当然，最后我给了一个解决方案，虽然谈不上优雅但是管用，那就是使用绝对路径。五年后的今天，我们来看看，这个问题究竟是怎么回事。</p>
+<h2 id="什么是-shell">什么是 Shell？</h2>
+<p>首先，我们要厘清一个概念：什么是 Shell？</p>
+<p>很长一段时间内我不理解什么是 Shell，也搞不清 Shell 和 Terminal 的区别，只笼统地认为 iTerm 就是 Shell。</p>
+<p>我们先来看字典对 Shell 的释义：</p>
+<blockquote>
+<p>the hard outer covering of something, especially nuts, eggs, and some animals.</p>
+</blockquote>
+<p>从这个解释来看 Shell 指的是物体表面的外壳，在计算机中这其实是一个比喻，<strong>Shell 是 Kernel 的外壳</strong>。</p>
+<p><a href="https://unix.stackexchange.com/questions/11454/what-is-the-difference-between-a-builtin-command-and-one-that-is-not/11465#11465">这个链接</a> 对这个问题回答地很好，我摘录如下：</p>
+<blockquote>
+<p>A shell is a program that prints a prompt, reads a line of input from you, and then interprets it as one or more commands to manipulate files or run other programs. Before the invention of the GUI, the shell was the primary user interface of an OS.</p>
+</blockquote>
+<p>Shell 首先是一个程序，这个程序用来和 Kernel 进行交互，在 GUI 发明之前，Shell 是和 Kernel 交互的唯一方式。</p>
+<p>在 GUI 发明之后，某些交互转移到 GUI 完成，但是 Shell 依然保留了下来，因为对于高级计算机使用者，Shell 的灵活性和功能的强大性是 GUI 无法比拟的。</p>
+<h2 id="类型和场景">类型和场景</h2>
+<div class="post__tip">
+  <span class="post__tip__span">T</span>ip: 后续我们的讨论全部基于 <a href="https://manjaro.org/">Manjaro Linux</a> 和 <a href="https://www.gnu.org/software/bash/">Bash</a>。
+</div>
+<p>由于使用场景的不同，Shell 被分为两个类型：</p>
+<ul>
+<li><code>login</code> / <code>non-login</code></li>
+<li><code>interactive</code> / <code>non-interactive</code></li>
+</ul>
+<p>这两个类型影响的是 <strong>Shell 的启动文件 (startup files)</strong>。</p>
+<p><code>login</code> / <code>non-login</code> Shell 我们现在不太好感知了。如果把时间拨回到上个世纪还没有 GUI 的时候，就很好理解。</p>
+<p>当我们使用终端登录一台主机时，主机会为我们启动一个 Shell，由于是登录以后启动的，所以是 login Shell。</p>
+<p>login Shell 会初始化一些针对整个登录会话的任务，比如说，我希望我每次登录主机，就自动发一封邮件出去，那么这个任务就可以在 login Shell 的启动文件中完成。</p>
+<p>其他情况的 Shell 就是 non-login 的，比如我登录以后，输入 <code>bash</code> 再启动一个 Shell，那么这个 Shell 就是 non-login 的。</p>
+<p><code>interactive</code> / <code>non-interactive</code> 就比较好理解了。日常我们在终端中使用的就是 interactive Shell，它会输出提示符，会有 Job Control 等功能。</p>
+<p>而当我们执行 Shell 脚本时例如 <code>bash test.sh</code>，那么此时的 Shell 便是 non-interactive 的。</p>
+<p>使用如下的命令可以检测当前 Shell 是否是 interactive 的：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#000;font-weight:bold">[[</span> <span style="color:#008080">$-</span> <span style="color:#000;font-weight:bold">==</span> *i* <span style="color:#000;font-weight:bold">]]</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Interactive shell&#39;</span> <span style="color:#000;font-weight:bold">||</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Non-interactive shell&#39;</span>
+</code></pre></div><p>而这条命令可以检测 Shell 是否是 login 的：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#0086b3">shopt</span> -q login_shell <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Login shell&#39;</span> <span style="color:#000;font-weight:bold">||</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Non-login shell&#39;</span>
+</code></pre></div><p>检测是否是 login Shell 还有一个办法，那就是输入 <code>logout</code>，如果是 login Shell，效果相当于 <code>exit</code>，如果不是，会提示 <code>logout: not login shell</code>。</p>
+<h2 id="启动文件">启动文件</h2>
+<p>一般来说我们对 Bash 的配置都会放在 <code>~/.bashrc</code> 中，因为我们知道 Bash 在启动以后会 source 这个文件。但其实这并不一定，启动类型会影响启动文件。</p>
+<p>现在我们知道了 Shell 组合起来看有四种类型：</p>
+<ul>
+<li><code>login + interactive</code></li>
+<li><code>login + non-interactive</code></li>
+<li><code>non-login + interactive</code></li>
+<li><code>non-login + non-interactive</code></li>
+</ul>
+<p>那么它们的启动文件分别是什么？我们一个一个来实验。</p>
+<p>我们首先 SSH 到我们的 Manjaro 主机上，此时得到的 Shell 就是 <code>login + interactive</code> 的。</p>
+<p>实验方式为想办法启动特定类型的 Shell，使用 <code>strace</code> 追踪系统调用，通过系统调用分析 Shell 打开了哪些文件。</p>
+<p>首先测试第一种，<code>login + interactive</code>。</p>
+<p>SSH 登录以后，输入指令 <code>strace -f -e trace=file -o /tmp/login_interactive /bin/bash -l</code>。</p>
+<p><code>-l</code> 参数可以强制 Bash 变成 login Shell，默认情况下，已经登录后再使用 Bash 得到的是 non-login Shell。</p>
+<p>分析文件可以得出，<code>login + interactive</code> Shell 的启动文件如下：</p>
+<ul>
+<li><code>/etc/profile</code></li>
+<li><code>/etc/profile.d/...</code></li>
+<li><code>~/.bash_profile</code>, <code>~/.bash_login</code>, <code>~/.profile</code> 按顺序找到的第一个</li>
+</ul>
+<p>接下来是第二种，<code>login + non-interactive</code>。</p>
+<p>SSH 登录以后，随便编写一个脚本 <code>test.sh</code>，然后使用 <code>bash -l test.sh</code> 得到的就是 <code>login + non-interactive</code> 的 Shell。</p>
+<p>启动文件如下：</p>
+<ul>
+<li><code>/etc/profile</code></li>
+<li><code>/etc/profile.d/...</code></li>
+<li><code>~/.bash_profile</code>, <code>~/.bash_login</code>, <code>~/.profile</code> 按顺序找到的第一个</li>
+</ul>
+<p>可以发现，<code>login + non-interactive</code> 和 <code>login + interactive</code> 模式的启动文件是一模一样的。</p>
+<p>第三种情况，<code>non-login + interactive</code>。</p>
+<p>SSH 登录以后，输入 <code>bash</code> 再启动一个 Bash 就是 <code>non-login + interactive</code> 的。</p>
+<p>启动文件如下：</p>
+<ul>
+<li><code>/etc/bash.bashrc</code></li>
+<li><code>~/.bashrc</code></li>
+</ul>
+<p>最后一种情况，<code>non-login + non-interactive</code>，SSH 登录以后，运行 <code>bash test.sh</code> 得到的就是这种情况。</p>
+<p><strong>这种情况下，没有启动文件</strong>。但是，Bash 会查看一个特殊的环境变量 <code>BASH_ENV</code>，如果这个变量有值，会 source 这个变量指向的文件。</p>
+<p>所以总结一下，其实四种启动类型定义了三种启动文件，因为 <code>login + interactive</code> 和 <code>login + non-interactive</code> 是一样的。</p>
+<p>日常我们在终端中执行脚本，都是 <code>non-login + non-interactive</code> 这种情况，也就是没有任何启动文件，为什么没有出问题？这是因为所有的进程都会从父进程中继承环境变量，而对日常使用影响最大的 PATH 变量会被继承过来，所以一般不会出问题。</p>
+<p>除了上述的默认行为，我们也可以使用 Bash 的一些选项来调整启动文件，比如 <code>--rcfile</code>, <code>--noprofile</code>, <code>--norc</code>，以及使用 <code>-l</code> 和 <code>-i</code> 来调整 Bash 的启动类型。</p>
+<p>最后我们总结一下，可以得到这样一幅图。</p>
+<p><img src="http://asset.cjting.cn/Fp3wlzbJBjk9xBPbr-t8SHf9KTbb.png" alt=""></p>
+<p>是的，看起来很复杂，欢迎来到真实世界🙂。好在我们无需去记住这些细节，只要做到如果有一天遇到了问题，有一个清晰的排查方向就行了。</p>
+<p>日常使用中，对于 Bash 的配置就放在 <code>~/.bashrc</code> 中即可。<code>~/.bash_profile</code> 一般会含有 source <code>~/.bashrc</code> 的代码，所以不管 login 还是 non-login， <code>.bashrc</code> 文件都会被执行。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># Manjaro 默认的 ~/.bash_profile</span>
+<span style="color:#000;font-weight:bold">[[</span> -f ~/.bashrc <span style="color:#000;font-weight:bold">]]</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> . ~/.bashrc
+</code></pre></div><div class="post__tip">
+  <span class="post__tip__span">T</span>ip: 有好奇过 <code>rc</code> 后缀是什么意思吗？<a href="https://unix.stackexchange.com/questions/3467/what-does-rc-in-bashrc-stand-for">rc = run commands</a>
+</div>
+<p>再有一个需要注意的情况就是，常用 Shell 的地方比如 Crontab，以及在各种编程语言中调起的 Shell，比如 Python 的 <code>os.system</code> 以及 Node 的 <code>child_process.exec</code> 执行的都是 <code>non-login + non-interactive</code> 的 Shell，也就是什么启动文件都不会 source，只会继承环境变量。</p>
+<p>其实，这里还有一个细节，Crontab, Python, Node, Make 以及其他大部分使用 Shell 的程序，默认使用的 Shell 都是 <code>/bin/sh</code>。在大部分系统上，这个文件链接到了 /bin/bash。但是，如果 Bash 发现自己是以 <code>/bin/sh</code> 的身份启动的，也就是 <code>$0</code> 是 <code>/bin/sh</code> 的话，它的行为会发生改变，包括启动文件，会调整自己尽量和 sh(Bourne shell) 兼容。比如说，在 <code>non-login + non-interactive</code> 情况下它不会 source <code>$BASH_ENV</code>。</p>
+<p>我们以 Node 为例，新建一个文件 <code>echo 'hello from test.sh' &gt; test.sh</code>，然后设置 BASH_ENV 指向这个文件并启动 Node。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ <span style="color:#008080">BASH_ENV</span><span style="color:#000;font-weight:bold">=</span>test.sh node
+&gt; const <span style="color:#008080">c</span> <span style="color:#000;font-weight:bold">=</span> require<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;child_process&#34;</span><span style="color:#000;font-weight:bold">)</span>
+&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;echo hello&#34;</span><span style="color:#000;font-weight:bold">)</span>.toString<span style="color:#000;font-weight:bold">()</span>
+<span style="color:#d14">&#39;hello\n&#39;</span> <span style="color:#998;font-style:italic"># 可以发现 &#39;hello from test.sh&#39; 没有打印，也就是 BASH_ENV 指向的文件没有被 source</span>
+&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;echo hello&#34;</span>, <span style="color:#000;font-weight:bold">{</span>shell: <span style="color:#d14">&#34;/bin/bash&#34;</span><span style="color:#000;font-weight:bold">})</span>
+<span style="color:#d14">&#39;hello from test.sh\nhello\n&#39;</span> <span style="color:#998;font-style:italic"># 这次有了</span>
+&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;echo </span><span style="color:#008080">$0</span><span style="color:#d14">&#34;</span><span style="color:#000;font-weight:bold">)</span>.toString<span style="color:#000;font-weight:bold">()</span>
+<span style="color:#d14">&#39;/bin/sh\n&#39;</span> <span style="color:#998;font-style:italic"># 默认情况下执行的是 /bin/sh</span>
+</code></pre></div><h2 id="zsh">ZSH</h2>
+<p>我们个人开发电脑一般多使用 ZSH，毕竟配合 Oh-My-Zsh 以后实在是太好用了。</p>
+<p>ZSH 在启动文件方面和 Bash 有所不同，<a href="http://zsh.sourceforge.net/Intro/intro_3.html">Startup Files</a> 是 ZSH 官方的说明文档。通过这个非常简略的文档，我们可以知道 ZSH 相关的启动文件有 5 个：</p>
+<ul>
+<li><code>.zshenv</code></li>
+<li><code>.zprofile</code></li>
+<li><code>.zshrc</code></li>
+<li><code>.zlogin</code></li>
+<li><code>.zlogout</code></li>
+</ul>
+<p>这 5 个文件分别有系统级和用户级的区别，使用上面的方法，我们可以一一测试不同的启动类型会 source 什么样的启动文件，这里不再赘述了，直接贴出结果。</p>
+<pre><code>+----------------+-----------+-----------+------+
+|                |   Login   |Interactive|Script|
+|                |           |non-login  |      |
++----------------+-----------+-----------+------+
+|/etc/zshenv     |    1      |    1      |  1   |
++----------------+-----------+-----------+------+
+|~/.zshenv       |    2      |    2      |  2   |
++----------------+-----------+-----------+------+
+|/etc/zprofile   |    3      |           |      |
++----------------+-----------+-----------+------+
+|~/.zprofile     |    4      |           |      |
++----------------+-----------+-----------+------+
+|/etc/zshrc      |    5      |    3      |      |
++----------------+-----------+-----------+------+
+|~/.zshrc        |    6      |    4      |      |
++----------------+-----------+-----------+------+
+|/etc/zlogin     |    7      |           |      |
++----------------+-----------+-----------+------+
+|~/.zlogin       |    8      |           |      |
++----------------+-----------+-----------+------+
+|                |           |           |      |
++----------------+-----------+-----------+------+
+|                |           |           |      |
++----------------+-----------+-----------+------+
+|~/.zlogout      |    9      |           |      |
++----------------+-----------+-----------+------+
+|/etc/zlogout    |    10     |           |      |
++----------------+-----------+-----------+------+
+</code></pre><p>ZSH 和 Bash 一样，<code>login + interactive</code> 和 <code>login + non-interactive</code> 的启动文件是一样的，上表中归为 <code>Login</code>，<code>Script</code> 指的是 <code>non-login + non-interactive</code>。</p>
+<p>ZSH 和 Bash 非常不一样的一点就是不管什么情况下 ZSH 都会 source <code>.zshenv</code> 文件。这个相比 Bash 就是一个非常好的特性了，从文件名可以看出这个文件主要负责设置一些环境变量，比如 <code>PATH</code>, <code>LC_ALL</code>, <code>EDITOR</code>, <code>GOPATH</code>, <code>GOROOT</code>等等。这样在 Crontab 等环境中，就不会出现 command not found 的问题了。</p>
+<p>ZSH 这么多配置文件，具体该怎么用？什么样的配置放在什么样的文件中？<a href="https://unix.stackexchange.com/questions/71253/what-should-shouldnt-go-in-zshenv-zshrc-zlogin-zprofile-zlogout">这里</a> 是 StackExchange 中一个问答，非常的详细，可以作为参考。</p>
+<p>简单来说，在 <code>.zshenv</code> 文件中初始化各种环境变量，里面应该全部都是 <code>export NAME=VALUE</code> 这样的语句。</p>
+<p>在 <code>.zshrc</code> 文件中，初始化交互模式要用的东西，包括</p>
+<ul>
+<li>各种 function 定义</li>
+<li><code>setopt</code> 终端属性配置</li>
+<li>各种 alias 定义</li>
+<li>PS1 提示符配置</li>
+<li>命令补全脚本加载</li>
+<li>各种高亮和颜色配置，比如 zsh-syntax-highlighting</li>
+<li>快捷键设置</li>
+<li>autojump 等等</li>
+</ul>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://medium.com/@rajsek/zsh-bash-startup-files-loading-order-bashrc-zshrc-etc-e30045652f2e">Zsh/Bash startup files loading order</a></li>
+<li><a href="https://shreevatsa.wordpress.com/2008/03/30/zshbash-startup-files-loading-order-bashrc-zshrc-etc/">Zsh/Bash startup files loading order (.bashrc, .zshrc etc.)</a></li>
+<li><a href="https://github.com/0cjs/sedoc/blob/master/lang/bash/init.md">Bash initialization behaviour</a></li>
+</ul>
+          </div>
+
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/zoom-vanilla.js@2.0.6/dist/zoom-vanilla.min.js"></script>
+  <script src="/asset/main.js"></script>
+
+  
+  <script>
+    (function() {
+      var _hmt = _hmt || [];
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4f34ee3c85734c8235badd2b99b092a6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+  
+  <div style="display: none">
+    <script type="text/javascript" src="https://s23.cnzz.com/z_stat.php?id=1277776204&web_id=1277776204"></script>
+  </div>
+</body>
+</html>

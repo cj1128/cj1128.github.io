@@ -93,7 +93,7 @@
   &lt;<span style="color:#000080">style</span> <span style="color:#008080">type</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;text/css&#34;</span>&gt;
     @<span style="color:#000;font-weight:bold">font-face</span> {
       <span style="color:#000080">font-family</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000080">test</span><span style="color:#000;font-weight:bold">;</span>
-      <span style="color:#000080">src</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000080">url</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000080">mpepc5unpb</span>.<span style="color:#458;font-weight:bold">woff</span><span style="color:#000;font-weight:bold">)</span><span style="color:#000;font-weight:bold">;</span>
+      <span style="color:#000080">src</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000080">url</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000080">mpepc5unpb</span>.<span style="color:#458;font-weight:bold">woff</span><span style="color:#000;font-weight:bold">);</span>
     }
 
     <span style="color:#000080">div</span> {
@@ -153,7 +153,7 @@
 <li>寻找数据源</li>
 <li>根据数据源获取字体文件和假数据</li>
 <li>根据字体文件渲染图形</li>
-<li>使用 OCR 技术识别图形得到映射关系</li>
+<li>使用 OCR 识别图形得到映射关系</li>
 <li>根据映射关系和假数据得到真数据</li>
 </ul>
 <h3 id="数据源">数据源</h3>
@@ -196,7 +196,7 @@
 <p><img src="http://asset.cjting.cn/FuQwIkMoJdPyskwe1E_jFezsbBkk.png" alt=""></p>
 <p>虽然是二进制消息，但是可以看到消息主体都是可读的文本，很明显，斗鱼这里是自己实现了一个内部协议格式。</p>
 <p>开头 12 个字节暂时不清楚什么含义，然后紧跟着一段键值对数据，使用 <code>@=</code> 连接键和值，使用 <code>/</code> 分割，最后跟上 <code>/\x00</code>。</p>
-<p>多查看几个直播间以后，对于开头的 12 个字节，我们不难分析出前四个字节和消息长度有关，使用 Little Endian，中间四个字节和前四个字节相同，而最后四个字节是固定值 <code>0xb1020000</code>。</p>
+<p>多查看几个直播间以后，对于开头的 12 个字节，我们不难分析出前四个字节和消息长度有关，使用 Little Endian，中间四个字节和前四个字节相同，而最后四个字节是固定值 <code>0xb1 0x02 0x00 0x00</code>。</p>
 <p>上面的消息长度是 287 个字节，而 <code>0x0000011b = 283</code>，所以，长度编码的值实际上是整个消息的长度减去 4。</p>
 <p>这里设计其实挺奇怪的，长度信息比实际长度少了四个字节，同时开头又多了四个字节的冗余数据，怎么看怎么都像是设计失误，第二个四字节是多余的。</p>
 <div class="post__tip">
@@ -273,7 +273,7 @@ ws.on(<span style="color:#d14">&#34;message&#34;</span>, payload =&gt; {
   <span style="color:#000;font-weight:bold">return</span> md5Hash.update(payload).digest(<span style="color:#d14">&#34;hex&#34;</span>)
 }
 
-<span style="color:#998;font-style:italic">// 4-byte length, 4-byte length, 0xb102, 0x0000
+<span style="color:#998;font-style:italic">// 4-byte length, 4-byte length, 0xb1, 0x02, 0x00, 0x00
 </span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">const</span> getPayload <span style="color:#000;font-weight:bold">=</span> obj =&gt; {
   <span style="color:#000;font-weight:bold">const</span> arr <span style="color:#000;font-weight:bold">=</span> [<span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0xb1</span>, <span style="color:#099">0x02</span>, <span style="color:#099">0x00</span>, <span style="color:#099">0x00</span>]
 
@@ -321,33 +321,33 @@ ws.on(<span style="color:#d14">&#34;message&#34;</span>, payload =&gt; {
 <p>获取到字体 ID 和假数据以后，接下来我们要做的就是使用字体渲染一张图片，然后调用 OCR 工具识别图片。</p>
 <p>我们先使用字体 ID 将字体下载下来，字体的下载 URL 是固定的 <code>https://shark.douyucdn.cn/app/douyu/res/font/FONT_ID.woff</code>。</p>
 <p>怎样渲染字体到图片呢？这个问题方案有很多，上文中我们利用了浏览器，这里我选择使用 SDL。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;SDL2/SDL.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;SDL2/SDL_ttf.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;SDL2/SDL_image.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;SDL2/SDL.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;SDL2/SDL_ttf.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;SDL2/SDL_image.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
 <span style="color:#458;font-weight:bold">int</span>
 <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">void</span>)
 {
-  <span style="color:#000;font-weight:bold">if</span>(TTF_Init() <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) {
-    printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, TTF_GetError());
+  <span style="color:#000;font-weight:bold">if</span>(TTF_Init() <span style="color:#000;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) {
+    printf(<span style="color:#d14">&#34;error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, TTF_GetError());
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">1</span>;
   }
 
-  TTF_Font <span style="color:#000;font-weight:bold">*</span>font <span style="color:#000;font-weight:bold">=</span> TTF_OpenFont(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">test.woff</span><span style="color:#d14">&#34;</span>, <span style="color:#099">50</span>);
-  <span style="color:#000;font-weight:bold">if</span>(font <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">NULL</span>) {
-    printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, TTF_GetError());
+  TTF_Font <span style="color:#000;font-weight:bold">*</span>font <span style="color:#000;font-weight:bold">=</span> TTF_OpenFont(<span style="color:#d14">&#34;test.woff&#34;</span>, <span style="color:#099">50</span>);
+  <span style="color:#000;font-weight:bold">if</span>(font <span style="color:#000;font-weight:bold">==</span> <span style="color:#0086b3">NULL</span>) {
+    printf(<span style="color:#d14">&#34;error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, TTF_GetError());
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">1</span>;
   }
 
   SDL_Color black <span style="color:#000;font-weight:bold">=</span> { <span style="color:#099">0x00</span>, <span style="color:#099">0x00</span>, <span style="color:#099">0x00</span> };
-  SDL_Surface <span style="color:#000;font-weight:bold">*</span>surface <span style="color:#000;font-weight:bold">=</span> TTF_RenderText_Solid(font, <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">0123456789</span><span style="color:#d14">&#34;</span>, black);
-  <span style="color:#000;font-weight:bold">if</span>(surface <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">NULL</span>) {
-    printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, TTF_GetError());
+  SDL_Surface <span style="color:#000;font-weight:bold">*</span>surface <span style="color:#000;font-weight:bold">=</span> TTF_RenderText_Solid(font, <span style="color:#d14">&#34;0123456789&#34;</span>, black);
+  <span style="color:#000;font-weight:bold">if</span>(surface <span style="color:#000;font-weight:bold">==</span> <span style="color:#0086b3">NULL</span>) {
+    printf(<span style="color:#d14">&#34;error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, TTF_GetError());
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">1</span>;
   }
 
-  IMG_SavePNG(surface, <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">test.png</span><span style="color:#d14">&#34;</span>);
+  IMG_SavePNG(surface, <span style="color:#d14">&#34;test.png&#34;</span>);
   <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
 }
 </code></pre></div><p>SDL 渲染速度非常快，结果也很清楚，用来 OCR 应该足够了。</p>
@@ -474,25 +474,25 @@ Dumping <span style="color:#d14">&#39;gasp&#39;</span> table...
 Dumping <span style="color:#d14">&#39;GSUB&#39;</span> table...
 </code></pre></div><p>我们会发现目录下多了一个 <code>hack.subset.ttx</code> 文件，打开观察一下。</p>
 <p>很容易就可以发现，<code>cmap</code> 标签中定义了字符和图形的映射。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-xml" data-lang="xml"><span style="color:#000080">&lt;cmap</span><span style="color:#000080">&gt;</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-xml" data-lang="xml"><span style="color:#000080">&lt;cmap&gt;</span>
   <span style="color:#000080">&lt;tableVersion</span> <span style="color:#008080">version=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">/&gt;</span>
   <span style="color:#000080">&lt;cmap_format_4</span> <span style="color:#008080">platformID=</span><span style="color:#d14">&#34;0&#34;</span> <span style="color:#008080">platEncID=</span><span style="color:#d14">&#34;3&#34;</span> <span style="color:#008080">language=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x30&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;zero&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!--</span><span style="color:#998;font-style:italic"> DIGIT ZERO </span><span style="color:#998;font-style:italic">--&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x31&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;one&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!--</span><span style="color:#998;font-style:italic"> DIGIT ONE </span><span style="color:#998;font-style:italic">--&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x32&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;two&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!--</span><span style="color:#998;font-style:italic"> DIGIT TWO </span><span style="color:#998;font-style:italic">--&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x33&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;three&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!--</span><span style="color:#998;font-style:italic"> DIGIT THREE </span><span style="color:#998;font-style:italic">--&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x34&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;four&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!--</span><span style="color:#998;font-style:italic"> DIGIT FOUR </span><span style="color:#998;font-style:italic">--&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x35&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;five&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!--</span><span style="color:#998;font-style:italic"> DIGIT FIVE </span><span style="color:#998;font-style:italic">--&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x36&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;six&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!--</span><span style="color:#998;font-style:italic"> DIGIT SIX </span><span style="color:#998;font-style:italic">--&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x37&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;seven&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!--</span><span style="color:#998;font-style:italic"> DIGIT SEVEN </span><span style="color:#998;font-style:italic">--&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x38&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;eight&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!--</span><span style="color:#998;font-style:italic"> DIGIT EIGHT </span><span style="color:#998;font-style:italic">--&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x39&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;nine&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!--</span><span style="color:#998;font-style:italic"> DIGIT NINE </span><span style="color:#998;font-style:italic">--&gt;</span>
+    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x30&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;zero&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT ZERO --&gt;</span>
+    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x31&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;one&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT ONE --&gt;</span>
+    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x32&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;two&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT TWO --&gt;</span>
+    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x33&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;three&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT THREE --&gt;</span>
+    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x34&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;four&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT FOUR --&gt;</span>
+    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x35&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;five&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT FIVE --&gt;</span>
+    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x36&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;six&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT SIX --&gt;</span>
+    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x37&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;seven&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT SEVEN --&gt;</span>
+    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x38&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;eight&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT EIGHT --&gt;</span>
+    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x39&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;nine&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT NINE --&gt;</span>
   <span style="color:#000080">&lt;/cmap_format_4&gt;</span>
   ...
 <span style="color:#000080">&lt;/cmap&gt;</span>
 </code></pre></div><p><code>0x30</code> 也就是字符 0 对应 <code>name=&quot;zero&quot;</code> 的 <code>TTGlyph</code>，TTGlyph 中定义了渲染要用的数据，也就是一些坐标。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-xml" data-lang="xml"><span style="color:#000080">&lt;TTGlyph</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;zero&#34;</span> <span style="color:#008080">xMin=</span><span style="color:#d14">&#34;123&#34;</span> <span style="color:#008080">yMin=</span><span style="color:#d14">&#34;-29&#34;</span> <span style="color:#008080">xMax=</span><span style="color:#d14">&#34;1110&#34;</span> <span style="color:#008080">yMax=</span><span style="color:#d14">&#34;1520&#34;</span><span style="color:#000080">&gt;</span>
-  <span style="color:#000080">&lt;contour</span><span style="color:#000080">&gt;</span>
+  <span style="color:#000080">&lt;contour&gt;</span>
     <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;617&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;-29&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;1&#34;</span><span style="color:#000080">/&gt;</span>
     <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;369&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;-29&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">/&gt;</span>
     <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;246&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;165&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;1&#34;</span><span style="color:#000080">/&gt;</span>
