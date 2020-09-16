@@ -151,7 +151,7 @@ A 0 B F        Z X C V
 <p>输入方面，使用 SDL 的事件我们可以很轻松的获取到键盘信息。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c">SDL_Event e;
 <span style="color:#000;font-weight:bold">while</span>(SDL_PollEvent(<span style="color:#000;font-weight:bold">&amp;</span>e)) {
-  <span style="color:#000;font-weight:bold">if</span>(e.type <span style="color:#000;font-weight:bold">==</span> SDL_KEYDOWN) {
+  <span style="color:#000;font-weight:bold">if</span>(e.type <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> SDL_KEYDOWN) {
     <span style="color:#000;font-weight:bold">switch</span>(e.key.keysym.sym) {
       <span style="color:#000;font-weight:bold">case</span> <span style="color:#900;font-weight:bold">SDLK_1</span>:
         ...
@@ -165,8 +165,8 @@ SDL_LockTexture(screenTexture, <span style="color:#0086b3">NULL</span>, <span st
 
 u32(<span style="color:#000;font-weight:bold">*</span>pixels)[pitch <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">4</span>] <span style="color:#000;font-weight:bold">=</span> rawPixels;
 
-<span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> y <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; y <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">64</span>; y<span style="color:#000;font-weight:bold">++</span>) {
-  <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> x <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; x <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">32</span>; x<span style="color:#000;font-weight:bold">++</span>) {
+<span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> y <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; y <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">64</span>; y<span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">+</span>) {
+  <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> x <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; x <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">32</span>; x<span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">+</span>) {
     pixels[y][x] <span style="color:#000;font-weight:bold">=</span>  ...
   }
 }
@@ -175,7 +175,7 @@ SDL_UnlockTexture(screenTexture);
 </code></pre></div><p>声音方面，可以通过 <code>SDL_QueueAudio</code> 函数来播放一段声音。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#458;font-weight:bold">float</span> <span style="color:#000;font-weight:bold">*</span>buf <span style="color:#000;font-weight:bold">=</span> malloc(bufLength)
 
-<span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> sampleCount; i<span style="color:#000;font-weight:bold">++</span>) {
+<span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> sampleCount; i<span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">+</span>) {
   buf[i] <span style="color:#000;font-weight:bold">=</span> ...
 }
 

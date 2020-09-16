@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+  <title>CS107e: 树莓派，ARM 和操作系统 - CJ Ting's Blog</title>
+  <meta name="author" content="CJ Ting">
+  <meta name="description" content="CS107e: 树莓派，ARM 和操作系统">
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css">
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/notyf@3.1.0/notyf.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/notyf@3.1.0/notyf.min.css">
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/zoom-vanilla.js@2.0.6/css/zoom.css">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [["$", "$"]],
+    },
+  }
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-chtml.js"></script>
+  <script type="text/javascript">
+    window.PAGE = {
+      title: "CS107e: 树莓派，ARM 和操作系统",
+      section: "post",
+    }
+  </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
+  <link rel="stylesheet" href="/asset/main.css">
+</head>
+<body>
+  
+  <div class="post">
+    <header class="post__header" data-cover="http://asset.cjting.cn/Fi3BVvyRelkPNZ-GdNYw1bAcobCK.jpg">
+      <a href="/">
+        HOME
+      </a>
+    </header>
+
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              CS107e: 树莓派，ARM 和操作系统
+          </h1>
+
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">cs107e</span>
+              
+                <span class="tag">os</span>
+              
+                <span class="tag">raspberrypi</span>
+              
+            </div>
+
+            <div class='date'>
+              2020.09.11
+            </div>
+          </div>
+
+          <div class="post__content">
+            <p><a href="http://cs107e.github.io/">CS107e</a> 全称为 <em>CS107e: Computer Systems from the Ground Up</em>，是斯坦福大学的一门计算机课程，也是我目前为止发现的最好的关于硬件、底层和 C 的一门课程。</p>
+<p>在课程学习过程中，我们会一步一步地从头开始使用 C 为树莓派开发一个操作系统核心。</p>
+<p>根据官方的介绍，这门课程主要学习目标有两个：</p>
+<ol>
+<li>To understand how computers represent information, execute programs, and control peripherals. 理解计算机是怎样存储信息，执行程序以及控制外围设备。</li>
+<li>To master command-line programming tools and the C programming language. 掌握命令行编程工具和 C 语言。</li>
+</ol>
+<p>覆盖如下的知识点：</p>
+<ul>
+<li>the ARM arcitecture ARM 体系结构</li>
+<li>assembly language and machine-level code 汇编语言和机器代码</li>
+<li>the C programming language C 语言</li>
+<li>compilation, linking and loading 编译、链接和装载（实际上没有真正的“装载“）</li>
+<li>debugging 调试</li>
+<li>memory organization and management 内存组织和管理</li>
+<li>controlling peripherals: GPIO, graphics, sound, and keyboards 控制外设：GPIO, 显示屏，声音和键盘（其实没有关于声音的内容，其他都有涉及）</li>
+</ul>
+<p>如果你和我一样，对<strong>底层十分感兴趣，想知道计算机在最底层到底在发生什么</strong>，那么，不要犹豫，这门课程是你下个假期最好的礼物🎁。</p>
+<p>从上大学开始，我就对底层十分感兴趣，事实上我对所有事物最本质的原理都很感兴趣😉。</p>
+<p>我在初中的时候就确定了自己以后的专业方向，计算机科学或者是生命科学。这两个在当时的我看来都是非常神奇的领域，我想不明白它们是怎么回事。为什么计算机可以播放声音显示画面？上网又是怎么做到的？为什么小小的细胞有那么复杂的结构？细胞之间为什么可以如此紧密地协调配合？</p>
+<p>小学六年级的时候我拥有了第一台自己的台式机，虽然也用来玩玩游戏（永远的英雄传说空之轨迹，当年带给了我巨大的震撼），但是更多的时间都是花在捣腾这台机器上了。那个时候最喜欢做的事情有两件：</p>
+<p>第一是装机。当时一窍不通，只知道 Windows 会越用越卡，隔一段时间就要装机。一开始是家长找人过来装，我在旁边观摩。慢慢地总结了一套规律：放入光盘，开机按住 DELETE 键，进入一个页面，然后调整什么 BOOT 为 CDROM，然后保存退出就进入了一个引导页面，选择安装就行了。</p>
+<p>好像也不是很难嘛，虽然我完全不懂这里面每个步骤是在干嘛，但我感觉自己已经掌握了这项重要的技巧🤓。于是自己买盗版碟回来实验，居然也成功了。从此一度成为班上的装机小子，逢人便问：电脑卡不卡？要不要我帮你装个机？一台机器，装机前卡顿不堪，装机后丝般顺滑，我感觉自己就是一个救死扶伤的电脑大夫😎。</p>
+<p>当然，毕竟我没有真才实学，一度经常翻车。有时候找不到 BOOT 选项，有时候光盘放进去了没反应，还有的时候装到一半卡住了。遇到这种情况我都会这样解释：你家这个电脑不太行，我帮谁谁谁装都没有问题，我建议你找个人过来把电脑修修😂。然后我就溜之大吉了，当然心里是非常愧疚的，毕竟把人家电脑装坏了，人家没法用了。</p>
+<p>那个时候我就特别想学真正的”装机功夫“，装机到底怎么回事？为什么会出现那些问题？是不是光盘不太对？什么样的光盘才是比较对的？年少的我心中充满了疑问。后来听说我一个同学的朋友是装机高手，家里是电脑城的背景，还参加过什么计算机比赛。我心想，机会来了，是时候拜师学艺了。为此求我同学引荐并且花了 50 元人民币（对于当时的我来说是一笔巨资了）作为拜师费，在一个夏日的午后去师傅家里学手艺。结果让我非常失望，事实证明师傅也没什么真才实学，说的都是我会的那一套，完全解答不了我的疑惑。人生第一次”知识付费“就这么被坑了。</p>
+<p>第二是学习各种“黑客技巧”。当时在书城买了很多书，什么《黑客攻防大全》，什么《QQ盗号宝典》，现如今有几本还保留在我的书柜上。对着书上的链接下载各种乱七八糟的软件然后准备“盗号”（我估计电脑说不定就是这么卡的）。一本书翻下来，除了记住了几个名词，什么 192.168.0.1，什么端口，什么 IP，其他什么也没学到（学到就出鬼了，什么基础知识都没有）。现在想想，倒也庆幸，要是我当时坚持不放弃，万一运气好在网上遇到了某个师傅带带我不小心学成了，现在估计也是刑满释放人员了😂。</p>
+<p>总之，这台台式机影响了我的一生，让我对计算机产生了浓厚的兴趣，可以说是为之着迷。</p>
+<p>大学的时候虽然也学过一些底层相关的课，比如汇编和操作系统原理，但是和硬件都离的很远，最多是在模拟器里运行，始终是隔了一层面纱。</p>
+<p>CS107e 让我如此喜欢的原因就在于，它把<strong>计算机的本质彻底地暴露在你面前，所有的抽象全部拿掉，你接触的就是最原始的硬件</strong>。没有操作系统，没有各种库，没有键盘，没有鼠标，没有显示器，一切从头开始。</p>
+<p>因为是真正的硬件，我们需要自己动手去绕线，去组装电路，这种动手的乐趣和软硬件的结合，对我来说简直太有趣了。</p>
+<p>从控制树莓派点亮一盏灯：</p>
+<p><img src="http://asset.cjting.cn/FrDheJ0DE-ONw_LuXblotUFw00Fa.gif" alt=""></p>
+<p>到加上一个按钮实现开关：</p>
+<p><img src="http://asset.cjting.cn/FnrNK1ne17DRpaIZSAONWcebU8Mc.gif" alt=""></p>
+<p>再到实现自己的 Larson Scanner：</p>
+<video controls autoplay muted loop>
+  <source src="http://asset.cjting.cn/Fmr8kaOBr8mmrgf9JPTDHzrS_wrL.mp4" type="video/mp4">
+</video>
+<p>从实现一个简单的时钟：</p>
+<video controls autoplay muted loop>
+  <source src="http://asset.cjting.cn/Fq0dcHfCKl_9H3wLItvE3I1Y4aGV.mp4" type="video/mp4">
+</video>
+<p>到驱动 PS2 键盘：</p>
+<p><img src="http://asset.cjting.cn/FruyRlglkpHynmKRfcM9XTtiLENX.jpeg" alt=""></p>
+<p>从绘制简单的图形：</p>
+<p><img src="http://asset.cjting.cn/Fr4g9O2qc0tTQF-HRalT_oyXUm58.jpeg" alt=""></p>
+<p>到实现完整的 Shell：</p>
+<p><img src="http://asset.cjting.cn/FoYnBc9WqXMtOhaQWYmfDzd1k3Se.jpeg" alt=""></p>
+<p>每一步都充满了乐趣和挑战。</p>
+<p><a href="https://github.com/cj1128/cs107e-review">cs107e-review</a> 仓库是我的学习笔记，这门课程前后大概花了一年时间才学完。所有的问题、作业和扩展作业，我都给出了自己的解答，不一定完全正确，但是可以给需要的人参考。</p>
+<p>笔记是用英文写的，因为想锻炼一下自己的英文写作。这门课程在不停的更新，我学习的版本是 Winter 2020。考虑到对照笔记去看最新的课程，可能会对应不上，所以我把 Winter 2020 版本的课程归档了一份，放在了 <a href="https://cs107e.cjting.me">这里</a>。</p>
+<p>课程用到的树莓派有点老旧，是 2014 年的 Model A+ v1.1，目前已经停产了。但是如果要学习课程一定要买这个型号，否则很多代码都会无法运行。可以试着在二手市场上找找，其他的电子元件都是常用元件，很好购买。</p>
+<p>最终的 Final Project 我还没有开始，目前计划是把课程中最后的 Shell 以及相关所有的代码全部迁移到树莓派比较新的型号 Model 3B 上。Model A+ v1.1 和 Model 3B 在底层有很多不一致，需要查阅手册一点一点去调试，还是很有挑战的。</p>
+<p>最后，简单总结一下在这门课程中我学到的知识。</p>
+<p>首先是树莓派和电路基本知识。</p>
+<ul>
+<li>树莓派的每个 <a href="https://pinout.xyz/">引脚</a> 是干什么的</li>
+<li>GPIO 是什么，UART 又是什么</li>
+<li>怎样使用树莓派，电阻，杜邦线，晶体管，开关来搭建电路</li>
+<li>树莓派的外设是怎样被驱动的</li>
+<li>阅读 <a href="https://www.raspberrypi.org/app/uploads/2012/02/BCM2835-ARM-Peripherals.pdf">BCM2835 ARM Peripherals</a>（这本手册有很多错误 😂 一定要注意对照勘误）</li>
+<li>开关怎样接入，读取开关的值有什么问题需要注意</li>
+<li>什么是 Pull-up/Pull-down 电阻，为什么需要他们</li>
+<li>输出电压不变的情况下，怎样控制 LED 的亮度</li>
+</ul>
+<p>然后就是 ARM 体系结构。</p>
+<ul>
+<li>ARM 指令集的设计，认真看这本手册会受益匪浅 <a href="http://cs107e.github.io/readings/armv6.pdf">ARM Architecture
+Reference Manual</a></li>
+<li>函数调用在 CPU 级别是怎样实现的，调用完了怎样返回</li>
+<li>ARM 怎样巧妙地编码立即数</li>
+<li>ARM 指令集相比于 X86 的一些特色，比如所有的指令都可以带条件</li>
+<li>CPSR 的使用，Carry 和 Overflow 标志分别代表什么意思，在什么场景下有意义</li>
+<li>ARM 汇编阅读和编写</li>
+<li>在 PC 上运行 ARM 模拟器调试 ARM 汇编</li>
+</ul>
+<p>接下来是 C 语言。大学时我很不喜欢 C 语言，觉得很难用。但是现在我很喜欢，学习 CS107e 的过程中，从汇编切换到 C 的时候，感觉 C 真是救世主。我喜欢 C 的控制感，对于有经验的 C 工程师来说，每写一行 C 都知道背后的汇编会是什么。</p>
+<ul>
+<li>C 的工具链安装，arm-none-eabi-gcc 中的 <code>arm-none-eabi</code> 是什么意思</li>
+<li>编译，链接和入口函数</li>
+<li>ELF 文件和反汇编</li>
+<li>怎样从 ELF 文件得到裸的 binary 用于树莓派执行</li>
+<li><code>bss</code> 段是用来做什么的，什么样的内容会放入 <code>bss</code> 段中</li>
+<li>链接是怎样的一个过程，什么是链接脚本，什么时候需要自己写链接脚本</li>
+<li>链接过程中不关心函数、变量，只关心符号，什么是符号，符号有哪些类型</li>
+<li>ABI 到底是什么</li>
+<li>Stack Trace 在底层是怎样实现的，如何做到从任意指令获取所在的函数名，然后再获取父函数名</li>
+<li>怎样实现自己的 <code>printf</code> 和 <code>malloc</code></li>
+<li>怎样使用 GDB 来模拟 ARM 环境进行调试</li>
+<li>怎样分析优化 C 程序，在树莓派这样一个机能很弱的平台上，代码的效率至关重要</li>
+</ul>
+<p>最后是一些硬件结合的相关知识。</p>
+<ul>
+<li>怎样使用 XMODEM 协议实现 UART 串口通信</li>
+<li>PS2 接口的四根线分别有什么作用，数据是怎样发送的</li>
+<li>扫描码是什么，怎样读取 PS2 键盘发送过来的扫描码</li>
+<li>HDMI 显示器要怎样驱动，framebuffer 是什么</li>
+<li>如何实现基本的绘图函数：画线，画三角形，画矩形，Bresenham&rsquo;s Line Algorithm</li>
+</ul>
+<p>学习这门课不需要太多的知识准备，只要能耐得下心看各种手册和文档。厚厚的手册往往让人望而生畏，但是这是获取知识最高效的途径，很多细节只能自己看手册去体会。</p>
+<p>我至今没弄明白在函数调用的 <code>bl</code> 指令时发生中断，CPU 会向 <code>lr</code> 寄存器写入什么值？为什么在中断中 <code>lr - 4</code> 始终能返回到正确位置？这些细节问题是没法 Google 到的，只能自己某天在手册中看到了然后幡然领悟。</p>
+<p>最后，向斯坦福大学 CS107e 课程小组致以深深的谢意。</p>
+          </div>
+
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/zoom-vanilla.js@2.0.6/dist/zoom-vanilla.min.js"></script>
+  <script src="/asset/main.js"></script>
+
+  
+  <script>
+    (function() {
+      var _hmt = _hmt || [];
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4f34ee3c85734c8235badd2b99b092a6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+  
+  <div style="display: none">
+    <script type="text/javascript" src="https://s23.cnzz.com/z_stat.php?id=1277776204&web_id=1277776204"></script>
+  </div>
+</body>
+</html>

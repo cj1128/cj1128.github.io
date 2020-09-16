@@ -1,4 +1,20 @@
 @font-face {
+  font-family: 'Roboto Mono No Space';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Mono'), local('RobotoMono-Regular'), url("/font/Roboto-Mono_400_normal.woff") format('woff');
+  unicode-range: U+0021-007E;
+}
+
+@font-face {
+  font-family: 'Roboto Mono No Space';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Roboto Mono Bold'), local('RobotoMono-Bold'), url("/font/Roboto-Mono_700_normal.woff") format('woff');
+  unicode-range: U+0021-007E;
+}
+
+@font-face {
   font-family: 'Roboto Mono';
   font-style: normal;
   font-weight: 400;
@@ -57,7 +73,7 @@
 html {
   color: #666;
   font-size: 16px;
-  font-family: "Roboto Mono", "PingFang SC", Tahoma, Arial, "Microsoft YaHei", "微软雅黑", STXihei, "华文细黑" , SimSun, "宋体", Heiti, "黑体", sans-serif;
+  font-family: "Roboto Mono No Space", "PingFang SC", Tahoma, Arial, "Microsoft YaHei", "微软雅黑", STXihei, "华文细黑" , SimSun, "宋体", Heiti, "黑体", sans-serif;
   padding: 0 1px;
 }
 
@@ -263,6 +279,11 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .post__content img {
+  max-width: 100%;
+  display: block;
+  margin: auto;
+}
+.post__content video {
   max-width: 100%;
   display: block;
   margin: auto;

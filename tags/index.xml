@@ -6,10 +6,37 @@
     <description>Recent content in Tags on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 01 Jul 2020 23:47:32 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 11 Sep 2020 08:15:31 +0800</lastBuildDate>
     
 	<atom:link href="https://cjting.me/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>cs107e</title>
+      <link>https://cjting.me/tags/cs107e/</link>
+      <pubDate>Fri, 11 Sep 2020 08:15:31 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/cs107e/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>os</title>
+      <link>https://cjting.me/tags/os/</link>
+      <pubDate>Fri, 11 Sep 2020 08:15:31 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/os/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>raspberrypi</title>
+      <link>https://cjting.me/tags/raspberrypi/</link>
+      <pubDate>Fri, 11 Sep 2020 08:15:31 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/raspberrypi/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>js crawler</title>
@@ -17,15 +44,6 @@
       <pubDate>Wed, 01 Jul 2020 23:47:32 +0800</pubDate>
       
       <guid>https://cjting.me/tags/js-crawler/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>c</title>
-      <link>https://cjting.me/tags/c/</link>
-      <pubDate>Sun, 07 Jun 2020 17:17:58 +0800</pubDate>
-      
-      <guid>https://cjting.me/tags/c/</guid>
       <description></description>
     </item>
     
@@ -156,15 +174,6 @@
     </item>
     
     <item>
-      <title>go</title>
-      <link>https://cjting.me/tags/go/</link>
-      <pubDate>Sun, 04 Jun 2017 15:46:33 +0800</pubDate>
-      
-      <guid>https://cjting.me/tags/go/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>golang</title>
       <link>https://cjting.me/tags/golang/</link>
       <pubDate>Sun, 04 Jun 2017 15:46:33 +0800</pubDate>
@@ -242,6 +251,15 @@
       <pubDate>Sat, 18 Feb 2017 00:00:00 +0800</pubDate>
       
       <guid>https://cjting.me/tags/codeposter/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>go</title>
+      <link>https://cjting.me/tags/go/</link>
+      <pubDate>Sat, 18 Feb 2017 00:00:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/go/</guid>
       <description></description>
     </item>
     
@@ -449,6 +467,15 @@
       <pubDate>Sun, 17 Jan 2016 00:00:00 +0800</pubDate>
       
       <guid>https://cjting.me/tags/curry/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>c</title>
+      <link>https://cjting.me/tags/c/</link>
+      <pubDate>Tue, 16 Jun 2015 00:00:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/c/</guid>
       <description></description>
     </item>
     

@@ -6,10 +6,25 @@
     <description>Recent content in Posts on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 16 Aug 2020 11:30:23 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 11 Sep 2020 08:15:31 +0800</lastBuildDate>
     
 	<atom:link href="https://cjting.me/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>CS107e: 树莓派，ARM 和操作系统</title>
+      <link>https://cjting.me/2020/09/11/cs107e-review/</link>
+      <pubDate>Fri, 11 Sep 2020 08:15:31 +0800</pubDate>
+      
+      <guid>https://cjting.me/2020/09/11/cs107e-review/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://cs107e.github.io/&#34;&gt;CS107e&lt;/a&gt; 全称为 &lt;em&gt;CS107e: Computer Systems from the Ground Up&lt;/em&gt;，是斯坦福大学的一门计算机课程，也是我目前为止发现的最好的关于硬件、底层和 C 的一门课程。&lt;/p&gt;
+&lt;p&gt;在课程学习过程中，我们会一步一步地从头开始使用 C 为树莓派开发一个操作系统核心。&lt;/p&gt;
+&lt;p&gt;根据官方的介绍，这门课程主要学习目标有两个：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;To understand how computers represent information, execute programs, and control peripherals. 理解计算机是怎样存储信息，执行程序以及控制外围设备。&lt;/li&gt;
+&lt;li&gt;To master command-line programming tools and the C programming language. 掌握命令行编程工具和 C 语言。&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
     
     <item>
       <title>Shell 启动类型探究 ── login &amp;&amp; interactive</title>
