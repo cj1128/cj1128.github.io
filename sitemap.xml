@@ -3,8 +3,28 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://cjting.me/tags/bittorrent-bt-deno/</loc>
+    <lastmod>2020-10-31T23:30:48+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://cjting.me/</loc>
-    <lastmod>2020-09-11T08:15:31+08:00</lastmod>
+    <lastmod>2020-10-31T23:30:48+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/post/</loc>
+    <lastmod>2020-10-31T23:30:48+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/tags/</loc>
+    <lastmod>2020-10-31T23:30:48+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/2020/10/31/tinytorrent-a-deno-bt-downloader/</loc>
+    <lastmod>2020-10-31T23:30:48+08:00</lastmod>
   </url>
   
   <url>
@@ -23,17 +43,7 @@
   </url>
   
   <url>
-    <loc>https://cjting.me/post/</loc>
-    <lastmod>2020-09-11T08:15:31+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://cjting.me/tags/raspberrypi/</loc>
-    <lastmod>2020-09-11T08:15:31+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://cjting.me/tags/</loc>
     <lastmod>2020-09-11T08:15:31+08:00</lastmod>
   </url>
   

@@ -74,6 +74,30 @@
     
     
       <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/2018/07/22/js-and-unicode/">
+          JavaScript 与 Unicode
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>字符串是任何一个编程语言中的重要概念，同时也是一个非常复杂的问题。</p>
+<p>日常编码中可能并不一定能见到它的复杂性，下面是几个字符串操作，使用你最熟悉的编程语言，看看结果如何。</p>
+<ul>
+<li>逆转字符串 <code>&quot;noël&quot;</code>，正确结果应该是 <code>&quot;lëon&quot;</code></li>
+<li>获取字符串 <code>&quot;noël&quot;</code> 前三个字符，正确结果应该是 <code>&quot;noë&quot;</code></li>
+<li>获取字符串 <code>&quot;😸😾&quot;</code> 的长度，正确答案应该是 2</li>
+<li>字符串 <code>&quot;noël&quot;</code> 和字符串 <code>&quot;noël&quot;</code> 规整化以后应该相等（他们看起来一样，但是内部表示不一样，一个 6 字节，一个 5 字节，这里涉及到 Unicode 的规整化）</li>
+</ul>
+<p>对于大部分编程语言，包括 Ruby，Python，JS，C#，Java 等，上面的问题都无法全部返回正确结果（但是，拥有超强 Unicode 支持的 <a href="https://elixir-lang.org/">Elixir</a> 可以）。</p>
+        </div>
+
+        <div class="index__item__meta">
+          <div>
+            2018.07.22
+          </div>
+        </div>
+      </div>
+    
+      <div class="index__item">
         <a class="index__item__title hvr-underline-from-left" href="/2018/05/01/dns-101/">
           DNS 101
         </a>
@@ -239,28 +263,6 @@ Regenerating: <span style="color:#099">1</span> file<span style="color:#000;font
         <div class="index__item__meta">
           <div>
             2016.11.07
-          </div>
-        </div>
-      </div>
-    
-      <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/2016/10/21/build-log-system-with-elkb/">
-          从零开始搭建一个 ELKB 日志收集系统
-        </a>
-
-        <div class="index__item__content post__content">
-          <p>当今的软件开发 <strong>多核</strong> 以及 <strong>分布</strong> 已经成为了常态，基本上稍大型的应用都是多台机器分布式部署。分布式在提高性能的同时也带来了很多问题，今天我们只讨论一点，那就是如何处理多台机器线上系统的日志。</p>
-<p>以我司的某个应用 T 为例，部署在了百度云 5 台机子上，其中一台拥有公网 IP，使用了百度云提供的负载均衡服务。每次想要在日志中检索某个关键字时，基本步骤如下：</p>
-<ul>
-<li>打开五个 SSH，登陆拥有公网 IP 的那台机器</li>
-<li>在另外四个 SSH 中分别登陆其他的内网机器</li>
-<li>对日志文件进行检索</li>
-</ul>
-        </div>
-
-        <div class="index__item__meta">
-          <div>
-            2016.10.21
           </div>
         </div>
       </div>

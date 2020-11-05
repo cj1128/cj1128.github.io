@@ -74,6 +74,27 @@
     
     
       <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/2020/10/31/tinytorrent-a-deno-bt-downloader/">
+          tinyTorrent: 从头写一个 Deno 的 BitTorrent 下载器
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>BitTorrent 想必大家应该都不陌生，中文名叫做“种子”。</p>
+<p>“种子”到底是什么？我一直不太清楚。在写这个项目之前，我对“种子”的认识停留在使用层面。</p>
+<p>当我想找一个资源的时候，我会搜索 <code>xxx 种子</code>，一般会在一些非常不知名的小网站里面获取到以 <code>.torrent</code> 结尾的种子文件，然后使用迅雷或者 uTorrent 这样的下载器来下载。</p>
+<p>如果迅雷有一点速度，哪怕几 kb，那么大概率我充个会员就搞定了。这个软件就是这么的恶心，不用有时候又没办法，像极了人生。</p>
+<p>其他下载器比如 uTorrent 的话就一切随缘了，有些资源非常快，有些资源非常慢，有些一开始慢后来快。</p>
+<p>这些问题是怎么回事？有没有改进的办法？在读 Jesse Li 的 <a href="https://blog.jse.li/posts/torrent/">Building a BitTorrent client from the ground up in Go</a> 之前，我从没想过。</p>
+        </div>
+
+        <div class="index__item__meta">
+          <div>
+            2020.10.31
+          </div>
+        </div>
+      </div>
+    
+      <div class="index__item">
         <a class="index__item__title hvr-underline-from-left" href="/2020/09/11/cs107e-review/">
           CS107e: 树莓派，ARM 和操作系统
         </a>
@@ -259,30 +280,6 @@
         <div class="index__item__meta">
           <div>
             2018.08.11
-          </div>
-        </div>
-      </div>
-    
-      <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/2018/07/22/js-and-unicode/">
-          JavaScript 与 Unicode
-        </a>
-
-        <div class="index__item__content post__content">
-          <p>字符串是任何一个编程语言中的重要概念，同时也是一个非常复杂的问题。</p>
-<p>日常编码中可能并不一定能见到它的复杂性，下面是几个字符串操作，使用你最熟悉的编程语言，看看结果如何。</p>
-<ul>
-<li>逆转字符串 <code>&quot;noël&quot;</code>，正确结果应该是 <code>&quot;lëon&quot;</code></li>
-<li>获取字符串 <code>&quot;noël&quot;</code> 前三个字符，正确结果应该是 <code>&quot;noë&quot;</code></li>
-<li>获取字符串 <code>&quot;😸😾&quot;</code> 的长度，正确答案应该是 2</li>
-<li>字符串 <code>&quot;noël&quot;</code> 和字符串 <code>&quot;noël&quot;</code> 规整化以后应该相等（他们看起来一样，但是内部表示不一样，一个 6 字节，一个 5 字节，这里涉及到 Unicode 的规整化）</li>
-</ul>
-<p>对于大部分编程语言，包括 Ruby，Python，JS，C#，Java 等，上面的问题都无法全部返回正确结果（但是，拥有超强 Unicode 支持的 <a href="https://elixir-lang.org/">Elixir</a> 可以）。</p>
-        </div>
-
-        <div class="index__item__meta">
-          <div>
-            2018.07.22
           </div>
         </div>
       </div>

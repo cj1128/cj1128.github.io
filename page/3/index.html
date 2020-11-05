@@ -74,6 +74,28 @@
     
     
       <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/2016/10/21/build-log-system-with-elkb/">
+          从零开始搭建一个 ELKB 日志收集系统
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>当今的软件开发 <strong>多核</strong> 以及 <strong>分布</strong> 已经成为了常态，基本上稍大型的应用都是多台机器分布式部署。分布式在提高性能的同时也带来了很多问题，今天我们只讨论一点，那就是如何处理多台机器线上系统的日志。</p>
+<p>以我司的某个应用 T 为例，部署在了百度云 5 台机子上，其中一台拥有公网 IP，使用了百度云提供的负载均衡服务。每次想要在日志中检索某个关键字时，基本步骤如下：</p>
+<ul>
+<li>打开五个 SSH，登陆拥有公网 IP 的那台机器</li>
+<li>在另外四个 SSH 中分别登陆其他的内网机器</li>
+<li>对日志文件进行检索</li>
+</ul>
+        </div>
+
+        <div class="index__item__meta">
+          <div>
+            2016.10.21
+          </div>
+        </div>
+      </div>
+    
+      <div class="index__item">
         <a class="index__item__title hvr-underline-from-left" href="/2016/09/05/build-a-https-site-from-scratch/">
           从零开始搭建一个 HTTPS 网站
         </a>
