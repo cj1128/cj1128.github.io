@@ -3,22 +3,42 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://cjting.me/tags/bittorrent-bt-deno/</loc>
-    <lastmod>2020-10-31T23:30:48+08:00</lastmod>
+    <loc>https://cjting.me/tags/assembly/</loc>
+    <lastmod>2020-12-10T01:13:48+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://cjting.me/</loc>
-    <lastmod>2020-10-31T23:30:48+08:00</lastmod>
+    <lastmod>2020-12-10T01:13:48+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/tags/elf/</loc>
+    <lastmod>2020-12-10T01:13:48+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/tags/linux/</loc>
+    <lastmod>2020-12-10T01:13:48+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://cjting.me/post/</loc>
-    <lastmod>2020-10-31T23:30:48+08:00</lastmod>
+    <lastmod>2020-12-10T01:13:48+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://cjting.me/tags/</loc>
+    <lastmod>2020-12-10T01:13:48+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/2020/12/10/tiny-x64-helloworld/</loc>
+    <lastmod>2020-12-10T01:13:48+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/tags/bittorrent-bt-deno/</loc>
     <lastmod>2020-10-31T23:30:48+08:00</lastmod>
   </url>
   
@@ -95,11 +115,6 @@
   <url>
     <loc>https://cjting.me/2020/03/13/rsa/</loc>
     <lastmod>2020-03-13T19:24:07+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://cjting.me/tags/linux/</loc>
-    <lastmod>2019-08-28T15:55:08+08:00</lastmod>
   </url>
   
   <url>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>linux on CJ Ting&#39;s Blog</title>
-    <link>https://cjting.me/tags/linux/</link>
-    <description>Recent content in linux on CJ Ting&#39;s Blog</description>
+    <title>elf on CJ Ting&#39;s Blog</title>
+    <link>https://cjting.me/tags/elf/</link>
+    <description>Recent content in elf on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Thu, 10 Dec 2020 01:13:48 +0800</lastBuildDate>
     
-	<atom:link href="https://cjting.me/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://cjting.me/tags/elf/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -33,16 +33,6 @@
 &lt;li&gt;&lt;code&gt;main&lt;/code&gt; 的 int 返回值有什么用？是谁在处理 &lt;code&gt;main&lt;/code&gt; 的返回值？&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;printf&lt;/code&gt; 是谁实现的？如果不用 &lt;code&gt;printf&lt;/code&gt; 可以做到在终端中打印字符吗？&lt;/li&gt;
 &lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title>从一次 Connection Reset 说起，TCP 半连接队列与全连接队列</title>
-      <link>https://cjting.me/2019/08/28/tcp-queue/</link>
-      <pubDate>Wed, 28 Aug 2019 15:55:08 +0800</pubDate>
-      
-      <guid>https://cjting.me/2019/08/28/tcp-queue/</guid>
-      <description>&lt;p&gt;之前用 Go 编写过一个简单的服务器和客户端，用来测试 Go 的 HTTP 性能，无意中发现了一个奇怪的问题。&lt;/p&gt;
-&lt;p&gt;在我的 Mac 上客户端程序会非常稳定地遇到 &lt;em&gt;Connection Reset&lt;/em&gt; 的错误，让人一头雾水。&lt;/p&gt;</description>
     </item>
     
   </channel>

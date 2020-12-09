@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+  <title>编写一个最小的 64 位 Hello World - CJ Ting's Blog</title>
+  <meta name="author" content="CJ Ting">
+  <meta name="description" content="编写一个最小的 64 位 Hello World">
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css">
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/notyf@3.1.0/notyf.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/notyf@3.1.0/notyf.min.css">
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/zoom-vanilla.js@2.0.6/css/zoom.css">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [["$", "$"]],
+    },
+  }
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-chtml.js"></script>
+  <script type="text/javascript">
+    window.PAGE = {
+      title: "编写一个最小的 64 位 Hello World",
+      section: "post",
+    }
+  </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
+  <link rel="stylesheet" href="/asset/main.css">
+</head>
+<body>
+  
+  <div class="post">
+    <header class="post__header" data-cover="http://asset.cjting.cn/FnMniJy5zFNdS5hK8UcXxwcvnoKC.jpg">
+      <a href="/">
+        HOME
+      </a>
+    </header>
+
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              编写一个最小的 64 位 Hello World
+          </h1>
+
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">linux</span>
+              
+                <span class="tag">elf</span>
+              
+                <span class="tag">assembly</span>
+              
+            </div>
+
+            <div class='date'>
+              2020.12.10
+            </div>
+          </div>
+
+          <div class="post__content">
+            <p>Hello World 应该是每一位程序员的启蒙程序，出自于 <a href="https://en.wikipedia.org/wiki/Brian_Kernighan">Brian Kernighan</a> 和 <a href="https://en.wikipedia.org/wiki/Dennis_Ritchie">Dennis Ritchie</a> 的一代经典著作 <a href="https://en.wikipedia.org/wiki/The_C_Programming_Language">The C Programming Language</a>。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#998;font-style:italic">// hello.c
+</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>() {
+  printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
+  <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><p>这段代码我想大家应该都太熟悉了，熟悉到可以默写出来。虽然是非常简单的代码，但是如果细究起来，里面却隐含着很多细节：</p>
+<ul>
+<li><code>#include &lt;stdio.h&gt;</code> 和 <code>#include &quot;stdio.h&quot;</code> 有什么区别？</li>
+<li><code>stdio.h</code> 文件在哪里？里面是什么内容？</li>
+<li>为什么入口是 <code>main</code> 函数？可以写一个程序入口不是 <code>main</code> 吗？</li>
+<li><code>main</code> 的 int 返回值有什么用？是谁在处理 <code>main</code> 的返回值？</li>
+<li><code>printf</code> 是谁实现的？如果不用 <code>printf</code> 可以做到在终端中打印字符吗？</li>
+</ul>
+<p>上面这些问题其实涉及到程序的编译、链接和装载，日常工作中也许大家并不会在意。</p>
+<p>现代 IDE 在方便我们开发的同时，也将很多底层的细节隐藏了起来。往往写完代码以后，点击「构建」就行了，至于构建在发生什么，具体是怎么构建的，很多人并不关心，甚至根本不知道从源代码到可执行程序这中间经历了什么。</p>
+<p>编译、链接和装载是一个巨大的话题，不是一篇博客可以覆盖的。在这篇博客中，我想使用「文件尺寸」作为线索，来介绍从 C 源代码到可执行程序这个过程中，所经历的一系列过程。</p>
+<div class="post__tip">
+  <span class="post__tip__span">T</span>ip: 关于编译、链接和装载，这里想推荐一本书<a href="https://book.douban.com/subject/3652388/">《程序员的自我修养》</a>。不得不说，这个名字起得非常不好，很有哗众取宠的味道，但是书的内容是不错的，值得一看。
+</div>
+<p>我们先来编译上面的程序：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ gcc hello.c -o hello
+$ ./hello
+hello, world
+$ ll hello
+-rwxr-xr-x <span style="color:#099">1</span> root root <span style="color:#099">16712</span> Nov <span style="color:#099">24</span> 10:45 hello
+</code></pre></div><div class="post__tip">
+  <span class="post__tip__span">T</span>ip: 后续所有的讨论都是基于 64 位 CentOS7 操作系统。
+</div>
+<p>我们会发现这个简单的 hello 程序大小为 16K。在今天看来，16K 真的没什么，但是考虑到这个程序所做的事情，它真的需要 16K 吗？</p>
+<p>在 C 诞生的上个世纪 70 年代，PDP-11 的内存为 144K，如果一个 hello world 就要占 16K，那显然是不合理的，一定有办法可以缩减体积。</p>
+<div class="post__tip">
+  <span class="post__tip__span">T</span>ip: <p>说起 C 语言，我想顺带提一下 UNIX。没有 C 就没有 UNIX 的成功，没有 UNIX 的成功也就没有 C 的今天。诞生于上个世纪 70 年代的 UNIX 不得不说是一项了不起的创造。</p>
+<p>这里推荐两份关于 UNIX 的资料：</p>
+<ul>
+<li>
+<p><a href="https://chsasank.github.io/classic_papers/unix-time-sharing-system.html">The UNIX Time-Sharing System</a> 1974 年由 Dennis Ritchie 和 Ken Thompson 联合发表的介绍 UNIX 的论文。不要被“论文”二字所吓到，实际上，这篇文章写得非常通俗易懂，由 UNIX 的作者们向你娓娓道来 UNIX 的核心设计理念。</p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=tc4ROCJYbm0&amp;t=797s">The UNIX Operating System</a> 一段视频，看身着蓝色时尚毛衣的 Kernighan 演示 UNIX 的特性，不得不说，Kernighan 简直太帅了。</p>
+</li>
+</ul>
+</div>
+<p>接下来我们来玩一个游戏，目标是：在 CentOS7 64 位操作系统上，编写一个体积最小的打印 hello world 的可执行程序。</p>
+<h2 id="executable">Executable</h2>
+<p>我们先来看「可执行程序」这个概念。</p>
+<p>什么是可执行程序？按照字面意思来理解，那就是：可以执行的程序。</p>
+<h3 id="elf">ELF</h3>
+<p>上面用 C 编写的 hello 当然是可执行程序，毫无疑问。</p>
+<p>实际上，我们可以说它是真正的“可执行”程序（区别于后文的脚本），或者说“原生”程序。</p>
+<p>因为它里面包含了可以直接用于 CPU 执行的机器代码，它的执行无需借助外部。</p>
+<p>hello 的存储格式叫做 ELF，全称为 Executable and Linkable Format，看名称可以知道，它既可以用于存储目标文件，又可以用于存储可执行文件。</p>
+<p>ELF 本身并不难理解，<code>/usr/include/elf.h</code> 中含有 ELF 结构的详细信息。难理解的是由 ELF 所掀开的底层世界，目标文件是什么？和执行文件有什么区别？链接在干什么？目标文件怎样变成可执行文件等等等等。</p>
+<h3 id="shebang">Shebang</h3>
+<p>接下来我们来看另外一种形式的可执行程序，脚本。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ cat &gt; hello.sh <span style="color:#d14">&lt;&lt;EOF
+</span><span style="color:#d14">#!/bin/bash
+</span><span style="color:#d14">echo &#34;hello, world&#34;
+</span><span style="color:#d14">EOF</span>
+$ chmod +x hello.sh
+$ ./helo.sh
+hello, world
+</code></pre></div><p>按照定义，因为这个脚本可以直接从命令行执行，所以它是可执行程序。</p>
+<p>那么 hello 和 hello.sh 的区别在哪里？</p>
+<p>可以发现 hello.sh 的第一行比较奇怪，这是一个叫做 Shebang 的东西 <code>#!/bin/bash</code>，这个东西表明当前文件需要 <code>/bin/bash</code> 程序来执行。</p>
+<p>所以，hello 和 hello.sh 的区别就在于：一个可以直接执行不依赖于外部程序，而另一个需要依赖外部程序。</p>
+<p>我曾经有一个误解，认为 Shebang 是 Shell 在处理，当 Shell 执行脚本时，发现第一行是 Shebang，然后调用相应的程序来执行该脚本。</p>
+<p>实际上并不是这样，对 Shebang 的处理是内核在进行。当内核加载一个文件时，会首先读取文件的前 128 个字节，根据这 128 个字节判断文件的类型，然后调用相应的加载器来加载。</p>
+<p>比如说，内核发现当前是一个 ELF 文件（ELF 文件前四个字节为固定值，称为魔数），那么就调用 ELF 加载器。</p>
+<p>而内核发现当前文件含有 Shebang，那么就会启动 Shebang 指定的程序，将当前路径作为第一个参数传入。所以当我们执行 <code>./hello.sh</code> 时，在内核中会被变为 <code>/bin/bash ./hello.sh</code>。</p>
+<p>这里其实有一个小问题，如果要脚本可以从命令行直接执行，那么第一行必须是 Shebang。Shebang 的形式固定为 <code>#!</code> 开头，对于使用 # 字符作为注释的语言比如 Python, Ruby, Elixir 来说，这自然不是问题。但是对于 # 字符不是注释字符的语言来说，这一行就是一个非法语句，必然带来解释错误。</p>
+<p>比如 JavaScript，它就不使用 # 作为注释，我们来写一个带 Shebang 的 JS 脚本看看会怎么样。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ cat <span style="color:#d14">&lt;&lt;EOF &gt; test.js
+</span><span style="color:#d14">#!/usr/bin/env node
+</span><span style="color:#d14">console.log(&#34;hello world&#34;)
+</span><span style="color:#d14">EOF</span>
+$ chmod +x test.js
+$ ./test.js
+hello world
+</code></pre></div><p>并没有出错，所以这里是怎么回事？按道理来说第一行是非法的 JS 语句，解释器应该要报错才对。</p>
+<p>如果把第一行的 Shebang 拷贝一份到第二行，会发现报了 <code>SyntaxError</code>，这才是符合预期的。所以必然是 Node 什么地方对第一行的 Shebang 做了特别处理，否则不可能不报错。</p>
+<p>大家可以在 Node 的代码里面找一找，看看在什么地方😉</p>
+<p>答案是什么地方都没有，或者说在最新的 Node 中，已经没有地方在处理 Shebang 了。</p>
+<p>在 Node v11 中，我们可以看到相应的代码在 <a href="https://github.com/nodejs/node/blob/v11.15.0/lib/internal/main/check_syntax.js#L50">这里</a>。</p>
+<p><code>stripShebang</code> 函数很明显，它的作用在于启动 JS 解释器的时候，将第一行的 Shebang 移除掉。</p>
+<p>但是在 Node v12 以后，Node 更新了 JS 引擎 V8 到 7.4，V8 在这个版本中实现一个叫做 <a href="https://v8.dev/blog/v8-release-74#hashbang-grammar">Hashbang grammar</a> 的功能，也就是说，从此以后，V8 可以处理 Shebang 了，因此 Node 删除了相关代码。</p>
+<p>因为 Shebang 是 V8 在处理了，所以我们在浏览器中也可以加载带有 Shebang 的 JS 文件，不会有任何问题~</p>
+<p>我们可以得出结论，支持作为脚本使用的语言，如果不使用 # 作为注释字符，那么必然要特别处理 Shebang，否则使用起来就太不方便了。</p>
+<h3 id="usrbinenv">/usr/bin/env</h3>
+<p>上面的 test.js 文件中，不知道大家是否注意到，解释器路径写的是 <code>/usr/bin/env node</code>。</p>
+<p>这样的写法如果经常写脚本，应该不陌生，我之前一直这样用，但是没有仔细去想过为什么。</p>
+<p>首先我们来看 <code>/usr/bin/env</code> 这个程序是什么。</p>
+<p>根据 <code>man env</code> 返回的信息：env - run a program in a modified environment.</p>
+<p><code>env</code> 的主要作用是修改程序运行的环境变量，比如说</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ <span style="color:#0086b3">export</span> <span style="color:#008080">name</span><span style="color:#000;font-weight:bold">=</span>shell
+$ node
+&gt; process.env.name
+<span style="color:#d14">&#39;shell&#39;</span>
+$ env <span style="color:#008080">name</span><span style="color:#000;font-weight:bold">=</span>env node
+&gt; process.env.name
+<span style="color:#d14">&#39;env&#39;</span>
+</code></pre></div><p>通过 env 我们修改了 node 运行时的环境变量。但是这个功能和我们为什么要在 Shebang 中使用 env 有什么关系？</p>
+<p>在 Shebang 中使用 env 其实是因为另外一个原因，那就是 env 会在 PATH 中搜索程序并执行。</p>
+<p>当我们执行 <code>env abc</code> 时，env 会在 PATH 中搜索 abc 然后执行，就和 Shell 一样。</p>
+<p>这就解释了为什么我们要在脚本中使用 <code>/usr/bin/env node</code>。对于想要给他人复用的脚本，我们并不清楚他人系统上 node 的路径在哪里，但是我们清楚的是，它一定在 PATH 中。</p>
+<p>而同时，绝大部分系统上，<code>env</code> 程序的位置是固定的，那就是 <code>/usr/bin/env</code>。所以，通过使用 <code>/usr/bin/env node</code>，我们可以保证不管其他用户将 node 安装在何处，这个脚本都可以被执行。</p>
+<h3 id="binfmt_misc">binfmt_misc</h3>
+<p>前面我们提到过，内核对于文件的加载其实是有一套“多态”机制的，即根据不同的类型来选择不同的加载器。</p>
+<p>那么这个过程我们可以自己定制吗？</p>
+<p>当然可以，内核中有一个加载器叫做 <code>binfmt_misc</code>，看名字可以知道，这个加载器用于处理各种各样非标准的其他类型。</p>
+<p>通过一套 <a href="https://www.kernel.org/doc/Documentation/admin-guide/binfmt-misc.rst">语法</a>，我们可以告知 binfmt_misc 加载规则，实现自定义加载。</p>
+<p>比如我们可以通过 binfmt_misc 实现直接运行 Go 文件。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># 运行 Go 文件的指令是 `go run`，不是一个独立的程序</span>
+<span style="color:#998;font-style:italic"># 所以，我们先要写一个脚本包装一下</span>
+$ cat <span style="color:#d14">&lt;&lt;EOF &gt; /usr/local/bin/rungo
+</span><span style="color:#d14">#!/bin/bash
+</span><span style="color:#d14">go run $1
+</span><span style="color:#d14">EOF</span>
+<span style="color:#998;font-style:italic"># 接下来写入规则告诉 binfmt_misc 使用上面的程序来加载所有</span>
+<span style="color:#998;font-style:italic"># 以 .go 结尾的文件</span>
+$ <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;:golang:E::go::/usr/local/bin/rungo:&#39;</span> &gt; /proc/sys/fs/binfmt_misc/register
+<span style="color:#998;font-style:italic"># 现在我们就可以直接运行 Go 文件了</span>
+$ cat <span style="color:#d14">&lt;&lt; EOF &gt; test.go
+</span><span style="color:#d14">package main
+</span><span style="color:#d14">import &#34;fmt&#34;
+</span><span style="color:#d14">
+</span><span style="color:#d14">func main() {
+</span><span style="color:#d14">  fmt.Println(&#34;hello, world&#34;)
+</span><span style="color:#d14">}
+</span><span style="color:#d14">EOF</span>
+$ chmod +x test.go
+$ ./test.go
+hello, world
+</code></pre></div><h3 id="tiny-script">Tiny Script</h3>
+<p>根据上面的知识，如果我们想要编写一个体积最小的打印 hello world 的脚本，我们要在这两方面着手：</p>
+<ul>
+<li>解释器路径要尽量短</li>
+<li>脚本本身用于打印的代码要尽量短</li>
+</ul>
+<p>解释器的路径很好处理，我们可以使用链接。</p>
+<p>脚本本身的代码要短，这就很考验知识了，我一开始想到的是 Ruby，<code>puts &quot;hello, world&quot;</code> 算是非常短的代码了，没有一句废话。但是后来 Google 才发现，还有更短的，那就是 PHP 😉</p>
+<p>PHP 中 打印 hello world 的代码就是 <code>hello, world</code>，对的，你没看错，连引号都不用。</p>
+<p>所以，最终我们的结果如下：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># 假设 php 在 /usr/local/bin/php</span>
+$ <span style="color:#0086b3">cd</span> /
+$ ln -s /usr/local/bin/php p
+$ cat <span style="color:#d14">&lt;&lt;EOF &gt; final.php
+</span><span style="color:#d14">#!/p
+</span><span style="color:#d14">hello, world
+</span><span style="color:#d14">EOF</span>
+$ chmod +x final.php
+$ ./final.php
+hello, world
+$ ll final.php
+-rwxr-xr-x <span style="color:#099">1</span> root root <span style="color:#099">18</span> Dec  <span style="color:#099">2</span> 22:32 final.php
+</code></pre></div><p>在脚本模式下，我们的成绩是 18 个字节，使用的解释器是 PHP。</p>
+<p>其实在脚本模式下编写最小的 hello world 没有太大意义，因为我们完全可以自己写一个输出 hello world 的程序作为解释器，然后脚本里面只要 <code>#!/x</code> 就行了。</p>
+<h2 id="tiny-native">Tiny Native</h2>
+<p>上面的脚本只是抛砖引玉，接下来我们进入正题，怎样编写一个体积最小的打印 hello world 的原生可执行程序？</p>
+<p>网上有很多关于这个话题的讨论，但基本都是针对 x86 的。现如今 64 位机器早就普及了，所以我们这里针对的是 64 位的 x64。</p>
+<div class="post__tip">
+  <span class="post__tip__span">T</span>ip: 64 位机器可以执行 32 位的程序，比如我们可以使用 <code>gcc -m32</code> 来编译 32 位程序。但这只是一个后向兼容，并没有充分利用 64 位机器的能力。
+</div>
+<h3 id="step0">Step0</h3>
+<p>首先，我们使用上文提到的 hello.c 作为基准程序。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#998;font-style:italic">// hello.c
+</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>() {
+  printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
+  <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><p><code>gcc hello.c -o hello.out</code> 编译以后，它的大小是 16712 个字节。</p>
+<h3 id="step1-strip-symbols">Step1: Strip Symbols</h3>
+<p>第一步，也是最容易想到的一步，剔除符号表。</p>
+<p>符号是链接器工作的的基本元素，源代码中的函数、变量等被编译以后，都变成了符号。</p>
+<p>如果经常从事 C 开发，一定遇到过 <code>ld: symbol not found</code> 的错误，往往是忘记链接了某个库导致的。</p>
+<p>使用 <code>nm</code> 我们可以查看一个二进制程序中含有哪些符号。</p>
+<div class="post__tip">
+  <span class="post__tip__span">T</span>ip: <p><code>nm</code> 是“窥探”二进制的一个有力工具。记得之前有一次苹果调整了 iOS 的审核策略，不再允许使用了 UIWebView 的 App 提交。我们的 IPA 里面不知道哪个依赖使用了 UIWebView，导致苹果一直审核不过，每次都要二分注释、打包、提交审核，然后等待苹果的自动检查邮件告知结果，非常痛苦。</p>
+<p>后来我想到了一个办法，就是使用 <code>nm</code> 查看编译出来的可执行程序，看看里面是否有 UIWebView 相关的 symbol，这大大简化了调试流程，很快就定位到问题了。</p>
+</div>
+<p>对 step0 中的 hello.out 程序使用 <code>nm</code>，输出如下：</p>
+<pre><code>$ nm hello.out
+0000000000404038 B __bss_start
+0000000000404038 b completed.6949
+0000000000404028 D __data_start
+0000000000404028 W data_start
+0000000000401090 t deregister_tm_clones
+0000000000401110 t __do_global_dtors_aux
+0000000000403df8 d __do_global_dtors_aux_fini_array_entry
+0000000000404030 D __dso_handle
+0000000000403e08 d _DYNAMIC
+0000000000404038 D _edata
+0000000000404040 B _end
+00000000004011e4 T _fini
+0000000000401130 t frame_dummy
+0000000000403df0 d __frame_dummy_init_array_entry
+0000000000402154 r __FRAME_END__
+0000000000404000 d _GLOBAL_OFFSET_TABLE_
+                 w __gmon_start__
+0000000000402014 r __GNU_EH_FRAME_HDR
+0000000000401000 T _init
+0000000000403df8 d __init_array_end
+0000000000403df0 d __init_array_start
+0000000000402000 R _IO_stdin_used
+0000000000403e00 d __JCR_END__
+0000000000403e00 d __JCR_LIST__
+00000000004011e0 T __libc_csu_fini
+0000000000401170 T __libc_csu_init
+                 U __libc_start_main@@GLIBC_2.2.5
+0000000000401156 T main
+                 U puts@@GLIBC_2.2.5
+00000000004010d0 t register_tm_clones
+0000000000401060 T _start
+0000000000404038 D __TMC_END__
+</code></pre><p>可以看到有一个符号叫做 <code>main</code>，这个对应的就是我们的 main 函数。但是很奇怪没有看到 <code>printf</code>，而是出现了一个叫做 <code>puts@@GLIBC_2.2.5</code> 的符号。</p>
+<p>这里其实是 GCC 做的一个优化，如果没有使用格式字符串调用 <code>printf</code>，GCC 会将它换成 <code>puts</code>。</p>
+<p>这些符号都存储在了 ELF 中，主要用于链接，对于可执行文件来说，符号并没有什么太大作用，所以我们首先可以通过剔除符号表来节省空间。</p>
+<p>有两个方法，第一是通过 <code>strip</code>，第二是通过 GCC 参数。</p>
+<p>这里我们使用第二个方法，<code>gcc -s hello.c -o hello.out</code> 得到新的不含符号表的可执行程序，它的大小是 14512 字节。</p>
+<p>虽然结果还是很大，但是我们省了 2K 左右，不错，再接再厉。</p>
+<h3 id="step2-optimization">Step2: Optimization</h3>
+<p>第二个比较容易想到的办法就是优化，开启优化以后编译器会生成更加高效的指令，从而减小文件体积。</p>
+<p>使用 <code>gcc -O3</code> 编译我们的程序，然后会发现，结果没有任何变化😂。</p>
+<p>其实也非常合理，因为这个程序太简单了，没什么好优化的。</p>
+<p>看来要再想想别的办法。</p>
+<h3 id="step3-remove-startup-files">Step3: Remove Startup Files</h3>
+<p>之前我们提到过一个问题，是谁在调用 <code>main</code> 函数？</p>
+<p>实际上我们编写的程序都会被默认链接到 GCC 提供的 C 运行时库，叫做 <code>crt</code>。</p>
+<p>通过 <code>gcc --verbose</code> 我们可以查看编译链接的详细日志。</p>
+<pre><code>$ gcc --verbose hello.c
+...
+/home/linuxbrew/.linuxbrew/Cellar/gcc/5.5.0_7/libexec/gcc/x86_64-unknown-linux-gnu/5.5.0/collect2 -plugin /home/linuxbrew/.linuxbrew/Cellar/gcc/5.5.0_7/libexec/gcc/x86_64-unknown-linux-gnu/5.5.0/liblto_plugin.so -plugin-opt=/home/linuxbrew/.linuxbrew/Cellar/gcc/5.5.0_7/libexec/gcc/x86_64-unknown-linux-gnu/5.5.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccALFqFq.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 --dynamic-linker /home/linuxbrew/.linuxbrew/lib/ld.so -rpath /home/linuxbrew/.linuxbrew/lib /home/linuxbrew/.linuxbrew/Cellar/gcc/5.5.0_7/lib/gcc/x86_64-unknown-linux-gnu/5.5.0/crt1.o /home/linuxbrew/.linuxbrew/Cellar/gcc/5.5.0_7/lib/gcc/x86_64-unknown-linux-gnu/5.5.0/crti.o /home/linuxbrew/.linuxbrew/Cellar/gcc/5.5.0_7/lib/gcc/x86_64-unknown-linux-gnu/5.5.0/crtbegin.o -nostdlib -L/home/linuxbrew/.linuxbrew/Cellar/gcc/5.5.0_7/lib/gcc/x86_64-unknown-linux-gnu/5.5.0 -L/home/linuxbrew/.linuxbrew/lib /tmp/cc2wNkTa.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /home/linuxbrew/.linuxbrew/Cellar/gcc/5.5.0_7/lib/gcc/x86_64-unknown-linux-gnu/5.5.0/crtend.o /home/linuxbrew/.linuxbrew/Cellar/gcc/5.5.0_7/lib/gcc/x86_64-unknown-linux-gnu/5.5.0/crtn.o
+</code></pre><p>可以发现我们的程序链接了 <code>crt1.o</code>, <code>crti.o</code>, <code>crtbegin.o</code>, <code>crtend.o</code> 以及 <code>crtn.o</code>。</p>
+<p>其中 <code>crt1.o</code> 里面提供的 <code>_start</code> 函数是程序事实上的入口，这个函数负责准备 main 函数需要的参数，调用 main 函数以及处理 main 函数的返回值。</p>
+<p>上面这些 crt 文件统称为 Start Files。所以，现在我们的思路是，可不可以不用这些启动文件？</p>
+<p><code>_start</code> 函数主要功能有两个，第一是准备参数，我们的 main 不使用任何参数，所以这一部分可以忽略。</p>
+<p>第二是处理返回值，具体的处理方式是使用 main 函数的返回值调用 <code>exit</code> 系统调用进行退出。</p>
+<p>所以如果我们不使用启动文件的话，只需要自己使用系统调用退出即可。</p>
+<p>因为我们现在不使用 <code>_start</code> 了，自然我们的主函数也没必要一定要叫做 <code>main</code>，这里我们改个名字突出一下这个事实。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;unistd.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#458;font-weight:bold">int</span>
+<span style="color:#900;font-weight:bold">nomain</span>()
+{
+  printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
+  _exit(<span style="color:#099">0</span>);
+}
+</code></pre></div><p><code>unistd.h</code> 里面提供系统调用的相关函数，这里我们使用的是 <code>_exit</code>。为什么是 <code>_exit</code> 而不是 <code>exit</code>？可以参考这个回答 <a href="https://stackoverflow.com/questions/5422831/what-is-the-difference-between-using-exit-exit-in-a-conventional-linux-fo">What is the difference between using _exit() &amp; exit() in a conventional Linux fork-exec?
+</a>。</p>
+<p>通过 <code>gcc -e nomain -nostartfiles</code> 编译我们的程序，其中 <code>-e</code> 指定入口，<code>--nostartfiles</code> 作用很明显，告诉 GCC 不必链接启动文件了。</p>
+<p>我们得到的结果是 13664 个字节，不错，又向前迈进了一步。</p>
+<h3 id="step4-remove-standard-library">Step4: Remove Standard Library</h3>
+<p>现在我们已经不使用启动文件了，但是我们还在使用标准库，<code>printf</code> 和 <code>_exit</code> 函数都是标准库提供的。</p>
+<p>可不可以不使用标准库？</p>
+<p>当然也可以。</p>
+<p>这里就要说到系统调用，用户程序和操作系统的交互通过一系列称为”系统调用“的过程来完成。</p>
+<p>比如 <a href="https://github.com/torvalds/linux/blob/v3.13/arch/x86/syscalls/syscall_64.tbl">syscall_64</a> 是 64 位 Linux 的系统调用表，里面列出了 Linux 提供的所有系统调用。</p>
+<p>系统调用工作在最底层，通过约定的寄存器传递参数，然后使用一条特别的指令，比如 32 位 Linux 是 <code>int 80h</code>，64 位 Linux 是 <code>syscall</code> 进入系统调用，最后通过约定的寄存器获取结果。</p>
+<p>C 标准库里面封装了相关函数帮助我们进行系统调用，一般我们不用关心调用细节。</p>
+<p>现在如果我们不想使用标准库，那么就需要自己去完成系统调用，在 hello 程序中我们使用了两个系统调用：</p>
+<ul>
+<li><code>write</code>: 向终端打印字符实际上就是向终端对应的文件写入数据</li>
+<li><code>exit</code>: 退出程序</li>
+</ul>
+<p>因为要访问寄存器，所以必须要使用内联汇编。</p>
+<p>最终代码如下，在 C 中内联汇编的语法可以参考 <a href="https://www.ibiblio.org/gferg/ldp/GCC-Inline-Assembly-HOWTO.html">这篇文档</a>。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>str <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>;
+
+<span style="color:#458;font-weight:bold">void</span>
+<span style="color:#900;font-weight:bold">myprint</span>()
+{
+  <span style="color:#000;font-weight:bold">asm</span>(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">movq $1, %%rax </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+      <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">movq $1, %%rdi </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+      <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">movq %0, %%rsi </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+      <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">movq $13, %%rdx </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+      <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">syscall </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+      <span style="color:#000;font-weight:bold">:</span> <span style="color:#998;font-style:italic">// no output
+</span><span style="color:#998;font-style:italic"></span>      <span style="color:#000;font-weight:bold">:</span> <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">r</span><span style="color:#d14">&#34;</span>(str)
+      <span style="color:#000;font-weight:bold">:</span> <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">rax</span><span style="color:#d14">&#34;</span>, <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">rdi</span><span style="color:#d14">&#34;</span>, <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">rsi</span><span style="color:#d14">&#34;</span>, <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">rdx</span><span style="color:#d14">&#34;</span>);
+}
+
+<span style="color:#458;font-weight:bold">void</span>
+<span style="color:#900;font-weight:bold">myexit</span>()
+{
+  <span style="color:#000;font-weight:bold">asm</span>(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">movq $60, %rax </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+      <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">xor %rdi, %rdi </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+      <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">syscall </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
+}
+
+<span style="color:#458;font-weight:bold">int</span>
+<span style="color:#900;font-weight:bold">nomain</span>()
+{
+  myprint();
+  myexit();
+}
+</code></pre></div><p>使用 <code>gcc -nostdlib</code> 编译我们的程序，结果是 12912 字节。</p>
+<p>能去的我们都去掉了，为什么还是这么大？？？</p>
+<h3 id="step5-custom-linker-script">Step5: Custom Linker Script</h3>
+<p>我们先来看一下上一步得到的结果。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ readelf -S -W step4/hello.out
+Section Headers:
+  <span style="color:#000;font-weight:bold">[</span>Nr<span style="color:#000;font-weight:bold">]</span> Name              Type            Address          Off    Size   ES Flg Lk Inf Al
+  <span style="color:#000;font-weight:bold">[</span> 0<span style="color:#000;font-weight:bold">]</span>                   NULL            <span style="color:#099">0000000000000000</span> <span style="color:#099">000000</span> <span style="color:#099">000000</span> <span style="color:#099">00</span>      <span style="color:#099">0</span>   <span style="color:#099">0</span>  <span style="color:#099">0</span>
+  <span style="color:#000;font-weight:bold">[</span> 1<span style="color:#000;font-weight:bold">]</span> .text             PROGBITS        <span style="color:#099">0000000000401000</span> <span style="color:#099">001000</span> 00006e <span style="color:#099">00</span>  AX  <span style="color:#099">0</span>   <span style="color:#099">0</span> <span style="color:#099">16</span>
+  <span style="color:#000;font-weight:bold">[</span> 2<span style="color:#000;font-weight:bold">]</span> .rodata           PROGBITS        <span style="color:#099">0000000000402000</span> <span style="color:#099">002000</span> 00000e <span style="color:#099">01</span> AMS  <span style="color:#099">0</span>   <span style="color:#099">0</span>  <span style="color:#099">1</span>
+  <span style="color:#000;font-weight:bold">[</span> 3<span style="color:#000;font-weight:bold">]</span> .eh_frame_hdr     PROGBITS        <span style="color:#099">0000000000402010</span> <span style="color:#099">002010</span> <span style="color:#099">000024</span> <span style="color:#099">00</span>   A  <span style="color:#099">0</span>   <span style="color:#099">0</span>  <span style="color:#099">4</span>
+  <span style="color:#000;font-weight:bold">[</span> 4<span style="color:#000;font-weight:bold">]</span> .eh_frame         PROGBITS        <span style="color:#099">0000000000402038</span> <span style="color:#099">002038</span> <span style="color:#099">000054</span> <span style="color:#099">00</span>   A  <span style="color:#099">0</span>   <span style="color:#099">0</span>  <span style="color:#099">8</span>
+  <span style="color:#000;font-weight:bold">[</span> 5<span style="color:#000;font-weight:bold">]</span> .data             PROGBITS        <span style="color:#099">0000000000404000</span> <span style="color:#099">003000</span> <span style="color:#099">000008</span> <span style="color:#099">00</span>  WA  <span style="color:#099">0</span>   <span style="color:#099">0</span>  <span style="color:#099">8</span>
+  <span style="color:#000;font-weight:bold">[</span> 6<span style="color:#000;font-weight:bold">]</span> .comment          PROGBITS        <span style="color:#099">0000000000000000</span> <span style="color:#099">003008</span> <span style="color:#099">000022</span> <span style="color:#099">01</span>  MS  <span style="color:#099">0</span>   <span style="color:#099">0</span>  <span style="color:#099">1</span>
+  <span style="color:#000;font-weight:bold">[</span> 7<span style="color:#000;font-weight:bold">]</span> .shstrtab         STRTAB          <span style="color:#099">0000000000000000</span> 00302a <span style="color:#099">000040</span> <span style="color:#099">00</span>      <span style="color:#099">0</span>   <span style="color:#099">0</span>  <span style="color:#099">1</span>
+</code></pre></div><p>可以发现 <code>Size</code> 很小但是 <code>Off</code> 的值非常大，也就是说每个 Section 的体积很小，但是偏移量很大。</p>
+<p>使用 <code>xxd</code> 查看文件内容，会发现里面有大量的 0。所以情况现在很明朗，有人在对齐。</p>
+<p>这里其实是默认的 Linker Script 链接脚本在做对齐操作。</p>
+<p>控制链接器行为的脚本叫做 Linker Script，链接器内置了一个默认脚本，正常情况下我们使用默认的就好。</p>
+<p>我们先来看看默认的脚本是什么内容。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ ld --verbose
+GNU ld <span style="color:#000;font-weight:bold">(</span>GNU Binutils<span style="color:#000;font-weight:bold">)</span> 2.34
+...
+  . <span style="color:#000;font-weight:bold">=</span> ALIGN<span style="color:#000;font-weight:bold">(</span>CONSTANT <span style="color:#000;font-weight:bold">(</span>MAXPAGESIZE<span style="color:#000;font-weight:bold">)</span><span style="color:#000;font-weight:bold">)</span>;
+...
+  . <span style="color:#000;font-weight:bold">=</span> ALIGN<span style="color:#000;font-weight:bold">(</span>CONSTANT <span style="color:#000;font-weight:bold">(</span>MAXPAGESIZE<span style="color:#000;font-weight:bold">)</span><span style="color:#000;font-weight:bold">)</span>;
+...
+</code></pre></div><p>可以看到里面有使用 <code>ALIGN</code> 来对齐某些 Section，使得他们的地址是 MAXPAGESIZE 的倍数，这里 MAXPAGESIZE 是 4K。</p>
+<p>这就解释了为什么我们的程序那么大。</p>
+<p>所以现在解决方案也就很清晰了，我们不使用默认的链接脚本，自行编写一个。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ cat &gt; link.lds <span style="color:#d14">&lt;&lt;EOF
+</span><span style="color:#d14">ENTRY(nomain)
+</span><span style="color:#d14">
+</span><span style="color:#d14">SECTIONS
+</span><span style="color:#d14">{
+</span><span style="color:#d14">  . = 0x8048000 + SIZEOF</span>_HEADERS;
+
+  tiny : <span style="color:#000;font-weight:bold">{</span> *<span style="color:#000;font-weight:bold">(</span>.text<span style="color:#000;font-weight:bold">)</span> *<span style="color:#000;font-weight:bold">(</span>.data<span style="color:#000;font-weight:bold">)</span> *<span style="color:#000;font-weight:bold">(</span>.rodata*<span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">}</span>
+
+  /DISCARD/ : <span style="color:#000;font-weight:bold">{</span> *<span style="color:#000;font-weight:bold">(</span>*<span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">}</span>
+<span style="color:#000;font-weight:bold">}</span>
+EOF
+</code></pre></div><p>使用 <code>gcc -T link.lds</code> 编译程序以后，我们得到了 584 字节，巨大的进步！🚀</p>
+<h3 id="step6-assembly">Step6: Assembly</h3>
+<p>还有什么办法能进一步压缩吗？</p>
+<p>上面我们是在 C 中使用内联汇编，为什么不直接使用汇编，完全抛弃 C？</p>
+<p>我们来试试看，其实上面的 C 代码转换成汇编非常直接。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-nasm" data-lang="nasm"><span style="color:#000;font-weight:bold">section</span> <span style="color:#008080">.data</span>
+<span style="color:#900;font-weight:bold">message:</span> <span style="color:#000;font-weight:bold">db</span> <span style="color:#d14">&#34;hello, world&#34;</span>, <span style="color:#099">0xa</span>
+
+<span style="color:#000;font-weight:bold">section</span> <span style="color:#008080">.text</span>
+
+<span style="color:#000;font-weight:bold">global</span> <span style="color:#008080">nomain</span>
+<span style="color:#900;font-weight:bold">nomain:</span>
+  <span style="color:#900;font-weight:bold">mov</span> <span style="color:#0086b3">rax</span>, <span style="color:#099">1</span>
+  <span style="color:#900;font-weight:bold">mov</span> <span style="color:#0086b3">rdi</span>, <span style="color:#099">1</span>
+  <span style="color:#900;font-weight:bold">mov</span> <span style="color:#0086b3">rsi</span>, <span style="color:#008080">message</span>
+  <span style="color:#900;font-weight:bold">mov</span> <span style="color:#0086b3">rdx</span>, <span style="color:#099">13</span>
+  <span style="color:#900;font-weight:bold">syscall</span>
+  <span style="color:#900;font-weight:bold">mov</span> <span style="color:#0086b3">rax</span>, <span style="color:#099">60</span>
+  <span style="color:#900;font-weight:bold">xor</span> <span style="color:#0086b3">rdi</span>, <span style="color:#0086b3">rdi</span>
+  <span style="color:#900;font-weight:bold">syscall</span>
+</code></pre></div><p>这里我们使用 <code>nasm</code> 汇编器，我喜欢它的语法~</p>
+<p><code>nasm -f elf64</code> 汇编我们的程序，然后使用 <code>ld</code> 配合上面的自定义链接脚本链接以后得到可执行程序。</p>
+<p>最后的结果是 440 字节，离终点又进了一步了✌~</p>
+<h3 id="step7-handmade-binary">Step7: Handmade Binary</h3>
+<p>还能再进一步吗？还有什么是我们没控制的？</p>
+<p>所有的代码都已经由我们精确掌控了，但是最终的 ELF 文件依旧是由工具生成的。</p>
+<p>所以，最后一步，我们来手动生成 ELF 文件，精确地控制可执行文件的每一个字节。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-nasm" data-lang="nasm"><span style="color:#000;font-weight:bold">BITS</span> <span style="color:#099">64</span>
+  <span style="color:#000;font-weight:bold">org</span> <span style="color:#099">0x400000</span>
+
+<span style="color:#900;font-weight:bold">ehdr:</span>           <span style="color:#998;font-style:italic">; Elf64_Ehdr</span>
+  <span style="color:#000;font-weight:bold">db</span> <span style="color:#099">0x7f</span>, <span style="color:#d14">&#34;ELF&#34;</span>, <span style="color:#099">2</span>, <span style="color:#099">1</span>, <span style="color:#099">1</span>, <span style="color:#099">0</span> <span style="color:#998;font-style:italic">; e_ident</span>
+  <span style="color:#000;font-weight:bold">times</span> <span style="color:#099">8</span> <span style="color:#008080">db</span> <span style="color:#099">0</span>
+  <span style="color:#000;font-weight:bold">dw</span>  <span style="color:#099">2</span>         <span style="color:#998;font-style:italic">; e_type</span>
+  <span style="color:#000;font-weight:bold">dw</span>  <span style="color:#099">0x3e</span>      <span style="color:#998;font-style:italic">; e_machine</span>
+  <span style="color:#000;font-weight:bold">dd</span>  <span style="color:#099">1</span>         <span style="color:#998;font-style:italic">; e_version</span>
+  <span style="color:#000;font-weight:bold">dq</span>  <span style="color:#008080">_start</span>    <span style="color:#998;font-style:italic">; e_entry</span>
+  <span style="color:#000;font-weight:bold">dq</span>  <span style="color:#008080">phdr</span> <span style="color:#000;font-weight:bold">-</span> <span style="color:#000;font-weight:bold">$$</span> <span style="color:#998;font-style:italic">; e_phoff</span>
+  <span style="color:#000;font-weight:bold">dq</span>  <span style="color:#099">0</span>         <span style="color:#998;font-style:italic">; e_shoff</span>
+  <span style="color:#000;font-weight:bold">dd</span>  <span style="color:#099">0</span>         <span style="color:#998;font-style:italic">; e_flags</span>
+  <span style="color:#000;font-weight:bold">dw</span>  <span style="color:#008080">ehdrsize</span>  <span style="color:#998;font-style:italic">; e_ehsize</span>
+  <span style="color:#000;font-weight:bold">dw</span>  <span style="color:#008080">phdrsize</span>  <span style="color:#998;font-style:italic">; e_phentsize</span>
+  <span style="color:#000;font-weight:bold">dw</span>  <span style="color:#099">1</span>         <span style="color:#998;font-style:italic">; e_phnum</span>
+  <span style="color:#000;font-weight:bold">dw</span>  <span style="color:#099">0</span>         <span style="color:#998;font-style:italic">; e_shentsize</span>
+  <span style="color:#000;font-weight:bold">dw</span>  <span style="color:#099">0</span>         <span style="color:#998;font-style:italic">; e_shnum</span>
+  <span style="color:#000;font-weight:bold">dw</span>  <span style="color:#099">0</span>         <span style="color:#998;font-style:italic">; e_shstrndx</span>
+<span style="color:#008080">ehdrsize</span><span style="color:#000;font-weight:bold">  </span><span style="color:#000;font-weight:bold">equ</span>  <span style="color:#000;font-weight:bold">$</span> <span style="color:#000;font-weight:bold">-</span> <span style="color:#008080">ehdr</span>
+
+<span style="color:#900;font-weight:bold">phdr:</span>           <span style="color:#998;font-style:italic">; Elf64_Phdr</span>
+  <span style="color:#000;font-weight:bold">dd</span>  <span style="color:#099">1</span>         <span style="color:#998;font-style:italic">; p_type</span>
+  <span style="color:#000;font-weight:bold">dd</span>  <span style="color:#099">5</span>         <span style="color:#998;font-style:italic">; p_flags</span>
+  <span style="color:#000;font-weight:bold">dq</span>  <span style="color:#099">0</span>         <span style="color:#998;font-style:italic">; p_offset</span>
+  <span style="color:#000;font-weight:bold">dq</span>  <span style="color:#000;font-weight:bold">$$</span>        <span style="color:#998;font-style:italic">; p_vaddr</span>
+  <span style="color:#000;font-weight:bold">dq</span>  <span style="color:#000;font-weight:bold">$$</span>        <span style="color:#998;font-style:italic">; p_paddr</span>
+  <span style="color:#000;font-weight:bold">dq</span>  <span style="color:#008080">filesize</span>  <span style="color:#998;font-style:italic">; p_filesz</span>
+  <span style="color:#000;font-weight:bold">dq</span>  <span style="color:#008080">filesize</span>  <span style="color:#998;font-style:italic">; p_memsz</span>
+  <span style="color:#000;font-weight:bold">dq</span>  <span style="color:#099">0x1000</span>    <span style="color:#998;font-style:italic">; p_align</span>
+<span style="color:#008080">phdrsize</span><span style="color:#000;font-weight:bold">  </span><span style="color:#000;font-weight:bold">equ</span>  <span style="color:#000;font-weight:bold">$</span> <span style="color:#000;font-weight:bold">-</span> <span style="color:#008080">phdr</span>
+
+<span style="color:#900;font-weight:bold">_start:</span>
+  <span style="color:#900;font-weight:bold">mov</span> <span style="color:#0086b3">rax</span>, <span style="color:#099">1</span>
+  <span style="color:#900;font-weight:bold">mov</span> <span style="color:#0086b3">rdi</span>, <span style="color:#099">1</span>
+  <span style="color:#900;font-weight:bold">mov</span> <span style="color:#0086b3">rsi</span>, <span style="color:#008080">message</span>
+  <span style="color:#900;font-weight:bold">mov</span> <span style="color:#0086b3">rdx</span>, <span style="color:#099">13</span>
+  <span style="color:#900;font-weight:bold">syscall</span>
+  <span style="color:#900;font-weight:bold">mov</span> <span style="color:#0086b3">rax</span>, <span style="color:#099">60</span>
+  <span style="color:#900;font-weight:bold">xor</span> <span style="color:#0086b3">rdi</span>, <span style="color:#0086b3">rdi</span>
+  <span style="color:#900;font-weight:bold">syscall</span>
+
+<span style="color:#900;font-weight:bold">message:</span> <span style="color:#000;font-weight:bold">db</span> <span style="color:#d14">&#34;hello, world&#34;</span>, <span style="color:#099">0xa</span>
+
+<span style="color:#008080">filesize</span><span style="color:#000;font-weight:bold">  </span><span style="color:#000;font-weight:bold">equ</span>  <span style="color:#000;font-weight:bold">$</span> <span style="color:#000;font-weight:bold">-</span> <span style="color:#000;font-weight:bold">$$</span>
+</code></pre></div><p>还是使用 nasm，不过这一次，我们使用 <code>nasm -f bin</code> 直接得到二进制程序。</p>
+<p>最终结果是 170 个字节，这 170 字节的程序发送给任意的 x64 架构的 64 位 Linux，都可以打印出 hello world。</p>
+<p>结束了，尘埃落定。</p>
+<div class="post__tip">
+  <span class="post__tip__span">T</span>ip: 其实还可以继续，还有一些技巧可以进一步减小体积，因为非常的”Hack“，这里不打算说明了。有兴趣的朋友可以参考 <a href="http://www.muppetlabs.com/~breadbox/software/tiny/teensy.html">A Whirlwind Tutorial on Creating Really Teensy ELF Executables for Linux</a>。
+</div>
+<h3 id="final-binary-anatomy">Final Binary Anatomy</h3>
+<p>最后我们来看一下这 170 字节中每一个字节是什么，在做什么，真正地做到对每一个字节都了然于胸。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-elixir" data-lang="elixir"><span style="color:#998;font-style:italic"># ELF Header</span>
+<span style="color:#099">00</span>:   <span style="color:#099">7</span>f <span style="color:#099">45</span> <span style="color:#099">4</span>c <span style="color:#099">46</span> <span style="color:#099">02</span> <span style="color:#099">01</span> <span style="color:#099">01</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># e_ident</span>
+<span style="color:#099">08</span>:   <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># reserved</span>
+<span style="color:#099">10</span>:   <span style="color:#099">02</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># e_type</span>
+<span style="color:#099">12</span>:   <span style="color:#099">3</span>e <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># e_machine</span>
+<span style="color:#099">14</span>:   <span style="color:#099">01</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># e_version</span>
+<span style="color:#099">18</span>:   <span style="color:#099">78</span> <span style="color:#099">00</span> <span style="color:#099">40</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># e_entry</span>
+<span style="color:#099">20</span>:   <span style="color:#099">40</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># e_phoff</span>
+<span style="color:#099">28</span>:   <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># e_shoff</span>
+<span style="color:#099">30</span>:   <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># e_flags</span>
+<span style="color:#099">34</span>:   <span style="color:#099">40</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># e_ehsize</span>
+<span style="color:#099">36</span>:   <span style="color:#099">38</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># e_phentsize</span>
+<span style="color:#099">38</span>:   <span style="color:#099">01</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># e_phnum</span>
+<span style="color:#099">3</span><span style="color:#990073">a</span>:   <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># e_shentsize</span>
+<span style="color:#099">3</span><span style="color:#990073">c</span>:   <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># e_shnum</span>
+<span style="color:#099">3</span><span style="color:#990073">e</span>:   <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># e_shstrndx</span>
+
+<span style="color:#998;font-style:italic"># Program Header</span>
+<span style="color:#099">40</span>:   <span style="color:#099">01</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># p_type</span>
+<span style="color:#099">44</span>:   <span style="color:#099">05</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># p_flags</span>
+<span style="color:#099">48</span>:   <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># p_offset</span>
+<span style="color:#099">50</span>:   <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">40</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># p_vaddr</span>
+<span style="color:#099">58</span>:   <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">40</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># p_paddr</span>
+<span style="color:#099">60</span>:   aa <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># p_filesz</span>
+<span style="color:#099">68</span>:   aa <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># p_memsz</span>
+<span style="color:#099">70</span>:   <span style="color:#099">00</span> <span style="color:#099">10</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#998;font-style:italic"># p_align</span>
+
+<span style="color:#998;font-style:italic"># Code</span>
+<span style="color:#099">78</span>:   b8 <span style="color:#099">01</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span>          <span style="color:#998;font-style:italic"># mov    $0x1,%eax</span>
+<span style="color:#099">7</span><span style="color:#990073">d</span>:   bf <span style="color:#099">01</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span>          <span style="color:#998;font-style:italic"># mov    $0x1,%edi</span>
+<span style="color:#099">82</span>:   <span style="color:#099">48</span> be <span style="color:#099">9</span>d <span style="color:#099">00</span> <span style="color:#099">40</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span>    <span style="color:#998;font-style:italic"># movabs $0x40009d,%rsi</span>
+<span style="color:#099">8</span><span style="color:#990073">c</span>:   ba <span style="color:#099">0</span>d <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span>          <span style="color:#998;font-style:italic"># mov    $0xd,%edx</span>
+<span style="color:#099">91</span>:   <span style="color:#099">0</span>f <span style="color:#099">05</span>                   <span style="color:#998;font-style:italic"># syscall</span>
+<span style="color:#099">93</span>:   b8 <span style="color:#099">3</span>c <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span>          <span style="color:#998;font-style:italic"># mov    $0x3c,%eax</span>
+<span style="color:#099">98</span>:   <span style="color:#099">48</span> <span style="color:#099">31</span> ff                <span style="color:#998;font-style:italic"># xor    %rdi,%rdi</span>
+<span style="color:#099">9</span><span style="color:#990073">b</span>:   <span style="color:#099">0</span>f <span style="color:#099">05</span>                   <span style="color:#998;font-style:italic"># syscall</span>
+<span style="color:#099">9</span><span style="color:#990073">d</span>:   <span style="color:#099">68</span> <span style="color:#099">65</span> <span style="color:#099">6</span>c <span style="color:#099">6</span>c <span style="color:#099">6</span>f <span style="color:#099">2</span>c <span style="color:#099">20</span> <span style="color:#099">77</span> <span style="color:#099">6</span>f <span style="color:#099">72</span> <span style="color:#099">6</span>c <span style="color:#099">64</span> <span style="color:#099">0</span>a <span style="color:#998;font-style:italic"># &#34;hello, world\n&#34;</span>
+</code></pre></div><p>可以发现 ELF Header 是 64 个字节，Program Header 是 56 字节，代码 37 个字节，最后 13 个字节是 <code>hello, world\n</code> 这个字符串数据。</p>
+<p>从上面的反汇编中我们可以看出 x86-64 和 ARM 比起来一个显著的特点就是 x86-64 是变长指令集，每条指令的长度并不相等。长一点的 movabs 是 10 个字节，而短一点的 syscall 只有 2 个字节。</p>
+<p>关于 x86-64，Intel 官方的手册 <a href="https://software.intel.com/content/www/us/en/develop/articles/intel-sdm.html">Intel® 64 and IA-32 Architectures Software Developer Manuals</a> 十分十分详细，是每一个底层爱好者居家旅行的必备之物。</p>
+<p><a href="https://github.com/cj1128/tiny-x64-helloworld">tiny-x64-helloworld</a> 仓库中有上面每一步的代码和编译指令，供大家参考~</p>
+<p>最后，编译、链接和装载互联网上有很多资料，这篇博客的目的并不是想要详细地去介绍这里面的知识，更多地是想作为一个楔子，帮助大家建立一个整体的认识，从而挑选自己感兴趣的部分去深入学习，祝大家 Happy Coding~</p>
+          </div>
+
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/zoom-vanilla.js@2.0.6/dist/zoom-vanilla.min.js"></script>
+  <script src="/asset/main.js"></script>
+
+  
+  <script>
+    (function() {
+      var _hmt = _hmt || [];
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4f34ee3c85734c8235badd2b99b092a6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+  
+  <div style="display: none">
+    <script type="text/javascript" src="https://s23.cnzz.com/z_stat.php?id=1277776204&web_id=1277776204"></script>
+  </div>
+</body>
+</html>

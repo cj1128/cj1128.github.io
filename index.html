@@ -74,6 +74,37 @@
     
     
       <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/2020/12/10/tiny-x64-helloworld/">
+          编写一个最小的 64 位 Hello World
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>Hello World 应该是每一位程序员的启蒙程序，出自于 <a href="https://en.wikipedia.org/wiki/Brian_Kernighan">Brian Kernighan</a> 和 <a href="https://en.wikipedia.org/wiki/Dennis_Ritchie">Dennis Ritchie</a> 的一代经典著作 <a href="https://en.wikipedia.org/wiki/The_C_Programming_Language">The C Programming Language</a>。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#998;font-style:italic">// hello.c
+</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>() {
+  printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
+  <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><p>这段代码我想大家应该都太熟悉了，熟悉到可以默写出来。虽然是非常简单的代码，但是如果细究起来，里面却隐含着很多细节：</p>
+<ul>
+<li><code>#include &lt;stdio.h&gt;</code> 和 <code>#include &quot;stdio.h&quot;</code> 有什么区别？</li>
+<li><code>stdio.h</code> 文件在哪里？里面是什么内容？</li>
+<li>为什么入口是 <code>main</code> 函数？可以写一个程序入口不是 <code>main</code> 吗？</li>
+<li><code>main</code> 的 int 返回值有什么用？是谁在处理 <code>main</code> 的返回值？</li>
+<li><code>printf</code> 是谁实现的？如果不用 <code>printf</code> 可以做到在终端中打印字符吗？</li>
+</ul>
+        </div>
+
+        <div class="index__item__meta">
+          <div>
+            2020.12.10
+          </div>
+        </div>
+      </div>
+    
+      <div class="index__item">
         <a class="index__item__title hvr-underline-from-left" href="/2020/10/31/tinytorrent-a-deno-bt-downloader/">
           tinyTorrent: 从头写一个 Deno 的 BitTorrent 下载器
         </a>
@@ -262,24 +293,6 @@
         <div class="index__item__meta">
           <div>
             2019.07.29
-          </div>
-        </div>
-      </div>
-    
-      <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/2018/08/11/forward-proxy-and-reverse-proxy/">
-          正向代理与反向代理
-        </a>
-
-        <div class="index__item__content post__content">
-          <p>代理的英文叫做 <em>Proxy</em>，是计算机中的常用软件。</p>
-<p>简单来说，代理的功能犹如它的名字所示：代替某人来处理某事。</p>
-<p>常见的代理分两种，正向代理和反向代理。不管哪种代理，它们都位于客户端和服务器之间，将我们传统的 <code>客户端 &lt;-&gt; 服务器</code> 通信变成了 <code>客户端 &lt;-&gt; 代理 &lt;-&gt; 服务器</code> 通信。</p>
-        </div>
-
-        <div class="index__item__meta">
-          <div>
-            2018.08.11
           </div>
         </div>
       </div>
