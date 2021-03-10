@@ -74,6 +74,25 @@
     
     
       <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/2021/03/02/how-to-validate-tls-certificate/">
+          安全背后: 浏览器是如何校验证书的
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>现如今的 Web，HTTPS 早已经成为标配，公开的 HTTP 网站已经和 Flash 一样，慢慢在消亡了。</p>
+<p>启用 HTTPS 的核心是一个叫做 <strong>证书</strong> 的东西。不知道大家之前是否有留意到，每次上 12306 的时候，浏览器都会提示「您的链接不是私密链接」，这其实就是因为 12306 的证书有问题。如果点击「继续前往」，打开 12306 网站，它会提示你下载安装它的根证书。</p>
+<p><img src="http://asset.cjting.cn/FrBOHRLcNkDuAUnDstdn4Sjk4xMr.png" alt=""></p>
+<p>那么，证书是什么？里面含有什么内容？浏览器为什么会不信任 12306 的证书？为什么下载 12306 提供的根证书就可以解决这个问题？根证书又是什么？</p>
+        </div>
+
+        <div class="index__item__meta">
+          <div>
+            2021.03.02
+          </div>
+        </div>
+      </div>
+    
+      <div class="index__item">
         <a class="index__item__title hvr-underline-from-left" href="/2020/12/10/tiny-x64-helloworld/">
           编写一个最小的 64 位 Hello World
         </a>
@@ -276,27 +295,6 @@
         </div>
       </div>
     
-      <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/2019/07/29/image-optimization/">
-          从图片优化说起
-        </a>
-
-        <div class="index__item__content post__content">
-          <p>图片是大部分网页的重要组成部分，一般情况下，我们不会太关注这方面的问题，需要显示图片直接一个 <code>img</code> 标签搞定。</p>
-<p>但实际上，无论是对于提高加载速度，还是对于优化用户体验，优化图片都是一个重要的手段。</p>
-<p>图片优化分成两个方面：</p>
-<p>第一，图片压缩。在保证视觉效果的情况下，减少图片的体积。这个很有效，1M 和 100K 的图片，肉眼看起来几乎差不多，但却省了 90% 的流量，大大提高了加载速度。</p>
-<p>第二，响应式图片。根据客户端的情况，选择最合适的图片返回给用户。用户是一个 500px 的设备，那么返回 1000px 的图给他就是浪费。</p>
-<p>我们先来看图片压缩。</p>
-        </div>
-
-        <div class="index__item__meta">
-          <div>
-            2019.07.29
-          </div>
-        </div>
-      </div>
-    
 
     <div class="index__paginator">
       
@@ -306,7 +304,7 @@
       <div class="index__paginator__info">
         <span>1</span>
         /
-        <span>3</span>
+        <span>4</span>
       </div>
 
       

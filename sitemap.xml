@@ -3,12 +3,32 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://cjting.me/tags/assembly/</loc>
-    <lastmod>2020-12-10T01:13:48+08:00</lastmod>
+    <loc>https://cjting.me/</loc>
+    <lastmod>2021-03-02T21:39:22+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://cjting.me/</loc>
+    <loc>https://cjting.me/post/</loc>
+    <lastmod>2021-03-02T21:39:22+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/tags/</loc>
+    <lastmod>2021-03-02T21:39:22+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/tags/tls-certificate-https/</loc>
+    <lastmod>2021-03-02T21:39:22+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/2021/03/02/how-to-validate-tls-certificate/</loc>
+    <lastmod>2021-03-02T21:39:22+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cjting.me/tags/assembly/</loc>
     <lastmod>2020-12-10T01:13:48+08:00</lastmod>
   </url>
   
@@ -19,16 +39,6 @@
   
   <url>
     <loc>https://cjting.me/tags/linux/</loc>
-    <lastmod>2020-12-10T01:13:48+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://cjting.me/post/</loc>
-    <lastmod>2020-12-10T01:13:48+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://cjting.me/tags/</loc>
     <lastmod>2020-12-10T01:13:48+08:00</lastmod>
   </url>
   

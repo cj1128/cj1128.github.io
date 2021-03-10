@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+  <title>安全背后: 浏览器是如何校验证书的 - CJ Ting's Blog</title>
+  <meta name="author" content="CJ Ting">
+  <meta name="description" content="安全背后: 浏览器是如何校验证书的">
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css">
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/notyf@3.1.0/notyf.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/notyf@3.1.0/notyf.min.css">
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/zoom-vanilla.js@2.0.6/css/zoom.css">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [["$", "$"]],
+    },
+  }
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-chtml.js"></script>
+  <script type="text/javascript">
+    window.PAGE = {
+      title: "安全背后: 浏览器是如何校验证书的",
+      section: "post",
+    }
+  </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
+  <link rel="stylesheet" href="/asset/main.css">
+</head>
+<body>
+  
+  <div class="post">
+    <header class="post__header" data-cover="http://asset.cjting.cn/FohSIOjDywFAmZueZxCU1QrNi1sm.jpg">
+      <a href="/">
+        HOME
+      </a>
+    </header>
+
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              安全背后: 浏览器是如何校验证书的
+          </h1>
+
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">tls certificate https</span>
+              
+            </div>
+
+            <div class='date'>
+              2021.03.02
+            </div>
+          </div>
+
+          <div class="post__content">
+            <p>现如今的 Web，HTTPS 早已经成为标配，公开的 HTTP 网站已经和 Flash 一样，慢慢在消亡了。</p>
+<p>启用 HTTPS 的核心是一个叫做 <strong>证书</strong> 的东西。不知道大家之前是否有留意到，每次上 12306 的时候，浏览器都会提示「您的链接不是私密链接」，这其实就是因为 12306 的证书有问题。如果点击「继续前往」，打开 12306 网站，它会提示你下载安装它的根证书。</p>
+<p><img src="http://asset.cjting.cn/FrBOHRLcNkDuAUnDstdn4Sjk4xMr.png" alt=""></p>
+<p>那么，证书是什么？里面含有什么内容？浏览器为什么会不信任 12306 的证书？为什么下载 12306 提供的根证书就可以解决这个问题？根证书又是什么？</p>
+<h2 id="证书公钥和私钥">证书，公钥和私钥</h2>
+<p>我们先来简单回顾一下 TLS 和 HTTPS。关于这个话题，我在 <a href="/2016/09/05/build-a-https-site-from-scratch/">从零开始搭建一个 HTTPS 网站</a> 这篇博客中有详细的论述，对细节感兴趣的朋友可以先去读一下这篇博客。</p>
+<p>HTTPS 全称是 HTTP Over TLS，也就是使用 TLS 进行 HTTP 通信。</p>
+<p>TLS (Transport Layer Security) 是一套安全通信协议，用于建立一个安全通道来交换数据。</p>
+<p>看名字可以知道这是一个传输层协议，因此应用层协议对它是没有感知的，HTTP, FTP, SMTP 这些都可以和 TLS 配合使用。</p>
+<div class="post__tip">
+  <span class="post__tip__span">T</span>ip: 关于网络协议，阮一峰的这篇博客 <a href="https://www.ruanyifeng.com/blog/2012/05/internet_protocol_suite_part_i.html">互联网协议入门（一）</a> 写的很好，值得一看。
+</div>
+<p>TLS 创建安全链接的步骤如下：</p>
+<ul>
+<li>双方协商使用的协议版本，加密算法等细节</li>
+<li>服务器发送 证书 给客户端</li>
+<li>客户端校验证书有效性</li>
+<li>双方根据握手的一些参数生成一个对称秘钥，此后所有的内容使用这个秘钥来加密</li>
+</ul>
+<p>我们先来看证书，证书是一个文件，里面含有目标网站的各种信息。</p>
+<p>例如网站的域名，证书的有效时间，签发机构等等，其中最重要的是这两个：</p>
+<ul>
+<li>用于生成对称秘钥的公钥</li>
+<li>由上级证书签发的签名</li>
+</ul>
+<p>证书文件的格式叫做 X.509，由 <a href="https://tools.ietf.org/html/rfc5280">RFC5280</a> 规范详细定义。存储上分为两种，一种叫做 DER，是二进制的，还有一种叫做 PEM，其实就是用 Base64 编码了一下。</p>
+<p>关于 RSA 的公钥和私钥记住一点就好，我们可以使用算法生成一对钥匙，他们满足一个性质：公钥加密的私钥可以解开，私钥加密的公钥可以解开。</p>
+<div class="post__tip">
+  <span class="post__tip__span">T</span>ip: RSA 算法的具体工作原理可以参考我这篇博客 <a href="/2020/03/13/rsa/">RSA 的原理与实现</a>。
+</div>
+<p>证书，顾名思义，是用来证明自己的身份的。因为发送证书的时候是明文的（这一步也没法加密），所以证书内容是可以被中间设备篡改的。那么要怎样设计一套机制保证当我访问 github.com 的时候，收到的证书确实是 github.com 的证书，而不是某个中间设备随意发来的证书？</p>
+<p>大家可以思考一下这个问题🤔。</p>
+<p>解决办法是采用「信任链」。</p>
+<p>首先，有一批证书颁发机构（Certificate Authority，简称为 CA），他们可以生成一对钥匙，其中私钥保存好，公钥以证书的格式安装在我们的操作系统中，这就是 <strong>根证书</strong>。</p>
+<p>我们的手机、电脑、电视机的操作系统中都预装了 CA 的根证书，他们是所有信任构建的基石。当然，我们也可以自己下载其他的根证书进行安装。</p>
+<p>接下来，只要设计一个体系，能够证明 A 证书签发了 B 证书即可。这样对于收到的任何一个证书，顺藤摸瓜，只要最上面的根证书在系统中存在，即可证明该证书有效。</p>
+<p>比如说，我们收到了服务器发过来的 C 证书，我们验证了 C 是由 B 签发的，然后又验证了 B 是由 A 签发的，而 A 在我们的系统中存在，那也就证明了 C 这个证书的有效性。</p>
+<p>这其中，A 是根证书，B 是中间证书，C 是叶证书（类似树中的叶节点）。中间证书可以有很多个，信任的链条可以任意长，只要最终能到根证书即可。</p>
+<p>得益于 RSA 的非对称性质，验证 A 是否签发了 B 证书很简单：</p>
+<ul>
+<li>计算 B 的 hash 值（算法随便，比如 SHA1）</li>
+<li>使用 A 的私钥对该 hash 进行加密，加密以后的内容叫做「签名（Signature）」</li>
+<li>将该「签名」附在 B 的证书中</li>
+</ul>
+<p>A 使用自己的私钥给 B 生成签名的过程也就是「签发证书」，其中 A 叫做 Issuer，B 叫做 Subject。</p>
+<p>这样，当我们收到 B 证书时，首先使用 A 证书的公钥（公钥存储在证书中）解开签名获得 hash，然后计算 B 的 hash，如果两个 hash 匹配，说明 B 确实是由 A 签发的。</p>
+<p>重复上面的过程，直到根证书，就可以验证某个证书的有效性。</p>
+<p>接下来我们来问几个问题。</p>
+<h3 id="为什么需要中间证书">为什么需要中间证书？</h3>
+<p>为什么要设计中间证书这个环节？直接使用根证书进行签发不好吗？</p>
+<p>这是因为根证书的私钥安全性非常重要，一旦被泄露，将引起巨大的安全问题。</p>
+<p>所以，根证书的私钥都是被保存在离线的计算机中，有严格的操作规章，每次需要使用时，会有专人将数据通过 USB 拷贝过去，操作完了以后，再将数据带出来。</p>
+<p>在这套流程下，直接将根证书用于签发普通证书是不现实的。想想这个世界上有多少网站，每天对证书的需求量都是巨大的，根证书的操作效率无法满足要求，因为不能批量和自动化。</p>
+<p>同时，对根证书私钥的操作越多，泄露的风险也就越大，因此，人们就发明了中间证书。</p>
+<p>使用根证书签发一些中间证书，这些中间证书就可以用来签发大量的叶证书，这个过程完全可以是自动化的，就像 Let&rsquo;s Encrypt 那样。</p>
+<p>同时，即便中间证书泄露了也不要紧，可以使用根证书把它们撤销掉，具体怎么撤销是另外一个话题了，这里不再展开。</p>
+<p>通过使用中间证书，我们就可以做到既方便，又安全。</p>
+<h3 id="浏览器如何获取中间证书">浏览器如何获取中间证书？</h3>
+<p>一般来说，服务器会将中间证书一并发送过来。也就是说，当我们访问某个网站时，收到的不是一个证书，而是一系列证书。</p>
+<p>当然，这不是强制要求，在服务器不发送的情况下，浏览器也会使用一些方法去定位中间证书，比如</p>
+<ul>
+<li>缓存之前下载过的证书</li>
+<li>证书文件中的 Authority Information Access (AIA) Extension 里面含有上级证书的 URL，浏览器可以使用这个信息去下载上级证书</li>
+</ul>
+<h3 id="根证书有时效吗过期了怎么办">根证书有时效吗？过期了怎么办？</h3>
+<p>每个证书都有有效时间，根证书自然也不例外。</p>
+<p>在 Mac 上，打开 Keychain Access，选择侧边的 <code>System Roots</code> 就可以看到我们系统中安装的所有根证书。</p>
+<p><img src="http://asset.cjting.cn/FirK2IaLZGajhfpLAORBz6CL6NiD.png" alt=""></p>
+<p>其中很明显地显示了一栏叫做「Expires」，过期时间。</p>
+<p>那么，根证书过期了怎么办？</p>
+<p>答案是不怎么办，在过期前 CA 会生成新的根证书，并和各大产商合作，在操作系统升级到时候安装到我们的设备上。</p>
+<p>老的根证书过期以后只是无法再作为信任锚点为其他的证书提供信任而已。</p>
+<p>根证书的生命周期一般是 20 年，Let&rsquo;s Encrypt 之前使用的根证书是 <code>DST Root CA X3</code>，2021 年九月就要过期了，这个证书是 2000 年创建的。</p>
+<p>Let&rsquo;s Encrypt 在 2015 年创建了一个新的根证书 <code>ISRG Root X1</code>，在 2018 年被完全认可并逐步安装到各种设备上。</p>
+<p>安装新的根证书的唯一方式是通过系统更新，但是这其实是不可控的事情，因为总有一些设备不会更新。</p>
+<p>我们可以想象一下，如果一个设备停止更新，同时里面内置的所有根证书都过期了，那么这个设备就无法再进行 HTTPS 通信了。</p>
+<h3 id="根证书有什么特征根证书的签名是什么">根证书有什么特征？根证书的签名是什么？</h3>
+<p>每个证书中都含有当前证书对象 Subject 的信息以及该证书的签发者 Issuer 的信息。</p>
+<p>根证书的特征是 Subject 和 Issuer 的信息是一致的，也就是所谓的「自签名」（Self-Signed）。</p>
+<p><img src="http://asset.cjting.cn/FuWvD3k8eGdc6j81xg3ZDPd72hfJ.png" alt=""></p>
+<p>因为证书的签名是由上级证书的私钥来签的，根证书没有上级证书，所有根证书的签名是用自己的私钥签的。</p>
+<p>我们可以来验证一下，以 GitHub 使用的根证书 DigiCert High Assurance EV Root CA 为例。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># 首先，打开 Keychain Access，找到上述证书，拖拽出来</span>
+<span style="color:#998;font-style:italic"># 重命名为 root.cer</span>
+
+<span style="color:#998;font-style:italic"># 转换 DER 到 PEM 格式</span>
+$ openssl x509 -inform der -in root.cer -out root.pem
+
+<span style="color:#998;font-style:italic"># 查看证书的签名，可以看到签名所使用的的 hash 算法是 sha1</span>
+$ openssl x509 -in root.pem -text -noout -certopt ca_default -certopt no_validity -certopt no_serial -certopt no_subject -certopt no_extensions -certopt no_signame
+    Signature Algorithm: sha1WithRSAEncryption
+         1c:1a:06:97:dc:d7:9c:9f:3c:88:66:06:08:57:21:db:21:47:
+         f8:2a:67:aa:bf:18:32:76:40:10:57:c1:8a:f3:7a:d9:11:65:
+         8e:35:fa:9e:fc:45:b5:9e:d9:4c:31:4b:b8:91:e8:43:2c:8e:
+         b3:78:ce:db:e3:53:79:71:d6:e5:21:94:01:da:55:87:9a:24:
+         64:f6:8a:66:cc:de:9c:37:cd:a8:34:b1:69:9b:23:c8:9e:78:
+         22:2b:70:43:e3:55:47:31:61:19:ef:58:c5:85:2f:4e:30:f6:
+         a0:31:16:23:c8:e7:e2:65:16:33:cb:bf:1a:1b:a0:3d:f8:ca:
+         5e:8b:31:8b:60:08:89:2d:0c:06:5c:52:b7:c4:f9:0a:98:d1:
+         15:5f:9f:12:be:7c:36:63:38:bd:44:a4:7f:e4:26:2b:0a:c4:
+         97:69:0d:e9:8c:e2:c0:10:57:b8:c8:76:12:91:55:f2:48:69:
+         d8:bc:2a:02:5b:0f:44:d4:20:31:db:f4:ba:70:26:5d:90:60:
+         9e:bc:4b:17:09:2f:b4:cb:1e:43:68:c9:07:27:c1:d2:5c:f7:
+         ea:21:b9:68:12:9c:3c:9c:bf:9e:fc:80:5c:9b:63:cd:ec:47:
+         aa:25:27:67:a0:37:f3:00:82:7d:54:d7:a9:f8:e9:2e:13:a3:
+         77:e8:1f:4a
+
+<span style="color:#998;font-style:italic"># 提取签名内容到文件中</span>
+$ openssl x509 -in root.pem -text -noout -certopt ca_default -certopt no_validity -certopt no_serial -certopt no_subject -certopt no_extensions -certopt no_signame | grep -v <span style="color:#d14">&#39;Signature Algorithm&#39;</span> | tr -d <span style="color:#d14">&#39;[:space:]:&#39;</span> | xxd -r -p &gt; root-signature.bin
+
+<span style="color:#998;font-style:italic"># 提取根证书中含有的公钥</span>
+$ openssl x509 -in root.pem -noout -pubkey &gt; root-pub.pem
+
+<span style="color:#998;font-style:italic"># 使用公钥解密签名</span>
+$ openssl rsautl -verify -inkey root-pub.pem -in root-signature.bin -pubin &gt; root-signature-decrypted.bin
+
+<span style="color:#998;font-style:italic"># 查看解密后的内容</span>
+<span style="color:#998;font-style:italic"># 可以看到，签名中存储的 hash 值为 E35E...13A8</span>
+$ openssl asn1parse -inform DER -in root-signature-decrypted.bin
+    0:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>  <span style="color:#099">33</span> cons: SEQUENCE
+    2:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>   <span style="color:#099">9</span> cons: SEQUENCE
+    4:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>   <span style="color:#099">5</span> prim: OBJECT            :sha1
+   11:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>   <span style="color:#099">0</span> prim: NULL
+   13:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>  <span style="color:#099">20</span> prim: OCTET STRING      <span style="color:#000;font-weight:bold">[</span>HEX DUMP<span style="color:#000;font-weight:bold">]</span>:E35EF08D884F0A0ADE2F75E96301CE6230F213A8
+
+<span style="color:#998;font-style:italic"># 接下来我们计算证书的 hash 值</span>
+
+<span style="color:#998;font-style:italic"># 首先提取证书的 body</span>
+<span style="color:#998;font-style:italic"># 因为证书中含有签名，签名是不包含在 hash 值计算中的</span>
+<span style="color:#998;font-style:italic"># 所以不能简单地对整个证书文件进行 hash 运算</span>
+$ openssl asn1parse -in root.pem -strparse <span style="color:#099">4</span> -out root-body.bin &amp;&gt; /dev/null
+
+<span style="color:#998;font-style:italic"># 计算 sha1 哈希值</span>
+$ openssl dgst -sha1 root-body.bin
+SHA1<span style="color:#000;font-weight:bold">(</span>root-body.bin<span style="color:#000;font-weight:bold">)</span><span style="color:#000;font-weight:bold">=</span> e35ef08d884f0a0ade2f75e96301ce6230f213a8
+</code></pre></div><p>hash 值匹配，这也就说明根证书确实是自签名的，用自己的私钥给自己签名。</p>
+<h2 id="纸上得来终觉浅">纸上得来终觉浅</h2>
+<p>理论知识我们已经全部具备了，接下来我们来完整走一遍流程，以 github.com 为例，校验一下它的证书是否有效。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># 新建一个文件夹 github 保存所有的文件</span>
+$ mkdir github <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#0086b3">cd</span> github
+
+<span style="color:#998;font-style:italic"># 首先，我们下载 github.com 发送的证书</span>
+$ openssl s_client -connect github.com:443 -showcerts 2&gt;/dev/null &lt;/dev/null | sed -n <span style="color:#d14">&#39;/-----BEGIN/,/-----END/p&#39;</span> &gt; github.com.crt
+
+<span style="color:#998;font-style:italic"># github.com.crt 是 PEM 格式的文本文件</span>
+<span style="color:#998;font-style:italic"># 打开可以发现里面有两段 -----BEGIN CERTIFICATE----</span>
+<span style="color:#998;font-style:italic"># 这说明有两个证书，也就是 github.com 把中间证书也一并发过来了</span>
+
+<span style="color:#998;font-style:italic"># 接下来我们把两个证书提取出来</span>
+$ awk <span style="color:#d14">&#39;/BEGIN/,/END/{ if(/BEGIN/){a++}; out=&#34;cert&#34;a&#34;.tmpcrt&#34;; print &gt;out}&#39;</span> &lt; github.com.crt <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#000;font-weight:bold">for</span> cert in *.tmpcrt; <span style="color:#000;font-weight:bold">do</span> <span style="color:#008080">newname</span><span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">$(</span>openssl x509 -noout -subject -in <span style="color:#008080">$cert</span> | sed -n <span style="color:#d14">&#39;s/^.*CN=\(.*\)$/\1/; s/[ ,.*]/_/g; s/__/_/g; s/^_//g;p&#39;</span><span style="color:#000;font-weight:bold">)</span>.pem; mv <span style="color:#008080">$cert</span> <span style="color:#008080">$newname</span>; <span style="color:#000;font-weight:bold">done</span>
+
+<span style="color:#998;font-style:italic"># 我们得到了两个证书文件</span>
+<span style="color:#998;font-style:italic"># github_com.pem 和 DigiCert_SHA2_High_Assurance_Server_CA.pem</span>
+
+<span style="color:#998;font-style:italic"># 首先，验证 github_com.pem 证书确实</span>
+<span style="color:#998;font-style:italic"># 是由 DigiCert_SHA2_High_Assurance_Server_CA.pem 签发的</span>
+
+<span style="color:#998;font-style:italic"># 提取 DigiCert_SHA2_High_Assurance_Server_CA 的公钥</span>
+<span style="color:#998;font-style:italic"># 命名为 issuer-pub.pem</span>
+$ openssl x509 -in DigiCert_SHA2_High_Assurance_Server_CA.pem -noout -pubkey &gt; issuer-pub.pem
+
+<span style="color:#998;font-style:italic"># 查看 github_com.pem 的签名</span>
+$ openssl x509 -in github_com.pem -text -noout -certopt ca_default -certopt no_validity -certopt no_serial -certopt no_subject -certopt no_extensions -certopt no_signame
+    Signature Algorithm: sha256WithRSAEncryption
+         86:32:8f:9c:15:b8:af:e8:d1:de:08:3a:44:0e:71:20:24:d6:
+         fc:0e:58:31:cc:aa:b4:ad:1c:d5:0c:c5:af:c4:bb:fe:5f:ac:
+         90:6a:42:c8:21:eb:25:f1:6b:2c:37:b2:2a:a8:1a:6e:f2:d1:
+         4f:a6:2f:bc:cf:3a:d8:c1:9f:30:c0:ec:93:eb:0a:5a:dc:cb:
+         6c:32:1c:60:6e:ec:6e:f8:86:a5:4f:a0:b4:6d:6a:07:4a:21:
+         58:d0:29:7d:65:8a:c8:da:6a:ba:ab:f0:75:21:33:00:40:6f:
+         85:c5:13:e6:27:73:6c:ae:ea:e3:96:d0:53:db:c1:21:68:10:
+         cf:e3:d8:50:b0:14:ec:a9:98:cf:b8:ce:61:5d:3d:a3:6d:93:
+         34:c4:13:fa:11:66:a3:dd:be:10:19:70:49:e2:04:4d:81:2c:
+         1f:2e:59:c6:2c:53:45:3b:ee:f6:13:f4:d0:2c:84:6e:28:6d:
+         e4:e4:ca:e4:48:89:1b:ab:ec:22:1f:ee:12:d4:6c:75:e9:cc:
+         0b:15:74:e9:6d:9f:db:40:1f:e2:24:85:a3:4b:a4:e9:cd:6b:
+         c8:77:9f:87:4f:05:73:00:38:a5:23:54:68:fc:a2:3d:bf:18:
+         19:0e:a8:fd:b9:5e:8c:5c:e8:fc:e4:a2:52:70:ee:79:a7:d2:
+         27:4a:7a:49
+
+<span style="color:#998;font-style:italic"># 提取签名到文件中</span>
+$ openssl x509 -in github_com.pem -text -noout -certopt ca_default -certopt no_validity -certopt no_serial -certopt no_subject -certopt no_extensions -certopt no_signame | grep -v <span style="color:#d14">&#39;Signature Algorithm&#39;</span> | tr -d <span style="color:#d14">&#39;[:space:]:&#39;</span> | xxd -r -p &gt; github_com-signature.bin
+
+<span style="color:#998;font-style:italic"># 使用上级证书的公钥解密签名</span>
+$ openssl rsautl -verify -inkey issuer-pub.pem -in github_com-signature.bin -pubin &gt; github_com-signature-decrypted.bin
+
+<span style="color:#998;font-style:italic"># 查看解密后的信息</span>
+$ openssl asn1parse -inform DER -in github_com-signature-decrypted.bin
+    0:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>  <span style="color:#099">49</span> cons: SEQUENCE
+    2:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>  <span style="color:#099">13</span> cons: SEQUENCE
+    4:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>   <span style="color:#099">9</span> prim: OBJECT            :sha256
+   15:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>   <span style="color:#099">0</span> prim: NULL
+   17:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>  <span style="color:#099">32</span> prim: OCTET STRING      <span style="color:#000;font-weight:bold">[</span>HEX DUMP<span style="color:#000;font-weight:bold">]</span>:A8AA3F746FE780B1E2E5451CE4383A9633C4399E89AA3637252F38F324DFFD5F
+
+<span style="color:#998;font-style:italic"># 可以发现，hash 值是 A8AA...FD5F</span>
+
+<span style="color:#998;font-style:italic"># 接下来计算 github_com.pem 的 hash 值</span>
+
+<span style="color:#998;font-style:italic"># 提取证书的 body 部分</span>
+$ openssl asn1parse -in github_com.pem -strparse <span style="color:#099">4</span> -out github_com-body.bin &amp;&gt; /dev/null
+
+<span style="color:#998;font-style:italic"># 计算 hash 值</span>
+$ openssl dgst -sha256 github_com-body.bin
+SHA256<span style="color:#000;font-weight:bold">(</span>github_com-body.bin<span style="color:#000;font-weight:bold">)</span><span style="color:#000;font-weight:bold">=</span> a8aa3f746fe780b1e2e5451ce4383a9633c4399e89aa3637252f38f324dffd5f
+</code></pre></div><p>hash 值匹配，我们成功校验了 github.pem 这个证书确实是由 DigiCert_SHA2_High_Assurance_Server_CA.pem 这个证书来签发的。</p>
+<p>上面的流程比较繁琐，其实也可以直接让 openssl 来帮我们验证。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ openssl dgst -sha256 -verify issuer-pub.pem -signature github_com-signature.bin  github_com-body.bin
+Verified OK
+</code></pre></div><p>接下来的过程是上面一样，首先，我们获取上级证书的信息。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># 获取上级证书的名字</span>
+$ openssl x509 -in DigiCert_SHA2_High_Assurance_Server_CA.pem -text -noout | grep Issuer:
+        Issuer: <span style="color:#008080">C</span><span style="color:#000;font-weight:bold">=</span>US, <span style="color:#008080">O</span><span style="color:#000;font-weight:bold">=</span>DigiCert Inc, <span style="color:#008080">OU</span><span style="color:#000;font-weight:bold">=</span>www.digicert.com, <span style="color:#008080">CN</span><span style="color:#000;font-weight:bold">=</span>DigiCert High Assurance EV Root CA
+</code></pre></div><p>然后就是校验 DigiCert_SHA2_High_Assurance_Server_CA 是由 DigiCert High Assurance EV Root CA 来签发的，同时这个证书存在于我们系统中。</p>
+<p>这一步我就不再重复了，留给大家作为练习~</p>
+<h2 id="自签名">自签名</h2>
+<p>最后，我们来看看怎么自己签发证书用于本地测试。</p>
+<p>我们可以使用 openssl 这样的底层工具来完成这个任务，但是会很繁琐，需要手动完成 生成根证书、生成下级证书，使用根证书签发下级证书、安装根证书等操作。</p>
+<p>程序员首先要解放的就是自己的生产力，这里我们使用一个工具 <a href="https://github.com/FiloSottile/mkcert">mkcert</a>。</p>
+<p><code>brew intall mkcert</code> 进行安装，然后使用 <code>mkcert -install</code> 将根证书安装到系统中。</p>
+<p>接下来我们就可以任意生成我们想要的证书了，以 localhost 为例，运行 <code>mkcert localhost</code>，我们得到了两个文件，其中 <code>localhost-key.pem</code> 是私钥，<code>localhost.pem</code> 是证书，用于发送给客户端。</p>
+<p>使用一个 HTTP Server 来验证一下，这里我们使用 <a href="https://github.com/lwsjs/local-web-server">local-web-server</a>。</p>
+<p><code>yarn global add local-web-server</code> 安装完毕以后，使用 <code>ws --key localhost-key.pem --cert localhost.pem</code> 启动我们的服务器，打开 https://localhost:8000，可以看到地址栏有了一把可爱的小锁🎉。</p>
+          </div>
+
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/zoom-vanilla.js@2.0.6/dist/zoom-vanilla.min.js"></script>
+  <script src="/asset/main.js"></script>
+
+  
+  <script>
+    (function() {
+      var _hmt = _hmt || [];
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4f34ee3c85734c8235badd2b99b092a6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+  
+  <div style="display: none">
+    <script type="text/javascript" src="https://s23.cnzz.com/z_stat.php?id=1277776204&web_id=1277776204"></script>
+  </div>
+</body>
+</html>
