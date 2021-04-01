@@ -29,6 +29,9 @@
     tex: {
       inlineMath: [["$", "$"]],
     },
+    chtml: {
+      scale: 1.2,
+    },
   }
   </script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-chtml.js"></script>
@@ -74,14 +77,14 @@
 
           <div class="post__content">
             <p>现如今的 Web，HTTPS 早已经成为标配，公开的 HTTP 网站已经和 Flash 一样，慢慢在消亡了。</p>
-<p>启用 HTTPS 的核心是一个叫做 <strong>证书</strong> 的东西。不知道大家之前是否有留意到，每次上 12306 的时候，浏览器都会提示「您的链接不是私密链接」，这其实就是因为 12306 的证书有问题。如果点击「继续前往」，打开 12306 网站，它会提示你下载安装它的根证书。</p>
+<p>启用 HTTPS 的核心是一个叫做 <strong>证书</strong> 的东西。不知道大家是否有留意，前几年上 12306 的时候，浏览器都会提示「您的链接不是私密链接」，这其实就是因为 12306 的证书有问题。如果点击「继续前往」，打开 12306 网站，它会提示你下载安装它提供的“根证书”。</p>
 <p><img src="http://asset.cjting.cn/FrBOHRLcNkDuAUnDstdn4Sjk4xMr.png" alt=""></p>
 <p>那么，证书是什么？里面含有什么内容？浏览器为什么会不信任 12306 的证书？为什么下载 12306 提供的根证书就可以解决这个问题？根证书又是什么？</p>
 <h2 id="证书公钥和私钥">证书，公钥和私钥</h2>
 <p>我们先来简单回顾一下 TLS 和 HTTPS。关于这个话题，我在 <a href="/2016/09/05/build-a-https-site-from-scratch/">从零开始搭建一个 HTTPS 网站</a> 这篇博客中有详细的论述，对细节感兴趣的朋友可以先去读一下这篇博客。</p>
 <p>HTTPS 全称是 HTTP Over TLS，也就是使用 TLS 进行 HTTP 通信。</p>
-<p>TLS (Transport Layer Security) 是一套安全通信协议，用于建立一个安全通道来交换数据。</p>
-<p>看名字可以知道这是一个传输层协议，因此应用层协议对它是没有感知的，HTTP, FTP, SMTP 这些都可以和 TLS 配合使用。</p>
+<p>TLS (Transport Layer Security) 是一个安全通信协议，用于建立一个安全通道来交换数据。</p>
+<p>看名字可以知道这是一个传输层协议，因此应用层协议对它是没有感知的，HTTP, FTP, SMTP 都可以和 TLS 配合使用。</p>
 <div class="post__tip">
   <span class="post__tip__span">T</span>ip: 关于网络协议，阮一峰的这篇博客 <a href="https://www.ruanyifeng.com/blog/2012/05/internet_protocol_suite_part_i.html">互联网协议入门（一）</a> 写的很好，值得一看。
 </div>
@@ -93,29 +96,30 @@
 <li>双方根据握手的一些参数生成一个对称秘钥，此后所有的内容使用这个秘钥来加密</li>
 </ul>
 <p>我们先来看证书，证书是一个文件，里面含有目标网站的各种信息。</p>
-<p>例如网站的域名，证书的有效时间，签发机构等等，其中最重要的是这两个：</p>
+<p>例如网站的域名，证书的有效时间，签发机构等，其中最重要的是这两个：</p>
 <ul>
 <li>用于生成对称秘钥的公钥</li>
 <li>由上级证书签发的签名</li>
 </ul>
-<p>证书文件的格式叫做 X.509，由 <a href="https://tools.ietf.org/html/rfc5280">RFC5280</a> 规范详细定义。存储上分为两种，一种叫做 DER，是二进制的，还有一种叫做 PEM，其实就是用 Base64 编码了一下。</p>
-<p>关于 RSA 的公钥和私钥记住一点就好，我们可以使用算法生成一对钥匙，他们满足一个性质：公钥加密的私钥可以解开，私钥加密的公钥可以解开。</p>
+<p>证书文件的格式叫做 X.509，由 <a href="https://tools.ietf.org/html/rfc5280">RFC5280</a> 规范详细定义。存储上分为两种，一种叫做 DER，是二进制的，还有一种叫做 PEM，是基于 Base64 的。</p>
+<p>关于 RSA 的公钥和私钥记住一点就行：<strong>我们可以使用算法生成一对钥匙，他们满足一个性质：公钥加密的私钥可以解开，私钥加密的公钥可以解开</strong>。</p>
 <div class="post__tip">
   <span class="post__tip__span">T</span>ip: RSA 算法的具体工作原理可以参考我这篇博客 <a href="/2020/03/13/rsa/">RSA 的原理与实现</a>。
 </div>
-<p>证书，顾名思义，是用来证明自己的身份的。因为发送证书的时候是明文的（这一步也没法加密），所以证书内容是可以被中间设备篡改的。那么要怎样设计一套机制保证当我访问 github.com 的时候，收到的证书确实是 github.com 的证书，而不是某个中间设备随意发来的证书？</p>
+<p>证书，顾名思义，是用来证明自己身份的。因为发送证书的时候是明文的（这一步也没法加密），所以证书内容是可以被中间设备篡改的。</p>
+<p>那么要怎样设计一套机制保证当我访问 github.com 的时候，收到的证书确实是 github.com 的证书，而不是某个中间设备随意发来的证书？</p>
 <p>大家可以思考一下这个问题🤔。</p>
 <p>解决办法是采用「信任链」。</p>
-<p>首先，有一批证书颁发机构（Certificate Authority，简称为 CA），他们可以生成一对钥匙，其中私钥保存好，公钥以证书的格式安装在我们的操作系统中，这就是 <strong>根证书</strong>。</p>
-<p>我们的手机、电脑、电视机的操作系统中都预装了 CA 的根证书，他们是所有信任构建的基石。当然，我们也可以自己下载其他的根证书进行安装。</p>
+<p>首先，有一批证书颁发机构（Certificate Authority，简称为 CA），由他们生成秘钥对，其中私钥保存好，公钥以证书的格式安装在我们的操作系统中，这就是 <strong>根证书</strong>。</p>
+<p>我们的手机、电脑、电视机的操作系统中都预装了 CA 的根证书，他们是所有信任构建的基石。当然，我们也可以自己下载任意的根证书进行安装。</p>
 <p>接下来，只要设计一个体系，能够证明 A 证书签发了 B 证书即可。这样对于收到的任何一个证书，顺藤摸瓜，只要最上面的根证书在系统中存在，即可证明该证书有效。</p>
 <p>比如说，我们收到了服务器发过来的 C 证书，我们验证了 C 是由 B 签发的，然后又验证了 B 是由 A 签发的，而 A 在我们的系统中存在，那也就证明了 C 这个证书的有效性。</p>
 <p>这其中，A 是根证书，B 是中间证书，C 是叶证书（类似树中的叶节点）。中间证书可以有很多个，信任的链条可以任意长，只要最终能到根证书即可。</p>
 <p>得益于 RSA 的非对称性质，验证 A 是否签发了 B 证书很简单：</p>
 <ul>
 <li>计算 B 的 hash 值（算法随便，比如 SHA1）</li>
-<li>使用 A 的私钥对该 hash 进行加密，加密以后的内容叫做「签名（Signature）」</li>
-<li>将该「签名」附在 B 的证书中</li>
+<li>使用 A 的 <strong>私钥</strong> 对该 hash 进行加密，加密以后的内容叫做「签名（Signature）」</li>
+<li>将该「签名」附在 B 证书中</li>
 </ul>
 <p>A 使用自己的私钥给 B 生成签名的过程也就是「签发证书」，其中 A 叫做 Issuer，B 叫做 Subject。</p>
 <p>这样，当我们收到 B 证书时，首先使用 A 证书的公钥（公钥存储在证书中）解开签名获得 hash，然后计算 B 的 hash，如果两个 hash 匹配，说明 B 确实是由 A 签发的。</p>
@@ -123,19 +127,19 @@
 <p>接下来我们来问几个问题。</p>
 <h3 id="为什么需要中间证书">为什么需要中间证书？</h3>
 <p>为什么要设计中间证书这个环节？直接使用根证书进行签发不好吗？</p>
-<p>这是因为根证书的私钥安全性非常重要，一旦被泄露，将引起巨大的安全问题。</p>
+<p>这是因为根证书的私钥安全性至关重要，一旦被泄露，将引起巨大的安全问题。</p>
 <p>所以，根证书的私钥都是被保存在离线的计算机中，有严格的操作规章，每次需要使用时，会有专人将数据通过 USB 拷贝过去，操作完了以后，再将数据带出来。</p>
 <p>在这套流程下，直接将根证书用于签发普通证书是不现实的。想想这个世界上有多少网站，每天对证书的需求量都是巨大的，根证书的操作效率无法满足要求，因为不能批量和自动化。</p>
 <p>同时，对根证书私钥的操作越多，泄露的风险也就越大，因此，人们就发明了中间证书。</p>
 <p>使用根证书签发一些中间证书，这些中间证书就可以用来签发大量的叶证书，这个过程完全可以是自动化的，就像 Let&rsquo;s Encrypt 那样。</p>
-<p>同时，即便中间证书泄露了也不要紧，可以使用根证书把它们撤销掉，具体怎么撤销是另外一个话题了，这里不再展开。</p>
+<p>同时，即便中间证书的私钥泄露了也不要紧，可以使用根证书把它们撤销掉，具体怎么撤销是另外一个话题了，这里不再展开。</p>
 <p>通过使用中间证书，我们就可以做到既方便，又安全。</p>
 <h3 id="浏览器如何获取中间证书">浏览器如何获取中间证书？</h3>
 <p>一般来说，服务器会将中间证书一并发送过来。也就是说，当我们访问某个网站时，收到的不是一个证书，而是一系列证书。</p>
 <p>当然，这不是强制要求，在服务器不发送的情况下，浏览器也会使用一些方法去定位中间证书，比如</p>
 <ul>
 <li>缓存之前下载过的证书</li>
-<li>证书文件中的 Authority Information Access (AIA) Extension 里面含有上级证书的 URL，浏览器可以使用这个信息去下载上级证书</li>
+<li>证书文件中的 Authority Information Access (AIA) Extension 里面含有上级证书的相关信息，浏览器可以使用这个信息去下载上级证书</li>
 </ul>
 <h3 id="根证书有时效吗过期了怎么办">根证书有时效吗？过期了怎么办？</h3>
 <p>每个证书都有有效时间，根证书自然也不例外。</p>
@@ -143,7 +147,7 @@
 <p><img src="http://asset.cjting.cn/FirK2IaLZGajhfpLAORBz6CL6NiD.png" alt=""></p>
 <p>其中很明显地显示了一栏叫做「Expires」，过期时间。</p>
 <p>那么，根证书过期了怎么办？</p>
-<p>答案是不怎么办，在过期前 CA 会生成新的根证书，并和各大产商合作，在操作系统升级到时候安装到我们的设备上。</p>
+<p>答案是不怎么办，在过期前 CA 会生成新的根证书，并和各大产商合作，在操作系统升级的时候安装到我们的设备上。</p>
 <p>老的根证书过期以后只是无法再作为信任锚点为其他的证书提供信任而已。</p>
 <p>根证书的生命周期一般是 20 年，Let&rsquo;s Encrypt 之前使用的根证书是 <code>DST Root CA X3</code>，2021 年九月就要过期了，这个证书是 2000 年创建的。</p>
 <p>Let&rsquo;s Encrypt 在 2015 年创建了一个新的根证书 <code>ISRG Root X1</code>，在 2018 年被完全认可并逐步安装到各种设备上。</p>
@@ -235,6 +239,7 @@ $ awk <span style="color:#d14">&#39;/BEGIN/,/END/{ if(/BEGIN/){a++}; out=&#34;ce
 $ openssl x509 -in DigiCert_SHA2_High_Assurance_Server_CA.pem -noout -pubkey &gt; issuer-pub.pem
 
 <span style="color:#998;font-style:italic"># 查看 github_com.pem 的签名</span>
+<span style="color:#998;font-style:italic"># 可以看到 hash 算法是 sha256</span>
 $ openssl x509 -in github_com.pem -text -noout -certopt ca_default -certopt no_validity -certopt no_serial -certopt no_subject -certopt no_extensions -certopt no_signame
     Signature Algorithm: sha256WithRSAEncryption
          86:32:8f:9c:15:b8:af:e8:d1:de:08:3a:44:0e:71:20:24:d6:
@@ -289,9 +294,9 @@ $ openssl x509 -in DigiCert_SHA2_High_Assurance_Server_CA.pem -text -noout | gre
 <p>这一步我就不再重复了，留给大家作为练习~</p>
 <h2 id="自签名">自签名</h2>
 <p>最后，我们来看看怎么自己签发证书用于本地测试。</p>
-<p>我们可以使用 openssl 这样的底层工具来完成这个任务，但是会很繁琐，需要手动完成 生成根证书、生成下级证书，使用根证书签发下级证书、安装根证书等操作。</p>
+<p>我们可以使用 openssl 这样的底层工具来完成这个任务，但是会很繁琐：生成根证书、生成下级证书，使用根证书签发下级证书、安装根证书。</p>
 <p>程序员首先要解放的就是自己的生产力，这里我们使用一个工具 <a href="https://github.com/FiloSottile/mkcert">mkcert</a>。</p>
-<p><code>brew intall mkcert</code> 进行安装，然后使用 <code>mkcert -install</code> 将根证书安装到系统中。</p>
+<p><code>brew intall mkcert</code> 进行安装，然后使用 <code>mkcert -install</code> 将它的根证书安装到我们的系统中。</p>
 <p>接下来我们就可以任意生成我们想要的证书了，以 localhost 为例，运行 <code>mkcert localhost</code>，我们得到了两个文件，其中 <code>localhost-key.pem</code> 是私钥，<code>localhost.pem</code> 是证书，用于发送给客户端。</p>
 <p>使用一个 HTTP Server 来验证一下，这里我们使用 <a href="https://github.com/lwsjs/local-web-server">local-web-server</a>。</p>
 <p><code>yarn global add local-web-server</code> 安装完毕以后，使用 <code>ws --key localhost-key.pem --cert localhost.pem</code> 启动我们的服务器，打开 https://localhost:8000，可以看到地址栏有了一把可爱的小锁🎉。</p>

@@ -31,6 +31,9 @@
     tex: {
       inlineMath: [["$", "$"]],
     },
+    chtml: {
+      scale: 1.2,
+    },
   }
   </script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-chtml.js"></script>
@@ -72,6 +75,23 @@
           
   <div class="index u-content-container">
     
+    
+      <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/2019/08/28/tcp-queue/">
+          从一次 Connection Reset 说起，TCP 半连接队列与全连接队列
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>之前用 Go 编写过一个简单的服务器和客户端，用来测试 Go 的 HTTP 性能，无意中发现了一个奇怪的问题。</p>
+<p>在我的 Mac 上客户端程序会非常稳定地遇到 <em>Connection Reset</em> 的错误，让人一头雾水。</p>
+        </div>
+
+        <div class="index__item__meta">
+          <div>
+            2019.08.28
+          </div>
+        </div>
+      </div>
     
       <div class="index__item">
         <a class="index__item__title hvr-underline-from-left" href="/2019/07/29/image-optimization/">
@@ -242,29 +262,6 @@ Regenerating: <span style="color:#099">1</span> file<span style="color:#000;font
         <div class="index__item__meta">
           <div>
             2017.02.18
-          </div>
-        </div>
-      </div>
-    
-      <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/2017/01/23/build-an-img-bed-on-qiniu/">
-          图床on七牛，简单好用的图床插件
-        </a>
-
-        <div class="index__item__content post__content">
-          <p>注：因为七牛 API 修改，编辑于 2019-03-25T16:20:00。</p>
-<p>最近在使用过程中发现 <strong>图床on微博</strong> 出了点问题，响应体的 JSON 解析错误，不用想都知道肯定是微博修改了响应体的数据结构（微博图片上传接口响应体是 html 和 json 混在一起，十分专业）。简单修复了一下，测试的时候却发现，微博的图片上传接口变得不再稳定了，经常 404。看来微博图床是不能用了，正好我早就觉得微博不是个好图床，缺点如下：</p>
-<ol>
-<li>经常性的要重新登陆，麻烦死了</li>
-<li>无法获取到完整的上传图片列表</li>
-<li>无法删除上传的图片</li>
-<li>服务状态不可控，指不定什么时候接口就不能用了</li>
-</ol>
-        </div>
-
-        <div class="index__item__meta">
-          <div>
-            2017.01.23
           </div>
         </div>
       </div>
