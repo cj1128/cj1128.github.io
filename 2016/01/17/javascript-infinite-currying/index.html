@@ -106,12 +106,12 @@ g(<span style="color:#099">200</span>) <span style="color:#000;font-weight:bold"
 }
 
 <span style="color:#998;font-style:italic">// 传统函数调用是接收多个参数返回一个值，而柯里化函数则是接收参数返回新的函数，新的函数又可以接受参数再返回新的函数，直至最后返回结果值
-</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// 使用柯里化函数的优势是我们可以&#34;部分应用&#34; (Partial Application)函数的参数，生成新的函数，这在函数编程中是至关重要的
-</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// g(1)(2) == 3
-</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// var add1 = g(1)
-</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// add1(100) == 101
-</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// var add100 = g(100)
-</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// add100(100) == 200
+</span><span style="color:#998;font-style:italic">// 使用柯里化函数的优势是我们可以&#34;部分应用&#34; (Partial Application)函数的参数，生成新的函数，这在函数编程中是至关重要的
+</span><span style="color:#998;font-style:italic">// g(1)(2) == 3
+</span><span style="color:#998;font-style:italic">// var add1 = g(1)
+</span><span style="color:#998;font-style:italic">// add1(100) == 101
+</span><span style="color:#998;font-style:italic">// var add100 = g(100)
+</span><span style="color:#998;font-style:italic">// add100(100) == 200
 </span></code></pre></div><p>现在我们来分析上面的问题。</p>
 <p>首先，<code>add(1) == 1</code>，说明 <code>add</code> 函数应该返回一个整数。但是 <code>add(1)(2) == 3</code> 表明毫无疑问 <code>add(1)</code> 返回的值应该是一个函数。所以现在我们的问题就变成了，有没有可能让一个函数等于一个整数呢？（注意比较操作符是松散的<code>==</code>，而不是严格<code>===</code>）。</p>
 <p>答案是有可能的。这里需要我们了解 JS 的一个小知识。那就是 <code>valueOf</code> 属性。当我们将一个对象和一个 Primitive 进行比较的时候，JS 会调用对象的 <code>valueOf</code> 方法获取一个 Primitive 值，然后再进行比较。</p>

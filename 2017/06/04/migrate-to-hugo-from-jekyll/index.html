@@ -137,7 +137,7 @@ my-blog
 <p>比较常用的就是 content 和 layouts，一个存放内容，一个存放模板。</p>
 <p>Hugo 使用的模板为 Go 标准库中的 <code>text/template</code>，和所有其他模板系统一样，看看文档 <a href="https://gohugo.io/templates/go-templates/">Go Template Primer</a> 掌握基本函数即可。</p>
 <p><code>config.yaml</code> 中是全局配置，默认情况下，文章的 FrontMatter 数据格式为 TOML，我们将其改为 YAML，添加如下配置到 <code>config.yaml</code> 中。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000;font-weight:bold">metaDataFormat</span>:<span style="color:#bbb"> </span>yaml<span style="color:#bbb">
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000080">metaDataFormat</span>:<span style="color:#bbb"> </span>yaml<span style="color:#bbb">
 </span></code></pre></div><h2 id="内容">内容</h2>
 <p>在 Hugo 中，所有的内容存放在 <code>content</code> 目录中，其中每一个目录称为一个 <code>section</code>，我们先来生成一些内容用于后面测试我们的模板。</p>
 <p>假设我们博客有两个分类，<code>c1</code> 和 <code>c2</code>，每个分类下有 1 篇文章。</p>
@@ -201,7 +201,7 @@ hugo server --buildDrafts
 <h2 id="导航栏">导航栏</h2>
 <p>由于首页和分类页都要用到导航栏，所以我们使用 Hugo 的 <code>Partial</code> 来做，Partial 简单来说，就是一个片段，可以在不同的模板中引用它。</p>
 <p>我们打算直接将 <code>content</code> 目录中的子目录（叫做 <code>section</code>）作为分类，首先，在全局配置中添加如下配置。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000;font-weight:bold">SectionPagesMenu</span>:<span style="color:#bbb"> </span>main<span style="color:#bbb">
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000080">SectionPagesMenu</span>:<span style="color:#bbb"> </span>main<span style="color:#bbb">
 </span></code></pre></div><p>Hugo 提供了一套复杂的菜单系统，这个配置告诉 Hugo，将所有的 section 都放入 <code>main</code> 这个菜单中，在模板中通过遍历 main 菜单，便可以渲染出所有的分类。</p>
 <p>新建文件，<code>layouts/partials/header.html</code>。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-html" data-lang="html">&lt;<span style="color:#000080">header</span>&gt;

@@ -127,8 +127,8 @@ ssh root@<span style="color:#000;font-weight:bold">[</span>host<span style="colo
 </code></pre></div><p>第五步，配置域名解析。解析 <code>[NGROK_BASE_DOMAIN]</code> 以及 <code>*.[NGROK_BASE_DOMAIN]</code> 地址到服务器上。我使用的是 DNSPOD，截图如下。</p>
 <p><img src="http://asset.cjting.cn/9b85365djw1f43rtmytwvj20nn0bqwgl.jpg" alt=""></p>
 <p>最后一步，配置客户端，启动客户端程序。客户端的默认配置文件位置是 <code>$HOME/.ngrok</code>，填入以下配置。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000;font-weight:bold">server_addr</span>:<span style="color:#bbb"> </span>[NGROK_BASE_DOMAIN]:<span style="color:#099">4443</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#000;font-weight:bold">trust_host_root_certs</span>:<span style="color:#bbb"> </span><span style="color:#000;font-weight:bold">false</span><span style="color:#bbb">
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000080">server_addr</span>:<span style="color:#bbb"> </span>[NGROK_BASE_DOMAIN]:4443<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#000080">trust_host_root_certs</span>:<span style="color:#bbb"> </span><span style="color:#000;font-weight:bold">false</span><span style="color:#bbb">
 </span></code></pre></div><p>然后启动客户端。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">./ngrok -subdomain <span style="color:#0086b3">test</span> <span style="color:#099">8080</span>
 </code></pre></div><p>客户端会转发本地 8080 端口的服务到 <code>test.[NGROK_BASE_DOMAIN]</code> 上。以我为例，只要我访问 <code>test.tunnel.cjting.me</code>，就可以看到开发主机上 8080 端口的内容。实现了外网访问内容的目标。</p>

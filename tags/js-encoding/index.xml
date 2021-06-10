@@ -6,11 +6,7 @@
     <description>Recent content in js encoding on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 22 Jul 2018 09:45:12 +0800</lastBuildDate>
-    
-	<atom:link href="https://cjting.me/tags/js-encoding/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 22 Jul 2018 09:45:12 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/js-encoding/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>JavaScript 与 Unicode</title>
       <link>https://cjting.me/2018/07/22/js-and-unicode/</link>

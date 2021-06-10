@@ -6,13 +6,211 @@
     <description>Recent content on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 16 Mar 2021 20:13:21 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 10 Jun 2021 23:10:10 +0800</lastBuildDate>
     
         <atom:link href="https://cjting.me/index.xml" rel="self" type="application/rss+xml" />
     
     
       
     
+      
+    
+      
+    
+      
+        <item>
+          <title>热重载 C</title>
+          <link>https://cjting.me/hot-reload-c/</link>
+          <pubDate>Thu, 10 Jun 2021 23:10:10 +0800</pubDate>
+          
+
+          <guid>https://cjting.me/hot-reload-c/</guid>
+
+          <description><![CDATA[
+            
+            <img src="http://asset.cjting.cn/Fkc6gm7qyhWpzfzhPpDqHwDtO2ML.png" class="webfeedsFeaturedVisual">
+
+            <p>热重载是一个非常好用的功能，可以在不重启的情况下更新应用，从而大大提高开发效率。</p>
+<p>前端的 Wepback，后端的 Ruby/Python/Elixir，移动端的 Flutter 都有热重载，属于用过以后就回不去的 Killer Feature。</p>
+<p>在我之前的认识中，一直认为只有脚本语言才可以支持热重载，因为虚拟机让热重载的实现变得非常简单，重新运行代码即可。</p>
+<p>直到有一天，Casey 在 <a href="https://handmadehero.org/">HandmadeHero</a> 项目中用非常少的代码演示了怎样热重载 C，我才恍然大悟，编译语言一样可以热重载。</p>
+<h2 id="showtime">Showtime</h2>
+<p>我们先来看看，最后的效果如何。</p>
+<video controls>
+  <source src="http://asset.cjting.cn/FrUTcH3rMiOk_2TaWamOutbVvWgs.mp4" type="video/mp4">
+</video>
+<p>这里我用 SDL 打开了一个窗口进行绘制，通过热重载，我们可以在不重启程序的情况下修改绘图代码并查看效果。</p>
+<p>相比于传统的修改、编译、运行，热重载有两个核心优势，特别是在游戏开发中。</p>
+<p>第一是提高效率，游戏开发过程中经常需要调试一些参数，如果每次调整都需要重新编译运行的话，很繁琐也很耽误时间。</p>
+<p>第二是可以保持状态，比如我现在要调整某个怪物的攻击行为，但是这个怪物在第 10 个房间，通过热重载，我可以直接重载怪物行为的相关代码，但是如果编译重新运行，每次我都需要先跑到第 10 个房间。</p>
+<p>那么目前流行的游戏引擎是怎么解决这些问题的？一般来说是通过嵌入一个虚拟机，比如 JS 或者 Lua。游戏引擎的核心部分是 C/C++，逻辑部分使用脚本语言来编写从而实现热重载。</p>
+<p>回到正题，热重载 C 是怎样实现的？为什么一个编译语言可以热重载？</p>
+<p>这里的核心是<strong>动态链接</strong>。</p>
+<h2 id="dynamic-linking">Dynamic Linking</h2>
+<p>使用 Windows 的同学肯定对 <code>.DLL</code> 文件不陌生，它们其实就是动态链接库。在 Mac 和 Linux 上，动态链接库的后缀分别是 <code>.dylib</code> 和 <code>.so</code>。</p>
+<p>有动态链接库，自然也有静态链接库，他们对应的是两种链接方式：动态链接和静态链接。</p>
+<p>两种链接的区别简单来说如下：</p>
+<ul>
+<li>
+<p>静态链接在链接时会将库拷贝进可执行程序中，可执行程序不再依赖任何外部文件。</p>
+</li>
+<li>
+<p>而动态链接会在程序运行时动态去查找并链接库。</p>
+</li>
+</ul>
+<p>也就是说，动态链接的程序是对外部有依赖的，如果相关的库不存在，程序就无法执行。</p>
+<p>总结一下</p>
+<ul>
+<li>静态链接无依赖，自包含，体积大。</li>
+<li>动态链接有依赖，运行时需要加载外部文件，体积小。</li>
+</ul>
+<p>考虑到目前存储技术的发展，文件大小早就是一个无关紧要的事情了，那么动态链接还有必要吗？</p>
+<h3 id="why">Why</h3>
+<p>我们先来看看为什么发明了动态链接，只是为了节省文件体积吗？</p>
+<p>发明动态链接其实是一个很自然的过程。</p>
+<p>当我们的代码很多地方都有相同的逻辑时，很自然地我们会将它抽象为一个函数，避免每个地方都写一份。</p>
+<p>同样的道理，如果很多程序都依赖某些功能，那么很自然地会想着把它们抽离出来，避免每个程序都包含一份。</p>
+<p>这个想法的结果就是动态链接，思路是将链接推迟到运行时，程序文件中不再包含库代码。</p>
+<p>除了节省体积以外，动态链接还有如下的好处</p>
+<p>首先是<strong>更新方便</strong>。</p>
+<p>如果动态链接库更新了，那么所有使用它的程序无需重新编译就可以用上新功能。</p>
+<p>这一点其实非常重要，基本上所有的 C 程序都依赖 glibc，想象一下如果 glibc 出现了安全漏洞，在动态链接下，我们要做的就是升级系统的 glibc。如果是静态链接，那么所有安装的程序都要重新编译。</p>
+<p>其次是<strong>程序更加灵活</strong>。</p>
+<p>上面的热加载例子就已经足够说明问题，我们可以将某个功能编译为动态链接库，从而在不影响主程序的情况下修改这部分逻辑。</p>
+<p>这个特性十分适合于编写「插件系统」，主程序在运行时检测相关的动态链接库是否存在，如果存在就加载使用，不存在也没关系。</p>
+<p>就像游戏的本体和 DLC 一样，如果购买了 DLC 就可以享受 DLC 内容，不购买也不影响游戏本体的游玩。</p>
+<p>谈完了优点，那么动态链接的缺点呢？</p>
+<p>优点的背后也就是缺点，对外部的依赖意味着如果动态链接库如果不存在或者不兼容，我们的程序也将无法运行，也就是多了一份隐患。</p>
+<p>这在早期的 Windows 中很常见，系统升级以后 DLL 的兼容性被破坏，导致很多程序无法运行，如果是静态链接就不会有这个问题。</p>
+<p>除此之外，动态链接会引入一些性能开销，在性能上比静态链接差 5% 左右。</p>
+<p>工程是权衡的艺术，不同的场景不同的需求下有不同的考量。</p>
+<p>比如，Go 的作者就认为静态链接更适合 Go 的用途，因此 Go 默认是静态链接的。</p>
+<p><a href="https://lore.kernel.org/lkml/CAHk-=whs8QZf3YnifdLv57+FhBi5_WeNTG1B-suOES=RcUSmQg@mail.gmail.com/">Shared libraries are not a good thing in general</a> 是 Linus Torvalds 对动态链接库的一些看法，很显然，是负面的看法🙈。</p>
+<h3 id="how">How</h3>
+<p>我们来梳理一下动态链接的大致工作原理，囿于篇幅具体细节就不讨论了。</p>
+<p>先来编写一个简单的程序 main 动态链接到 foo。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#998;font-style:italic">// main.c
+</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">foo</span>(<span style="color:#458;font-weight:bold">void</span>);
+
+<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">void</span>) {
+  printf(<span style="color:#d14">&#34;this is main</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
+  foo();
+  <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#998;font-style:italic">// foo.c
+</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">foo</span>(<span style="color:#458;font-weight:bold">void</span>) {
+  printf(<span style="color:#d14">&#34;this is foo</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
+}
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># 编译 foo 为动态链接库</span>
+$ gcc -shared foo.c -o foo
+<span style="color:#998;font-style:italic"># 编译 main</span>
+$ gcc main.c ./foo.so -o main.out
+<span style="color:#998;font-style:italic"># 查看 main.out 依赖的动态链接库</span>
+$ ldd main.out
+  linux-vdso.so.1 <span style="color:#000;font-weight:bold">(</span>0x00007fffdb8c3000<span style="color:#000;font-weight:bold">)</span>
+  ./foo.so <span style="color:#000;font-weight:bold">(</span>0x00007fd913946000<span style="color:#000;font-weight:bold">)</span>
+  libc.so.6 <span style="color:#000;font-weight:bold">=</span>&gt; /usr/lib/libc.so.6 <span style="color:#000;font-weight:bold">(</span>0x00007fd91375a000<span style="color:#000;font-weight:bold">)</span>
+  /lib64/ld-linux-x86-64.so.2 <span style="color:#000;font-weight:bold">=</span>&gt; /usr/lib64/ld-linux-x86-64.so.2 <span style="color:#000;font-weight:bold">(</span>0x00007fd913952000<span style="color:#000;font-weight:bold">)</span>
+<span style="color:#998;font-style:italic"># 运行 main.out</span>
+$ ./main.out
+this is main
+this is foo
+</code></pre></div><p>可以看到程序运行一切正常。</p>
+<p>使用 <code>ldd</code> 可以得到程序依赖的动态链接库列表，可以看到 main 确实依赖了 <code>./foo.so</code>。</p>
+<p>为了从流程上理解动态链接，我们来思考如下几个问题：</p>
+<ol>
+<li>是谁在负责动态链接？</li>
+</ol>
+<p>答案是动态链接器，也就是 ldd 输出中的 <code>/lib64/ld-linux-x86-64.so.2</code>。</p>
+<p>对于动态链接的程序，ELF 文件中的 <code>.interp</code> 段记载了动态链接器的绝对路径，当程序装载时，会将动态链接器一并装载。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># 查看 .interp 段的内容</span>
+$ objdump -s -j .interp main.out
+main.out:     file format elf64-x86-64
+
+Contents of section .interp:
+ <span style="color:#099">0318</span> 2f6c6962 36342f6c 642d6c69 6e75782d  /lib64/ld-linux-
+ <span style="color:#099">0328</span> 7838362d 36342e73 6f2e3200           x86-64.so.2.
+</code></pre></div><p>普通程序装载好以后，CPU 会跳转到程序的入口地址，但是对于动态链接程序，CPU 会先跳转到动态链接器的入口，由动态链接器完成链接工作以后，再跳转到程序入口。</p>
+<ol start="2">
+<li>动态链接器怎么知道要链接哪些库？</li>
+</ol>
+<p>程序依赖的动态链接库存储在 <code>.dynamic</code> 段中。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ readelf -d main.out
+Dynamic section at offset 0x2de8 contains <span style="color:#099">27</span> entries:
+  Tag        Type                         Name/Value
+ 0x0000000000000001 <span style="color:#000;font-weight:bold">(</span>NEEDED<span style="color:#000;font-weight:bold">)</span>             Shared library: <span style="color:#000;font-weight:bold">[</span>./foo.so<span style="color:#000;font-weight:bold">]</span>
+ 0x0000000000000001 <span style="color:#000;font-weight:bold">(</span>NEEDED<span style="color:#000;font-weight:bold">)</span>             Shared library: <span style="color:#000;font-weight:bold">[</span>libc.so.6<span style="color:#000;font-weight:bold">]</span>
+ ...
+</code></pre></div><p><code>.dynamic</code> 段中存储动态链接的相关信息，其中 <code>Type=NEEDED</code> 表示程序依赖的动态链接库。</p>
+<p>可以看到，<code>main.out</code> 依赖了两个动态链接库，一个是 <code>./foo.so</code>，还有一个是 <code>libc.so.6</code>。</p>
+<ol start="3">
+<li>动态链接器如何确定库的位置？</li>
+</ol>
+<p><code>./foo.so</code> 是一个路径，这个好办，直接查找就行。但是对于 <code>libc.so.6</code> 这样一个库，动态链接器如何定位出它的具体位置？</p>
+<p>和 Shell 查找可执行程序一样，ld 有一个预定义的目录，当共享库只有名字时，会去这些目录中进行查找，一般是 /usr/lib 和 /lib。</p>
+<div class="post__tip">
+  <span class="post__tip__span">T</span>ip: <p>真实的查找机制其实更为复杂，还有如下因子在发挥作用</p>
+<ul>
+<li><code>LD_LIBRARY_PATH</code> 环境变量</li>
+<li><code>rpath</code> 设置</li>
+<li><code>/etc/ld.so.conf</code> 配置文件</li>
+</ul>
+<p>这些都会影响查找过程，具体可以参考 ld 的手册。</p>
+</div>
+<h3 id="explicit-run-time-linking">Explicit Run-time Linking</h3>
+<p>上面我们说的动态链接发生在程序的启动期间，要链接哪些库程序的 ELF 文件中都记录好了，动态链接库根据记录一一链接，完毕以后程序开始运行。</p>
+<p>动态链接的本质是<strong>将链接推迟到运行时去做</strong>，不一定非要是启动的时候，程序运行的时候再去链接某个库自然也是没有问题的。</p>
+<p>这种情况叫做「显示运行时链接」，启动时链接由动态链接器完成，运行时链接我们通过如下四个函数完成，他们也是实现热重载 C 的核心。</p>
+<ul>
+<li><code>dlopen</code>: 打开某个库</li>
+<li><code>dlsym</code>: 查找库中的符号，主要就是函数，获得函数地址以后我们就可以调用了</li>
+<li><code>dlclose</code>: 关闭某个库</li>
+<li><code>dlerror</code>: 上述过程中如果出错了，调用这个函数获取错误信息</li>
+</ul>
+<p>这些函数声明在 <code>dlfcn.h</code> 中，具体实现在 <code>libdl</code> 中，我们可以通过一个小例子来体会一下。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#998;font-style:italic">// dlopen.c
+</span><span style="color:#998;font-style:italic">// usage: ./dlopen &lt;libm path&gt;
+</span><span style="color:#998;font-style:italic"></span>
+<span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;dlfcn.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#000;font-weight:bold">typedef</span> <span style="color:#458;font-weight:bold">double</span> <span style="color:#900;font-weight:bold">sin_func</span>(<span style="color:#458;font-weight:bold">double</span>);
+
+<span style="color:#458;font-weight:bold">int</span>
+<span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>argv[])
+{
+  <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>err;
+
+  <span style="color:#000;font-weight:bold">if</span>(argc <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">2</span>) {
+    printf(<span style="color:#d14">&#34;usage: ./dlopen &lt;libm path&gt;</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">1</span>;
+  }
+
+  <span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">*</span>handle <span style="color:#000;font-weight:bold">=</span> dlopen(argv[<span style="color:#099">1</span>], RTLD_NOW);
+  <span style="color:#000;font-weight:bold">if</span>(handle <span style="color:#000;font-weight:bold">==</span> <span style="color:#0086b3">NULL</span>) {
+    printf(<span style="color:#d14">&#34;dlopen error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, dlerror());
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">1</span>;
+  }
+
+  sin_func <span style="color:#000;font-weight:bold">*</span>sin <span style="color:#000;font-weight:bold">=</span> (sin_func <span style="color:#000;font-weight:bold">*</span>)dlsym(handle, <span style="color:#d14">&#34;sin&#34;</span>);
+  <span style="color:#000;font-weight:bold">if</span>(sin <span style="color:#000;font-weight:bold">==</span> <span style="color:#0086b3">NULL</span>) {
+    printf(<span style="color:#d14">&#34;dlsym error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, dlerror());
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">1</span>;
+  }
+
+  printf(<span style="color:#d14">&#34;%f</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, sin(<span style="color:#099">3.1415926</span> <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">2</span>));
+  <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><p><code>gcc dlopen.c -ldl -o dlopen</code> 编译上面的程序，程序的功能是运行时打开 libm 库然后运行里面的 <code>sin</code> 函数，如果找不到 libm 程序报错退出。</p>
+<p>这里的逻辑可以很灵活，比如找不到 <code>libm</code> 就运行我们自己实现的 sin 等。</p>
+<p>最后，<a href="https://github.com/cj1128/hot-reload-c">hot-reload-c</a> 是上面 Demo 的源码，可以在 Mac 和 Linux 下编译运行。知道了核心原理，再去写这样一个程序就很简单了，建议大家自己动手去试试~</p>
+          ]]>
+          </description>
+        </item>
       
     
       
@@ -72,21 +270,21 @@
 </ul>
 <h2 id="validate">Validate</h2>
 <p>我们先抛开数学证明，写个程序验证一下上面的算法确实是正确的。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdint.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdlib.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdint.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdlib.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-<span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">define i32 int32_t</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">define i64 int64_t</span><span style="color:#999;font-weight:bold;font-style:italic">
+<span style="color:#999;font-weight:bold;font-style:italic">#define i32 int32_t
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define i64 int64_t
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
 i32
 <span style="color:#900;font-weight:bold">div3</span>(i32 v)
 {
   i32 magic <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1431655766</span>;
-  i32 result <span style="color:#000;font-weight:bold">=</span> ((i64)v <span style="color:#000;font-weight:bold">*</span> (i64)magic) <span style="color:#000;font-weight:bold">&gt;</span><span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#099">32</span>;
+  i32 result <span style="color:#000;font-weight:bold">=</span> ((i64)v <span style="color:#000;font-weight:bold">*</span> (i64)magic) <span style="color:#000;font-weight:bold">&gt;&gt;</span> <span style="color:#099">32</span>;
 
   <span style="color:#000;font-weight:bold">if</span>(v <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">0</span>) {
-    result <span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>;
+    result <span style="color:#000;font-weight:bold">+=</span> <span style="color:#099">1</span>;
   }
 
   <span style="color:#000;font-weight:bold">return</span> result;
@@ -97,14 +295,14 @@ i32
 {
   srand(<span style="color:#099">0x1234</span>);
 
-  <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">10000</span>; i<span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">+</span>) {
-    i32 v <span style="color:#000;font-weight:bold">=</span> (i32)rand() <span style="color:#000;font-weight:bold">*</span> (rand() <span style="color:#000;font-weight:bold">%</span> <span style="color:#099">2</span> <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span> <span style="color:#000;font-weight:bold">?</span> <span style="color:#099">1</span> <span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>);
+  <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">10000</span>; i<span style="color:#000;font-weight:bold">++</span>) {
+    i32 v <span style="color:#000;font-weight:bold">=</span> (i32)rand() <span style="color:#000;font-weight:bold">*</span> (rand() <span style="color:#000;font-weight:bold">%</span> <span style="color:#099">2</span> <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">0</span> <span style="color:#000;font-weight:bold">?</span> <span style="color:#099">1</span> <span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>);
 
     i32 got <span style="color:#000;font-weight:bold">=</span> div3(v);
     i32 expected <span style="color:#000;font-weight:bold">=</span> v <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">3</span>;
 
-    <span style="color:#000;font-weight:bold">if</span>(got <span style="color:#000;font-weight:bold">!</span><span style="color:#000;font-weight:bold">=</span> expected) {
-      printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">div3 error! dividend %d, got %d, expected %d</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>,
+    <span style="color:#000;font-weight:bold">if</span>(got <span style="color:#000;font-weight:bold">!=</span> expected) {
+      printf(<span style="color:#d14">&#34;div3 error! dividend %d, got %d, expected %d</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>,
         v,
         got,
         expected);
@@ -160,7 +358,7 @@ $$</p>
 {
   <span style="color:#458;font-weight:bold">float</span> xhalf <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0.5f</span> <span style="color:#000;font-weight:bold">*</span> x;
   <span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">*</span>(<span style="color:#458;font-weight:bold">int</span> <span style="color:#000;font-weight:bold">*</span>)<span style="color:#000;font-weight:bold">&amp;</span>x;
-  i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0x5f3759df</span> <span style="color:#000;font-weight:bold">-</span> (i <span style="color:#000;font-weight:bold">&gt;</span><span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#099">1</span>); <span style="color:#998;font-style:italic">// what the fuck???
+  i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0x5f3759df</span> <span style="color:#000;font-weight:bold">-</span> (i <span style="color:#000;font-weight:bold">&gt;&gt;</span> <span style="color:#099">1</span>); <span style="color:#998;font-style:italic">// what the fuck???
 </span><span style="color:#998;font-style:italic"></span>  x <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">*</span>(<span style="color:#458;font-weight:bold">float</span> <span style="color:#000;font-weight:bold">*</span>)<span style="color:#000;font-weight:bold">&amp;</span>i;
   x <span style="color:#000;font-weight:bold">=</span> x <span style="color:#000;font-weight:bold">*</span> (<span style="color:#099">1.5f</span> <span style="color:#000;font-weight:bold">-</span> xhalf <span style="color:#000;font-weight:bold">*</span> x <span style="color:#000;font-weight:bold">*</span> x);
   <span style="color:#000;font-weight:bold">return</span> x;
@@ -311,13 +509,13 @@ $$</p>
 </code></pre></div><p>在 Linux 上使用 <code>nasm -f elf64 div.asm</code> 编译得到 <code>div.o</code> 文件。</p>
 <p>然后是写一段 C 程序调用上面的两个汇编函数并分别测量时间。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#998;font-style:italic">// compare.c
-</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdint.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;sys/time.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdlib.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdint.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;sys/time.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdlib.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-<span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">define i32 int32_t</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">define i64 int64_t</span><span style="color:#999;font-weight:bold;font-style:italic">
+<span style="color:#999;font-weight:bold;font-style:italic">#define i32 int32_t
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define i64 int64_t
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
 i32 <span style="color:#900;font-weight:bold">div3</span>(i32);
 i32 <span style="color:#900;font-weight:bold">div3ByMul</span>(i32);
@@ -339,29 +537,29 @@ i32 <span style="color:#900;font-weight:bold">div3ByMul</span>(i32);
   <span style="color:#458;font-weight:bold">int</span> n <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">100000</span>;
 
   i32 <span style="color:#000;font-weight:bold">*</span>randoms <span style="color:#000;font-weight:bold">=</span> (i32 <span style="color:#000;font-weight:bold">*</span>)malloc(<span style="color:#000;font-weight:bold">sizeof</span>(i32) <span style="color:#000;font-weight:bold">*</span> n);
-  <span style="color:#000;font-weight:bold">if</span>(randoms <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">NULL</span>) {
-    printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">malloc error</span><span style="color:#d14">&#34;</span>);
+  <span style="color:#000;font-weight:bold">if</span>(randoms <span style="color:#000;font-weight:bold">==</span> <span style="color:#0086b3">NULL</span>) {
+    printf(<span style="color:#d14">&#34;malloc error&#34;</span>);
     exit(<span style="color:#099">1</span>);
   }
 
   <span style="color:#000;font-weight:bold">struct</span> timeval start;
 
   <span style="color:#000;font-weight:bold">while</span>(<span style="color:#099">1</span>) {
-    <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> n; i<span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">+</span>) {
-      i32 v <span style="color:#000;font-weight:bold">=</span> (i32)rand() <span style="color:#000;font-weight:bold">*</span> (rand() <span style="color:#000;font-weight:bold">%</span> <span style="color:#099">2</span> <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span> <span style="color:#000;font-weight:bold">?</span> <span style="color:#099">1</span> <span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>);
+    <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> n; i<span style="color:#000;font-weight:bold">++</span>) {
+      i32 v <span style="color:#000;font-weight:bold">=</span> (i32)rand() <span style="color:#000;font-weight:bold">*</span> (rand() <span style="color:#000;font-weight:bold">%</span> <span style="color:#099">2</span> <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">0</span> <span style="color:#000;font-weight:bold">?</span> <span style="color:#099">1</span> <span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>);
       randoms[i] <span style="color:#000;font-weight:bold">=</span> v;
 
       <span style="color:#998;font-style:italic">// check correctness
 </span><span style="color:#998;font-style:italic"></span>      i32 expected <span style="color:#000;font-weight:bold">=</span> v <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">3</span>;
 
       i32 r1 <span style="color:#000;font-weight:bold">=</span> div3(v);
-      <span style="color:#000;font-weight:bold">if</span>(r1 <span style="color:#000;font-weight:bold">!</span><span style="color:#000;font-weight:bold">=</span> expected) {
-        printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">div3 produced error result, got %d, expect %d</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, r1, expected);
+      <span style="color:#000;font-weight:bold">if</span>(r1 <span style="color:#000;font-weight:bold">!=</span> expected) {
+        printf(<span style="color:#d14">&#34;div3 produced error result, got %d, expect %d</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, r1, expected);
       }
 
       i32 r2 <span style="color:#000;font-weight:bold">=</span> div3ByMul(v);
-      <span style="color:#000;font-weight:bold">if</span>(r2 <span style="color:#000;font-weight:bold">!</span><span style="color:#000;font-weight:bold">=</span> expected) {
-        printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">div3ByMul produced error result, got %d, expect %d</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>,
+      <span style="color:#000;font-weight:bold">if</span>(r2 <span style="color:#000;font-weight:bold">!=</span> expected) {
+        printf(<span style="color:#d14">&#34;div3ByMul produced error result, got %d, expect %d</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>,
           r2,
           expected);
       }
@@ -370,23 +568,23 @@ i32 <span style="color:#900;font-weight:bold">div3ByMul</span>(i32);
     <span style="color:#458;font-weight:bold">long</span> t1 <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
     <span style="color:#458;font-weight:bold">long</span> t2 <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
 
-    <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> n; i<span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">+</span>) {
+    <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> n; i<span style="color:#000;font-weight:bold">++</span>) {
       i32 v <span style="color:#000;font-weight:bold">=</span> randoms[i];
 
       gettimeofday(<span style="color:#000;font-weight:bold">&amp;</span>start, <span style="color:#0086b3">NULL</span>);
       div3ByMul(v);
-      t1 <span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">=</span> getUS(start);
+      t1 <span style="color:#000;font-weight:bold">+=</span> getUS(start);
     }
 
-    <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> n; i<span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">+</span>) {
+    <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> n; i<span style="color:#000;font-weight:bold">++</span>) {
       i32 v <span style="color:#000;font-weight:bold">=</span> randoms[i];
 
       gettimeofday(<span style="color:#000;font-weight:bold">&amp;</span>start, <span style="color:#0086b3">NULL</span>);
       div3(v);
-      t2 <span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">=</span> getUS(start);
+      t2 <span style="color:#000;font-weight:bold">+=</span> getUS(start);
     }
 
-    printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">div3ByMul: %ld </span><span style="color:#d14">\t</span><span style="color:#d14"> div3: %ld</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, t1, t2);
+    printf(<span style="color:#d14">&#34;div3ByMul: %ld </span><span style="color:#d14">\t</span><span style="color:#d14"> div3: %ld</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, t1, t2);
   }
 }
 </code></pre></div><p>C 代码很简单，生成一些随机数，首先验证我们的汇编函数返回的结果是正确的，然后测量时间。</p>
@@ -573,7 +771,7 @@ $ openssl asn1parse -in root.pem -strparse <span style="color:#099">4</span> -ou
 
 <span style="color:#998;font-style:italic"># 计算 sha1 哈希值</span>
 $ openssl dgst -sha1 root-body.bin
-SHA1<span style="color:#000;font-weight:bold">(</span>root-body.bin<span style="color:#000;font-weight:bold">)</span><span style="color:#000;font-weight:bold">=</span> e35ef08d884f0a0ade2f75e96301ce6230f213a8
+SHA1<span style="color:#000;font-weight:bold">(</span>root-body.bin<span style="color:#000;font-weight:bold">)=</span> e35ef08d884f0a0ade2f75e96301ce6230f213a8
 </code></pre></div><p>hash 值匹配，这也就说明根证书确实是自签名的，用自己的私钥给自己签名。</p>
 <h2 id="纸上得来终觉浅">纸上得来终觉浅</h2>
 <p>理论知识我们已经全部具备了，接下来我们来完整走一遍流程，以 github.com 为例，校验一下它的证书是否有效。</p>
@@ -643,7 +841,7 @@ $ openssl asn1parse -in github_com.pem -strparse <span style="color:#099">4</spa
 
 <span style="color:#998;font-style:italic"># 计算 hash 值</span>
 $ openssl dgst -sha256 github_com-body.bin
-SHA256<span style="color:#000;font-weight:bold">(</span>github_com-body.bin<span style="color:#000;font-weight:bold">)</span><span style="color:#000;font-weight:bold">=</span> a8aa3f746fe780b1e2e5451ce4383a9633c4399e89aa3637252f38f324dffd5f
+SHA256<span style="color:#000;font-weight:bold">(</span>github_com-body.bin<span style="color:#000;font-weight:bold">)=</span> a8aa3f746fe780b1e2e5451ce4383a9633c4399e89aa3637252f38f324dffd5f
 </code></pre></div><p>hash 值匹配，我们成功校验了 github.pem 这个证书确实是由 DigiCert_SHA2_High_Assurance_Server_CA.pem 这个证书来签发的。</p>
 <p>上面的流程比较繁琐，其实也可以直接让 openssl 来帮我们验证。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ openssl dgst -sha256 -verify issuer-pub.pem -signature github_com-signature.bin  github_com-body.bin
@@ -688,10 +886,10 @@ $ openssl x509 -in DigiCert_SHA2_High_Assurance_Server_CA.pem -text -noout | gre
 
             <p>Hello World 应该是每一位程序员的启蒙程序，出自于 <a href="https://en.wikipedia.org/wiki/Brian_Kernighan">Brian Kernighan</a> 和 <a href="https://en.wikipedia.org/wiki/Dennis_Ritchie">Dennis Ritchie</a> 的一代经典著作 <a href="https://en.wikipedia.org/wiki/The_C_Programming_Language">The C Programming Language</a>。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#998;font-style:italic">// hello.c
-</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
 <span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>() {
-  printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
+  printf(<span style="color:#d14">&#34;hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
   <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
 }
 </code></pre></div><p>这段代码我想大家应该都太熟悉了，熟悉到可以默写出来。虽然是非常简单的代码，但是如果细究起来，里面却隐含着很多细节：</p>
@@ -854,10 +1052,10 @@ $ ll final.php
 <h3 id="step0">Step0</h3>
 <p>首先，我们使用上文提到的 hello.c 作为基准程序。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#998;font-style:italic">// hello.c
-</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
 <span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>() {
-  printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
+  printf(<span style="color:#d14">&#34;hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
   <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
 }
 </code></pre></div><p><code>gcc hello.c -o hello.out</code> 编译以后，它的大小是 16712 个字节。</p>
@@ -929,13 +1127,13 @@ $ ll final.php
 <p>第二是处理返回值，具体的处理方式是使用 main 函数的返回值调用 <code>exit</code> 系统调用进行退出。</p>
 <p>所以如果我们不使用启动文件的话，只需要自己使用系统调用退出即可。</p>
 <p>因为我们现在不使用 <code>_start</code> 了，自然我们的主函数也没必要一定要叫做 <code>main</code>，这里我们改个名字突出一下这个事实。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;unistd.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;unistd.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
 <span style="color:#458;font-weight:bold">int</span>
 <span style="color:#900;font-weight:bold">nomain</span>()
 {
-  printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
+  printf(<span style="color:#d14">&#34;hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
   _exit(<span style="color:#099">0</span>);
 }
 </code></pre></div><p><code>unistd.h</code> 里面提供系统调用的相关函数，这里我们使用的是 <code>_exit</code>。为什么是 <code>_exit</code> 而不是 <code>exit</code>？可以参考这个回答 <a href="https://stackoverflow.com/questions/5422831/what-is-the-difference-between-using-exit-exit-in-a-conventional-linux-fo">What is the difference between using _exit() &amp; exit() in a conventional Linux fork-exec?
@@ -957,27 +1155,27 @@ $ ll final.php
 </ul>
 <p>因为要访问寄存器，所以必须要使用内联汇编。</p>
 <p>最终代码如下，在 C 中内联汇编的语法可以参考 <a href="https://www.ibiblio.org/gferg/ldp/GCC-Inline-Assembly-HOWTO.html">这篇文档</a>。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>str <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>str <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#34;hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>;
 
 <span style="color:#458;font-weight:bold">void</span>
 <span style="color:#900;font-weight:bold">myprint</span>()
 {
-  <span style="color:#000;font-weight:bold">asm</span>(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">movq $1, %%rax </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
-      <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">movq $1, %%rdi </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
-      <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">movq %0, %%rsi </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
-      <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">movq $13, %%rdx </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
-      <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">syscall </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+  <span style="color:#000;font-weight:bold">asm</span>(<span style="color:#d14">&#34;movq $1, %%rax </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+      <span style="color:#d14">&#34;movq $1, %%rdi </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+      <span style="color:#d14">&#34;movq %0, %%rsi </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+      <span style="color:#d14">&#34;movq $13, %%rdx </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+      <span style="color:#d14">&#34;syscall </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
       <span style="color:#000;font-weight:bold">:</span> <span style="color:#998;font-style:italic">// no output
-</span><span style="color:#998;font-style:italic"></span>      <span style="color:#000;font-weight:bold">:</span> <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">r</span><span style="color:#d14">&#34;</span>(str)
-      <span style="color:#000;font-weight:bold">:</span> <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">rax</span><span style="color:#d14">&#34;</span>, <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">rdi</span><span style="color:#d14">&#34;</span>, <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">rsi</span><span style="color:#d14">&#34;</span>, <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">rdx</span><span style="color:#d14">&#34;</span>);
+</span><span style="color:#998;font-style:italic"></span>      <span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;r&#34;</span>(str)
+      <span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;rax&#34;</span>, <span style="color:#d14">&#34;rdi&#34;</span>, <span style="color:#d14">&#34;rsi&#34;</span>, <span style="color:#d14">&#34;rdx&#34;</span>);
 }
 
 <span style="color:#458;font-weight:bold">void</span>
 <span style="color:#900;font-weight:bold">myexit</span>()
 {
-  <span style="color:#000;font-weight:bold">asm</span>(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">movq $60, %rax </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
-      <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">xor %rdi, %rdi </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
-      <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">syscall </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
+  <span style="color:#000;font-weight:bold">asm</span>(<span style="color:#d14">&#34;movq $60, %rax </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+      <span style="color:#d14">&#34;xor %rdi, %rdi </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+      <span style="color:#d14">&#34;syscall </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
 }
 
 <span style="color:#458;font-weight:bold">int</span>
@@ -1009,9 +1207,9 @@ Section Headers:
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ ld --verbose
 GNU ld <span style="color:#000;font-weight:bold">(</span>GNU Binutils<span style="color:#000;font-weight:bold">)</span> 2.34
 ...
-  . <span style="color:#000;font-weight:bold">=</span> ALIGN<span style="color:#000;font-weight:bold">(</span>CONSTANT <span style="color:#000;font-weight:bold">(</span>MAXPAGESIZE<span style="color:#000;font-weight:bold">)</span><span style="color:#000;font-weight:bold">)</span>;
+  . <span style="color:#000;font-weight:bold">=</span> ALIGN<span style="color:#000;font-weight:bold">(</span>CONSTANT <span style="color:#000;font-weight:bold">(</span>MAXPAGESIZE<span style="color:#000;font-weight:bold">))</span>;
 ...
-  . <span style="color:#000;font-weight:bold">=</span> ALIGN<span style="color:#000;font-weight:bold">(</span>CONSTANT <span style="color:#000;font-weight:bold">(</span>MAXPAGESIZE<span style="color:#000;font-weight:bold">)</span><span style="color:#000;font-weight:bold">)</span>;
+  . <span style="color:#000;font-weight:bold">=</span> ALIGN<span style="color:#000;font-weight:bold">(</span>CONSTANT <span style="color:#000;font-weight:bold">(</span>MAXPAGESIZE<span style="color:#000;font-weight:bold">))</span>;
 ...
 </code></pre></div><p>可以看到里面有使用 <code>ALIGN</code> 来对齐某些 Section，使得他们的地址是 MAXPAGESIZE 的倍数，这里 MAXPAGESIZE 是 4K。</p>
 <p>这就解释了为什么我们的程序那么大。</p>
@@ -1074,7 +1272,7 @@ EOF
   <span style="color:#000;font-weight:bold">dw</span>  <span style="color:#099">0</span>         <span style="color:#998;font-style:italic">; e_shentsize</span>
   <span style="color:#000;font-weight:bold">dw</span>  <span style="color:#099">0</span>         <span style="color:#998;font-style:italic">; e_shnum</span>
   <span style="color:#000;font-weight:bold">dw</span>  <span style="color:#099">0</span>         <span style="color:#998;font-style:italic">; e_shstrndx</span>
-<span style="color:#008080">ehdrsize</span><span style="color:#000;font-weight:bold">  </span><span style="color:#000;font-weight:bold">equ</span>  <span style="color:#000;font-weight:bold">$</span> <span style="color:#000;font-weight:bold">-</span> <span style="color:#008080">ehdr</span>
+<span style="color:#008080">ehdrsize</span><span style="color:#000;font-weight:bold">  equ</span>  <span style="color:#000;font-weight:bold">$</span> <span style="color:#000;font-weight:bold">-</span> <span style="color:#008080">ehdr</span>
 
 <span style="color:#900;font-weight:bold">phdr:</span>           <span style="color:#998;font-style:italic">; Elf64_Phdr</span>
   <span style="color:#000;font-weight:bold">dd</span>  <span style="color:#099">1</span>         <span style="color:#998;font-style:italic">; p_type</span>
@@ -1085,7 +1283,7 @@ EOF
   <span style="color:#000;font-weight:bold">dq</span>  <span style="color:#008080">filesize</span>  <span style="color:#998;font-style:italic">; p_filesz</span>
   <span style="color:#000;font-weight:bold">dq</span>  <span style="color:#008080">filesize</span>  <span style="color:#998;font-style:italic">; p_memsz</span>
   <span style="color:#000;font-weight:bold">dq</span>  <span style="color:#099">0x1000</span>    <span style="color:#998;font-style:italic">; p_align</span>
-<span style="color:#008080">phdrsize</span><span style="color:#000;font-weight:bold">  </span><span style="color:#000;font-weight:bold">equ</span>  <span style="color:#000;font-weight:bold">$</span> <span style="color:#000;font-weight:bold">-</span> <span style="color:#008080">phdr</span>
+<span style="color:#008080">phdrsize</span><span style="color:#000;font-weight:bold">  equ</span>  <span style="color:#000;font-weight:bold">$</span> <span style="color:#000;font-weight:bold">-</span> <span style="color:#008080">phdr</span>
 
 <span style="color:#900;font-weight:bold">_start:</span>
   <span style="color:#900;font-weight:bold">mov</span> <span style="color:#0086b3">rax</span>, <span style="color:#099">1</span>
@@ -1099,7 +1297,7 @@ EOF
 
 <span style="color:#900;font-weight:bold">message:</span> <span style="color:#000;font-weight:bold">db</span> <span style="color:#d14">&#34;hello, world&#34;</span>, <span style="color:#099">0xa</span>
 
-<span style="color:#008080">filesize</span><span style="color:#000;font-weight:bold">  </span><span style="color:#000;font-weight:bold">equ</span>  <span style="color:#000;font-weight:bold">$</span> <span style="color:#000;font-weight:bold">-</span> <span style="color:#000;font-weight:bold">$$</span>
+<span style="color:#008080">filesize</span><span style="color:#000;font-weight:bold">  equ</span>  <span style="color:#000;font-weight:bold">$</span> <span style="color:#000;font-weight:bold">-</span> <span style="color:#000;font-weight:bold">$$</span>
 </code></pre></div><p>还是使用 nasm，不过这一次，我们使用 <code>nasm -f bin</code> 直接得到二进制程序。</p>
 <p>最终结果是 170 个字节，这 170 字节的程序发送给任意的 x64 架构的 64 位 Linux，都可以打印出 hello world。</p>
 <p>结束了，尘埃落定。</p>
@@ -1217,7 +1415,7 @@ EOF
 <p><a href="https://deno.land/x/bencode@v0.1.2">deno-bencode</a> 是我给 Deno 写的一个 Bencode 编解码库，我们现在使用这个库来看看种子文件中到底有什么。</p>
 <p>我们用 Debian 的官方种子文件来测试。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-typescript" data-lang="typescript"><span style="color:#998;font-style:italic">// decode.ts
-</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">import</span> { decode } from <span style="color:#d14">&#34;https://deno.land/x/bencode@v0.1.2/mod.ts&#34;</span>
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">import</span> { decode } <span style="color:#000;font-weight:bold">from</span> <span style="color:#d14">&#34;https://deno.land/x/bencode@v0.1.2/mod.ts&#34;</span>
 
 <span style="color:#000;font-weight:bold">const</span> file <span style="color:#000;font-weight:bold">=</span> Deno.args[<span style="color:#099">0</span>]
 console.log(decode(Deno.readFileSync(file)))
@@ -1361,10 +1559,10 @@ $ deno run --allow-read decode.ts debian-10.6.0-amd64-netinst.iso.torrent
 }
 </code></pre><p>可以发现，最大的区别在于 <code>info</code> 里面多了一个字段叫做 <code>files</code>。默认的 <code>console.log</code> 没有打印出 <code>path</code> 内容，我们改一下代码，单独打印 <code>files</code>。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-typescript" data-lang="typescript"><span style="color:#998;font-style:italic">// decode2.ts
-</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">import</span> { decode } from <span style="color:#d14">&#34;https://deno.land/x/bencode@v0.1.2/mod.ts&#34;</span>
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">import</span> { decode } <span style="color:#000;font-weight:bold">from</span> <span style="color:#d14">&#34;https://deno.land/x/bencode@v0.1.2/mod.ts&#34;</span>
 
 <span style="color:#000;font-weight:bold">const</span> file <span style="color:#000;font-weight:bold">=</span> Deno.args[<span style="color:#099">0</span>]
-<span style="color:#000;font-weight:bold">const</span> result <span style="color:#000;font-weight:bold">=</span> decode(Deno.readFileSync(file)) <span style="color:#000;font-weight:bold">as</span> any
+<span style="color:#000;font-weight:bold">const</span> result <span style="color:#000;font-weight:bold">=</span> decode(Deno.readFileSync(file)) <span style="color:#000;font-weight:bold">as</span> <span style="color:#458;font-weight:bold">any</span>
 console.log(result.info.files)
 </code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$  deno run --allow-read decode2.ts red.torrent
 <span style="color:#000;font-weight:bold">[</span>
@@ -1831,7 +2029,7 @@ Reference Manual</a></li>
 <p><code>interactive</code> / <code>non-interactive</code> 就比较好理解了。日常我们在终端中使用的就是 interactive Shell，它会输出提示符，会有 Job Control 等功能。</p>
 <p>而当我们执行 Shell 脚本时例如 <code>bash test.sh</code>，那么此时的 Shell 便是 non-interactive 的。</p>
 <p>使用如下的命令可以检测当前 Shell 是否是 interactive 的：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#000;font-weight:bold">[</span><span style="color:#000;font-weight:bold">[</span> <span style="color:#008080">$-</span> <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> *i* <span style="color:#000;font-weight:bold">]</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Interactive shell&#39;</span> <span style="color:#000;font-weight:bold">||</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Non-interactive shell&#39;</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#000;font-weight:bold">[[</span> <span style="color:#008080">$-</span> <span style="color:#000;font-weight:bold">==</span> *i* <span style="color:#000;font-weight:bold">]]</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Interactive shell&#39;</span> <span style="color:#000;font-weight:bold">||</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Non-interactive shell&#39;</span>
 </code></pre></div><p>而这条命令可以检测 Shell 是否是 login 的：</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#0086b3">shopt</span> -q login_shell <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Login shell&#39;</span> <span style="color:#000;font-weight:bold">||</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Non-login shell&#39;</span>
 </code></pre></div><p>检测是否是 login Shell 还有一个办法，那就是输入 <code>logout</code>，如果是 login Shell，效果相当于 <code>exit</code>，如果不是，会提示 <code>logout: not login shell</code>。</p>
@@ -1882,7 +2080,7 @@ Reference Manual</a></li>
 <p>是的，看起来很复杂，欢迎来到真实世界🙂。好在我们无需去记住这些细节，只要做到如果有一天遇到了问题，有一个清晰的排查方向就行了。</p>
 <p>日常使用中，对于 Bash 的配置就放在 <code>~/.bashrc</code> 中即可。<code>~/.bash_profile</code> 一般会含有 source <code>~/.bashrc</code> 的代码，所以不管 login 还是 non-login， <code>.bashrc</code> 文件都会被执行。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># Manjaro 默认的 ~/.bash_profile</span>
-<span style="color:#000;font-weight:bold">[</span><span style="color:#000;font-weight:bold">[</span> -f ~/.bashrc <span style="color:#000;font-weight:bold">]</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> . ~/.bashrc
+<span style="color:#000;font-weight:bold">[[</span> -f ~/.bashrc <span style="color:#000;font-weight:bold">]]</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> . ~/.bashrc
 </code></pre></div><div class="post__tip">
   <span class="post__tip__span">T</span>ip: 有好奇过 <code>rc</code> 后缀是什么意思吗？<a href="https://unix.stackexchange.com/questions/3467/what-does-rc-in-bashrc-stand-for">rc = run commands</a>
 </div>
@@ -1891,11 +2089,11 @@ Reference Manual</a></li>
 <p>我们以 Node 为例，新建一个文件 <code>echo 'hello from test.sh' &gt; test.sh</code>，然后设置 BASH_ENV 指向这个文件并启动 Node。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ <span style="color:#008080">BASH_ENV</span><span style="color:#000;font-weight:bold">=</span>test.sh node
 &gt; const <span style="color:#008080">c</span> <span style="color:#000;font-weight:bold">=</span> require<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;child_process&#34;</span><span style="color:#000;font-weight:bold">)</span>
-&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;echo hello&#34;</span><span style="color:#000;font-weight:bold">)</span>.toString<span style="color:#000;font-weight:bold">(</span><span style="color:#000;font-weight:bold">)</span>
+&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;echo hello&#34;</span><span style="color:#000;font-weight:bold">)</span>.toString<span style="color:#000;font-weight:bold">()</span>
 <span style="color:#d14">&#39;hello\n&#39;</span> <span style="color:#998;font-style:italic"># 可以发现 &#39;hello from test.sh&#39; 没有打印，也就是 BASH_ENV 指向的文件没有被 source</span>
-&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;echo hello&#34;</span>, <span style="color:#000;font-weight:bold">{</span>shell: <span style="color:#d14">&#34;/bin/bash&#34;</span><span style="color:#000;font-weight:bold">}</span><span style="color:#000;font-weight:bold">)</span>
+&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;echo hello&#34;</span>, <span style="color:#000;font-weight:bold">{</span>shell: <span style="color:#d14">&#34;/bin/bash&#34;</span><span style="color:#000;font-weight:bold">})</span>
 <span style="color:#d14">&#39;hello from test.sh\nhello\n&#39;</span> <span style="color:#998;font-style:italic"># 这次有了</span>
-&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;</span><span style="color:#d14">echo </span><span style="color:#008080">$0</span><span style="color:#d14">&#34;</span><span style="color:#000;font-weight:bold">)</span>.toString<span style="color:#000;font-weight:bold">(</span><span style="color:#000;font-weight:bold">)</span>
+&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;echo </span><span style="color:#008080">$0</span><span style="color:#d14">&#34;</span><span style="color:#000;font-weight:bold">)</span>.toString<span style="color:#000;font-weight:bold">()</span>
 <span style="color:#d14">&#39;/bin/sh\n&#39;</span> <span style="color:#998;font-style:italic"># 默认情况下执行的是 /bin/sh</span>
 </code></pre></div><h2 id="zsh">ZSH</h2>
 <p>我们个人开发电脑一般多使用 ZSH，毕竟配合 Oh-My-Zsh 以后实在是太好用了。</p>
@@ -1997,7 +2195,7 @@ Reference Manual</a></li>
   &lt;<span style="color:#000080">style</span> <span style="color:#008080">type</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;text/css&#34;</span>&gt;
     @<span style="color:#000;font-weight:bold">font-face</span> {
       <span style="color:#000080">font-family</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000080">test</span><span style="color:#000;font-weight:bold">;</span>
-      <span style="color:#000080">src</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000080">url</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000080">mpepc5unpb</span>.<span style="color:#458;font-weight:bold">woff</span><span style="color:#000;font-weight:bold">)</span><span style="color:#000;font-weight:bold">;</span>
+      <span style="color:#000080">src</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000080">url</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000080">mpepc5unpb</span>.<span style="color:#458;font-weight:bold">woff</span><span style="color:#000;font-weight:bold">);</span>
     }
 
     <span style="color:#000080">div</span> {
@@ -2225,33 +2423,33 @@ ws.on(<span style="color:#d14">&#34;message&#34;</span>, payload =&gt; {
 <p>获取到字体 ID 和假数据以后，接下来我们要做的就是使用字体渲染一张图片，然后调用 OCR 工具识别图片。</p>
 <p>我们先使用字体 ID 将字体下载下来，字体的下载 URL 是固定的 <code>https://shark.douyucdn.cn/app/douyu/res/font/FONT_ID.woff</code>。</p>
 <p>怎样渲染字体到图片呢？这个问题方案有很多，上文中我们利用了浏览器，这里我选择使用 SDL。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;SDL2/SDL.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;SDL2/SDL_ttf.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;SDL2/SDL_image.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;SDL2/SDL.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;SDL2/SDL_ttf.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;SDL2/SDL_image.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
 <span style="color:#458;font-weight:bold">int</span>
 <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">void</span>)
 {
-  <span style="color:#000;font-weight:bold">if</span>(TTF_Init() <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) {
-    printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, TTF_GetError());
+  <span style="color:#000;font-weight:bold">if</span>(TTF_Init() <span style="color:#000;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) {
+    printf(<span style="color:#d14">&#34;error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, TTF_GetError());
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">1</span>;
   }
 
-  TTF_Font <span style="color:#000;font-weight:bold">*</span>font <span style="color:#000;font-weight:bold">=</span> TTF_OpenFont(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">test.woff</span><span style="color:#d14">&#34;</span>, <span style="color:#099">50</span>);
-  <span style="color:#000;font-weight:bold">if</span>(font <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">NULL</span>) {
-    printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, TTF_GetError());
+  TTF_Font <span style="color:#000;font-weight:bold">*</span>font <span style="color:#000;font-weight:bold">=</span> TTF_OpenFont(<span style="color:#d14">&#34;test.woff&#34;</span>, <span style="color:#099">50</span>);
+  <span style="color:#000;font-weight:bold">if</span>(font <span style="color:#000;font-weight:bold">==</span> <span style="color:#0086b3">NULL</span>) {
+    printf(<span style="color:#d14">&#34;error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, TTF_GetError());
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">1</span>;
   }
 
   SDL_Color black <span style="color:#000;font-weight:bold">=</span> { <span style="color:#099">0x00</span>, <span style="color:#099">0x00</span>, <span style="color:#099">0x00</span> };
-  SDL_Surface <span style="color:#000;font-weight:bold">*</span>surface <span style="color:#000;font-weight:bold">=</span> TTF_RenderText_Solid(font, <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">0123456789</span><span style="color:#d14">&#34;</span>, black);
-  <span style="color:#000;font-weight:bold">if</span>(surface <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">NULL</span>) {
-    printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, TTF_GetError());
+  SDL_Surface <span style="color:#000;font-weight:bold">*</span>surface <span style="color:#000;font-weight:bold">=</span> TTF_RenderText_Solid(font, <span style="color:#d14">&#34;0123456789&#34;</span>, black);
+  <span style="color:#000;font-weight:bold">if</span>(surface <span style="color:#000;font-weight:bold">==</span> <span style="color:#0086b3">NULL</span>) {
+    printf(<span style="color:#d14">&#34;error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, TTF_GetError());
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">1</span>;
   }
 
-  IMG_SavePNG(surface, <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">test.png</span><span style="color:#d14">&#34;</span>);
+  IMG_SavePNG(surface, <span style="color:#d14">&#34;test.png&#34;</span>);
   <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
 }
 </code></pre></div><p>SDL 渲染速度非常快，结果也很清楚，用来 OCR 应该足够了。</p>
@@ -2378,25 +2576,25 @@ Dumping <span style="color:#d14">&#39;gasp&#39;</span> table...
 Dumping <span style="color:#d14">&#39;GSUB&#39;</span> table...
 </code></pre></div><p>我们会发现目录下多了一个 <code>hack.subset.ttx</code> 文件，打开观察一下。</p>
 <p>很容易就可以发现，<code>cmap</code> 标签中定义了字符和图形的映射。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-xml" data-lang="xml"><span style="color:#000080">&lt;cmap</span><span style="color:#000080">&gt;</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-xml" data-lang="xml"><span style="color:#000080">&lt;cmap&gt;</span>
   <span style="color:#000080">&lt;tableVersion</span> <span style="color:#008080">version=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">/&gt;</span>
   <span style="color:#000080">&lt;cmap_format_4</span> <span style="color:#008080">platformID=</span><span style="color:#d14">&#34;0&#34;</span> <span style="color:#008080">platEncID=</span><span style="color:#d14">&#34;3&#34;</span> <span style="color:#008080">language=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x30&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;zero&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!--</span><span style="color:#998;font-style:italic"> DIGIT ZERO </span><span style="color:#998;font-style:italic">--&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x31&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;one&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!--</span><span style="color:#998;font-style:italic"> DIGIT ONE </span><span style="color:#998;font-style:italic">--&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x32&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;two&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!--</span><span style="color:#998;font-style:italic"> DIGIT TWO </span><span style="color:#998;font-style:italic">--&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x33&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;three&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!--</span><span style="color:#998;font-style:italic"> DIGIT THREE </span><span style="color:#998;font-style:italic">--&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x34&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;four&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!--</span><span style="color:#998;font-style:italic"> DIGIT FOUR </span><span style="color:#998;font-style:italic">--&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x35&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;five&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!--</span><span style="color:#998;font-style:italic"> DIGIT FIVE </span><span style="color:#998;font-style:italic">--&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x36&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;six&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!--</span><span style="color:#998;font-style:italic"> DIGIT SIX </span><span style="color:#998;font-style:italic">--&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x37&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;seven&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!--</span><span style="color:#998;font-style:italic"> DIGIT SEVEN </span><span style="color:#998;font-style:italic">--&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x38&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;eight&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!--</span><span style="color:#998;font-style:italic"> DIGIT EIGHT </span><span style="color:#998;font-style:italic">--&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x39&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;nine&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!--</span><span style="color:#998;font-style:italic"> DIGIT NINE </span><span style="color:#998;font-style:italic">--&gt;</span>
+    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x30&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;zero&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT ZERO --&gt;</span>
+    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x31&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;one&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT ONE --&gt;</span>
+    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x32&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;two&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT TWO --&gt;</span>
+    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x33&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;three&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT THREE --&gt;</span>
+    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x34&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;four&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT FOUR --&gt;</span>
+    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x35&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;five&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT FIVE --&gt;</span>
+    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x36&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;six&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT SIX --&gt;</span>
+    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x37&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;seven&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT SEVEN --&gt;</span>
+    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x38&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;eight&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT EIGHT --&gt;</span>
+    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x39&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;nine&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT NINE --&gt;</span>
   <span style="color:#000080">&lt;/cmap_format_4&gt;</span>
   ...
 <span style="color:#000080">&lt;/cmap&gt;</span>
 </code></pre></div><p><code>0x30</code> 也就是字符 0 对应 <code>name=&quot;zero&quot;</code> 的 <code>TTGlyph</code>，TTGlyph 中定义了渲染要用的数据，也就是一些坐标。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-xml" data-lang="xml"><span style="color:#000080">&lt;TTGlyph</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;zero&#34;</span> <span style="color:#008080">xMin=</span><span style="color:#d14">&#34;123&#34;</span> <span style="color:#008080">yMin=</span><span style="color:#d14">&#34;-29&#34;</span> <span style="color:#008080">xMax=</span><span style="color:#d14">&#34;1110&#34;</span> <span style="color:#008080">yMax=</span><span style="color:#d14">&#34;1520&#34;</span><span style="color:#000080">&gt;</span>
-  <span style="color:#000080">&lt;contour</span><span style="color:#000080">&gt;</span>
+  <span style="color:#000080">&lt;contour&gt;</span>
     <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;617&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;-29&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;1&#34;</span><span style="color:#000080">/&gt;</span>
     <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;369&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;-29&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">/&gt;</span>
     <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;246&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;165&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;1&#34;</span><span style="color:#000080">/&gt;</span>
@@ -2550,7 +2748,7 @@ A 0 B F        Z X C V
 <p>输入方面，使用 SDL 的事件我们可以很轻松的获取到键盘信息。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c">SDL_Event e;
 <span style="color:#000;font-weight:bold">while</span>(SDL_PollEvent(<span style="color:#000;font-weight:bold">&amp;</span>e)) {
-  <span style="color:#000;font-weight:bold">if</span>(e.type <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> SDL_KEYDOWN) {
+  <span style="color:#000;font-weight:bold">if</span>(e.type <span style="color:#000;font-weight:bold">==</span> SDL_KEYDOWN) {
     <span style="color:#000;font-weight:bold">switch</span>(e.key.keysym.sym) {
       <span style="color:#000;font-weight:bold">case</span> <span style="color:#900;font-weight:bold">SDLK_1</span>:
         ...
@@ -2564,8 +2762,8 @@ SDL_LockTexture(screenTexture, <span style="color:#0086b3">NULL</span>, <span st
 
 u32(<span style="color:#000;font-weight:bold">*</span>pixels)[pitch <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">4</span>] <span style="color:#000;font-weight:bold">=</span> rawPixels;
 
-<span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> y <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; y <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">64</span>; y<span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">+</span>) {
-  <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> x <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; x <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">32</span>; x<span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">+</span>) {
+<span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> y <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; y <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">64</span>; y<span style="color:#000;font-weight:bold">++</span>) {
+  <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> x <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; x <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">32</span>; x<span style="color:#000;font-weight:bold">++</span>) {
     pixels[y][x] <span style="color:#000;font-weight:bold">=</span>  ...
   }
 }
@@ -2574,7 +2772,7 @@ SDL_UnlockTexture(screenTexture);
 </code></pre></div><p>声音方面，可以通过 <code>SDL_QueueAudio</code> 函数来播放一段声音。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#458;font-weight:bold">float</span> <span style="color:#000;font-weight:bold">*</span>buf <span style="color:#000;font-weight:bold">=</span> malloc(bufLength)
 
-<span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> sampleCount; i<span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">+</span>) {
+<span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> sampleCount; i<span style="color:#000;font-weight:bold">++</span>) {
   buf[i] <span style="color:#000;font-weight:bold">=</span> ...
 }
 
@@ -2704,7 +2902,7 @@ set tabstop=2
 
 <span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">ExampleCommand</span>(sublime_plugin<span style="color:#000;font-weight:bold">.</span>TextCommand):
   <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">run</span>(<span style="color:#999">self</span>, edit):
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>insert(edit, <span style="color:#099">0</span>, <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">Hello, World!</span><span style="color:#d14">&#34;</span>)
+    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>insert(edit, <span style="color:#099">0</span>, <span style="color:#d14">&#34;Hello, World!&#34;</span>)
 </code></pre></div><p>Sublime 提供了几个基础类用于我们继承来实现一些基本功能，比如 <code>TextCommand</code> 用于实现文本操作，<code>EventListener</code> 实现事件监听。</p>
 <p>这个默认插件定义了 <code>ExampleCommand</code>，每次运行时，调用 view 的 <code>insert</code> 方法插入 <code>Hello, World!</code> 字符串到 0 位置，也就是最前面。</p>
 <p>定义了 Command 以后，我们绑定一个快捷键到这个 Command 就可以运行它。在 Command Paletee，输入 <code>Preferences: Key Bindings</code> 打开快捷键配置，输入以下配置：</p>
@@ -2727,7 +2925,7 @@ set tabstop=2
   <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">run</span>(<span style="color:#999">self</span>, edit):
     selections <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>sel()
     <span style="color:#000;font-weight:bold">if</span> <span style="color:#0086b3">len</span>(selections) <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">1</span> <span style="color:#000;font-weight:bold">and</span> selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>begin() <span style="color:#000;font-weight:bold">==</span> selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>end():
-      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>insert(edit, selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>begin(), <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">Hello, World!</span><span style="color:#d14">&#34;</span>)
+      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>insert(edit, selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>begin(), <span style="color:#d14">&#34;Hello, World!&#34;</span>)
 </code></pre></div><p><img src="http://asset.cjting.cn/Fv7cIbgvITQv5GEasA4W04435vxI.gif" alt=""></p>
 <h2 id="buildx">BuildX</h2>
 <p>现在我们来看看怎样实现一个插件实现我想要的 构建、侧边显示错误信息、快速跳转错误行 的功能。我给这个插件起名叫做 BuildX。</p>
@@ -2757,7 +2955,7 @@ set tabstop=2
 </code></pre></div><p>BuildX 插件：</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python"><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">BuildXListener</span>(sublime_plugin<span style="color:#000;font-weight:bold">.</span>EventListener):
   <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_query_context</span>(<span style="color:#999">self</span>, view, key, <span style="color:#000;font-weight:bold">*</span>args):
-    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">for_buildx</span><span style="color:#d14">&#39;</span>:
+    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#39;for_buildx&#39;</span>:
       <span style="color:#998;font-style:italic"># 取消执行快捷键对应的 Command</span>
       <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">None</span>
 
@@ -2779,10 +2977,10 @@ set tabstop=2
     <span style="color:#998;font-style:italic"># 到了这里说明 Exec Panel 的内容更新了</span>
 
   <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_query_context</span>(<span style="color:#999">self</span>, view, key, <span style="color:#000;font-weight:bold">*</span>args):
-    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">for_buildx</span><span style="color:#d14">&#39;</span>:
+    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#39;for_buildx&#39;</span>:
       <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">None</span>
 
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">exec</span><span style="color:#d14">&#39;</span>)
+    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14">&#39;exec&#39;</span>)
 
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">True</span>
 </code></pre></div><h3 id="创建-target-view">创建 Target View</h3>
@@ -2803,15 +3001,15 @@ set tabstop=2
     <span style="color:#998;font-style:italic"># 创建 target view</span>
     <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view <span style="color:#000;font-weight:bold">is</span> <span style="color:#999">None</span>:
       <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>window<span style="color:#000;font-weight:bold">.</span>new_file()
-      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_name(<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">Build Output</span><span style="color:#d14">&#39;</span>)
+      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_name(<span style="color:#d14">&#39;Build Output&#39;</span>)
       <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_scratch(<span style="color:#999">True</span>)
 
   <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_query_context</span>(<span style="color:#999">self</span>, view, key, <span style="color:#000;font-weight:bold">*</span>args):
-    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">for_buildx</span><span style="color:#d14">&#39;</span>:
+    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#39;for_buildx&#39;</span>:
       <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">None</span>
 
     <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>window <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">exec</span><span style="color:#d14">&#39;</span>)
+    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14">&#39;exec&#39;</span>)
 
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">True</span>
 </code></pre></div><p>这样每次构建时，如果没有 Target View，就会新建一个。</p>
@@ -2843,21 +3041,21 @@ set tabstop=2
     <span style="color:#998;font-style:italic"># 创建 target view</span>
     <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view <span style="color:#000;font-weight:bold">is</span> <span style="color:#999">None</span>:
       <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>window<span style="color:#000;font-weight:bold">.</span>new_file()
-      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_name(<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">Build Output</span><span style="color:#d14">&#39;</span>)
+      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_name(<span style="color:#d14">&#39;Build Output&#39;</span>)
       <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_scratch(<span style="color:#999">True</span>)
 
     <span style="color:#998;font-style:italic"># 复制内容到 target view</span>
     new_pos <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>size()
     region <span style="color:#000;font-weight:bold">=</span> sublime<span style="color:#000;font-weight:bold">.</span>Region(<span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>last_pos, new_pos)
     content <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>substr(region)
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>run_command(<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">content_replace</span><span style="color:#d14">&#39;</span>, {<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">start</span><span style="color:#d14">&#39;</span>: <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>last_pos, <span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">end</span><span style="color:#d14">&#39;</span>: new_pos, <span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">text</span><span style="color:#d14">&#39;</span>: content})
+    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>run_command(<span style="color:#d14">&#39;content_replace&#39;</span>, {<span style="color:#d14">&#39;start&#39;</span>: <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>last_pos, <span style="color:#d14">&#39;end&#39;</span>: new_pos, <span style="color:#d14">&#39;text&#39;</span>: content})
 
   <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_query_context</span>(<span style="color:#999">self</span>, view, key, <span style="color:#000;font-weight:bold">*</span>args):
-    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">for_buildxy</span><span style="color:#d14">&#39;</span>:
+    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#39;for_buildxy&#39;</span>:
       <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">None</span>
 
     <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>window <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14"></span><span style="color:#d14">&#39;</span><span style="color:#d14">exec</span><span style="color:#d14">&#39;</span>)
+    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14">&#39;exec&#39;</span>)
 
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">True</span>
 </code></pre></div><p>到了这里，核心功能就已经有了，构建的输出可以在 Target View 中显示，从现在开始我们就可以摆脱底部的 Exec Panel 了。</p>
@@ -3350,7 +3548,7 @@ Decrypt result: <span style="color:#099">1024</span>
   <span style="color:#d14">&#34;net/http&#34;</span>
 )
 
-<span style="color:#000;font-weight:bold">var</span> content = []<span style="color:#0086b3">byte</span>(<span style="color:#d14">`</span><span style="color:#d14">hello world</span><span style="color:#d14">`</span>)
+<span style="color:#000;font-weight:bold">var</span> content = []<span style="color:#0086b3">byte</span>(<span style="color:#d14">`hello world`</span>)
 
 <span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>() {
   http.<span style="color:#900;font-weight:bold">HandleFunc</span>(<span style="color:#d14">&#34;/&#34;</span>, <span style="color:#000;font-weight:bold">func</span>(w http.ResponseWriter, r <span style="color:#000;font-weight:bold">*</span>http.Request) {
@@ -3452,7 +3650,7 @@ nr_table_entries <span style="color:#000;font-weight:bold">=</span> backlog
 nr_table_entries <span style="color:#000;font-weight:bold">=</span> min(backlog, sysctl_max_syn_backlog)
 nr_table_entries <span style="color:#000;font-weight:bold">=</span> max(nr_table_entries, <span style="color:#099">8</span>)
 <span style="color:#998;font-style:italic">// roundup_pow_of_two: 将参数向上取整到最小的 2^n
-</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// 注意这里存在一个 +1
+</span><span style="color:#998;font-style:italic">// 注意这里存在一个 +1
 </span><span style="color:#998;font-style:italic"></span>nr_table_entries <span style="color:#000;font-weight:bold">=</span> roundup_pow_of_two(nr_table_entries <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>)
 max_qlen_log <span style="color:#000;font-weight:bold">=</span> max(<span style="color:#099">3</span>, log2(nr_table_entries))
 max_queue_length <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">2</span><span style="color:#000;font-weight:bold">^</span>max_qlen_log
@@ -3497,8 +3695,8 @@ max_queue_length = 2^8 = 256
 <p>启动一个 <a href="https://gist.github.com/cj1128/e6620df2ea2e650164d7513b05c88c8c">simple-tcp-server</a> 来监听 8877 端口，<code>listen</code> 的 <code>backlog</code> 参数为 7, <code>somaxconn</code> 为默认值 128，<code>tcp_max_syn_backlog</code> 为默认值 1024，此时半连接队列的长度为 16。</p>
 <p>启动 <code>tcpdump</code> 监听 8877 端口相关的所有数据包 <code>tcpdump -tn -i lo port 8877</code>。</p>
 <p>启动 <code>scapy</code> 命令行工具，我们先来发送一个 SYN 包看看。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python">ip <span style="color:#000;font-weight:bold">=</span> IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">127.0.0.1</span><span style="color:#d14">&#34;</span>)
-tcp <span style="color:#000;font-weight:bold">=</span> TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">S</span><span style="color:#d14">&#34;</span>)
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python">ip <span style="color:#000;font-weight:bold">=</span> IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;127.0.0.1&#34;</span>)
+tcp <span style="color:#000;font-weight:bold">=</span> TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;S&#34;</span>)
 send(ip<span style="color:#000;font-weight:bold">/</span>tcp)
 </code></pre></div><p>我们会发现，tcpdump 显示收到一个 SYN 包，但是没有对应的 SYN/ACK 回复？？？</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">IP 127.0.0.1.ftp-data &gt; 127.0.0.1.8877: Flags [S], seq 0, win 8192, length 0
@@ -3541,11 +3739,11 @@ $ iptables -A OUTPUT -p tcp --tcp-flags RST RST -j DROP
 </code></pre></div><p>现在终于可以编写我们的攻击脚本了😈，很简单，循环发送 SYN 包即可。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python"><span style="color:#000;font-weight:bold">from</span> <span style="color:#555">time</span> <span style="color:#000;font-weight:bold">import</span> sleep
 <span style="color:#000;font-weight:bold">from</span> <span style="color:#555">random</span> <span style="color:#000;font-weight:bold">import</span> randint
-ip <span style="color:#000;font-weight:bold">=</span> IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">127.0.0.1</span><span style="color:#d14">&#34;</span>)
-tcp <span style="color:#000;font-weight:bold">=</span> TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">S</span><span style="color:#d14">&#34;</span>)
+ip <span style="color:#000;font-weight:bold">=</span> IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;127.0.0.1&#34;</span>)
+tcp <span style="color:#000;font-weight:bold">=</span> TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;S&#34;</span>)
 <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">attack</span>():
   <span style="color:#000;font-weight:bold">while</span> <span style="color:#999">True</span>:
-    ip<span style="color:#000;font-weight:bold">.</span>src<span style="color:#000;font-weight:bold">=</span>f<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">127.0.0.{randint(0, 255)}</span><span style="color:#d14">&#34;</span>
+    ip<span style="color:#000;font-weight:bold">.</span>src<span style="color:#000;font-weight:bold">=</span>f<span style="color:#d14">&#34;127.0.0.{randint(0, 255)}&#34;</span>
     send(ip<span style="color:#000;font-weight:bold">/</span>tcp)
     sleep(<span style="color:#099">0.01</span>)
 
@@ -3564,17 +3762,17 @@ attack() <span style="color:#998;font-style:italic"># 发送大量的 SYN 包给
 </ul>
 <p>我们来测试一下，首先，关闭 <code>net.ipv4.tcp_abort_on_overflow</code>，启动我们的 <a href="https://gist.github.com/cj1128/e6620df2ea2e650164d7513b05c88c8c">simple-tcp-server</a>，<code>listen</code> 的 <code>backlog</code> 参数是 1，<code>somaxconn</code> 为 128，因此，全连接队列的长度为 1。</p>
 <p>使用 Scapy 定义 <code>connect</code> 函数，函数内部我们手动实现了三次握手。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python">ip<span style="color:#000;font-weight:bold">=</span>IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">127.0.0.1</span><span style="color:#d14">&#34;</span>)
-tcp<span style="color:#000;font-weight:bold">=</span>TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">S</span><span style="color:#d14">&#34;</span>)
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python">ip<span style="color:#000;font-weight:bold">=</span>IP(dst<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;127.0.0.1&#34;</span>)
+tcp<span style="color:#000;font-weight:bold">=</span>TCP(dport<span style="color:#000;font-weight:bold">=</span><span style="color:#099">8877</span>, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;S&#34;</span>)
 idx <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>
 
 <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">connect</span>():
   <span style="color:#000;font-weight:bold">global</span> idx
-  ip<span style="color:#000;font-weight:bold">.</span>src <span style="color:#000;font-weight:bold">=</span> f<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">127.0.0.{ idx }</span><span style="color:#d14">&#34;</span>
+  ip<span style="color:#000;font-weight:bold">.</span>src <span style="color:#000;font-weight:bold">=</span> f<span style="color:#d14">&#34;127.0.0.{ idx }&#34;</span>
   synack <span style="color:#000;font-weight:bold">=</span> sr1(ip<span style="color:#000;font-weight:bold">/</span>tcp)
-  ack <span style="color:#000;font-weight:bold">=</span> TCP(sport<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>dport, dport<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>sport, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">A</span><span style="color:#d14">&#34;</span>, seq<span style="color:#000;font-weight:bold">=</span><span style="color:#099">100</span>, ack<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>seq <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>)
+  ack <span style="color:#000;font-weight:bold">=</span> TCP(sport<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>dport, dport<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>sport, flags<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;A&#34;</span>, seq<span style="color:#000;font-weight:bold">=</span><span style="color:#099">100</span>, ack<span style="color:#000;font-weight:bold">=</span>synack<span style="color:#000;font-weight:bold">.</span>seq <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>)
   send(ip<span style="color:#000;font-weight:bold">/</span>ack)
-  idx <span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>
+  idx <span style="color:#000;font-weight:bold">+=</span> <span style="color:#099">1</span>
 </code></pre></div><p>因为我们的 Server 从不 accept，所以，每次发起连接后，全连接队列就会添加一项。</p>
 <p>使用 <code>netstat -tn | rg 8877</code> 查看 Socket 状态，同时使用 <code>tcpdump -tn -i lo port 8877</code> 抓包，然后我们手动触发 <code>connect</code> 函数。</p>
 <p>第一次，多了一条 <code>ESTABLISHED</code> 的连接，一切正常。</p>
@@ -3586,7 +3784,7 @@ idx <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">
 <p>猜想归猜想，我更想验证一下，验证的方式只能是一头扎进 Linux 浩瀚的源码海洋里了。我运气很好，找到了检查全连接队列是否溢出的函数叫做 <code>sk_acceptq_is_full</code>，它的定义如下，这是 <a href="https://elixir.bootlin.com/linux/v3.5/source/include/net/sock.h#L669">在线版本</a>。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#000;font-weight:bold">static</span> <span style="color:#000;font-weight:bold">inline</span> <span style="color:#458;font-weight:bold">bool</span> <span style="color:#900;font-weight:bold">sk_acceptq_is_full</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">struct</span> sock <span style="color:#000;font-weight:bold">*</span>sk)
 {
-  <span style="color:#000;font-weight:bold">return</span> sk<span style="color:#000;font-weight:bold">-</span><span style="color:#000;font-weight:bold">&gt;</span>sk_ack_backlog <span style="color:#000;font-weight:bold">&gt;</span> sk<span style="color:#000;font-weight:bold">-</span><span style="color:#000;font-weight:bold">&gt;</span>sk_max_ack_backlog;
+  <span style="color:#000;font-weight:bold">return</span> sk<span style="color:#000;font-weight:bold">-&gt;</span>sk_ack_backlog <span style="color:#000;font-weight:bold">&gt;</span> sk<span style="color:#000;font-weight:bold">-&gt;</span>sk_max_ack_backlog;
 }
 </code></pre></div><p><code>sk-&gt;sk_ack_backlog</code> 是当前的全连接队列长度，<code>sk-&gt;sk_max_ack_backlog</code> 是配置的全连接队列最大长度，猜想验证了。</p>
 <p>这里顺手提一下 <code>ss</code> 这个工具，一个现代化的用于取代 <code>netstat</code> 的工具，使用它，我们可以看到全连接队列的长度。</p>
@@ -3671,8 +3869,8 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
 <span style="color:#000;font-weight:bold">const</span> imageminPngquant <span style="color:#000;font-weight:bold">=</span> require(<span style="color:#d14">&#34;imagemin-pngquant&#34;</span>)
 <span style="color:#000;font-weight:bold">const</span> imageminSvgo <span style="color:#000;font-weight:bold">=</span> require(<span style="color:#d14">&#34;imagemin-svgo&#34;</span>)
 
-;(async () =&gt; {
-  <span style="color:#000;font-weight:bold">const</span> files <span style="color:#000;font-weight:bold">=</span> await imagemin(process.argv.slice(<span style="color:#099">2</span>), {
+;(<span style="color:#000;font-weight:bold">async</span> () =&gt; {
+  <span style="color:#000;font-weight:bold">const</span> files <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">await</span> imagemin(process.argv.slice(<span style="color:#099">2</span>), {
     destination<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;dist&#34;</span>,
     plugins<span style="color:#000;font-weight:bold">:</span> [
       imageminMozjpeg({
@@ -3705,7 +3903,7 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
 <p>有很多工具可以将 JPG/PNG 转换成 WebP，这里还是使用 imagemin 为例。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#000;font-weight:bold">const</span> imageminWebp <span style="color:#000;font-weight:bold">=</span> require(<span style="color:#d14">&#39;imagemin-webp&#39;</span>)
 
-<span style="color:#000;font-weight:bold">const</span> webps <span style="color:#000;font-weight:bold">=</span> await imagemin(images, {
+<span style="color:#000;font-weight:bold">const</span> webps <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">await</span> imagemin(images, {
   destination<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;dist&#34;</span>,
   plugins<span style="color:#000;font-weight:bold">:</span> [
     imageminWebp({
@@ -4098,7 +4296,7 @@ puny.ucs2.decode(<span style="color:#d14">&#34;😜&#34;</span>).length <span st
 <p>第二个问题是正则中的范围。范围中如果使用了非 BMP 字符，JS 会报错。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#009926">/[😆-😜]/</span>.test(<span style="color:#d14">&#34;😜&#34;</span>)
 Uncaught SyntaxError<span style="color:#000;font-weight:bold">:</span> Invalid regular expression<span style="color:#000;font-weight:bold">:</span> <span style="color:#009926">/[😆-😜]/</span><span style="color:#000;font-weight:bold">:</span> Range out <span style="color:#000;font-weight:bold">of</span> order <span style="color:#000;font-weight:bold">in</span> character <span style="color:#000;font-weight:bold">class</span>
-    at <span style="color:#000;font-weight:bold">&lt;</span>anonymous<span style="color:#000;font-weight:bold">&gt;</span><span style="color:#000;font-weight:bold">:</span><span style="color:#099">1</span><span style="color:#000;font-weight:bold">:</span><span style="color:#099">1</span>
+    at <span style="color:#000;font-weight:bold">&lt;</span>anonymous<span style="color:#000;font-weight:bold">&gt;:</span><span style="color:#099">1</span><span style="color:#000;font-weight:bold">:</span><span style="color:#099">1</span>
 </code></pre></div><p>出错的原因在于 <code>/[😆-😜]/</code> 在 JS 中等价于 <code>/[\uD83D\uDE06-\uD83D\uDE1C]/</code>，而 <code>\uDE06-\uD83D</code> 会被解释为一个范围，而这个范围的起始值比结束值要大，因此错误。</p>
 <p>解决方法同样有两个。第一，改写正则。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#009926">/\uD83D[\uDE06-\uDE1C]/</span>.test(<span style="color:#d14">&#34;😆&#34;</span>) <span style="color:#998;font-style:italic">// true
@@ -4463,7 +4661,7 @@ my-blog
 <p>比较常用的就是 content 和 layouts，一个存放内容，一个存放模板。</p>
 <p>Hugo 使用的模板为 Go 标准库中的 <code>text/template</code>，和所有其他模板系统一样，看看文档 <a href="https://gohugo.io/templates/go-templates/">Go Template Primer</a> 掌握基本函数即可。</p>
 <p><code>config.yaml</code> 中是全局配置，默认情况下，文章的 FrontMatter 数据格式为 TOML，我们将其改为 YAML，添加如下配置到 <code>config.yaml</code> 中。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000;font-weight:bold">metaDataFormat</span>:<span style="color:#bbb"> </span>yaml<span style="color:#bbb">
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000080">metaDataFormat</span>:<span style="color:#bbb"> </span>yaml<span style="color:#bbb">
 </span></code></pre></div><h2 id="内容">内容</h2>
 <p>在 Hugo 中，所有的内容存放在 <code>content</code> 目录中，其中每一个目录称为一个 <code>section</code>，我们先来生成一些内容用于后面测试我们的模板。</p>
 <p>假设我们博客有两个分类，<code>c1</code> 和 <code>c2</code>，每个分类下有 1 篇文章。</p>
@@ -4527,7 +4725,7 @@ hugo server --buildDrafts
 <h2 id="导航栏">导航栏</h2>
 <p>由于首页和分类页都要用到导航栏，所以我们使用 Hugo 的 <code>Partial</code> 来做，Partial 简单来说，就是一个片段，可以在不同的模板中引用它。</p>
 <p>我们打算直接将 <code>content</code> 目录中的子目录（叫做 <code>section</code>）作为分类，首先，在全局配置中添加如下配置。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000;font-weight:bold">SectionPagesMenu</span>:<span style="color:#bbb"> </span>main<span style="color:#bbb">
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000080">SectionPagesMenu</span>:<span style="color:#bbb"> </span>main<span style="color:#bbb">
 </span></code></pre></div><p>Hugo 提供了一套复杂的菜单系统，这个配置告诉 Hugo，将所有的 section 都放入 <code>main</code> 这个菜单中，在模板中通过遍历 main 菜单，便可以渲染出所有的分类。</p>
 <p>新建文件，<code>layouts/partials/header.html</code>。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-html" data-lang="html">&lt;<span style="color:#000080">header</span>&gt;
@@ -4798,26 +4996,26 @@ http_request_count{endpoint=&#34;/b&#34;} 200
 http_request_count(endpoint=&#34;/c&#34;) 3
 </code></pre></div><h3 id="配置">配置</h3>
 <p>Prometheus 使用 YAML 进行配置。<code>global</code> 配置一些全局信息，<code>scrape_configs</code> 配置具体想要抓取的目标。这段配置的含义是：启动一个叫做 <code>go-test</code> 的任务，每隔五秒钟，访问 <code>localhost:8888/metrics</code> 获取数据。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000;font-weight:bold">global</span>:<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#bbb">  </span><span style="color:#000;font-weight:bold">scrape_interval</span>:<span style="color:#bbb"> </span><span style="color:#bbb">    </span>15s<span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># By default, scrape targets every 15 seconds.</span><span style="color:#bbb">
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000080">global</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#000080">scrape_interval</span>:<span style="color:#bbb">     </span>15s<span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># By default, scrape targets every 15 seconds.</span><span style="color:#bbb">
 </span><span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#998;font-style:italic"># Attach these labels to any time series or alerts when communicating with</span><span style="color:#bbb">
 </span><span style="color:#bbb">  </span><span style="color:#998;font-style:italic"># external systems (federation, remote storage, Alertmanager).</span><span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#000;font-weight:bold">external_labels</span>:<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#bbb">    </span><span style="color:#000;font-weight:bold">monitor</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#39;codelab-monitor&#39;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#000080">external_labels</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#000080">monitor</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#39;codelab-monitor&#39;</span><span style="color:#bbb">
 </span><span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#998;font-style:italic"># A scrape configuration containing exactly one endpoint to scrape:</span><span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#998;font-style:italic"># Here it&#39;s Prometheus itself.</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#000;font-weight:bold">scrape_configs</span>:<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#bbb">  </span><span style="color:#998;font-style:italic"># The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.</span><span style="color:#bbb">
-</span><span style="color:#bbb">  </span>- <span style="color:#000;font-weight:bold">job_name</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#39;go-test&#39;</span><span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#000;font-weight:bold">metrics_path</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#34;/metrics&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#000080">scrape_configs</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#998;font-style:italic"># The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>- <span style="color:#000080">job_name</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#39;go-test&#39;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#000080">metrics_path</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#34;/metrics&#34;</span><span style="color:#bbb">
 </span><span style="color:#bbb">
 </span><span style="color:#bbb">    </span><span style="color:#998;font-style:italic"># Override the global default and scrape targets from this job every 5 seconds.</span><span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#000;font-weight:bold">scrape_interval</span>:<span style="color:#bbb"> </span>5s<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#000080">scrape_interval</span>:<span style="color:#bbb"> </span>5s<span style="color:#bbb">
 </span><span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#000;font-weight:bold">static_configs</span>:<span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#bbb">      </span>- <span style="color:#000;font-weight:bold">targets</span>:<span style="color:#bbb"> </span>[<span style="color:#d14">&#39;localhost:8888&#39;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#000080">static_configs</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>- <span style="color:#000080">targets</span>:<span style="color:#bbb"> </span>[<span style="color:#d14">&#39;localhost:8888&#39;</span>]<span style="color:#bbb">
 </span></code></pre></div><h3 id="测试程序">测试程序</h3>
 <p>我们来写一个程序测试一下 Prometheus 的功能。虽然可以手动返回 Prometheus 需要的数据，但是使用开发好的客户端会更加方便。</p>
 <p>这里我们使用 Go 语言，编写一个简单的服务器和客户端。客户端会以一个稳定的速度请求服务器的 <code>/test</code> 路径，但是每两分钟会加大流量，持续 30 秒再回到之前的水平。服务器 95% 的情况下会花费 50ms 进行响应，还有 5% 的情况下会花费 100ms。</p>
@@ -5618,7 +5816,7 @@ input <span style="color:#000;font-weight:bold">{</span>
 <span style="color:#000;font-weight:bold">}</span>
 
 filter <span style="color:#000;font-weight:bold">{</span>
-  <span style="color:#000;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">[</span>type<span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#34;nginx&#34;</span> <span style="color:#000;font-weight:bold">{</span> <span style="color:#998;font-style:italic"># 这里的type是日志类型，我们在后面的filebeat中设定</span>
+  <span style="color:#000;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">[</span>type<span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&#34;nginx&#34;</span> <span style="color:#000;font-weight:bold">{</span> <span style="color:#998;font-style:italic"># 这里的type是日志类型，我们在后面的filebeat中设定</span>
     grok <span style="color:#000;font-weight:bold">{</span>
       <span style="color:#008080">match</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#000;font-weight:bold">{</span> <span style="color:#d14">&#34;message&#34;</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#d14">&#34;%{COMBINEDAPACHELOG} %{QS:gzip_ratio}&#34;</span> <span style="color:#000;font-weight:bold">}</span> <span style="color:#998;font-style:italic"># 使用自带的pattern即可，注意空格</span>
       <span style="color:#008080">remove_field</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#000;font-weight:bold">[</span><span style="color:#d14">&#34;beat&#34;</span>, <span style="color:#d14">&#34;input_type&#34;</span>, <span style="color:#d14">&#34;message&#34;</span>, <span style="color:#d14">&#34;offset&#34;</span>, <span style="color:#d14">&#34;tags&#34;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#998;font-style:italic"># filebeat添加的字段，我们不需要</span>
@@ -5812,10 +6010,10 @@ outpugst <span style="color:#000;font-weight:bold">{</span>
 <p>除了三个级别以外，证书还分为三个覆盖范围：</p>
 <ul>
 <li>
-<p>单域名证书：只能用于单一域名，a.com 的证书不能用于 www.a.com</p>
+<p>单域名证书：只能用于单一域名，a.com 的证书不能用于 <a href="http://www.a.com">www.a.com</a></p>
 </li>
 <li>
-<p>通配符证书：可以用于域名下的所有子域名，*.a.com 的证书可以用于 a.com，也可以用于 www.a.com</p>
+<p>通配符证书：可以用于域名下的所有子域名，*.a.com 的证书可以用于 a.com，也可以用于 <a href="http://www.a.com">www.a.com</a></p>
 </li>
 <li>
 <p>多域名证书，可以用于多个域名，比如 a.com，b.com</p>
@@ -6006,8 +6204,8 @@ ssh root@<span style="color:#000;font-weight:bold">[</span>host<span style="colo
 </code></pre></div><p>第五步，配置域名解析。解析 <code>[NGROK_BASE_DOMAIN]</code> 以及 <code>*.[NGROK_BASE_DOMAIN]</code> 地址到服务器上。我使用的是 DNSPOD，截图如下。</p>
 <p><img src="http://asset.cjting.cn/9b85365djw1f43rtmytwvj20nn0bqwgl.jpg" alt=""></p>
 <p>最后一步，配置客户端，启动客户端程序。客户端的默认配置文件位置是 <code>$HOME/.ngrok</code>，填入以下配置。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000;font-weight:bold">server_addr</span>:<span style="color:#bbb"> </span>[NGROK_BASE_DOMAIN]:<span style="color:#099">4443</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#000;font-weight:bold">trust_host_root_certs</span>:<span style="color:#bbb"> </span><span style="color:#000;font-weight:bold">false</span><span style="color:#bbb">
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000080">server_addr</span>:<span style="color:#bbb"> </span>[NGROK_BASE_DOMAIN]:4443<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#000080">trust_host_root_certs</span>:<span style="color:#bbb"> </span><span style="color:#000;font-weight:bold">false</span><span style="color:#bbb">
 </span></code></pre></div><p>然后启动客户端。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">./ngrok -subdomain <span style="color:#0086b3">test</span> <span style="color:#099">8080</span>
 </code></pre></div><p>客户端会转发本地 8080 端口的服务到 <code>test.[NGROK_BASE_DOMAIN]</code> 上。以我为例，只要我访问 <code>test.tunnel.cjting.me</code>，就可以看到开发主机上 8080 端口的内容。实现了外网访问内容的目标。</p>
@@ -6426,12 +6624,12 @@ g(<span style="color:#099">200</span>) <span style="color:#000;font-weight:bold"
 }
 
 <span style="color:#998;font-style:italic">// 传统函数调用是接收多个参数返回一个值，而柯里化函数则是接收参数返回新的函数，新的函数又可以接受参数再返回新的函数，直至最后返回结果值
-</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// 使用柯里化函数的优势是我们可以&#34;部分应用&#34; (Partial Application)函数的参数，生成新的函数，这在函数编程中是至关重要的
-</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// g(1)(2) == 3
-</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// var add1 = g(1)
-</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// add1(100) == 101
-</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// var add100 = g(100)
-</span><span style="color:#998;font-style:italic"></span><span style="color:#998;font-style:italic">// add100(100) == 200
+</span><span style="color:#998;font-style:italic">// 使用柯里化函数的优势是我们可以&#34;部分应用&#34; (Partial Application)函数的参数，生成新的函数，这在函数编程中是至关重要的
+</span><span style="color:#998;font-style:italic">// g(1)(2) == 3
+</span><span style="color:#998;font-style:italic">// var add1 = g(1)
+</span><span style="color:#998;font-style:italic">// add1(100) == 101
+</span><span style="color:#998;font-style:italic">// var add100 = g(100)
+</span><span style="color:#998;font-style:italic">// add100(100) == 200
 </span></code></pre></div><p>现在我们来分析上面的问题。</p>
 <p>首先，<code>add(1) == 1</code>，说明 <code>add</code> 函数应该返回一个整数。但是 <code>add(1)(2) == 3</code> 表明毫无疑问 <code>add(1)</code> 返回的值应该是一个函数。所以现在我们的问题就变成了，有没有可能让一个函数等于一个整数呢？（注意比较操作符是松散的<code>==</code>，而不是严格<code>===</code>）。</p>
 <p>答案是有可能的。这里需要我们了解 JS 的一个小知识。那就是 <code>valueOf</code> 属性。当我们将一个对象和一个 Primitive 进行比较的时候，JS 会调用对象的 <code>valueOf</code> 方法获取一个 Primitive 值，然后再进行比较。</p>
@@ -6497,7 +6695,7 @@ a <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&
 <span style="color:#000;font-weight:bold">*</span>block1 <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">100</span>;
 free(block1);
 uint8 <span style="color:#000;font-weight:bold">*</span>block2 <span style="color:#000;font-weight:bold">=</span> (uint8 <span style="color:#000;font-weight:bold">*</span>)malloc(<span style="color:#099">1000</span>); <span style="color:#998;font-style:italic">// this time, it&#39;s very likely that block2 == block1
-</span><span style="color:#998;font-style:italic"></span>assert(<span style="color:#000;font-weight:bold">*</span>block2 <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#099">100</span>); <span style="color:#998;font-style:italic">// we can get previous value
+</span><span style="color:#998;font-style:italic"></span>assert(<span style="color:#000;font-weight:bold">*</span>block2 <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">100</span>); <span style="color:#998;font-style:italic">// we can get previous value
 </span></code></pre></div><p><code>malloc</code> 是一个常用的堆内存管理函数，不过却有一些非常严重的问题，以上就是一个例子。安全问题往往都在细微之处，但是却都非常致命，上一次非常著名的 HeartBleed 心脏滴血漏洞也是一个细微的问题导致的。</p>
 <p>作者利用这个 bug，巧妙的将 surveil 的信息保留了下来。每一个决定需要被 surveil 的 piu，都被加密（异或 0x69）然后写入文件（加密是在一个 copy 上完成的）。</p>
 <p>当决策过程结束以后，接下来就会做关键词过滤（比如 fuck -&gt; love, shit -&gt; stuff，哈哈）在这个过程中，又会分配内存复制 piu 进行操作，此时得到的内存块就是决策过程中使用的内存块，内存中的信息都被保留在那里没有清除。因为被监视（surveiled）的 piu 会和 0x69 异或，所以最后一个字节会是 0x69（C 的字符串最后一个字节都是 0），而没有被监视的最后一个字节则是 0。</p>

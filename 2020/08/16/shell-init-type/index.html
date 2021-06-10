@@ -37,7 +37,7 @@
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-chtml.js"></script>
   <script type="text/javascript">
     window.PAGE = {
-      title: "Shell 启动类型探究 ── login \x26\x26 interactive",
+      title: "Shell 启动类型探究 ── login \u0026\u0026 interactive",
       section: "post",
     }
   </script>
@@ -139,7 +139,7 @@
 <p><code>interactive</code> / <code>non-interactive</code> 就比较好理解了。日常我们在终端中使用的就是 interactive Shell，它会输出提示符，会有 Job Control 等功能。</p>
 <p>而当我们执行 Shell 脚本时例如 <code>bash test.sh</code>，那么此时的 Shell 便是 non-interactive 的。</p>
 <p>使用如下的命令可以检测当前 Shell 是否是 interactive 的：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#000;font-weight:bold">[</span><span style="color:#000;font-weight:bold">[</span> <span style="color:#008080">$-</span> <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> *i* <span style="color:#000;font-weight:bold">]</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Interactive shell&#39;</span> <span style="color:#000;font-weight:bold">||</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Non-interactive shell&#39;</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#000;font-weight:bold">[[</span> <span style="color:#008080">$-</span> <span style="color:#000;font-weight:bold">==</span> *i* <span style="color:#000;font-weight:bold">]]</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Interactive shell&#39;</span> <span style="color:#000;font-weight:bold">||</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Non-interactive shell&#39;</span>
 </code></pre></div><p>而这条命令可以检测 Shell 是否是 login 的：</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#0086b3">shopt</span> -q login_shell <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Login shell&#39;</span> <span style="color:#000;font-weight:bold">||</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Non-login shell&#39;</span>
 </code></pre></div><p>检测是否是 login Shell 还有一个办法，那就是输入 <code>logout</code>，如果是 login Shell，效果相当于 <code>exit</code>，如果不是，会提示 <code>logout: not login shell</code>。</p>
@@ -190,7 +190,7 @@
 <p>是的，看起来很复杂，欢迎来到真实世界🙂。好在我们无需去记住这些细节，只要做到如果有一天遇到了问题，有一个清晰的排查方向就行了。</p>
 <p>日常使用中，对于 Bash 的配置就放在 <code>~/.bashrc</code> 中即可。<code>~/.bash_profile</code> 一般会含有 source <code>~/.bashrc</code> 的代码，所以不管 login 还是 non-login， <code>.bashrc</code> 文件都会被执行。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># Manjaro 默认的 ~/.bash_profile</span>
-<span style="color:#000;font-weight:bold">[</span><span style="color:#000;font-weight:bold">[</span> -f ~/.bashrc <span style="color:#000;font-weight:bold">]</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> . ~/.bashrc
+<span style="color:#000;font-weight:bold">[[</span> -f ~/.bashrc <span style="color:#000;font-weight:bold">]]</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> . ~/.bashrc
 </code></pre></div><div class="post__tip">
   <span class="post__tip__span">T</span>ip: 有好奇过 <code>rc</code> 后缀是什么意思吗？<a href="https://unix.stackexchange.com/questions/3467/what-does-rc-in-bashrc-stand-for">rc = run commands</a>
 </div>
@@ -199,11 +199,11 @@
 <p>我们以 Node 为例，新建一个文件 <code>echo 'hello from test.sh' &gt; test.sh</code>，然后设置 BASH_ENV 指向这个文件并启动 Node。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ <span style="color:#008080">BASH_ENV</span><span style="color:#000;font-weight:bold">=</span>test.sh node
 &gt; const <span style="color:#008080">c</span> <span style="color:#000;font-weight:bold">=</span> require<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;child_process&#34;</span><span style="color:#000;font-weight:bold">)</span>
-&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;echo hello&#34;</span><span style="color:#000;font-weight:bold">)</span>.toString<span style="color:#000;font-weight:bold">(</span><span style="color:#000;font-weight:bold">)</span>
+&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;echo hello&#34;</span><span style="color:#000;font-weight:bold">)</span>.toString<span style="color:#000;font-weight:bold">()</span>
 <span style="color:#d14">&#39;hello\n&#39;</span> <span style="color:#998;font-style:italic"># 可以发现 &#39;hello from test.sh&#39; 没有打印，也就是 BASH_ENV 指向的文件没有被 source</span>
-&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;echo hello&#34;</span>, <span style="color:#000;font-weight:bold">{</span>shell: <span style="color:#d14">&#34;/bin/bash&#34;</span><span style="color:#000;font-weight:bold">}</span><span style="color:#000;font-weight:bold">)</span>
+&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;echo hello&#34;</span>, <span style="color:#000;font-weight:bold">{</span>shell: <span style="color:#d14">&#34;/bin/bash&#34;</span><span style="color:#000;font-weight:bold">})</span>
 <span style="color:#d14">&#39;hello from test.sh\nhello\n&#39;</span> <span style="color:#998;font-style:italic"># 这次有了</span>
-&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;</span><span style="color:#d14">echo </span><span style="color:#008080">$0</span><span style="color:#d14">&#34;</span><span style="color:#000;font-weight:bold">)</span>.toString<span style="color:#000;font-weight:bold">(</span><span style="color:#000;font-weight:bold">)</span>
+&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;echo </span><span style="color:#008080">$0</span><span style="color:#d14">&#34;</span><span style="color:#000;font-weight:bold">)</span>.toString<span style="color:#000;font-weight:bold">()</span>
 <span style="color:#d14">&#39;/bin/sh\n&#39;</span> <span style="color:#998;font-style:italic"># 默认情况下执行的是 /bin/sh</span>
 </code></pre></div><h2 id="zsh">ZSH</h2>
 <p>我们个人开发电脑一般多使用 ZSH，毕竟配合 Oh-My-Zsh 以后实在是太好用了。</p>

@@ -107,8 +107,8 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
 <span style="color:#000;font-weight:bold">const</span> imageminPngquant <span style="color:#000;font-weight:bold">=</span> require(<span style="color:#d14">&#34;imagemin-pngquant&#34;</span>)
 <span style="color:#000;font-weight:bold">const</span> imageminSvgo <span style="color:#000;font-weight:bold">=</span> require(<span style="color:#d14">&#34;imagemin-svgo&#34;</span>)
 
-;(async () =&gt; {
-  <span style="color:#000;font-weight:bold">const</span> files <span style="color:#000;font-weight:bold">=</span> await imagemin(process.argv.slice(<span style="color:#099">2</span>), {
+;(<span style="color:#000;font-weight:bold">async</span> () =&gt; {
+  <span style="color:#000;font-weight:bold">const</span> files <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">await</span> imagemin(process.argv.slice(<span style="color:#099">2</span>), {
     destination<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;dist&#34;</span>,
     plugins<span style="color:#000;font-weight:bold">:</span> [
       imageminMozjpeg({
@@ -141,7 +141,7 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
 <p>有很多工具可以将 JPG/PNG 转换成 WebP，这里还是使用 imagemin 为例。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#000;font-weight:bold">const</span> imageminWebp <span style="color:#000;font-weight:bold">=</span> require(<span style="color:#d14">&#39;imagemin-webp&#39;</span>)
 
-<span style="color:#000;font-weight:bold">const</span> webps <span style="color:#000;font-weight:bold">=</span> await imagemin(images, {
+<span style="color:#000;font-weight:bold">const</span> webps <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">await</span> imagemin(images, {
   destination<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;dist&#34;</span>,
   plugins<span style="color:#000;font-weight:bold">:</span> [
     imageminWebp({

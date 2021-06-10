@@ -6,11 +6,7 @@
     <description>Recent content in log on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 21 Oct 2016 00:00:00 +0800</lastBuildDate>
-    
-	<atom:link href="https://cjting.me/tags/log/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 21 Oct 2016 00:00:00 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/log/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>从零开始搭建一个 ELKB 日志收集系统</title>
       <link>https://cjting.me/2016/10/21/build-log-system-with-elkb/</link>

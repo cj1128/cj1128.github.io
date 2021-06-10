@@ -6,11 +6,7 @@
     <description>Recent content in http on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 31 Mar 2018 19:40:48 +0800</lastBuildDate>
-    
-	<atom:link href="https://cjting.me/tags/http/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 31 Mar 2018 19:40:48 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/http/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>HTTP Basic Auth 是怎么样工作的</title>
       <link>https://cjting.me/2018/03/31/how-http-basic-auth-work/</link>

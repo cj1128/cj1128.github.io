@@ -6,11 +6,7 @@
     <description>Recent content in rxjs on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 20 Mar 2016 00:00:00 +0800</lastBuildDate>
-    
-	<atom:link href="https://cjting.me/tags/rxjs/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 20 Mar 2016 00:00:00 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/rxjs/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Functional Reactive Programming 简介</title>
       <link>https://cjting.me/2016/03/20/intruduction-to-functional-reactive-programming/</link>

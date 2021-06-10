@@ -6,11 +6,7 @@
     <description>Recent content in curry on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 17 Jan 2016 00:00:00 +0800</lastBuildDate>
-    
-	<atom:link href="https://cjting.me/tags/curry/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 17 Jan 2016 00:00:00 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/curry/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>JavaScript Infinite Currying</title>
       <link>https://cjting.me/2016/01/17/javascript-infinite-currying/</link>

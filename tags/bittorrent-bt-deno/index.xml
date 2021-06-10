@@ -6,11 +6,7 @@
     <description>Recent content in bittorrent bt deno on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 31 Oct 2020 23:30:48 +0800</lastBuildDate>
-    
-	<atom:link href="https://cjting.me/tags/bittorrent-bt-deno/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 31 Oct 2020 23:30:48 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/bittorrent-bt-deno/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>tinyTorrent: 从头写一个 Deno 的 BitTorrent 下载器</title>
       <link>https://cjting.me/2020/10/31/tinytorrent-a-deno-bt-downloader/</link>

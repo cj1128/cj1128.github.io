@@ -118,21 +118,21 @@
 </ul>
 <h2 id="validate">Validate</h2>
 <p>我们先抛开数学证明，写个程序验证一下上面的算法确实是正确的。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdint.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdlib.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdint.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdlib.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-<span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">define i32 int32_t</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">define i64 int64_t</span><span style="color:#999;font-weight:bold;font-style:italic">
+<span style="color:#999;font-weight:bold;font-style:italic">#define i32 int32_t
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define i64 int64_t
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
 i32
 <span style="color:#900;font-weight:bold">div3</span>(i32 v)
 {
   i32 magic <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1431655766</span>;
-  i32 result <span style="color:#000;font-weight:bold">=</span> ((i64)v <span style="color:#000;font-weight:bold">*</span> (i64)magic) <span style="color:#000;font-weight:bold">&gt;</span><span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#099">32</span>;
+  i32 result <span style="color:#000;font-weight:bold">=</span> ((i64)v <span style="color:#000;font-weight:bold">*</span> (i64)magic) <span style="color:#000;font-weight:bold">&gt;&gt;</span> <span style="color:#099">32</span>;
 
   <span style="color:#000;font-weight:bold">if</span>(v <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">0</span>) {
-    result <span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>;
+    result <span style="color:#000;font-weight:bold">+=</span> <span style="color:#099">1</span>;
   }
 
   <span style="color:#000;font-weight:bold">return</span> result;
@@ -143,14 +143,14 @@ i32
 {
   srand(<span style="color:#099">0x1234</span>);
 
-  <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">10000</span>; i<span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">+</span>) {
-    i32 v <span style="color:#000;font-weight:bold">=</span> (i32)rand() <span style="color:#000;font-weight:bold">*</span> (rand() <span style="color:#000;font-weight:bold">%</span> <span style="color:#099">2</span> <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span> <span style="color:#000;font-weight:bold">?</span> <span style="color:#099">1</span> <span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>);
+  <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">10000</span>; i<span style="color:#000;font-weight:bold">++</span>) {
+    i32 v <span style="color:#000;font-weight:bold">=</span> (i32)rand() <span style="color:#000;font-weight:bold">*</span> (rand() <span style="color:#000;font-weight:bold">%</span> <span style="color:#099">2</span> <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">0</span> <span style="color:#000;font-weight:bold">?</span> <span style="color:#099">1</span> <span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>);
 
     i32 got <span style="color:#000;font-weight:bold">=</span> div3(v);
     i32 expected <span style="color:#000;font-weight:bold">=</span> v <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">3</span>;
 
-    <span style="color:#000;font-weight:bold">if</span>(got <span style="color:#000;font-weight:bold">!</span><span style="color:#000;font-weight:bold">=</span> expected) {
-      printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">div3 error! dividend %d, got %d, expected %d</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>,
+    <span style="color:#000;font-weight:bold">if</span>(got <span style="color:#000;font-weight:bold">!=</span> expected) {
+      printf(<span style="color:#d14">&#34;div3 error! dividend %d, got %d, expected %d</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>,
         v,
         got,
         expected);
@@ -206,7 +206,7 @@ $$</p>
 {
   <span style="color:#458;font-weight:bold">float</span> xhalf <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0.5f</span> <span style="color:#000;font-weight:bold">*</span> x;
   <span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">*</span>(<span style="color:#458;font-weight:bold">int</span> <span style="color:#000;font-weight:bold">*</span>)<span style="color:#000;font-weight:bold">&amp;</span>x;
-  i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0x5f3759df</span> <span style="color:#000;font-weight:bold">-</span> (i <span style="color:#000;font-weight:bold">&gt;</span><span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#099">1</span>); <span style="color:#998;font-style:italic">// what the fuck???
+  i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0x5f3759df</span> <span style="color:#000;font-weight:bold">-</span> (i <span style="color:#000;font-weight:bold">&gt;&gt;</span> <span style="color:#099">1</span>); <span style="color:#998;font-style:italic">// what the fuck???
 </span><span style="color:#998;font-style:italic"></span>  x <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">*</span>(<span style="color:#458;font-weight:bold">float</span> <span style="color:#000;font-weight:bold">*</span>)<span style="color:#000;font-weight:bold">&amp;</span>i;
   x <span style="color:#000;font-weight:bold">=</span> x <span style="color:#000;font-weight:bold">*</span> (<span style="color:#099">1.5f</span> <span style="color:#000;font-weight:bold">-</span> xhalf <span style="color:#000;font-weight:bold">*</span> x <span style="color:#000;font-weight:bold">*</span> x);
   <span style="color:#000;font-weight:bold">return</span> x;
@@ -357,13 +357,13 @@ $$</p>
 </code></pre></div><p>在 Linux 上使用 <code>nasm -f elf64 div.asm</code> 编译得到 <code>div.o</code> 文件。</p>
 <p>然后是写一段 C 程序调用上面的两个汇编函数并分别测量时间。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#998;font-style:italic">// compare.c
-</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdint.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;sys/time.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdlib.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdint.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;sys/time.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdlib.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-<span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">define i32 int32_t</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">define i64 int64_t</span><span style="color:#999;font-weight:bold;font-style:italic">
+<span style="color:#999;font-weight:bold;font-style:italic">#define i32 int32_t
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define i64 int64_t
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
 i32 <span style="color:#900;font-weight:bold">div3</span>(i32);
 i32 <span style="color:#900;font-weight:bold">div3ByMul</span>(i32);
@@ -385,29 +385,29 @@ i32 <span style="color:#900;font-weight:bold">div3ByMul</span>(i32);
   <span style="color:#458;font-weight:bold">int</span> n <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">100000</span>;
 
   i32 <span style="color:#000;font-weight:bold">*</span>randoms <span style="color:#000;font-weight:bold">=</span> (i32 <span style="color:#000;font-weight:bold">*</span>)malloc(<span style="color:#000;font-weight:bold">sizeof</span>(i32) <span style="color:#000;font-weight:bold">*</span> n);
-  <span style="color:#000;font-weight:bold">if</span>(randoms <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">NULL</span>) {
-    printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">malloc error</span><span style="color:#d14">&#34;</span>);
+  <span style="color:#000;font-weight:bold">if</span>(randoms <span style="color:#000;font-weight:bold">==</span> <span style="color:#0086b3">NULL</span>) {
+    printf(<span style="color:#d14">&#34;malloc error&#34;</span>);
     exit(<span style="color:#099">1</span>);
   }
 
   <span style="color:#000;font-weight:bold">struct</span> timeval start;
 
   <span style="color:#000;font-weight:bold">while</span>(<span style="color:#099">1</span>) {
-    <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> n; i<span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">+</span>) {
-      i32 v <span style="color:#000;font-weight:bold">=</span> (i32)rand() <span style="color:#000;font-weight:bold">*</span> (rand() <span style="color:#000;font-weight:bold">%</span> <span style="color:#099">2</span> <span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span> <span style="color:#000;font-weight:bold">?</span> <span style="color:#099">1</span> <span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>);
+    <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> n; i<span style="color:#000;font-weight:bold">++</span>) {
+      i32 v <span style="color:#000;font-weight:bold">=</span> (i32)rand() <span style="color:#000;font-weight:bold">*</span> (rand() <span style="color:#000;font-weight:bold">%</span> <span style="color:#099">2</span> <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">0</span> <span style="color:#000;font-weight:bold">?</span> <span style="color:#099">1</span> <span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>);
       randoms[i] <span style="color:#000;font-weight:bold">=</span> v;
 
       <span style="color:#998;font-style:italic">// check correctness
 </span><span style="color:#998;font-style:italic"></span>      i32 expected <span style="color:#000;font-weight:bold">=</span> v <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">3</span>;
 
       i32 r1 <span style="color:#000;font-weight:bold">=</span> div3(v);
-      <span style="color:#000;font-weight:bold">if</span>(r1 <span style="color:#000;font-weight:bold">!</span><span style="color:#000;font-weight:bold">=</span> expected) {
-        printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">div3 produced error result, got %d, expect %d</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, r1, expected);
+      <span style="color:#000;font-weight:bold">if</span>(r1 <span style="color:#000;font-weight:bold">!=</span> expected) {
+        printf(<span style="color:#d14">&#34;div3 produced error result, got %d, expect %d</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, r1, expected);
       }
 
       i32 r2 <span style="color:#000;font-weight:bold">=</span> div3ByMul(v);
-      <span style="color:#000;font-weight:bold">if</span>(r2 <span style="color:#000;font-weight:bold">!</span><span style="color:#000;font-weight:bold">=</span> expected) {
-        printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">div3ByMul produced error result, got %d, expect %d</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>,
+      <span style="color:#000;font-weight:bold">if</span>(r2 <span style="color:#000;font-weight:bold">!=</span> expected) {
+        printf(<span style="color:#d14">&#34;div3ByMul produced error result, got %d, expect %d</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>,
           r2,
           expected);
       }
@@ -416,23 +416,23 @@ i32 <span style="color:#900;font-weight:bold">div3ByMul</span>(i32);
     <span style="color:#458;font-weight:bold">long</span> t1 <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
     <span style="color:#458;font-weight:bold">long</span> t2 <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
 
-    <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> n; i<span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">+</span>) {
+    <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> n; i<span style="color:#000;font-weight:bold">++</span>) {
       i32 v <span style="color:#000;font-weight:bold">=</span> randoms[i];
 
       gettimeofday(<span style="color:#000;font-weight:bold">&amp;</span>start, <span style="color:#0086b3">NULL</span>);
       div3ByMul(v);
-      t1 <span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">=</span> getUS(start);
+      t1 <span style="color:#000;font-weight:bold">+=</span> getUS(start);
     }
 
-    <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> n; i<span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">+</span>) {
+    <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> n; i<span style="color:#000;font-weight:bold">++</span>) {
       i32 v <span style="color:#000;font-weight:bold">=</span> randoms[i];
 
       gettimeofday(<span style="color:#000;font-weight:bold">&amp;</span>start, <span style="color:#0086b3">NULL</span>);
       div3(v);
-      t2 <span style="color:#000;font-weight:bold">+</span><span style="color:#000;font-weight:bold">=</span> getUS(start);
+      t2 <span style="color:#000;font-weight:bold">+=</span> getUS(start);
     }
 
-    printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">div3ByMul: %ld </span><span style="color:#d14">\t</span><span style="color:#d14"> div3: %ld</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, t1, t2);
+    printf(<span style="color:#d14">&#34;div3ByMul: %ld </span><span style="color:#d14">\t</span><span style="color:#d14"> div3: %ld</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, t1, t2);
   }
 }
 </code></pre></div><p>C 代码很简单，生成一些随机数，首先验证我们的汇编函数返回的结果是正确的，然后测量时间。</p>

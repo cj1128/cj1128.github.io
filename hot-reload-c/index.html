@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+  <title>热重载 C - CJ Ting's Blog</title>
+  <meta name="author" content="CJ Ting">
+  <meta name="description" content="热重载 C">
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css">
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/notyf@3.1.0/notyf.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/notyf@3.1.0/notyf.min.css">
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/zoom-vanilla.js@2.0.6/css/zoom.css">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [["$", "$"]],
+    },
+    chtml: {
+      scale: 1.2,
+    },
+  }
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-chtml.js"></script>
+  <script type="text/javascript">
+    window.PAGE = {
+      title: "热重载 C",
+      section: "",
+    }
+  </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
+  <link rel="stylesheet" href="/asset/main.css">
+</head>
+<body>
+  
+  <div class="post">
+    <header class="post__header" data-cover="http://asset.cjting.cn/Fkc6gm7qyhWpzfzhPpDqHwDtO2ML.png">
+      <a href="/">
+        HOME
+      </a>
+    </header>
+
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              热重载 C
+          </h1>
+
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">c linker ld</span>
+              
+            </div>
+
+            <div class='date'>
+              2021.06.10
+            </div>
+          </div>
+
+          <div class="post__content">
+            <p>热重载是一个非常好用的功能，可以在不重启的情况下更新应用，从而大大提高开发效率。</p>
+<p>前端的 Wepback，后端的 Ruby/Python/Elixir，移动端的 Flutter 都有热重载，属于用过以后就回不去的 Killer Feature。</p>
+<p>在我之前的认识中，一直认为只有脚本语言才可以支持热重载，因为虚拟机让热重载的实现变得非常简单，重新运行代码即可。</p>
+<p>直到有一天，Casey 在 <a href="https://handmadehero.org/">HandmadeHero</a> 项目中用非常少的代码演示了怎样热重载 C，我才恍然大悟，编译语言一样可以热重载。</p>
+<h2 id="showtime">Showtime</h2>
+<p>我们先来看看，最后的效果如何。</p>
+<video controls>
+  <source src="http://asset.cjting.cn/FrUTcH3rMiOk_2TaWamOutbVvWgs.mp4" type="video/mp4">
+</video>
+<p>这里我用 SDL 打开了一个窗口进行绘制，通过热重载，我们可以在不重启程序的情况下修改绘图代码并查看效果。</p>
+<p>相比于传统的修改、编译、运行，热重载有两个核心优势，特别是在游戏开发中。</p>
+<p>第一是提高效率，游戏开发过程中经常需要调试一些参数，如果每次调整都需要重新编译运行的话，很繁琐也很耽误时间。</p>
+<p>第二是可以保持状态，比如我现在要调整某个怪物的攻击行为，但是这个怪物在第 10 个房间，通过热重载，我可以直接重载怪物行为的相关代码，但是如果编译重新运行，每次我都需要先跑到第 10 个房间。</p>
+<p>那么目前流行的游戏引擎是怎么解决这些问题的？一般来说是通过嵌入一个虚拟机，比如 JS 或者 Lua。游戏引擎的核心部分是 C/C++，逻辑部分使用脚本语言来编写从而实现热重载。</p>
+<p>回到正题，热重载 C 是怎样实现的？为什么一个编译语言可以热重载？</p>
+<p>这里的核心是<strong>动态链接</strong>。</p>
+<h2 id="dynamic-linking">Dynamic Linking</h2>
+<p>使用 Windows 的同学肯定对 <code>.DLL</code> 文件不陌生，它们其实就是动态链接库。在 Mac 和 Linux 上，动态链接库的后缀分别是 <code>.dylib</code> 和 <code>.so</code>。</p>
+<p>有动态链接库，自然也有静态链接库，他们对应的是两种链接方式：动态链接和静态链接。</p>
+<p>两种链接的区别简单来说如下：</p>
+<ul>
+<li>
+<p>静态链接在链接时会将库拷贝进可执行程序中，可执行程序不再依赖任何外部文件。</p>
+</li>
+<li>
+<p>而动态链接会在程序运行时动态去查找并链接库。</p>
+</li>
+</ul>
+<p>也就是说，动态链接的程序是对外部有依赖的，如果相关的库不存在，程序就无法执行。</p>
+<p>总结一下</p>
+<ul>
+<li>静态链接无依赖，自包含，体积大。</li>
+<li>动态链接有依赖，运行时需要加载外部文件，体积小。</li>
+</ul>
+<p>考虑到目前存储技术的发展，文件大小早就是一个无关紧要的事情了，那么动态链接还有必要吗？</p>
+<h3 id="why">Why</h3>
+<p>我们先来看看为什么发明了动态链接，只是为了节省文件体积吗？</p>
+<p>发明动态链接其实是一个很自然的过程。</p>
+<p>当我们的代码很多地方都有相同的逻辑时，很自然地我们会将它抽象为一个函数，避免每个地方都写一份。</p>
+<p>同样的道理，如果很多程序都依赖某些功能，那么很自然地会想着把它们抽离出来，避免每个程序都包含一份。</p>
+<p>这个想法的结果就是动态链接，思路是将链接推迟到运行时，程序文件中不再包含库代码。</p>
+<p>除了节省体积以外，动态链接还有如下的好处</p>
+<p>首先是<strong>更新方便</strong>。</p>
+<p>如果动态链接库更新了，那么所有使用它的程序无需重新编译就可以用上新功能。</p>
+<p>这一点其实非常重要，基本上所有的 C 程序都依赖 glibc，想象一下如果 glibc 出现了安全漏洞，在动态链接下，我们要做的就是升级系统的 glibc。如果是静态链接，那么所有安装的程序都要重新编译。</p>
+<p>其次是<strong>程序更加灵活</strong>。</p>
+<p>上面的热加载例子就已经足够说明问题，我们可以将某个功能编译为动态链接库，从而在不影响主程序的情况下修改这部分逻辑。</p>
+<p>这个特性十分适合于编写「插件系统」，主程序在运行时检测相关的动态链接库是否存在，如果存在就加载使用，不存在也没关系。</p>
+<p>就像游戏的本体和 DLC 一样，如果购买了 DLC 就可以享受 DLC 内容，不购买也不影响游戏本体的游玩。</p>
+<p>谈完了优点，那么动态链接的缺点呢？</p>
+<p>优点的背后也就是缺点，对外部的依赖意味着如果动态链接库如果不存在或者不兼容，我们的程序也将无法运行，也就是多了一份隐患。</p>
+<p>这在早期的 Windows 中很常见，系统升级以后 DLL 的兼容性被破坏，导致很多程序无法运行，如果是静态链接就不会有这个问题。</p>
+<p>除此之外，动态链接会引入一些性能开销，在性能上比静态链接差 5% 左右。</p>
+<p>工程是权衡的艺术，不同的场景不同的需求下有不同的考量。</p>
+<p>比如，Go 的作者就认为静态链接更适合 Go 的用途，因此 Go 默认是静态链接的。</p>
+<p><a href="https://lore.kernel.org/lkml/CAHk-=whs8QZf3YnifdLv57+FhBi5_WeNTG1B-suOES=RcUSmQg@mail.gmail.com/">Shared libraries are not a good thing in general</a> 是 Linus Torvalds 对动态链接库的一些看法，很显然，是负面的看法🙈。</p>
+<h3 id="how">How</h3>
+<p>我们来梳理一下动态链接的大致工作原理，囿于篇幅具体细节就不讨论了。</p>
+<p>先来编写一个简单的程序 main 动态链接到 foo。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#998;font-style:italic">// main.c
+</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">foo</span>(<span style="color:#458;font-weight:bold">void</span>);
+
+<span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">void</span>) {
+  printf(<span style="color:#d14">&#34;this is main</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
+  foo();
+  <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#998;font-style:italic">// foo.c
+</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">foo</span>(<span style="color:#458;font-weight:bold">void</span>) {
+  printf(<span style="color:#d14">&#34;this is foo</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
+}
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># 编译 foo 为动态链接库</span>
+$ gcc -shared foo.c -o foo
+<span style="color:#998;font-style:italic"># 编译 main</span>
+$ gcc main.c ./foo.so -o main.out
+<span style="color:#998;font-style:italic"># 查看 main.out 依赖的动态链接库</span>
+$ ldd main.out
+  linux-vdso.so.1 <span style="color:#000;font-weight:bold">(</span>0x00007fffdb8c3000<span style="color:#000;font-weight:bold">)</span>
+  ./foo.so <span style="color:#000;font-weight:bold">(</span>0x00007fd913946000<span style="color:#000;font-weight:bold">)</span>
+  libc.so.6 <span style="color:#000;font-weight:bold">=</span>&gt; /usr/lib/libc.so.6 <span style="color:#000;font-weight:bold">(</span>0x00007fd91375a000<span style="color:#000;font-weight:bold">)</span>
+  /lib64/ld-linux-x86-64.so.2 <span style="color:#000;font-weight:bold">=</span>&gt; /usr/lib64/ld-linux-x86-64.so.2 <span style="color:#000;font-weight:bold">(</span>0x00007fd913952000<span style="color:#000;font-weight:bold">)</span>
+<span style="color:#998;font-style:italic"># 运行 main.out</span>
+$ ./main.out
+this is main
+this is foo
+</code></pre></div><p>可以看到程序运行一切正常。</p>
+<p>使用 <code>ldd</code> 可以得到程序依赖的动态链接库列表，可以看到 main 确实依赖了 <code>./foo.so</code>。</p>
+<p>为了从流程上理解动态链接，我们来思考如下几个问题：</p>
+<ol>
+<li>是谁在负责动态链接？</li>
+</ol>
+<p>答案是动态链接器，也就是 ldd 输出中的 <code>/lib64/ld-linux-x86-64.so.2</code>。</p>
+<p>对于动态链接的程序，ELF 文件中的 <code>.interp</code> 段记载了动态链接器的绝对路径，当程序装载时，会将动态链接器一并装载。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># 查看 .interp 段的内容</span>
+$ objdump -s -j .interp main.out
+main.out:     file format elf64-x86-64
+
+Contents of section .interp:
+ <span style="color:#099">0318</span> 2f6c6962 36342f6c 642d6c69 6e75782d  /lib64/ld-linux-
+ <span style="color:#099">0328</span> 7838362d 36342e73 6f2e3200           x86-64.so.2.
+</code></pre></div><p>普通程序装载好以后，CPU 会跳转到程序的入口地址，但是对于动态链接程序，CPU 会先跳转到动态链接器的入口，由动态链接器完成链接工作以后，再跳转到程序入口。</p>
+<ol start="2">
+<li>动态链接器怎么知道要链接哪些库？</li>
+</ol>
+<p>程序依赖的动态链接库存储在 <code>.dynamic</code> 段中。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ readelf -d main.out
+Dynamic section at offset 0x2de8 contains <span style="color:#099">27</span> entries:
+  Tag        Type                         Name/Value
+ 0x0000000000000001 <span style="color:#000;font-weight:bold">(</span>NEEDED<span style="color:#000;font-weight:bold">)</span>             Shared library: <span style="color:#000;font-weight:bold">[</span>./foo.so<span style="color:#000;font-weight:bold">]</span>
+ 0x0000000000000001 <span style="color:#000;font-weight:bold">(</span>NEEDED<span style="color:#000;font-weight:bold">)</span>             Shared library: <span style="color:#000;font-weight:bold">[</span>libc.so.6<span style="color:#000;font-weight:bold">]</span>
+ ...
+</code></pre></div><p><code>.dynamic</code> 段中存储动态链接的相关信息，其中 <code>Type=NEEDED</code> 表示程序依赖的动态链接库。</p>
+<p>可以看到，<code>main.out</code> 依赖了两个动态链接库，一个是 <code>./foo.so</code>，还有一个是 <code>libc.so.6</code>。</p>
+<ol start="3">
+<li>动态链接器如何确定库的位置？</li>
+</ol>
+<p><code>./foo.so</code> 是一个路径，这个好办，直接查找就行。但是对于 <code>libc.so.6</code> 这样一个库，动态链接器如何定位出它的具体位置？</p>
+<p>和 Shell 查找可执行程序一样，ld 有一个预定义的目录，当共享库只有名字时，会去这些目录中进行查找，一般是 /usr/lib 和 /lib。</p>
+<div class="post__tip">
+  <span class="post__tip__span">T</span>ip: <p>真实的查找机制其实更为复杂，还有如下因子在发挥作用</p>
+<ul>
+<li><code>LD_LIBRARY_PATH</code> 环境变量</li>
+<li><code>rpath</code> 设置</li>
+<li><code>/etc/ld.so.conf</code> 配置文件</li>
+</ul>
+<p>这些都会影响查找过程，具体可以参考 ld 的手册。</p>
+</div>
+<h3 id="explicit-run-time-linking">Explicit Run-time Linking</h3>
+<p>上面我们说的动态链接发生在程序的启动期间，要链接哪些库程序的 ELF 文件中都记录好了，动态链接库根据记录一一链接，完毕以后程序开始运行。</p>
+<p>动态链接的本质是<strong>将链接推迟到运行时去做</strong>，不一定非要是启动的时候，程序运行的时候再去链接某个库自然也是没有问题的。</p>
+<p>这种情况叫做「显示运行时链接」，启动时链接由动态链接器完成，运行时链接我们通过如下四个函数完成，他们也是实现热重载 C 的核心。</p>
+<ul>
+<li><code>dlopen</code>: 打开某个库</li>
+<li><code>dlsym</code>: 查找库中的符号，主要就是函数，获得函数地址以后我们就可以调用了</li>
+<li><code>dlclose</code>: 关闭某个库</li>
+<li><code>dlerror</code>: 上述过程中如果出错了，调用这个函数获取错误信息</li>
+</ul>
+<p>这些函数声明在 <code>dlfcn.h</code> 中，具体实现在 <code>libdl</code> 中，我们可以通过一个小例子来体会一下。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#998;font-style:italic">// dlopen.c
+</span><span style="color:#998;font-style:italic">// usage: ./dlopen &lt;libm path&gt;
+</span><span style="color:#998;font-style:italic"></span>
+<span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;dlfcn.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#000;font-weight:bold">typedef</span> <span style="color:#458;font-weight:bold">double</span> <span style="color:#900;font-weight:bold">sin_func</span>(<span style="color:#458;font-weight:bold">double</span>);
+
+<span style="color:#458;font-weight:bold">int</span>
+<span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">int</span> argc, <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>argv[])
+{
+  <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>err;
+
+  <span style="color:#000;font-weight:bold">if</span>(argc <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">2</span>) {
+    printf(<span style="color:#d14">&#34;usage: ./dlopen &lt;libm path&gt;</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">1</span>;
+  }
+
+  <span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">*</span>handle <span style="color:#000;font-weight:bold">=</span> dlopen(argv[<span style="color:#099">1</span>], RTLD_NOW);
+  <span style="color:#000;font-weight:bold">if</span>(handle <span style="color:#000;font-weight:bold">==</span> <span style="color:#0086b3">NULL</span>) {
+    printf(<span style="color:#d14">&#34;dlopen error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, dlerror());
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">1</span>;
+  }
+
+  sin_func <span style="color:#000;font-weight:bold">*</span>sin <span style="color:#000;font-weight:bold">=</span> (sin_func <span style="color:#000;font-weight:bold">*</span>)dlsym(handle, <span style="color:#d14">&#34;sin&#34;</span>);
+  <span style="color:#000;font-weight:bold">if</span>(sin <span style="color:#000;font-weight:bold">==</span> <span style="color:#0086b3">NULL</span>) {
+    printf(<span style="color:#d14">&#34;dlsym error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, dlerror());
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">1</span>;
+  }
+
+  printf(<span style="color:#d14">&#34;%f</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, sin(<span style="color:#099">3.1415926</span> <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">2</span>));
+  <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+}
+</code></pre></div><p><code>gcc dlopen.c -ldl -o dlopen</code> 编译上面的程序，程序的功能是运行时打开 libm 库然后运行里面的 <code>sin</code> 函数，如果找不到 libm 程序报错退出。</p>
+<p>这里的逻辑可以很灵活，比如找不到 <code>libm</code> 就运行我们自己实现的 sin 等。</p>
+<p>最后，<a href="https://github.com/cj1128/hot-reload-c">hot-reload-c</a> 是上面 Demo 的源码，可以在 Mac 和 Linux 下编译运行。知道了核心原理，再去写这样一个程序就很简单了，建议大家自己动手去试试~</p>
+          </div>
+
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/zoom-vanilla.js@2.0.6/dist/zoom-vanilla.min.js"></script>
+  <script src="/asset/main.js"></script>
+
+  
+  <script>
+    (function() {
+      var _hmt = _hmt || [];
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4f34ee3c85734c8235badd2b99b092a6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+  
+  <div style="display: none">
+    <script type="text/javascript" src="https://s23.cnzz.com/z_stat.php?id=1277776204&web_id=1277776204"></script>
+  </div>
+</body>
+</html>

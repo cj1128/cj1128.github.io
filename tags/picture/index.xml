@@ -6,11 +6,7 @@
     <description>Recent content in picture on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 29 Jul 2019 14:52:50 +0800</lastBuildDate>
-    
-	<atom:link href="https://cjting.me/tags/picture/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 29 Jul 2019 14:52:50 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/picture/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>从图片优化说起</title>
       <link>https://cjting.me/2019/07/29/image-optimization/</link>

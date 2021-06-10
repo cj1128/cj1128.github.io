@@ -6,11 +6,7 @@
     <description>Recent content in dnsmasq on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 20 Aug 2016 00:00:00 +0800</lastBuildDate>
-    
-	<atom:link href="https://cjting.me/tags/dnsmasq/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 20 Aug 2016 00:00:00 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/dnsmasq/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用 Dnsmasq 搭建内网 DNS 服务器</title>
       <link>https://cjting.me/2016/08/20/use-dnsmasq-to-build-own-dns-server/</link>

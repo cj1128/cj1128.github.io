@@ -6,11 +6,7 @@
     <description>Recent content in gcc clang compiler assembly math on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 16 Mar 2021 20:13:21 +0800</lastBuildDate>
-    
-	<atom:link href="https://cjting.me/tags/gcc-clang-compiler-assembly-math/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 16 Mar 2021 20:13:21 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/gcc-clang-compiler-assembly-math/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>消失的除法指令：Part1</title>
       <link>https://cjting.me/the-missing-div-instruction-part1/</link>

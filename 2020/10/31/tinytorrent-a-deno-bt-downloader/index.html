@@ -123,7 +123,7 @@
 <p><a href="https://deno.land/x/bencode@v0.1.2">deno-bencode</a> 是我给 Deno 写的一个 Bencode 编解码库，我们现在使用这个库来看看种子文件中到底有什么。</p>
 <p>我们用 Debian 的官方种子文件来测试。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-typescript" data-lang="typescript"><span style="color:#998;font-style:italic">// decode.ts
-</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">import</span> { decode } from <span style="color:#d14">&#34;https://deno.land/x/bencode@v0.1.2/mod.ts&#34;</span>
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">import</span> { decode } <span style="color:#000;font-weight:bold">from</span> <span style="color:#d14">&#34;https://deno.land/x/bencode@v0.1.2/mod.ts&#34;</span>
 
 <span style="color:#000;font-weight:bold">const</span> file <span style="color:#000;font-weight:bold">=</span> Deno.args[<span style="color:#099">0</span>]
 console.log(decode(Deno.readFileSync(file)))
@@ -267,10 +267,10 @@ $ deno run --allow-read decode.ts debian-10.6.0-amd64-netinst.iso.torrent
 }
 </code></pre><p>可以发现，最大的区别在于 <code>info</code> 里面多了一个字段叫做 <code>files</code>。默认的 <code>console.log</code> 没有打印出 <code>path</code> 内容，我们改一下代码，单独打印 <code>files</code>。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-typescript" data-lang="typescript"><span style="color:#998;font-style:italic">// decode2.ts
-</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">import</span> { decode } from <span style="color:#d14">&#34;https://deno.land/x/bencode@v0.1.2/mod.ts&#34;</span>
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">import</span> { decode } <span style="color:#000;font-weight:bold">from</span> <span style="color:#d14">&#34;https://deno.land/x/bencode@v0.1.2/mod.ts&#34;</span>
 
 <span style="color:#000;font-weight:bold">const</span> file <span style="color:#000;font-weight:bold">=</span> Deno.args[<span style="color:#099">0</span>]
-<span style="color:#000;font-weight:bold">const</span> result <span style="color:#000;font-weight:bold">=</span> decode(Deno.readFileSync(file)) <span style="color:#000;font-weight:bold">as</span> any
+<span style="color:#000;font-weight:bold">const</span> result <span style="color:#000;font-weight:bold">=</span> decode(Deno.readFileSync(file)) <span style="color:#000;font-weight:bold">as</span> <span style="color:#458;font-weight:bold">any</span>
 console.log(result.info.files)
 </code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$  deno run --allow-read decode2.ts red.torrent
 <span style="color:#000;font-weight:bold">[</span>

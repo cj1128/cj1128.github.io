@@ -6,11 +6,7 @@
     <description>Recent content in utf-8 on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 24 Apr 2014 00:00:00 +0800</lastBuildDate>
-    
-	<atom:link href="https://cjting.me/tags/utf-8/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 24 Apr 2014 00:00:00 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/utf-8/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>关于字符编码</title>
       <link>https://cjting.me/2014/04/24/about-string-encoding/</link>

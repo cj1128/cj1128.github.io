@@ -6,11 +6,7 @@
     <description>Recent content in ssg on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 04 Jun 2017 15:46:33 +0800</lastBuildDate>
-    
-	<atom:link href="https://cjting.me/tags/ssg/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 04 Jun 2017 15:46:33 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/ssg/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>从 Jekyll 迁移到 Hugo，Hugo 不完全指南</title>
       <link>https://cjting.me/2017/06/04/migrate-to-hugo-from-jekyll/</link>

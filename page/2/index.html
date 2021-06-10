@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta name="generator" content="Hugo 0.64.0" />
+	<meta name="generator" content="Hugo 0.83.1" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
   <title>CJ Ting&#39;s Blog - CJ Ting's Blog</title>
@@ -39,7 +39,7 @@
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-chtml.js"></script>
   <script type="text/javascript">
     window.PAGE = {
-      title: "CJ Ting\x27s Blog",
+      title: "CJ Ting\u0027s Blog",
       section: "",
     }
   </script>
@@ -75,6 +75,37 @@
           
   <div class="index u-content-container">
     
+    
+      <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/2020/03/13/rsa/">
+          RSA 的原理与实现
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>1976 年以前，所有的加密都是如下方式：</p>
+<ul>
+<li>A 使用某种规则对信息进行处理</li>
+<li>B 使用同样的规则对处理过的信息进行复原</li>
+</ul>
+<p>这个方式很好理解，不论是非常简单的 ROT13 还是目前广泛使用的 AES，都是这种对称加密方式。</p>
+<p>但是这种方式有一个巨大的缺点，那就是 A 需要将对信息进行处理的规则（也就是秘钥）告诉给 B。怎样安全地传输秘钥就成了一个非常棘手的问题。</p>
+<p>那么存不存在一种方式，加密和解密使用不同的秘钥，彻底规避掉传输秘钥的问题？</p>
+<p>答案是存在的，感谢数学家和计算机科学家，RSA 就是这样一种非对称加密方式，也就是：</p>
+<ul>
+<li>使用算法可以生成两把钥匙 A 和 B</li>
+<li>使用 A 加密的信息，使用 B 可以解开</li>
+<li>使用 B 加密的信息，使用 A 可以解开</li>
+</ul>
+<p>日常使用中，我们把一把作为公钥，公开发布。一把作为私钥，自己保留。这样，任何人都可以使用我们的公钥加密信息发给我们，我们则可以使用自己的私钥解开。</p>
+<p>只要把私钥保存好，这个通信系统就非常安全。</p>
+        </div>
+
+        <div class="index__item__meta">
+          <div>
+            2020.03.13
+          </div>
+        </div>
+      </div>
     
       <div class="index__item">
         <a class="index__item__title hvr-underline-from-left" href="/2019/08/28/tcp-queue/">
@@ -245,23 +276,6 @@ Regenerating: <span style="color:#099">1</span> file<span style="color:#000;font
         <div class="index__item__meta">
           <div>
             2017.03.12
-          </div>
-        </div>
-      </div>
-    
-      <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/2017/02/18/write-a-code-post-generator-with-go/">
-          使用 Go 编写代码明信片生成器
-        </a>
-
-        <div class="index__item__content post__content">
-          <p>很早之前就看过到关于 <a href="http://commits.io">commits.io</a> 的一个帖子，这个站点专门制作代码明信片。什么是代码明信片呢？如下图。</p>
-<p><img src="http://asset.cjting.cn/007FEWc7ly1g1f3o6zdtwj30sj0ee45m.jpg" alt=""></p>
-        </div>
-
-        <div class="index__item__meta">
-          <div>
-            2017.02.18
           </div>
         </div>
       </div>

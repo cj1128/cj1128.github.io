@@ -6,11 +6,7 @@
     <description>Recent content in texteditor on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 10 May 2020 10:04:40 +0800</lastBuildDate>
-    
-	<atom:link href="https://cjting.me/tags/texteditor/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 10 May 2020 10:04:40 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/texteditor/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>编写第一个 Sublime 插件 —— BuildX</title>
       <link>https://cjting.me/2020/05/10/write-a-sublime-plugin/</link>

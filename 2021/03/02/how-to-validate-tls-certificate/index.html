@@ -211,7 +211,7 @@ $ openssl asn1parse -in root.pem -strparse <span style="color:#099">4</span> -ou
 
 <span style="color:#998;font-style:italic"># 计算 sha1 哈希值</span>
 $ openssl dgst -sha1 root-body.bin
-SHA1<span style="color:#000;font-weight:bold">(</span>root-body.bin<span style="color:#000;font-weight:bold">)</span><span style="color:#000;font-weight:bold">=</span> e35ef08d884f0a0ade2f75e96301ce6230f213a8
+SHA1<span style="color:#000;font-weight:bold">(</span>root-body.bin<span style="color:#000;font-weight:bold">)=</span> e35ef08d884f0a0ade2f75e96301ce6230f213a8
 </code></pre></div><p>hash 值匹配，这也就说明根证书确实是自签名的，用自己的私钥给自己签名。</p>
 <h2 id="纸上得来终觉浅">纸上得来终觉浅</h2>
 <p>理论知识我们已经全部具备了，接下来我们来完整走一遍流程，以 github.com 为例，校验一下它的证书是否有效。</p>
@@ -281,7 +281,7 @@ $ openssl asn1parse -in github_com.pem -strparse <span style="color:#099">4</spa
 
 <span style="color:#998;font-style:italic"># 计算 hash 值</span>
 $ openssl dgst -sha256 github_com-body.bin
-SHA256<span style="color:#000;font-weight:bold">(</span>github_com-body.bin<span style="color:#000;font-weight:bold">)</span><span style="color:#000;font-weight:bold">=</span> a8aa3f746fe780b1e2e5451ce4383a9633c4399e89aa3637252f38f324dffd5f
+SHA256<span style="color:#000;font-weight:bold">(</span>github_com-body.bin<span style="color:#000;font-weight:bold">)=</span> a8aa3f746fe780b1e2e5451ce4383a9633c4399e89aa3637252f38f324dffd5f
 </code></pre></div><p>hash 值匹配，我们成功校验了 github.pem 这个证书确实是由 DigiCert_SHA2_High_Assurance_Server_CA.pem 这个证书来签发的。</p>
 <p>上面的流程比较繁琐，其实也可以直接让 openssl 来帮我们验证。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ openssl dgst -sha256 -verify issuer-pub.pem -signature github_com-signature.bin  github_com-body.bin

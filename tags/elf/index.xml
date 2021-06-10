@@ -6,11 +6,7 @@
     <description>Recent content in elf on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 10 Dec 2020 01:13:48 +0800</lastBuildDate>
-    
-	<atom:link href="https://cjting.me/tags/elf/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 10 Dec 2020 01:13:48 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/elf/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>编写一个最小的 64 位 Hello World</title>
       <link>https://cjting.me/2020/12/10/tiny-x64-helloworld/</link>
@@ -19,10 +15,10 @@
       <guid>https://cjting.me/2020/12/10/tiny-x64-helloworld/</guid>
       <description>&lt;p&gt;Hello World 应该是每一位程序员的启蒙程序，出自于 &lt;a href=&#34;https://en.wikipedia.org/wiki/Brian_Kernighan&#34;&gt;Brian Kernighan&lt;/a&gt; 和 &lt;a href=&#34;https://en.wikipedia.org/wiki/Dennis_Ritchie&#34;&gt;Dennis Ritchie&lt;/a&gt; 的一代经典著作 &lt;a href=&#34;https://en.wikipedia.org/wiki/The_C_Programming_Language&#34;&gt;The C Programming Language&lt;/a&gt;。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;color:#998;font-style:italic&#34;&gt;// hello.c
-&lt;/span&gt;&lt;span style=&#34;color:#998;font-style:italic&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#999;font-weight:bold;font-style:italic&#34;&gt;#&lt;/span&gt;&lt;span style=&#34;color:#999;font-weight:bold;font-style:italic&#34;&gt;include&lt;/span&gt; &lt;span style=&#34;color:#999;font-weight:bold;font-style:italic&#34;&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#999;font-weight:bold;font-style:italic&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#998;font-style:italic&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#999;font-weight:bold;font-style:italic&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#999;font-weight:bold;font-style:italic&#34;&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#999;font-weight:bold;font-style:italic&#34;&gt;
 &lt;/span&gt;&lt;span style=&#34;color:#999;font-weight:bold;font-style:italic&#34;&gt;&lt;/span&gt;
 &lt;span style=&#34;color:#458;font-weight:bold&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#900;font-weight:bold&#34;&gt;main&lt;/span&gt;() {
-  printf(&lt;span style=&#34;color:#d14&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#d14&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#d14&#34;&gt;hello, world&lt;/span&gt;&lt;span style=&#34;color:#d14&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#d14&#34;&gt;&amp;#34;&lt;/span&gt;);
+  printf(&lt;span style=&#34;color:#d14&#34;&gt;&amp;#34;hello, world&lt;/span&gt;&lt;span style=&#34;color:#d14&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#d14&#34;&gt;&amp;#34;&lt;/span&gt;);
   &lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#099&#34;&gt;0&lt;/span&gt;;
 }
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这段代码我想大家应该都太熟悉了，熟悉到可以默写出来。虽然是非常简单的代码，但是如果细究起来，里面却隐含着很多细节：&lt;/p&gt;

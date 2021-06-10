@@ -6,11 +6,7 @@
     <description>Recent content in nat on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 21 May 2016 00:00:00 +0800</lastBuildDate>
-    
-	<atom:link href="https://cjting.me/tags/nat/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 21 May 2016 00:00:00 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/nat/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用 Ngrok 实现内网穿透</title>
       <link>https://cjting.me/2016/05/21/ngrok-tutorial/</link>

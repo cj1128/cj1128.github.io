@@ -6,11 +6,7 @@
     <description>Recent content in go on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 18 Feb 2017 00:00:00 +0800</lastBuildDate>
-    
-	<atom:link href="https://cjting.me/tags/go/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 18 Feb 2017 00:00:00 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/go/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用 Go 编写代码明信片生成器</title>
       <link>https://cjting.me/2017/02/18/write-a-code-post-generator-with-go/</link>

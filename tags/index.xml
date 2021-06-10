@@ -6,10 +6,15 @@
     <description>Recent content in Tags on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 16 Mar 2021 20:13:21 +0800</lastBuildDate>
-    
-	<atom:link href="https://cjting.me/tags/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Thu, 10 Jun 2021 23:10:10 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>c linker ld</title>
+      <link>https://cjting.me/tags/c-linker-ld/</link>
+      <pubDate>Thu, 10 Jun 2021 23:10:10 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/c-linker-ld/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>gcc clang compiler assembly math</title>

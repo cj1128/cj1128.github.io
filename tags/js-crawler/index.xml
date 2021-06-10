@@ -6,11 +6,7 @@
     <description>Recent content in js crawler on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 01 Jul 2020 23:47:32 +0800</lastBuildDate>
-    
-	<atom:link href="https://cjting.me/tags/js-crawler/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 01 Jul 2020 23:47:32 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/js-crawler/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>斗鱼关注人数爬取 ── 字体反爬的攻与防</title>
       <link>https://cjting.me/2020/07/01/douyu-crawler-and-font-anti-crawling/</link>

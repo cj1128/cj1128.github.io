@@ -6,11 +6,7 @@
     <description>Recent content in 微博 on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 06 Apr 2016 00:00:00 +0800</lastBuildDate>
-    
-	<atom:link href="https://cjting.me/tags/%E5%BE%AE%E5%8D%9A/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 06 Apr 2016 00:00:00 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/%E5%BE%AE%E5%8D%9A/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>编写第一个 Chrome 插件 —— 图床on微博</title>
       <link>https://cjting.me/2016/04/06/first-chrome-extension-image-bed-on-weibo/</link>

@@ -82,10 +82,10 @@
           <div class="post__content">
             <p>Hello World 应该是每一位程序员的启蒙程序，出自于 <a href="https://en.wikipedia.org/wiki/Brian_Kernighan">Brian Kernighan</a> 和 <a href="https://en.wikipedia.org/wiki/Dennis_Ritchie">Dennis Ritchie</a> 的一代经典著作 <a href="https://en.wikipedia.org/wiki/The_C_Programming_Language">The C Programming Language</a>。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#998;font-style:italic">// hello.c
-</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
 <span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>() {
-  printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
+  printf(<span style="color:#d14">&#34;hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
   <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
 }
 </code></pre></div><p>这段代码我想大家应该都太熟悉了，熟悉到可以默写出来。虽然是非常简单的代码，但是如果细究起来，里面却隐含着很多细节：</p>
@@ -248,10 +248,10 @@ $ ll final.php
 <h3 id="step0">Step0</h3>
 <p>首先，我们使用上文提到的 hello.c 作为基准程序。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#998;font-style:italic">// hello.c
-</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
 <span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>() {
-  printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
+  printf(<span style="color:#d14">&#34;hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
   <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
 }
 </code></pre></div><p><code>gcc hello.c -o hello.out</code> 编译以后，它的大小是 16712 个字节。</p>
@@ -323,13 +323,13 @@ $ ll final.php
 <p>第二是处理返回值，具体的处理方式是使用 main 函数的返回值调用 <code>exit</code> 系统调用进行退出。</p>
 <p>所以如果我们不使用启动文件的话，只需要自己使用系统调用退出即可。</p>
 <p>因为我们现在不使用 <code>_start</code> 了，自然我们的主函数也没必要一定要叫做 <code>main</code>，这里我们改个名字突出一下这个事实。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#</span><span style="color:#999;font-weight:bold;font-style:italic">include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;unistd.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;unistd.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
 </span><span style="color:#999;font-weight:bold;font-style:italic"></span>
 <span style="color:#458;font-weight:bold">int</span>
 <span style="color:#900;font-weight:bold">nomain</span>()
 {
-  printf(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
+  printf(<span style="color:#d14">&#34;hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
   _exit(<span style="color:#099">0</span>);
 }
 </code></pre></div><p><code>unistd.h</code> 里面提供系统调用的相关函数，这里我们使用的是 <code>_exit</code>。为什么是 <code>_exit</code> 而不是 <code>exit</code>？可以参考这个回答 <a href="https://stackoverflow.com/questions/5422831/what-is-the-difference-between-using-exit-exit-in-a-conventional-linux-fo">What is the difference between using _exit() &amp; exit() in a conventional Linux fork-exec?
@@ -351,27 +351,27 @@ $ ll final.php
 </ul>
 <p>因为要访问寄存器，所以必须要使用内联汇编。</p>
 <p>最终代码如下，在 C 中内联汇编的语法可以参考 <a href="https://www.ibiblio.org/gferg/ldp/GCC-Inline-Assembly-HOWTO.html">这篇文档</a>。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>str <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>;
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>str <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#34;hello, world</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>;
 
 <span style="color:#458;font-weight:bold">void</span>
 <span style="color:#900;font-weight:bold">myprint</span>()
 {
-  <span style="color:#000;font-weight:bold">asm</span>(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">movq $1, %%rax </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
-      <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">movq $1, %%rdi </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
-      <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">movq %0, %%rsi </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
-      <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">movq $13, %%rdx </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
-      <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">syscall </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+  <span style="color:#000;font-weight:bold">asm</span>(<span style="color:#d14">&#34;movq $1, %%rax </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+      <span style="color:#d14">&#34;movq $1, %%rdi </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+      <span style="color:#d14">&#34;movq %0, %%rsi </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+      <span style="color:#d14">&#34;movq $13, %%rdx </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+      <span style="color:#d14">&#34;syscall </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
       <span style="color:#000;font-weight:bold">:</span> <span style="color:#998;font-style:italic">// no output
-</span><span style="color:#998;font-style:italic"></span>      <span style="color:#000;font-weight:bold">:</span> <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">r</span><span style="color:#d14">&#34;</span>(str)
-      <span style="color:#000;font-weight:bold">:</span> <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">rax</span><span style="color:#d14">&#34;</span>, <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">rdi</span><span style="color:#d14">&#34;</span>, <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">rsi</span><span style="color:#d14">&#34;</span>, <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">rdx</span><span style="color:#d14">&#34;</span>);
+</span><span style="color:#998;font-style:italic"></span>      <span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;r&#34;</span>(str)
+      <span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;rax&#34;</span>, <span style="color:#d14">&#34;rdi&#34;</span>, <span style="color:#d14">&#34;rsi&#34;</span>, <span style="color:#d14">&#34;rdx&#34;</span>);
 }
 
 <span style="color:#458;font-weight:bold">void</span>
 <span style="color:#900;font-weight:bold">myexit</span>()
 {
-  <span style="color:#000;font-weight:bold">asm</span>(<span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">movq $60, %rax </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
-      <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">xor %rdi, %rdi </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
-      <span style="color:#d14"></span><span style="color:#d14">&#34;</span><span style="color:#d14">syscall </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
+  <span style="color:#000;font-weight:bold">asm</span>(<span style="color:#d14">&#34;movq $60, %rax </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+      <span style="color:#d14">&#34;xor %rdi, %rdi </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>
+      <span style="color:#d14">&#34;syscall </span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>);
 }
 
 <span style="color:#458;font-weight:bold">int</span>
@@ -403,9 +403,9 @@ Section Headers:
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ ld --verbose
 GNU ld <span style="color:#000;font-weight:bold">(</span>GNU Binutils<span style="color:#000;font-weight:bold">)</span> 2.34
 ...
-  . <span style="color:#000;font-weight:bold">=</span> ALIGN<span style="color:#000;font-weight:bold">(</span>CONSTANT <span style="color:#000;font-weight:bold">(</span>MAXPAGESIZE<span style="color:#000;font-weight:bold">)</span><span style="color:#000;font-weight:bold">)</span>;
+  . <span style="color:#000;font-weight:bold">=</span> ALIGN<span style="color:#000;font-weight:bold">(</span>CONSTANT <span style="color:#000;font-weight:bold">(</span>MAXPAGESIZE<span style="color:#000;font-weight:bold">))</span>;
 ...
-  . <span style="color:#000;font-weight:bold">=</span> ALIGN<span style="color:#000;font-weight:bold">(</span>CONSTANT <span style="color:#000;font-weight:bold">(</span>MAXPAGESIZE<span style="color:#000;font-weight:bold">)</span><span style="color:#000;font-weight:bold">)</span>;
+  . <span style="color:#000;font-weight:bold">=</span> ALIGN<span style="color:#000;font-weight:bold">(</span>CONSTANT <span style="color:#000;font-weight:bold">(</span>MAXPAGESIZE<span style="color:#000;font-weight:bold">))</span>;
 ...
 </code></pre></div><p>可以看到里面有使用 <code>ALIGN</code> 来对齐某些 Section，使得他们的地址是 MAXPAGESIZE 的倍数，这里 MAXPAGESIZE 是 4K。</p>
 <p>这就解释了为什么我们的程序那么大。</p>
@@ -468,7 +468,7 @@ EOF
   <span style="color:#000;font-weight:bold">dw</span>  <span style="color:#099">0</span>         <span style="color:#998;font-style:italic">; e_shentsize</span>
   <span style="color:#000;font-weight:bold">dw</span>  <span style="color:#099">0</span>         <span style="color:#998;font-style:italic">; e_shnum</span>
   <span style="color:#000;font-weight:bold">dw</span>  <span style="color:#099">0</span>         <span style="color:#998;font-style:italic">; e_shstrndx</span>
-<span style="color:#008080">ehdrsize</span><span style="color:#000;font-weight:bold">  </span><span style="color:#000;font-weight:bold">equ</span>  <span style="color:#000;font-weight:bold">$</span> <span style="color:#000;font-weight:bold">-</span> <span style="color:#008080">ehdr</span>
+<span style="color:#008080">ehdrsize</span><span style="color:#000;font-weight:bold">  equ</span>  <span style="color:#000;font-weight:bold">$</span> <span style="color:#000;font-weight:bold">-</span> <span style="color:#008080">ehdr</span>
 
 <span style="color:#900;font-weight:bold">phdr:</span>           <span style="color:#998;font-style:italic">; Elf64_Phdr</span>
   <span style="color:#000;font-weight:bold">dd</span>  <span style="color:#099">1</span>         <span style="color:#998;font-style:italic">; p_type</span>
@@ -479,7 +479,7 @@ EOF
   <span style="color:#000;font-weight:bold">dq</span>  <span style="color:#008080">filesize</span>  <span style="color:#998;font-style:italic">; p_filesz</span>
   <span style="color:#000;font-weight:bold">dq</span>  <span style="color:#008080">filesize</span>  <span style="color:#998;font-style:italic">; p_memsz</span>
   <span style="color:#000;font-weight:bold">dq</span>  <span style="color:#099">0x1000</span>    <span style="color:#998;font-style:italic">; p_align</span>
-<span style="color:#008080">phdrsize</span><span style="color:#000;font-weight:bold">  </span><span style="color:#000;font-weight:bold">equ</span>  <span style="color:#000;font-weight:bold">$</span> <span style="color:#000;font-weight:bold">-</span> <span style="color:#008080">phdr</span>
+<span style="color:#008080">phdrsize</span><span style="color:#000;font-weight:bold">  equ</span>  <span style="color:#000;font-weight:bold">$</span> <span style="color:#000;font-weight:bold">-</span> <span style="color:#008080">phdr</span>
 
 <span style="color:#900;font-weight:bold">_start:</span>
   <span style="color:#900;font-weight:bold">mov</span> <span style="color:#0086b3">rax</span>, <span style="color:#099">1</span>
@@ -493,7 +493,7 @@ EOF
 
 <span style="color:#900;font-weight:bold">message:</span> <span style="color:#000;font-weight:bold">db</span> <span style="color:#d14">&#34;hello, world&#34;</span>, <span style="color:#099">0xa</span>
 
-<span style="color:#008080">filesize</span><span style="color:#000;font-weight:bold">  </span><span style="color:#000;font-weight:bold">equ</span>  <span style="color:#000;font-weight:bold">$</span> <span style="color:#000;font-weight:bold">-</span> <span style="color:#000;font-weight:bold">$$</span>
+<span style="color:#008080">filesize</span><span style="color:#000;font-weight:bold">  equ</span>  <span style="color:#000;font-weight:bold">$</span> <span style="color:#000;font-weight:bold">-</span> <span style="color:#000;font-weight:bold">$$</span>
 </code></pre></div><p>还是使用 nasm，不过这一次，我们使用 <code>nasm -f bin</code> 直接得到二进制程序。</p>
 <p>最终结果是 170 个字节，这 170 字节的程序发送给任意的 x64 架构的 64 位 Linux，都可以打印出 hello world。</p>
 <p>结束了，尘埃落定。</p>

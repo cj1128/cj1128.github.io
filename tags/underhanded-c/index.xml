@@ -6,11 +6,7 @@
     <description>Recent content in underhanded-c on CJ Ting&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 16 Jun 2015 00:00:00 +0800</lastBuildDate>
-    
-	<atom:link href="https://cjting.me/tags/underhanded-c/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 16 Jun 2015 00:00:00 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/underhanded-c/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Underhanded C, 有猫腻的 C</title>
       <link>https://cjting.me/2015/06/16/underhanded-c/</link>
