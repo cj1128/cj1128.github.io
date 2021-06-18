@@ -56,8 +56,8 @@
   // init gitalk
   if(document.querySelector("#post__comments") && location.hostname !== "localhost") {
     const gitalk = new Gitalk({
-      clientID: "f26cc90ab221487c7c8f",
-      clientSecret: "fed1fa4d13c28f37a3a9087c6bb5585e14a87439",
+      clientID: "bbd19fbff5bc623e090e",
+      clientSecret: "e751f74757554518d7f935005876dee2ae4589cd",
       repo: "cj1128.github.io",
       owner: "cj1128",
       admin: ["cj1128"],
