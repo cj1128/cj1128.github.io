@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>proxy on CJ Ting&#39;s Blog</title>
+    <link>https://cjting.me/tags/proxy/</link>
+    <description>Recent content in proxy on CJ Ting&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 11 Aug 2018 18:08:00 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/proxy/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>正向代理与反向代理</title>
+      <link>https://cjting.me/2018/08/11/forward-proxy-and-reverse-proxy/</link>
+      <pubDate>Sat, 11 Aug 2018 18:08:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/2018/08/11/forward-proxy-and-reverse-proxy/</guid>
+      <description>&lt;p&gt;代理的英文叫做 &lt;em&gt;Proxy&lt;/em&gt;，是计算机中的常用软件。&lt;/p&gt;
+&lt;p&gt;简单来说，代理的功能犹如它的名字所示：代替某人来处理某事。&lt;/p&gt;
+&lt;p&gt;常见的代理分两种，正向代理和反向代理。不管哪种代理，它们都位于客户端和服务器之间，将我们传统的 &lt;code&gt;客户端 &amp;lt;-&amp;gt; 服务器&lt;/code&gt; 通信变成了 &lt;code&gt;客户端 &amp;lt;-&amp;gt; 代理 &amp;lt;-&amp;gt; 服务器&lt;/code&gt; 通信。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

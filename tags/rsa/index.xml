@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>rsa on CJ Ting&#39;s Blog</title>
+    <link>https://cjting.me/tags/rsa/</link>
+    <description>Recent content in rsa on CJ Ting&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 13 Mar 2020 19:24:07 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/rsa/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RSA 的原理与实现</title>
+      <link>https://cjting.me/2020/03/13/rsa/</link>
+      <pubDate>Fri, 13 Mar 2020 19:24:07 +0800</pubDate>
+      
+      <guid>https://cjting.me/2020/03/13/rsa/</guid>
+      <description>&lt;p&gt;1976 年以前，所有的加密都是如下方式：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A 使用某种规则对信息进行处理&lt;/li&gt;
+&lt;li&gt;B 使用同样的规则对处理过的信息进行复原&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这个方式很好理解，不论是非常简单的 ROT13 还是目前广泛使用的 AES，都是这种对称加密方式。&lt;/p&gt;
+&lt;p&gt;但是这种方式有一个巨大的缺点，那就是 A 需要将对信息进行处理的规则（也就是秘钥）告诉给 B。怎样安全地传输秘钥就成了一个非常棘手的问题。&lt;/p&gt;
+&lt;p&gt;那么存不存在一种方式，加密和解密使用不同的秘钥，彻底规避掉传输秘钥的问题？&lt;/p&gt;
+&lt;p&gt;答案是存在的，感谢数学家和计算机科学家，RSA 就是这样一种非对称加密方式，也就是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用算法可以生成两把钥匙 A 和 B&lt;/li&gt;
+&lt;li&gt;使用 A 加密的信息，使用 B 可以解开&lt;/li&gt;
+&lt;li&gt;使用 B 加密的信息，使用 A 可以解开&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;日常使用中，我们把一把作为公钥，公开发布。一把作为私钥，自己保留。这样，任何人都可以使用我们的公钥加密信息发给我们，我们则可以使用自己的私钥解开。&lt;/p&gt;
+&lt;p&gt;只要把私钥保存好，这个通信系统就非常安全。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

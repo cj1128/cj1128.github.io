@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ld on CJ Ting&#39;s Blog</title>
+    <link>https://cjting.me/tags/ld/</link>
+    <description>Recent content in ld on CJ Ting&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 10 Jun 2021 23:10:10 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/ld/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>热重载 C</title>
+      <link>https://cjting.me/2021/06/10/hot-reload-c/</link>
+      <pubDate>Thu, 10 Jun 2021 23:10:10 +0800</pubDate>
+      
+      <guid>https://cjting.me/2021/06/10/hot-reload-c/</guid>
+      <description>&lt;p&gt;热重载是一个非常好用的功能，可以在不重启的情况下更新应用，从而大大提高开发效率。&lt;/p&gt;
+&lt;p&gt;前端的 Wepback，后端的 Ruby/Python/Elixir，移动端的 Flutter 都有热重载，属于用过以后就回不去的 Killer Feature。&lt;/p&gt;
+&lt;p&gt;在我之前的认识中，一直认为只有脚本语言才可以支持热重载，因为虚拟机让热重载的实现变得非常简单，重新运行代码即可。&lt;/p&gt;
+&lt;p&gt;直到有一天，Casey 在 &lt;a href=&#34;https://handmadehero.org/&#34;&gt;HandmadeHero&lt;/a&gt; 项目中用非常少的代码演示了怎样热重载 C，我才恍然大悟，编译语言一样可以热重载。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

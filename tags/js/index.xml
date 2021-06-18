@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>js on CJ Ting&#39;s Blog</title>
+    <link>https://cjting.me/tags/js/</link>
+    <description>Recent content in js on CJ Ting&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 01 Jul 2020 23:47:32 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/js/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>斗鱼关注人数爬取 ── 字体反爬的攻与防</title>
+      <link>https://cjting.me/2020/07/01/douyu-crawler-and-font-anti-crawling/</link>
+      <pubDate>Wed, 01 Jul 2020 23:47:32 +0800</pubDate>
+      
+      <guid>https://cjting.me/2020/07/01/douyu-crawler-and-font-anti-crawling/</guid>
+      <description>&lt;p&gt;之前因为业务原因需要爬取一批斗鱼主播的相关数据，在这过程中我发现斗鱼使用了一种很有意思的反爬技术，字体反爬。&lt;/p&gt;
+&lt;p&gt;打开任何一个斗鱼主播的直播间，例如 &lt;a href=&#34;https://www.douyu.com/7874579&#34;&gt;这个主播&lt;/a&gt;，他的关注人数数据显示在右上角：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://asset.cjting.cn/Fp11DQiiqvE_vQddpXH1tgazywrA.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;斗鱼在关注数据这里使用了字体反爬。什么是字体反爬？也就是通过自定义字体来自定义字符与渲染图形的映射。比如，字符 1 实际渲染的是 9，那么如果 HTML 中的数字是 111，实际显示就是 999。&lt;/p&gt;
+&lt;p&gt;在这种技术下，传统的通过解析 HTML 文档获取数据的方式就失效了，因为获取到的数据并不是真实数据。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>JavaScript 与 Unicode</title>
+      <link>https://cjting.me/2018/07/22/js-and-unicode/</link>
+      <pubDate>Sun, 22 Jul 2018 09:45:12 +0800</pubDate>
+      
+      <guid>https://cjting.me/2018/07/22/js-and-unicode/</guid>
+      <description>&lt;p&gt;字符串是任何一个编程语言中的重要概念，同时也是一个非常复杂的问题。&lt;/p&gt;
+&lt;p&gt;日常编码中可能并不一定能见到它的复杂性，下面是几个字符串操作，使用你最熟悉的编程语言，看看结果如何。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;逆转字符串 &lt;code&gt;&amp;quot;noël&amp;quot;&lt;/code&gt;，正确结果应该是 &lt;code&gt;&amp;quot;lëon&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取字符串 &lt;code&gt;&amp;quot;noël&amp;quot;&lt;/code&gt; 前三个字符，正确结果应该是 &lt;code&gt;&amp;quot;noë&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;获取字符串 &lt;code&gt;&amp;quot;😸😾&amp;quot;&lt;/code&gt; 的长度，正确答案应该是 2&lt;/li&gt;
+&lt;li&gt;字符串 &lt;code&gt;&amp;quot;noël&amp;quot;&lt;/code&gt; 和字符串 &lt;code&gt;&amp;quot;noël&amp;quot;&lt;/code&gt; 规整化以后应该相等（他们看起来一样，但是内部表示不一样，一个 6 字节，一个 5 字节，这里涉及到 Unicode 的规整化）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于大部分编程语言，包括 Ruby，Python，JS，C#，Java 等，上面的问题都无法全部返回正确结果（但是，拥有超强 Unicode 支持的 &lt;a href=&#34;https://elixir-lang.org/&#34;&gt;Elixir&lt;/a&gt; 可以）。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+  <title>消失的除法指令：Part1 - CJ Ting's Blog</title>
+  <meta name="author" content="CJ Ting">
+  <meta name="description" content="消失的除法指令：Part1">
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css">
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1919785_agios4od1qk.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/notyf@3.1.0/notyf.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/notyf@3.1.0/notyf.min.css">
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/zoom-vanilla.js@2.0.6/css/zoom.css">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [["$", "$"]],
+    },
+    chtml: {
+      scale: 1.2,
+    },
+  }
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/tex-chtml.js"></script>
+  <script type="text/javascript">
+    window.PAGE = {
+      title: "消失的除法指令：Part1",
+      tags: ["gcc","clang","compiler","assembly","math"],
+    }
+  </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.css">
+  <script src="https://cdn.jsdelivr.net/npm/tocbot@4.11.2/dist/tocbot.min.js"></script>
+
+  <link rel="stylesheet" href="/asset/main.css">
+</head>
+<body>
+  
+  <div class="post">
+    <header class="post__header" data-cover="http://asset.cjting.cn/FtjQZJYq8i7cRUwvcLX63Qqnvggz.png">
+      <a href="/">
+        HOME
+      </a>
+    </header>
+
+    <div class="post__wrapper">
+      <div class="post__main">
+        <div class="post__body">
+          <h1 class="post__title">
+              消失的除法指令：Part1
+          </h1>
+
+          <div class="post__meta">
+            <div class="tags">
+              
+                <span class="tag">gcc</span>
+              
+                <span class="tag">clang</span>
+              
+                <span class="tag">compiler</span>
+              
+                <span class="tag">assembly</span>
+              
+                <span class="tag">math</span>
+              
+            </div>
+
+            <div class='date'>
+              2021.03.16
+            </div>
+          </div>
+
+          <div class="post__content">
+            <p>之前学汇编的时候观察到一个现象，我在 C 语言中写了一个函数进行除法操作，但是编译得到的汇编代码中却没有除法指令，取而代之的是一条乘法指令。</p>
+<p><img src="http://asset.cjting.cn/FjCkN1q9ePhijDTEBzws-jI0B7w1.png" alt=""></p>
+<p>图片对应的 GodBolt 地址在 <a href="https://gcc.godbolt.org/z/YrK4vnY1E">这里</a>，可以看到有一个 <code>imulq</code> 指令，这是一个乘法指令，乘了一个奇怪的数字 1431655766。</p>
+<p>为什么编译器要这样操作？为什么能这样操作？1431655766 这个数字又是怎么来的？</p>
+<h2 id="assembly-code">Assembly Code</h2>
+<p>我们先来分析一下 GodBolt 中的汇编代码，注意这里使用的编译器是 GCC 10。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-plain" data-lang="plain">div3(int):
+  movslq  %edi, %rax
+  imulq   $1431655766, %rax, %rax
+  shrq    $32, %rax
+  sarl    $31, %edi
+  subl    %edi, %eax
+  ret
+</code></pre></div><p>一共 6 条指令，除去最后一条 <code>ret</code> 指令用于函数返回，总计 5 条指令解决了除以三运算。</p>
+<div class="post__tip">
+  <span class="post__tip__span">T</span>ip: 关于 X86/X64 的汇编，Intel 官方的手册 <a href="https://software.intel.com/content/www/us/en/develop/articles/intel-sdm.html">Intel® 64 and IA-32 Architectures Software Developer’s Manuals</a> 是居家旅行必备的。
+</div>
+<p>GCC 使用的是 AT&amp;T 汇编语法，基本特点是 source 在左边，target 在右边。</p>
+<p>首先，<code>movslq %edi, %rax</code> 将 <code>edi</code> 寄存器中的值有符号扩展为 64bit 然后移动到 <code>rax</code> 寄存器中。</p>
+<blockquote>
+<p>MOVSLQ is move and sign-extend a value from a 32-bit source to a 64-bit destination.</p>
+</blockquote>
+<p>我们的函数接收 32-bit 的有符号整数作为第一个参数，可以看到背后的 ABI 规范是第一个参数存储在 edi 寄存器中。</p>
+<div class="post__tip">
+  <span class="post__tip__span">T</span>ip: <p>这里使用的 ABI 叫做 AMD64 ABI，我没有找到特别正式的资料，但是在 <a href="https://docs.oracle.com/cd/E19253-01/816-5138/fcowb/index.html">这个页面</a> 找到了传参的相关说明。</p>
+<blockquote>
+<p>The basic function calling convention is different for the AMD ABI. Arguments are placed in registers. For simple integer arguments, the first arguments are placed in the %rdi, %rsi, %rdx, %rcx, %r8, and %r9 registers, in that order.</p>
+</blockquote>
+</div>
+<p>接下来的 <code>imulq $1431655766, %rax, %rax</code> 就比较简单了，将 <code>rax</code> 中的数字和 <code>1431655766</code> 乘在一起，结果存储在 <code>rax</code> 中。</p>
+<p>我们知道 <code>rax</code> 存储的的数字是 <code>edi</code> 扩展来的，所以是 32-bit 范围内的有符号整数。<code>1431655766</code> 也是 32-bit 范围内的有符号整数，两个 32bit 的整数相乘，结果不会超过 64bit，所以这一步运算不会溢出。</p>
+<p><code>shrq $32, %rax</code> 将 <code>rax</code> 寄存器中的值逻辑右移 32 位，也就是 <code>rax</code> 中的高 32 位到了低位，高位全部变成了 0。</p>
+<p><code>sarl $31, %edi</code> 这里的 <code>a</code> 是 arithmetic 算术的意思，所以这是是将 <code>edi</code> 寄存器算术右移 31 位，也就是此时最高位到了最低位，根据 edi 中数字的正负，结果的二进制要么是全 0 要么是全 1，也就是十进制的 0 和 -1。</p>
+<p>最后 <code>subl %edi, %eax</code> 将 <code>eax - edi</code> 的值赋给 <code>eax</code>，<code>edi</code> 要么是 0（如果参数 &gt;= 0），要么是 -1（如果参数 &lt; 0）。</p>
+<p>所以，我们可以总结一下这里的算法，当我们对一个 32bit 有符号整数 N 除以 3 时，可以等价于</p>
+<ul>
+<li>R = N * 1431655766 的高 32 位</li>
+<li>如果 N &lt; 0，那么 R = R + 1</li>
+<li>返回 R</li>
+</ul>
+<h2 id="validate">Validate</h2>
+<p>我们先抛开数学证明，写个程序验证一下上面的算法确实是正确的。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdint.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdlib.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#999;font-weight:bold;font-style:italic">#define i32 int32_t
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define i64 int64_t
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+i32
+<span style="color:#900;font-weight:bold">div3</span>(i32 v)
+{
+  i32 magic <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1431655766</span>;
+  i32 result <span style="color:#000;font-weight:bold">=</span> ((i64)v <span style="color:#000;font-weight:bold">*</span> (i64)magic) <span style="color:#000;font-weight:bold">&gt;&gt;</span> <span style="color:#099">32</span>;
+
+  <span style="color:#000;font-weight:bold">if</span>(v <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">0</span>) {
+    result <span style="color:#000;font-weight:bold">+=</span> <span style="color:#099">1</span>;
+  }
+
+  <span style="color:#000;font-weight:bold">return</span> result;
+}
+
+<span style="color:#458;font-weight:bold">int</span>
+<span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">void</span>)
+{
+  srand(<span style="color:#099">0x1234</span>);
+
+  <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">10000</span>; i<span style="color:#000;font-weight:bold">++</span>) {
+    i32 v <span style="color:#000;font-weight:bold">=</span> (i32)rand() <span style="color:#000;font-weight:bold">*</span> (rand() <span style="color:#000;font-weight:bold">%</span> <span style="color:#099">2</span> <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">0</span> <span style="color:#000;font-weight:bold">?</span> <span style="color:#099">1</span> <span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>);
+
+    i32 got <span style="color:#000;font-weight:bold">=</span> div3(v);
+    i32 expected <span style="color:#000;font-weight:bold">=</span> v <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">3</span>;
+
+    <span style="color:#000;font-weight:bold">if</span>(got <span style="color:#000;font-weight:bold">!=</span> expected) {
+      printf(<span style="color:#d14">&#34;div3 error! dividend %d, got %d, expected %d</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>,
+        v,
+        got,
+        expected);
+    }
+  }
+}
+</code></pre></div><p>这里我们使用 10000 个随机数进行验证，会发现程序运行正常，没有报错。</p>
+<h2 id="proof">Proof</h2>
+<p>接下来我们在数学上进行证明。</p>
+<p>我们先来理清 <em>除法</em> 这个运算。</p>
+<p>在数学中，整数除法得到的是一个有理数。</p>
+<p>但是在计算机中，整数除法运算返回的结果是整数，这里面实际上可以有三种模式。</p>
+<ul>
+<li>
+<p>truncating，运算结果始终向 0 截断</p>
+</li>
+<li>
+<p>floor，运算结果始终向下截断</p>
+</li>
+<li>
+<p>modulus，余数始终为非负</p>
+</li>
+</ul>
+<p>$$
+\begin{align*}
+&amp;&amp;&amp; truncating &amp;&amp; modulus &amp;&amp; floor \newline
+7 \div 3 &amp;=&amp;&amp; \text{2 rem 1} &amp;&amp; \text{2 rem 1} &amp;&amp; \text{2 rem 1} \newline
+(-7) \div 3 &amp;=&amp;&amp; \text{-2 rem -1} &amp;&amp; \text{-3 rem 2} &amp;&amp; \text{-3 rem 2} \newline
+7 \div (-3) &amp;=&amp;&amp; \text{-2 rem 1} &amp;&amp; \text{-2 rem 1} &amp;&amp; \text{-3 rem -2} \newline
+(-7) \div (-3) &amp;=&amp;&amp; \text{2 rem -1} &amp;&amp; \text{3 rem 2} &amp;&amp; \text{2 rem -1}
+\end{align*}
+$$</p>
+<p>不管是哪种模式，对于计算机中的除法运算，被除数一定等于商乘以除数加上余数。</p>
+<p>$$
+dividend = quotient * divisor + remainder
+$$</p>
+<p>这三种模式不存在对错，只是不同的选择，大部分的程序语言和指令集选择的都是 truncating 模式，C 语言也不例外。</p>
+<p>所以，计算机中的除法（truncating 模式）和数学中的除法之间的关系可以表达为</p>
+<p>$$
+n \div d =
+\begin{cases}
+\left\lfloor{n/d}\right\rfloor &amp; if \enspace d \ne 0, nd \geq 0 \newline
+\left\lceil{n/d}\right\rceil &amp; if \enspace d \ne 0,nd &lt; 0
+\end{cases}
+$$</p>
+<p>接下来我们从数学上证明，上述的乘法算法给出的是正确的除法结果。</p>
+<p>首先，我们将 1431655766 这个 Magic Number 改写一下形式。</p>
+<div class="post__tip">
+  <span class="post__tip__span">T</span>ip: <p>关于 Magic Number（魔数），我印象最深的是 Quake III（雷神之锤三）中的 0X5F3759DF。</p>
+<p>在一个求平方根倒数的函数中，John Carmack 使用了这个魔数使得计算效率比普通的 <code>1.0f / sqrt(x)</code> 快了 4 倍。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#458;font-weight:bold">float</span>
+<span style="color:#900;font-weight:bold">InvSqrt</span>(<span style="color:#458;font-weight:bold">float</span> x)
+{
+  <span style="color:#458;font-weight:bold">float</span> xhalf <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0.5f</span> <span style="color:#000;font-weight:bold">*</span> x;
+  <span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">*</span>(<span style="color:#458;font-weight:bold">int</span> <span style="color:#000;font-weight:bold">*</span>)<span style="color:#000;font-weight:bold">&amp;</span>x;
+  i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0x5f3759df</span> <span style="color:#000;font-weight:bold">-</span> (i <span style="color:#000;font-weight:bold">&gt;&gt;</span> <span style="color:#099">1</span>); <span style="color:#998;font-style:italic">// what the fuck???
+</span><span style="color:#998;font-style:italic"></span>  x <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">*</span>(<span style="color:#458;font-weight:bold">float</span> <span style="color:#000;font-weight:bold">*</span>)<span style="color:#000;font-weight:bold">&amp;</span>i;
+  x <span style="color:#000;font-weight:bold">=</span> x <span style="color:#000;font-weight:bold">*</span> (<span style="color:#099">1.5f</span> <span style="color:#000;font-weight:bold">-</span> xhalf <span style="color:#000;font-weight:bold">*</span> x <span style="color:#000;font-weight:bold">*</span> x);
+  <span style="color:#000;font-weight:bold">return</span> x;
+}
+</code></pre></div><p>关于约翰卡马克和 ID Software 的传奇故事，有一本书推荐给大家：<a href="https://book.douban.com/subject/1438119/">Master of Doom</a>。</p>
+</div>
+<p>$$
+1431655766 = \frac{2^{32} + 2}{3}
+$$</p>
+<p>对于 n &gt;= 0，上述运算可以表示为</p>
+<p>$$
+q = \left\lfloor\frac{2^{32} + 2}{3}\frac{n}{2^{32}}\right\rfloor
+$$</p>
+<p>这里我们使用了一个事实：<strong>对有符号整数 n 右移 x 位，相当于 对 n/(2^x) 进行 floor 操作</strong>。</p>
+<p>例如，5 右移 1 位得到 2，是 (5/2 = 2.5) floor 的结果。</p>
+<p>-5 右移 1 位得到 -3，是 (-5/2 = -2.5) floor 的结果。</p>
+<p>所以，我们现在要做的就是证明如下数学等式成立</p>
+<p>$$
+\left\lfloor\frac{2^{32} + 2}{3}\frac{n}{2^{32}}\right\rfloor =
+\left\lfloor{n/3}\right\rfloor
+\quad  \small{0 \leq n &lt; 2^{31}}
+$$</p>
+<p>我们首先来引入几个定理供后面使用。</p>
+<p>THEOREM D0.</p>
+<p>$$
+\text{for x real,}
+\left\lfloor{x}\right\rfloor + 1 = \left\lfloor{x + 1}\right\rfloor
+$$</p>
+<p>THEOREM D1.</p>
+<p>$$
+\begin{align*}
+\text{for n, d integers, d &gt; 0,}
+\newline
+\left\lfloor{\frac{n}{d}}\right\rfloor = \left\lceil{\frac{n - d + 1}{d}}\right\rceil
+\newline
+\left\lceil{\frac{n}{d}}\right\rceil = \left\lfloor{\frac{n + d - 1}{d}}\right\rfloor
+\end{align*}
+$$</p>
+<p>THEOREM D2.</p>
+<p>$$
+\begin{align*}
+\text{for n, d integers, } d \neq 0 \text{, and x real,}
+\newline
+\left\lfloor{\frac{n}{d} + x}\right\rfloor = \left\lfloor{\frac{n}{d}}\right\rfloor \text{if } 0 \leq x &lt; |{\frac{1}{d}}|
+\newline
+\left\lceil{\frac{n}{d} + x}\right\rceil = \left\lceil{\frac{n}{d}}\right\rceil \text{if } -|{\frac{1}{d}}| &lt; x \leq 0
+\end{align*}
+$$</p>
+<p>这一步的证明相对比较简单。</p>
+<p>$$
+\begin{align*}
+q &amp;= \left\lfloor\frac{2^{32} + 2}{3}\frac{n}{2^{32}}\right\rfloor
+\newline
+&amp;= \left\lfloor{\frac{n}{3} + \frac{2n}{3\cdot2^{32}}}\right\rfloor
+\newline
+\small\text{因为} \enspace 0 \leq n &lt; 2^{31} &amp; \enspace \small\text{所以}\enspace 0 \leq \frac{2n}{3\cdot2^{32}} &lt; 1/3
+\newline
+\small\text{根据 D2，我们得到} \enspace q &amp;= \left\lfloor{\frac{n}{3}}\right\rfloor
+\end{align*}
+$$</p>
+<p>接下来我们来看 n &lt; 0 的情况，此时我们要证明的是</p>
+<p>$$
+\left\lfloor{\frac{2^{32} + 2}{3}\frac{n}{2^{32}}}\right\rfloor + 1 = \left\lceil{\frac{n}{3}}\right\rceil
+\quad \small{-2^{31} \leq n &lt; 0}
+$$</p>
+<p>首先把 1 放进 Floor 运算符里面。</p>
+<p>$$
+\begin{align*}
+q &amp;= \left\lfloor{\frac{2^{32} + 2}{3}\frac{n}{2^{32}}}\right\rfloor + 1
+\newline
+\small\text{根据 D0}
+\newline
+&amp;= \left\lfloor{\frac{2^{32}n + 2n + 3\cdot2^{32}}{3\cdot2^{32}}}\right\rfloor
+\newline
+\small\text{根据 D1}
+\newline
+&amp;= \left\lceil{\frac{2^{32}n + 2n + 1}{3\cdot2^{32}}}\right\rceil \newline
+&amp;= \left\lceil{\frac{n}{3} + \frac{2n + 1}{3\cdot2^{32}}}\right\rceil
+\end{align*}
+$$</p>
+<p>接下来就比较简单了。</p>
+<p>$$
+\begin{align*}
+q &amp;= \left\lceil{\frac{n}{3} + \frac{2n + 1}{3\cdot2^{32}}}\right\rceil
+\newline
+\newline
+\small\text{因为} \enspace -2^{31} \leq n \leq -1 &amp; \enspace \small\text{所以} \enspace
+-\frac{1}{3} + \frac{1}{3\cdot2^{32}} \leq \frac{2n + 1}{3\cdot2^{32}} \leq -\frac{1}{3\cdot2^{32}}
+\newline
+\newline
+\small\text{根据 D2，我们得到}\enspace q &amp;= \left\lceil{\frac{n}{3}}\right\rceil
+\newline
+\end{align*}
+$$</p>
+<h2 id="why">Why</h2>
+<p>最后，我们来看一下，为什么？</p>
+<p>为什么编译器要用这样一个算法来计算除以 3 运算？</p>
+<p>为什么不直接调用 CPU 的除法指令？</p>
+<p>这个问题的答案很好猜测，在保证结果不变的情况下编译器修改了实现细节，那么一定是因为性能。</p>
+<p>在我做 <a href="https://handmadehero.org/">HandmadeHero</a> 项目的过程中，不止一次听到 Casey 说过除法的性能非常非常糟糕。</p>
+<p>或者准确点来说，在早期计算机中，除法的性能非常非常糟糕，比乘法要慢的多得多，游戏开发者一般会想尽办法避免除法。</p>
+<p>Casey 的代码中就充满了规避除法养成的一些习惯。</p>
+<p>比如，要把 RGB 值从 0 ~ 255 规整到 0 ~ 1，一般我们的写法是</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c">v3
+<span style="color:#900;font-weight:bold">RGBToLinear</span>(i8 r, i8 g, i8 b) {
+  <span style="color:#000;font-weight:bold">return</span> V3((f32)r <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">255.0f</span>, (f32)g <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">255.0f</span>, (f32)b <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">255.0f</span>);
+}
+</code></pre></div><p>但是，Casey 的代码写法是</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c">v3
+<span style="color:#900;font-weight:bold">RGBToLinear</span>(i8 r, i8 g, i8 b) {
+  f32 inv <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1.0f</span> <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">255.0f</span>;
+  <span style="color:#000;font-weight:bold">return</span> V3((f32)r <span style="color:#000;font-weight:bold">*</span> inv, (f32)g <span style="color:#000;font-weight:bold">*</span> inv, (f32)b <span style="color:#000;font-weight:bold">*</span> inv);
+}
+</code></pre></div><p>这样写的好处就是只做一次除法，剩下的都是乘法运算。</p>
+<div class="post__tip">
+  <span class="post__tip__span">T</span>ip: <p>注意这里我们举的例子是浮点数除法而不是整数除法。</p>
+<p>但是它们背后的机理是一样的，不管是浮点数还是整数，除法运算都比乘法运算要慢。</p>
+</div>
+<p>我很好奇在当代的 CPU 上，除法到底比乘法慢多少？</p>
+<p>我们来写个程序比较一下。</p>
+<p>在 X86 中，进行除法运算的指令是 <code>idiv</code>。</p>
+<blockquote>
+<p>IDIV r/m32, Signed divide EDX:EAX by r/m32, with result stored in EAX ← Quotient, EDX ← Remainder.</p>
+</blockquote>
+<p>根据手册，<code>idiv x</code> 会将 EDX:EAX 构成的 64bit 整数除以 x 寄存器中的值，商存储在 EAX 中，余数存储在 EDX 中。</p>
+<p>我们先把两个算法用汇编写出来，这里我们用的是 nasm，注意它的语法是 Intel，和 GCC 的 AT&amp;T 不一样，target 在左边，source 在右边。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-nasm" data-lang="nasm"><span style="color:#998;font-style:italic">; div.asm</span>
+<span style="color:#000;font-weight:bold">section</span> <span style="color:#008080">.text</span>
+
+<span style="color:#000;font-weight:bold">global</span> <span style="color:#0086b3">di</span><span style="color:#008080">v3</span>
+<span style="color:#000;font-weight:bold">global</span> <span style="color:#0086b3">di</span><span style="color:#008080">v3ByMul</span>
+
+<span style="color:#900;font-weight:bold">div3:</span>
+  <span style="color:#900;font-weight:bold">mov</span> <span style="color:#0086b3">eax</span>, <span style="color:#0086b3">edi</span>
+  <span style="color:#900;font-weight:bold">movsx</span> <span style="color:#0086b3">rdx</span>, <span style="color:#0086b3">edi</span>
+  <span style="color:#900;font-weight:bold">shr</span> <span style="color:#0086b3">rdx</span>, <span style="color:#099">32</span>
+  <span style="color:#900;font-weight:bold">mov</span> <span style="color:#0086b3">ecx</span>, <span style="color:#099">3</span>
+  <span style="color:#900;font-weight:bold">idiv</span> <span style="color:#0086b3">ecx</span>
+  <span style="color:#900;font-weight:bold">ret</span>
+
+<span style="color:#900;font-weight:bold">div3ByMul:</span>
+  <span style="color:#900;font-weight:bold">movsx</span>  <span style="color:#0086b3">rax</span>, <span style="color:#0086b3">edi</span>
+  <span style="color:#900;font-weight:bold">imul</span>   <span style="color:#0086b3">rax</span>, <span style="color:#099">1431655766</span>
+  <span style="color:#900;font-weight:bold">shr</span>    <span style="color:#0086b3">rax</span>, <span style="color:#099">32</span>
+  <span style="color:#900;font-weight:bold">sar</span>    <span style="color:#0086b3">edi</span>, <span style="color:#099">31</span>
+  <span style="color:#900;font-weight:bold">sub</span>    <span style="color:#0086b3">eax</span>, <span style="color:#0086b3">edi</span>
+  <span style="color:#900;font-weight:bold">ret</span>
+</code></pre></div><p>在 Linux 上使用 <code>nasm -f elf64 div.asm</code> 编译得到 <code>div.o</code> 文件。</p>
+<p>然后是写一段 C 程序调用上面的两个汇编函数并分别测量时间。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#998;font-style:italic">// compare.c
+</span><span style="color:#998;font-style:italic"></span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdint.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;sys/time.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdlib.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+<span style="color:#999;font-weight:bold;font-style:italic">#define i32 int32_t
+</span><span style="color:#999;font-weight:bold;font-style:italic">#define i64 int64_t
+</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+i32 <span style="color:#900;font-weight:bold">div3</span>(i32);
+i32 <span style="color:#900;font-weight:bold">div3ByMul</span>(i32);
+
+<span style="color:#458;font-weight:bold">long</span>
+<span style="color:#900;font-weight:bold">getUS</span>(<span style="color:#000;font-weight:bold">struct</span> timeval start)
+{
+  <span style="color:#000;font-weight:bold">struct</span> timeval stop;
+  gettimeofday(<span style="color:#000;font-weight:bold">&amp;</span>stop, <span style="color:#0086b3">NULL</span>);
+
+  <span style="color:#000;font-weight:bold">return</span> (stop.tv_sec <span style="color:#000;font-weight:bold">-</span> start.tv_sec) <span style="color:#000;font-weight:bold">*</span> <span style="color:#099">1000000</span> <span style="color:#000;font-weight:bold">+</span> stop.tv_usec <span style="color:#000;font-weight:bold">-</span> start.tv_usec;
+}
+
+<span style="color:#458;font-weight:bold">int</span>
+<span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">void</span>)
+{
+  srand(<span style="color:#099">0x1234</span>);
+
+  <span style="color:#458;font-weight:bold">int</span> n <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">100000</span>;
+
+  i32 <span style="color:#000;font-weight:bold">*</span>randoms <span style="color:#000;font-weight:bold">=</span> (i32 <span style="color:#000;font-weight:bold">*</span>)malloc(<span style="color:#000;font-weight:bold">sizeof</span>(i32) <span style="color:#000;font-weight:bold">*</span> n);
+  <span style="color:#000;font-weight:bold">if</span>(randoms <span style="color:#000;font-weight:bold">==</span> <span style="color:#0086b3">NULL</span>) {
+    printf(<span style="color:#d14">&#34;malloc error&#34;</span>);
+    exit(<span style="color:#099">1</span>);
+  }
+
+  <span style="color:#000;font-weight:bold">struct</span> timeval start;
+
+  <span style="color:#000;font-weight:bold">while</span>(<span style="color:#099">1</span>) {
+    <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> n; i<span style="color:#000;font-weight:bold">++</span>) {
+      i32 v <span style="color:#000;font-weight:bold">=</span> (i32)rand() <span style="color:#000;font-weight:bold">*</span> (rand() <span style="color:#000;font-weight:bold">%</span> <span style="color:#099">2</span> <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">0</span> <span style="color:#000;font-weight:bold">?</span> <span style="color:#099">1</span> <span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>);
+      randoms[i] <span style="color:#000;font-weight:bold">=</span> v;
+
+      <span style="color:#998;font-style:italic">// check correctness
+</span><span style="color:#998;font-style:italic"></span>      i32 expected <span style="color:#000;font-weight:bold">=</span> v <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">3</span>;
+
+      i32 r1 <span style="color:#000;font-weight:bold">=</span> div3(v);
+      <span style="color:#000;font-weight:bold">if</span>(r1 <span style="color:#000;font-weight:bold">!=</span> expected) {
+        printf(<span style="color:#d14">&#34;div3 produced error result, got %d, expect %d</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, r1, expected);
+      }
+
+      i32 r2 <span style="color:#000;font-weight:bold">=</span> div3ByMul(v);
+      <span style="color:#000;font-weight:bold">if</span>(r2 <span style="color:#000;font-weight:bold">!=</span> expected) {
+        printf(<span style="color:#d14">&#34;div3ByMul produced error result, got %d, expect %d</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>,
+          r2,
+          expected);
+      }
+    }
+
+    <span style="color:#458;font-weight:bold">long</span> t1 <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+    <span style="color:#458;font-weight:bold">long</span> t2 <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>;
+
+    <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> n; i<span style="color:#000;font-weight:bold">++</span>) {
+      i32 v <span style="color:#000;font-weight:bold">=</span> randoms[i];
+
+      gettimeofday(<span style="color:#000;font-weight:bold">&amp;</span>start, <span style="color:#0086b3">NULL</span>);
+      div3ByMul(v);
+      t1 <span style="color:#000;font-weight:bold">+=</span> getUS(start);
+    }
+
+    <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> n; i<span style="color:#000;font-weight:bold">++</span>) {
+      i32 v <span style="color:#000;font-weight:bold">=</span> randoms[i];
+
+      gettimeofday(<span style="color:#000;font-weight:bold">&amp;</span>start, <span style="color:#0086b3">NULL</span>);
+      div3(v);
+      t2 <span style="color:#000;font-weight:bold">+=</span> getUS(start);
+    }
+
+    printf(<span style="color:#d14">&#34;div3ByMul: %ld </span><span style="color:#d14">\t</span><span style="color:#d14"> div3: %ld</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, t1, t2);
+  }
+}
+</code></pre></div><p>C 代码很简单，生成一些随机数，首先验证我们的汇编函数返回的结果是正确的，然后测量时间。</p>
+<p><code>gcc -Og compare.c div.o -o compare</code> 编译运行。</p>
+<p>在我的 64bit CentOS7 中结果如下：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-plain" data-lang="plain">div3ByMul: 39976   div3: 42402
+div3ByMul: 39374   div3: 40548
+div3ByMul: 39185   div3: 39914
+div3ByMul: 39655   div3: 40626
+div3ByMul: 42580   div3: 39658
+div3ByMul: 39625   div3: 41399
+div3ByMul: 39196   div3: 40411
+div3ByMul: 39880   div3: 40563
+div3ByMul: 39922   div3: 41022
+div3ByMul: 40601   div3: 40245
+div3ByMul: 40007   div3: 39863
+div3ByMul: 39973   div3: 40509
+div3ByMul: 40600   div3: 40302
+div3ByMul: 40413   div3: 40462
+div3ByMul: 40315   div3: 40448
+div3ByMul: 39506   div3: 40808
+div3ByMul: 40634   div3: 40772
+div3ByMul: 39944   div3: 39894
+div3ByMul: 39727   div3: 40631
+div3ByMul: 40553   div3: 40393
+div3ByMul: 39891   div3: 41112
+div3ByMul: 39334   div3: 48546
+</code></pre></div><p>好像性能差不多？？？</p>
+<p>未完待续。</p>
+          </div>
+
+          <div id="post__comments">
+          </div>
+        </div>
+
+        <div class="post__toc toc">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/zoom-vanilla.js@2.0.6/dist/zoom-vanilla.min.js"></script>
+  <script src="/asset/main.js"></script>
+
+  
+  <script>
+    (function() {
+      var _hmt = _hmt || [];
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4f34ee3c85734c8235badd2b99b092a6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+  
+  <div style="display: none">
+    <script type="text/javascript" src="https://s23.cnzz.com/z_stat.php?id=1277776204&web_id=1277776204"></script>
+  </div>
+</body>
+</html>

@@ -18,13 +18,19 @@
       
     
       
+    
+      
+    
+      
+    
+      
         <item>
           <title>热重载 C</title>
-          <link>https://cjting.me/hot-reload-c/</link>
+          <link>https://cjting.me/2021/06/10/hot-reload-c/</link>
           <pubDate>Thu, 10 Jun 2021 23:10:10 +0800</pubDate>
           
 
-          <guid>https://cjting.me/hot-reload-c/</guid>
+          <guid>https://cjting.me/2021/06/10/hot-reload-c/</guid>
 
           <description><![CDATA[
             
@@ -216,13 +222,21 @@ Dynamic section at offset 0x2de8 contains <span style="color:#099">27</span> ent
       
     
       
+    
+      
+    
+      
+    
+      
+    
+      
         <item>
           <title>消失的除法指令：Part1</title>
-          <link>https://cjting.me/the-missing-div-instruction-part1/</link>
+          <link>https://cjting.me/2021/03/16/the-missing-div-instruction-part1/</link>
           <pubDate>Tue, 16 Mar 2021 20:13:21 +0800</pubDate>
           
 
-          <guid>https://cjting.me/the-missing-div-instruction-part1/</guid>
+          <guid>https://cjting.me/2021/03/16/the-missing-div-instruction-part1/</guid>
 
           <description><![CDATA[
             
@@ -624,6 +638,8 @@ div3ByMul: 39334   div3: 48546
       
     
       
+    
+      
         <item>
           <title>安全背后: 浏览器是如何校验证书的</title>
           <link>https://cjting.me/2021/03/02/how-to-validate-tls-certificate/</link>
@@ -863,8 +879,6 @@ $ openssl x509 -in DigiCert_SHA2_High_Assurance_Server_CA.pem -text -noout | gre
           ]]>
           </description>
         </item>
-      
-    
       
     
       
@@ -1351,6 +1365,10 @@ EOF
           ]]>
           </description>
         </item>
+      
+    
+      
+    
       
     
       
@@ -1952,6 +1970,10 @@ Reference Manual</a></li>
       
     
       
+    
+      
+    
+      
         <item>
           <title>Shell 启动类型探究 ── login &amp;&amp; interactive</title>
           <link>https://cjting.me/2020/08/16/shell-init-type/</link>
@@ -2158,6 +2180,10 @@ Reference Manual</a></li>
           ]]>
           </description>
         </item>
+      
+    
+      
+    
       
     
       
@@ -2658,6 +2684,8 @@ $ ls result/generated <span style="color:#998;font-style:italic"># 结果存储�
       
     
       
+    
+      
         <item>
           <title>用 C 实现一个 CHIP-8 模拟器</title>
           <link>https://cjting.me/2020/06/07/chip8-emulator/</link>
@@ -3079,6 +3107,8 @@ set tabstop=2
           ]]>
           </description>
         </item>
+      
+    
       
     
       
@@ -3518,6 +3548,8 @@ Decrypt result: <span style="color:#099">1024</span>
           ]]>
           </description>
         </item>
+      
+    
       
     
       
@@ -4077,6 +4109,8 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
       
     
       
+    
+      
         <item>
           <title>正向代理与反向代理</title>
           <link>https://cjting.me/2018/08/11/forward-proxy-and-reverse-proxy/</link>
@@ -4168,6 +4202,8 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
           ]]>
           </description>
         </item>
+      
+    
       
     
       
@@ -4331,8 +4367,6 @@ Uncaught SyntaxError<span style="color:#000;font-weight:bold">:</span> Invalid r
           ]]>
           </description>
         </item>
-      
-    
       
     
       
@@ -5908,10 +5942,6 @@ outpugst <span style="color:#000;font-weight:bold">{</span>
       
     
       
-    
-      
-    
-      
         <item>
           <title>从零开始搭建一个 HTTPS 网站</title>
           <link>https://cjting.me/2016/09/05/build-a-https-site-from-scratch/</link>
@@ -6664,8 +6694,6 @@ a <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&
       
     
       
-    
-      
         <item>
           <title>Underhanded C, 有猫腻的 C</title>
           <link>https://cjting.me/2015/06/16/underhanded-c/</link>
@@ -6723,8 +6751,6 @@ uint8 <span style="color:#000;font-weight:bold">*</span>block2 <span style="colo
           ]]>
           </description>
         </item>
-      
-    
       
     
       

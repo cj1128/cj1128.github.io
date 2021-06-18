@@ -8,38 +8,101 @@
     <language>zh-cn</language>
     <lastBuildDate>Thu, 10 Jun 2021 23:10:10 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>c linker ld</title>
-      <link>https://cjting.me/tags/c-linker-ld/</link>
+      <title>c</title>
+      <link>https://cjting.me/tags/c/</link>
       <pubDate>Thu, 10 Jun 2021 23:10:10 +0800</pubDate>
       
-      <guid>https://cjting.me/tags/c-linker-ld/</guid>
+      <guid>https://cjting.me/tags/c/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>gcc clang compiler assembly math</title>
-      <link>https://cjting.me/tags/gcc-clang-compiler-assembly-math/</link>
-      <pubDate>Tue, 16 Mar 2021 20:13:21 +0800</pubDate>
+      <title>ld</title>
+      <link>https://cjting.me/tags/ld/</link>
+      <pubDate>Thu, 10 Jun 2021 23:10:10 +0800</pubDate>
       
-      <guid>https://cjting.me/tags/gcc-clang-compiler-assembly-math/</guid>
+      <guid>https://cjting.me/tags/ld/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>tls certificate https</title>
-      <link>https://cjting.me/tags/tls-certificate-https/</link>
-      <pubDate>Tue, 02 Mar 2021 21:39:22 +0800</pubDate>
+      <title>linker</title>
+      <link>https://cjting.me/tags/linker/</link>
+      <pubDate>Thu, 10 Jun 2021 23:10:10 +0800</pubDate>
       
-      <guid>https://cjting.me/tags/tls-certificate-https/</guid>
+      <guid>https://cjting.me/tags/linker/</guid>
       <description></description>
     </item>
     
     <item>
       <title>assembly</title>
       <link>https://cjting.me/tags/assembly/</link>
-      <pubDate>Thu, 10 Dec 2020 01:13:48 +0800</pubDate>
+      <pubDate>Tue, 16 Mar 2021 20:13:21 +0800</pubDate>
       
       <guid>https://cjting.me/tags/assembly/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>clang</title>
+      <link>https://cjting.me/tags/clang/</link>
+      <pubDate>Tue, 16 Mar 2021 20:13:21 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/clang/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>compiler</title>
+      <link>https://cjting.me/tags/compiler/</link>
+      <pubDate>Tue, 16 Mar 2021 20:13:21 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/compiler/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gcc</title>
+      <link>https://cjting.me/tags/gcc/</link>
+      <pubDate>Tue, 16 Mar 2021 20:13:21 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/gcc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>math</title>
+      <link>https://cjting.me/tags/math/</link>
+      <pubDate>Tue, 16 Mar 2021 20:13:21 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/math/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>certificate</title>
+      <link>https://cjting.me/tags/certificate/</link>
+      <pubDate>Tue, 02 Mar 2021 21:39:22 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/certificate/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>https</title>
+      <link>https://cjting.me/tags/https/</link>
+      <pubDate>Tue, 02 Mar 2021 21:39:22 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/https/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tls</title>
+      <link>https://cjting.me/tags/tls/</link>
+      <pubDate>Tue, 02 Mar 2021 21:39:22 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/tls/</guid>
       <description></description>
     </item>
     
@@ -62,11 +125,29 @@
     </item>
     
     <item>
-      <title>bittorrent bt deno</title>
-      <link>https://cjting.me/tags/bittorrent-bt-deno/</link>
+      <title>bittorrent</title>
+      <link>https://cjting.me/tags/bittorrent/</link>
       <pubDate>Sat, 31 Oct 2020 23:30:48 +0800</pubDate>
       
-      <guid>https://cjting.me/tags/bittorrent-bt-deno/</guid>
+      <guid>https://cjting.me/tags/bittorrent/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>bt</title>
+      <link>https://cjting.me/tags/bt/</link>
+      <pubDate>Sat, 31 Oct 2020 23:30:48 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/bt/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>deno</title>
+      <link>https://cjting.me/tags/deno/</link>
+      <pubDate>Sat, 31 Oct 2020 23:30:48 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/deno/</guid>
       <description></description>
     </item>
     
@@ -98,20 +179,65 @@
     </item>
     
     <item>
-      <title>js crawler</title>
-      <link>https://cjting.me/tags/js-crawler/</link>
-      <pubDate>Wed, 01 Jul 2020 23:47:32 +0800</pubDate>
+      <title>bash</title>
+      <link>https://cjting.me/tags/bash/</link>
+      <pubDate>Sun, 16 Aug 2020 11:30:23 +0800</pubDate>
       
-      <guid>https://cjting.me/tags/js-crawler/</guid>
+      <guid>https://cjting.me/tags/bash/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>chip8 emulator c</title>
-      <link>https://cjting.me/tags/chip8-emulator-c/</link>
+      <title>shell</title>
+      <link>https://cjting.me/tags/shell/</link>
+      <pubDate>Sun, 16 Aug 2020 11:30:23 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/shell/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>zsh</title>
+      <link>https://cjting.me/tags/zsh/</link>
+      <pubDate>Sun, 16 Aug 2020 11:30:23 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/zsh/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>crawler</title>
+      <link>https://cjting.me/tags/crawler/</link>
+      <pubDate>Wed, 01 Jul 2020 23:47:32 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/crawler/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>js</title>
+      <link>https://cjting.me/tags/js/</link>
+      <pubDate>Wed, 01 Jul 2020 23:47:32 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/js/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>chip8</title>
+      <link>https://cjting.me/tags/chip8/</link>
       <pubDate>Sun, 07 Jun 2020 17:17:58 +0800</pubDate>
       
-      <guid>https://cjting.me/tags/chip8-emulator-c/</guid>
+      <guid>https://cjting.me/tags/chip8/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>emulator</title>
+      <link>https://cjting.me/tags/emulator/</link>
+      <pubDate>Sun, 07 Jun 2020 17:17:58 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/emulator/</guid>
       <description></description>
     </item>
     
@@ -134,11 +260,29 @@
     </item>
     
     <item>
-      <title>rsa openssl ssh</title>
-      <link>https://cjting.me/tags/rsa-openssl-ssh/</link>
+      <title>openssl</title>
+      <link>https://cjting.me/tags/openssl/</link>
       <pubDate>Fri, 13 Mar 2020 19:24:07 +0800</pubDate>
       
-      <guid>https://cjting.me/tags/rsa-openssl-ssh/</guid>
+      <guid>https://cjting.me/tags/openssl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rsa</title>
+      <link>https://cjting.me/tags/rsa/</link>
+      <pubDate>Fri, 13 Mar 2020 19:24:07 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/rsa/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ssh</title>
+      <link>https://cjting.me/tags/ssh/</link>
+      <pubDate>Fri, 13 Mar 2020 19:24:07 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/ssh/</guid>
       <description></description>
     </item>
     
@@ -188,11 +332,20 @@
     </item>
     
     <item>
-      <title>js encoding</title>
-      <link>https://cjting.me/tags/js-encoding/</link>
+      <title>proxy</title>
+      <link>https://cjting.me/tags/proxy/</link>
+      <pubDate>Sat, 11 Aug 2018 18:08:00 +0800</pubDate>
+      
+      <guid>https://cjting.me/tags/proxy/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>encoding</title>
+      <link>https://cjting.me/tags/encoding/</link>
       <pubDate>Sun, 22 Jul 2018 09:45:12 +0800</pubDate>
       
-      <guid>https://cjting.me/tags/js-encoding/</guid>
+      <guid>https://cjting.me/tags/encoding/</guid>
       <description></description>
     </item>
     
@@ -413,29 +566,11 @@
     </item>
     
     <item>
-      <title>https</title>
-      <link>https://cjting.me/tags/https/</link>
-      <pubDate>Mon, 05 Sep 2016 00:00:00 +0800</pubDate>
-      
-      <guid>https://cjting.me/tags/https/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>ssl</title>
       <link>https://cjting.me/tags/ssl/</link>
       <pubDate>Mon, 05 Sep 2016 00:00:00 +0800</pubDate>
       
       <guid>https://cjting.me/tags/ssl/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>tls</title>
-      <link>https://cjting.me/tags/tls/</link>
-      <pubDate>Mon, 05 Sep 2016 00:00:00 +0800</pubDate>
-      
-      <guid>https://cjting.me/tags/tls/</guid>
       <description></description>
     </item>
     
@@ -521,29 +656,11 @@
     </item>
     
     <item>
-      <title>c</title>
-      <link>https://cjting.me/tags/c/</link>
-      <pubDate>Tue, 16 Jun 2015 00:00:00 +0800</pubDate>
-      
-      <guid>https://cjting.me/tags/c/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>underhanded-c</title>
       <link>https://cjting.me/tags/underhanded-c/</link>
       <pubDate>Tue, 16 Jun 2015 00:00:00 +0800</pubDate>
       
       <guid>https://cjting.me/tags/underhanded-c/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>encoding</title>
-      <link>https://cjting.me/tags/encoding/</link>
-      <pubDate>Thu, 24 Apr 2014 00:00:00 +0800</pubDate>
-      
-      <guid>https://cjting.me/tags/encoding/</guid>
       <description></description>
     </item>
     

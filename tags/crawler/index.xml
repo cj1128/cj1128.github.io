@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>crawler on CJ Ting&#39;s Blog</title>
+    <link>https://cjting.me/tags/crawler/</link>
+    <description>Recent content in crawler on CJ Ting&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 01 Jul 2020 23:47:32 +0800</lastBuildDate><atom:link href="https://cjting.me/tags/crawler/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>斗鱼关注人数爬取 ── 字体反爬的攻与防</title>
+      <link>https://cjting.me/2020/07/01/douyu-crawler-and-font-anti-crawling/</link>
+      <pubDate>Wed, 01 Jul 2020 23:47:32 +0800</pubDate>
+      
+      <guid>https://cjting.me/2020/07/01/douyu-crawler-and-font-anti-crawling/</guid>
+      <description>&lt;p&gt;之前因为业务原因需要爬取一批斗鱼主播的相关数据，在这过程中我发现斗鱼使用了一种很有意思的反爬技术，字体反爬。&lt;/p&gt;
+&lt;p&gt;打开任何一个斗鱼主播的直播间，例如 &lt;a href=&#34;https://www.douyu.com/7874579&#34;&gt;这个主播&lt;/a&gt;，他的关注人数数据显示在右上角：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://asset.cjting.cn/Fp11DQiiqvE_vQddpXH1tgazywrA.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;斗鱼在关注数据这里使用了字体反爬。什么是字体反爬？也就是通过自定义字体来自定义字符与渲染图形的映射。比如，字符 1 实际渲染的是 9，那么如果 HTML 中的数字是 111，实际显示就是 999。&lt;/p&gt;
+&lt;p&gt;在这种技术下，传统的通过解析 HTML 文档获取数据的方式就失效了，因为获取到的数据并不是真实数据。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
