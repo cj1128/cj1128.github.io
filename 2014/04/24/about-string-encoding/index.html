@@ -50,7 +50,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://asset.cjting.cn/9b85365dgw1f7bo2l69u3j21jk111gui.jpg">
+    <header class="post__header" data-cover="/image/9b85365dgw1f7bo2l69u3j21jk111gui.jpg">
       <a href="/">
         HOME
       </a>
@@ -89,7 +89,7 @@
 <p>其他的所有字符编码都是同理，比如汉字的经典编码 GBK。</p>
 <p>以 丁 这个汉字为例，GBK 编码为 <code>0xB6A1</code>，存储为二进制是 <code>10110110 10100001</code>（直接将 B6A1 换成二进制），两个字节。</p>
 <p>用工具查看内部字节可以看出，如图：</p>
-<p><img src="http://asset.cjting.cn/9b85365djw1f23cmmpfu1j20ex01qaa9.jpg" alt=""></p>
+<p><img src="/image/9b85365djw1f23cmmpfu1j20ex01qaa9.jpg" alt=""></p>
 <p>同样的道理，如果使用 utf-8 编码，丁在 Unicode 字符集中的编号为 <code>0x4E01</code>，但它存储在计算机中并不是简单的将 <code>0x4E01</code> 翻译为对应的二进制。</p>
 <p>这里就要分清楚两个概念，字符集和字符编码。字符集是定义字符的，每一个字符在字符集中都有一个唯一的编号，Unicode 就是一个字符集，丁这个字符在 Unicode 字符集的编号是 0x4E01。</p>
 <p>字符编码是指将字符编号变换成二进制的方法。一个字符编号，有很多种方式可以存储在计算机中。例如，我想存储编号 10，我可以存储为二进制的 20，每次在计算机中取得数字后除以二就得到了我的编号。至于为什么不直接存储编号，大多是出于兼容性和方便解码的考虑。</p>

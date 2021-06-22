@@ -50,7 +50,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://asset.cjting.cn/FohSIOjDywFAmZueZxCU1QrNi1sm.jpg">
+    <header class="post__header" data-cover="/image/FohSIOjDywFAmZueZxCU1QrNi1sm.jpg">
       <a href="/">
         HOME
       </a>
@@ -82,7 +82,7 @@
           <div class="post__content">
             <p>现如今的 Web，HTTPS 早已经成为标配，公开的 HTTP 网站已经和 Flash 一样，慢慢在消亡了。</p>
 <p>启用 HTTPS 的核心是一个叫做 <strong>证书</strong> 的东西。不知道大家是否有留意，前几年上 12306 的时候，浏览器都会提示「您的链接不是私密链接」，这其实就是因为 12306 的证书有问题。如果点击「继续前往」，打开 12306 网站，它会提示你下载安装它提供的“根证书”。</p>
-<p><img src="http://asset.cjting.cn/FrBOHRLcNkDuAUnDstdn4Sjk4xMr.png" alt=""></p>
+<p><img src="/image/FrBOHRLcNkDuAUnDstdn4Sjk4xMr.png" alt=""></p>
 <p>那么，证书是什么？里面含有什么内容？浏览器为什么会不信任 12306 的证书？为什么下载 12306 提供的根证书就可以解决这个问题？根证书又是什么？</p>
 <h2 id="证书公钥和私钥">证书，公钥和私钥</h2>
 <p>我们先来简单回顾一下 TLS 和 HTTPS。关于这个话题，我在 <a href="/2016/09/05/build-a-https-site-from-scratch/">从零开始搭建一个 HTTPS 网站</a> 这篇博客中有详细的论述，对细节感兴趣的朋友可以先去读一下这篇博客。</p>
@@ -148,7 +148,7 @@
 <h3 id="根证书有时效吗过期了怎么办">根证书有时效吗？过期了怎么办？</h3>
 <p>每个证书都有有效时间，根证书自然也不例外。</p>
 <p>在 Mac 上，打开 Keychain Access，选择侧边的 <code>System Roots</code> 就可以看到我们系统中安装的所有根证书。</p>
-<p><img src="http://asset.cjting.cn/FirK2IaLZGajhfpLAORBz6CL6NiD.png" alt=""></p>
+<p><img src="/image/FirK2IaLZGajhfpLAORBz6CL6NiD.png" alt=""></p>
 <p>其中很明显地显示了一栏叫做「Expires」，过期时间。</p>
 <p>那么，根证书过期了怎么办？</p>
 <p>答案是不怎么办，在过期前 CA 会生成新的根证书，并和各大产商合作，在操作系统升级的时候安装到我们的设备上。</p>
@@ -160,7 +160,7 @@
 <h3 id="根证书有什么特征根证书的签名是什么">根证书有什么特征？根证书的签名是什么？</h3>
 <p>每个证书中都含有当前证书对象 Subject 的信息以及该证书的签发者 Issuer 的信息。</p>
 <p>根证书的特征是 Subject 和 Issuer 的信息是一致的，也就是所谓的「自签名」（Self-Signed）。</p>
-<p><img src="http://asset.cjting.cn/FuWvD3k8eGdc6j81xg3ZDPd72hfJ.png" alt=""></p>
+<p><img src="/image/FuWvD3k8eGdc6j81xg3ZDPd72hfJ.png" alt=""></p>
 <p>因为证书的签名是由上级证书的私钥来签的，根证书没有上级证书，所有根证书的签名是用自己的私钥签的。</p>
 <p>我们可以来验证一下，以 GitHub 使用的根证书 DigiCert High Assurance EV Root CA 为例。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># 首先，打开 Keychain Access，找到上述证书，拖拽出来</span>

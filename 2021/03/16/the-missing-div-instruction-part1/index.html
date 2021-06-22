@@ -50,7 +50,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://asset.cjting.cn/FtjQZJYq8i7cRUwvcLX63Qqnvggz.png">
+    <header class="post__header" data-cover="/image/FtjQZJYq8i7cRUwvcLX63Qqnvggz.jpg">
       <a href="/">
         HOME
       </a>
@@ -85,7 +85,7 @@
 
           <div class="post__content">
             <p>之前学汇编的时候观察到一个现象，我在 C 语言中写了一个函数进行除法操作，但是编译得到的汇编代码中却没有除法指令，取而代之的是一条乘法指令。</p>
-<p><img src="http://asset.cjting.cn/FjCkN1q9ePhijDTEBzws-jI0B7w1.png" alt=""></p>
+<p><img src="/image/FjCkN1q9ePhijDTEBzws-jI0B7w1.png" alt=""></p>
 <p>图片对应的 GodBolt 地址在 <a href="https://gcc.godbolt.org/z/YrK4vnY1E">这里</a>，可以看到有一个 <code>imulq</code> 指令，这是一个乘法指令，乘了一个奇怪的数字 1431655766。</p>
 <p>为什么编译器要这样操作？为什么能这样操作？1431655766 这个数字又是怎么来的？</p>
 <h2 id="assembly-code">Assembly Code</h2>

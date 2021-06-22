@@ -50,7 +50,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://asset.cjting.cn/FvnQbq-MpgcAKuLDYeuhUuern_Yr.jpg">
+    <header class="post__header" data-cover="/image/FvnQbq-MpgcAKuLDYeuhUuern_Yr.jpg">
       <a href="/">
         HOME
       </a>
@@ -98,10 +98,10 @@
 <li>对 Vim 的知识积累会带来价值，越使用，越了解，越熟练。</li>
 </ul>
 <p>有一次在看 <a href="https://handmadehero.org/">Handmade Hero</a> 时，我实在太想要 Emacs 中那个 <strong>构建、显示错误信息、跳转到错误行</strong> 这个功能了，大大解放了生产力。</p>
-<p><img src="http://asset.cjting.cn/lq6s1RwXWtdSZunK3V4AFhpO5kEL.gif" alt=""></p>
+<p><img src="/image/lq6s1RwXWtdSZunK3V4AFhpO5kEL.gif" alt=""></p>
 <p>Sublime 自带的构建系统可以构建也可以跳转到错误行，但是，构建信息是显示在底部的而不是侧边，看起来非常不方便。我使用了 <a href="https://packagecontrol.io/packages/sublime-text-2-buildview">sublime text 2 buildview</a> 这个插件将构建信息显示到侧边，但是这个插件又不能跳转到错误行，以至于每次我都要自己看错误信息，然后手动跳转，别提多烦了。</p>
 <p>Sublime 默认的构建是输出在底部，位置无法调整：</p>
-<p><img src="http://asset.cjting.cn/FgoHDJ0reZJl2bl9ZD3OOZsMZBek.png" alt=""></p>
+<p><img src="/image/FgoHDJ0reZJl2bl9ZD3OOZsMZBek.png" alt=""></p>
 <p>为了这个功能，也为了以后 N 个想要的功能，我下定决心迁移到 Vim。前后花了大概一个月的时间才把我想要的各项功能都在 Vim 中实现了。</p>
 <p>我先是通过 <a href="https://learnvimscriptthehardway.stevelosh.com/">Learn Vimscript the Hard Way</a> 系统地学习了 Vimscript。</p>
 <p>然后花了大量的时间阅读 Vim 的手册，从 <code>:help usr_01.txt</code> 开始，理解 Vim 中的各个概念，Buffer, Window, Tab, Session, Mode, Syntax, Map, Text Object 等等等等。</p>
@@ -150,7 +150,7 @@ set tabstop=2
 <li><code>Region</code>: 一个连续的区域</li>
 <li><code>Selection</code>: 当前选中的内容，由一或多个 Region 构成，因为 Sublime 允许多个光标，所以需要区分 Region 和 Selection</li>
 </ul>
-<p><img src="http://asset.cjting.cn/FgSf8kONWHFqqBXVLy5yQDXO-ocX.png" alt=""></p>
+<p><img src="/image/FgSf8kONWHFqqBXVLy5yQDXO-ocX.png" alt=""></p>
 <h2 id="hello-world-plugin">Hello World Plugin</h2>
 <p>现在我们来编写一个 Hello World 插件感受一下 Sublime 的插件开发。我们要实现的功能很简单，按下 <code>ctrl+-</code>，在当前光标位置插入 <code>Hello, World!</code>。</p>
 <p>首先，使用菜单新建一个插件，保存为 <code>hello.py</code>。Sublime 默认填充的内容如下：</p>
@@ -169,7 +169,7 @@ set tabstop=2
 }
 </code></pre></div><p>注意，Command 的名字是 <code>camel_case</code>，而 Class 的名字是 <code>PascalCase</code>，同时不用带最后面的 <code>Command</code>。比如类的名字是 <code>MyAwesomeCommand</code>，那么配置快捷键时对应的 Command 名字是 <code>my_awesome</code> 就行了。</p>
 <p>配置好以后我们的插件就可以工作了，按下 <code>ctrl+-</code> 会发现最前面插入了 <code>Hello, World!</code>。</p>
-<p><img src="http://asset.cjting.cn/FrQGL9ISx_JJ6qrRLP_Z_ccOoZHF.gif" alt=""></p>
+<p><img src="/image/FrQGL9ISx_JJ6qrRLP_Z_ccOoZHF.gif" alt=""></p>
 <p>但这离我们要的效果还差了一点，我们的目标是在当前光标位置插入内容，而不是在文件的最前面。</p>
 <p>很明显，我们要修改 <code>view.insert</code> 方法的第二个参数，这个参数不用看文档也可以猜到表示的是插入内容的位置。</p>
 <p>所以，现在任务变成了如何获取当前光标的位置。查看 Sublime 文档会发现，<code>view.sel()</code> 方法会返回当前 View 的 <code>Selection</code> 对象，根据 <code>Selection</code> 对象可以获取到 <code>Region</code> 对象，根据 <code>Region</code> 对象就可以获取到位置的偏移量。</p>
@@ -183,13 +183,13 @@ set tabstop=2
     selections <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>sel()
     <span style="color:#000;font-weight:bold">if</span> <span style="color:#0086b3">len</span>(selections) <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">1</span> <span style="color:#000;font-weight:bold">and</span> selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>begin() <span style="color:#000;font-weight:bold">==</span> selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>end():
       <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>insert(edit, selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>begin(), <span style="color:#d14">&#34;Hello, World!&#34;</span>)
-</code></pre></div><p><img src="http://asset.cjting.cn/Fv7cIbgvITQv5GEasA4W04435vxI.gif" alt=""></p>
+</code></pre></div><p><img src="/image/Fv7cIbgvITQv5GEasA4W04435vxI.gif" alt=""></p>
 <h2 id="buildx">BuildX</h2>
 <p>现在我们来看看怎样实现一个插件实现我想要的 构建、侧边显示错误信息、快速跳转错误行 的功能。我给这个插件起名叫做 BuildX。</p>
 <p>首先，Sublime 是自带构建系统的，叫做 Build System，是一个很好用的工具，我们可以使用它来构建任意项目，配置很简单，这里不再展开。</p>
 <p>Sublime 的构建系统默认会输出内容到底部的 Exec Panel，看起来很难受。平时我写代码，编辑器都会开两列，方便互相对照，我希望构建以后能在侧边看到输出信息而不是要低头去底部看，就像上面的 Emacs 那样。</p>
 <p>我们的插件最终效果如下，构建以后，侧边显示输出信息，同时可以快速跳转到报错的行。</p>
-<p><img src="http://asset.cjting.cn/Ft6ukJ3VEUopUnL0hXtEpSkn8S-l.gif" alt=""></p>
+<p><img src="/image/Ft6ukJ3VEUopUnL0hXtEpSkn8S-l.gif" alt=""></p>
 <p>参考了 <code>sublime text 2 buildview</code> 的实现，插件的设计思路是：</p>
 <ul>
 <li>监听 Sublime 的构建，Sublime 会输出内容到底部的 Exec Panel</li>
@@ -316,7 +316,7 @@ set tabstop=2
 
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">True</span>
 </code></pre></div><p>到了这里，核心功能就已经有了，构建的输出可以在 Target View 中显示，从现在开始我们就可以摆脱底部的 Exec Panel 了。</p>
-<p><img src="http://asset.cjting.cn/Fn3sCw7H8q7ZJAtx2znBsuSHf4LK.gif" alt=""></p>
+<p><img src="/image/Fn3sCw7H8q7ZJAtx2znBsuSHf4LK.gif" alt=""></p>
 <h2 id="最后">最后</h2>
 <p>当然插件离最后可用还有一些细节要打磨，比如</p>
 <ul>
@@ -331,7 +331,7 @@ set tabstop=2
 <p>我最后完成的代码在这里 <a href="https://github.com/cj1128/sublime-buildx">sublime-buildx</a>。内容很简单，没有什么复杂的，但是实现的这个功能对我来说却大大提高了生产力。我想如果对 Sublime 的 API 有了解的人，实现这样的插件应该花不了两个小时。</p>
 <p>两个小时就可以解决的问题，为什么要推翻整个系统重来？之后任何的重大动作都要仔细评估是否值得。</p>
 <p>XKCD 的这幅漫画很能引发思考，在你动手 切换工具/造工具/改进工具 的时候，一定要评估一下你投入的时间以及节省的时间是否匹配。</p>
-<p><img src="http://asset.cjting.cn/Ft_ZecIdlpHJGqhla063FcO3txrv.png" alt=""></p>
+<p><img src="/image/Ft_ZecIdlpHJGqhla063FcO3txrv.png" alt=""></p>
 <p>如果说一个任务你每天做一次，每次耗费 6 分钟，你觉得很慢，动手改进，改进到了 1 分钟，那么这次改进带来的提升是节省了 5 分钟，以五年为例，一共为你节省了 6 天。问题是，将一个工具从 6 分钟改进到 1 分钟如此巨大的性能提升 6 天内你能搞定吗？如果搞不定的话，就要好好想想了。</p>
           </div>
 

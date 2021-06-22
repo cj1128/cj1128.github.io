@@ -50,7 +50,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://asset.cjting.cn/FuVqI-ejvbgBEDfa4NxH6sjjzb0o.jpg">
+    <header class="post__header" data-cover="/image/FuVqI-ejvbgBEDfa4NxH6sjjzb0o.jpg">
       <a href="/">
         HOME
       </a>
@@ -80,7 +80,7 @@
           <div class="post__content">
             <p>之前因为业务原因需要爬取一批斗鱼主播的相关数据，在这过程中我发现斗鱼使用了一种很有意思的反爬技术，字体反爬。</p>
 <p>打开任何一个斗鱼主播的直播间，例如 <a href="https://www.douyu.com/7874579">这个主播</a>，他的关注人数数据显示在右上角：</p>
-<p><img src="http://asset.cjting.cn/Fp11DQiiqvE_vQddpXH1tgazywrA.png" alt=""></p>
+<p><img src="/image/Fp11DQiiqvE_vQddpXH1tgazywrA.png" alt=""></p>
 <p>斗鱼在关注数据这里使用了字体反爬。什么是字体反爬？也就是通过自定义字体来自定义字符与渲染图形的映射。比如，字符 1 实际渲染的是 9，那么如果 HTML 中的数字是 111，实际显示就是 999。</p>
 <p>在这种技术下，传统的通过解析 HTML 文档获取数据的方式就失效了，因为获取到的数据并不是真实数据。</p>
 <div class="post__tip">
@@ -88,7 +88,7 @@
 </div>
 <h2 id="进攻">进攻</h2>
 <p>感兴趣的读者可以打开控制台，看看显示关注人数的那个 span 元素里面的内容，会发现根本不是显示的数字。</p>
-<p><img src="http://asset.cjting.cn/Fta2MA78inWQx-YXBJsQ-9dWh3Br.png" alt=""></p>
+<p><img src="/image/Fta2MA78inWQx-YXBJsQ-9dWh3Br.png" alt=""></p>
 <p>从上图可以看出，显示的是 59605，这个是真实值，但是字符却是 96809，这个是虚假值。右边的 <code>font-family</code> 告诉我们这个元素使用了一个自定义字体。</p>
 <p>从 Network 面板中的我们可以找到这个字体，具体链接是 <a href="https://shark.douyucdn.cn/app/douyu/res/font/mpepc5unpb.woff">mpepc5unpb.woff</a>。</p>
 <p>如果大家将字体下载下来，使用如下的 HTML 代码来渲染它，我们就可以看得很清楚：</p>
@@ -115,7 +115,7 @@
   &lt;/<span style="color:#000080">div</span>&gt;
 &lt;/<span style="color:#000080">body</span>&gt;
 &lt;/<span style="color:#000080">html</span>&gt;
-</code></pre></div><p><img src="http://asset.cjting.cn/Fvk8_hOHE5ac4YpWHy_j7idottWG.png" alt=""></p>
+</code></pre></div><p><img src="/image/Fvk8_hOHE5ac4YpWHy_j7idottWG.png" alt=""></p>
 <p>在这个字体中，字符 <code>0</code> 会渲染图形 <code>0</code>，字符 <code>1</code> 会渲染图形 <code>7</code>，以此类推，因此，HTML 中的字符 <code>96809</code> 渲染的图形就是 <code>59605</code>。</p>
 <p>这个原理不难理解，我们甚至不需要知道字体文件内部的具体格式。因为不管怎样，字体内部一定有一个映射关系。这个关系规定了什么样的字符渲染什么样的图形。</p>
 <p>正常情况下，字符 1 对应的图形是 1 的形状，但是通过修改字体，我们就可以让字符 1 对应的图形是 9 的形状，或者说，其他任意形状。</p>
@@ -165,7 +165,7 @@
 <p>现在我们来找数据源，看看斗鱼的 JS 到底是从哪里获取的字体信息和假数据。</p>
 <p>这其实是一个很有意思的过程，我建议有兴趣的同学先暂停下来，花点时间自己试着找找，看能不能找到。</p>
 <p>我的第一个想法很简单，JS 一定是通过某个接口得到了这些数据，那么，我们把所有网络请求导出为 HAR 格式，然后在里面搜索试试。</p>
-<p><img src="http://asset.cjting.cn/Fq-dtkNrMytLeymlkrYvFC4vypzV.png" alt=""></p>
+<p><img src="/image/Fq-dtkNrMytLeymlkrYvFC4vypzV.png" alt=""></p>
 <div class="post__tip">
   <span class="post__tip__span">T</span>ip: 点击上图中标记为红色的按钮就可以导出请求为 HAR 格式，HAR 是一个文本格式，非常有利于搜索。
 </div>
@@ -186,10 +186,10 @@
   }
 }).observe(<span style="color:#0086b3">document</span>, {childList<span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">true</span>, subtree<span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">true</span>})
 </code></pre></div><p>通过 <a href="https://www.tampermonkey.net/">Tampermonkey</a> 加载上面的代码，刷新，等待断点触发。</p>
-<p><img src="http://asset.cjting.cn/FiL0ZC_TXcbRcuw8HwUUUn65oB9w.png" alt=""></p>
+<p><img src="/image/FiL0ZC_TXcbRcuw8HwUUUn65oB9w.png" alt=""></p>
 <p>从上面的调用栈可以看出，数据来源自 WebSocket。</p>
 <p>去 Network 面板中看一下，果然是这样。</p>
-<p><img src="http://asset.cjting.cn/Fq8Fro93Owx2qIK0GVvjB-KcwAMw.png" alt=""></p>
+<p><img src="/image/Fq8Fro93Owx2qIK0GVvjB-KcwAMw.png" alt=""></p>
 <div class="post__tip">
   <span class="post__tip__span">T</span>ip: 之后爬取像斗鱼这样的复杂网站，应该先检查一下 WebSocket 中的消息。
 </div>
@@ -198,7 +198,7 @@
 <h3 id="协议">协议</h3>
 <p>分析 WebSocket 消息会发现，客户端连接以后会发送一条登录消息，然后服务端会回复多个消息，其中，就有我们感兴趣的 <code>followed_count</code>。</p>
 <p>客户端发送的消息如下：</p>
-<p><img src="http://asset.cjting.cn/FuQwIkMoJdPyskwe1E_jFezsbBkk.png" alt=""></p>
+<p><img src="/image/FuQwIkMoJdPyskwe1E_jFezsbBkk.png" alt=""></p>
 <p>虽然是二进制消息，但是可以看到消息主体都是可读的文本，很明显，斗鱼这里是自己实现了一个内部协议格式。</p>
 <p>开头 12 个字节暂时不清楚什么含义，然后紧跟着一段键值对数据，使用 <code>@=</code> 连接键和值，使用 <code>/</code> 分割，最后跟上 <code>/\x00</code>。</p>
 <p>多查看几个直播间以后，对于开头的 12 个字节，我们不难分析出前四个字节和消息长度有关，使用 Little Endian，中间四个字节和前四个字节相同，而最后四个字节是固定值 <code>0xb1 0x02 0x00 0x00</code>。</p>
@@ -247,18 +247,18 @@ ws.on(<span style="color:#d14">&#34;message&#34;</span>, payload =&gt; {
 <p>对于 <code>dfl</code>, <code>ver</code>, <code>aver</code>, <code>dmbt</code>, <code>dmbv</code> 这些字段，我们会发现随便修改都不会影响结果，说明我们的之前的猜测是正确的。</p>
 <p>所以，现在剩下的问题就是要搞清楚 <code>vk</code> 的签名规则，这个只能从源码入手。</p>
 <p>Chrome 检查器中对于每个网络请求都会显示它的 Initiator，也就是这个请求是什么代码发起的。</p>
-<p><img src="http://asset.cjting.cn/FovjSlp1Srpyg5rxzb4UAbUgLnq3.png" alt=""></p>
+<p><img src="/image/FovjSlp1Srpyg5rxzb4UAbUgLnq3.png" alt=""></p>
 <p>鼠标放上去可以看到完整的调用栈。</p>
-<p><img src="http://asset.cjting.cn/Fv229dbVo8CcUkUxA2mQqhbUQRv7.png" alt=""></p>
+<p><img src="/image/Fv229dbVo8CcUkUxA2mQqhbUQRv7.png" alt=""></p>
 <p>我们的思路是找到发送消息的地方，打上断点，通过调用栈往上找。</p>
 <p>所以打开最上面的 <code>playerSDK-room_4a27f53.js</code> 文件，搜索关键字 <code>send</code>，很容易找到下面这段代码。</p>
-<p><img src="http://asset.cjting.cn/Fp_7vBkxaKHx5DLxAY3Td1rcoZNn.png" alt=""></p>
+<p><img src="/image/Fp_7vBkxaKHx5DLxAY3Td1rcoZNn.png" alt=""></p>
 <p>通过断点我们可以看出，登录消息就是通过这里发送的，因为 <code>e</code> 是登录的消息体。</p>
 <p>展开调用栈，会发现有一个函数叫做 <code>userLogin</code>，点进去。</p>
-<p><img src="http://asset.cjting.cn/FuvEM10TjNMxYOCIioM_Bjsc7wLe.png" alt=""></p>
+<p><img src="/image/FuvEM10TjNMxYOCIioM_Bjsc7wLe.png" alt=""></p>
 <p>可以发现我们来到了 <code>common-pre~9fd51f5d.js</code> 文件，可以猜到 <code>h.default.jsEncrypt.async()</code> 这段代码应该就是签名相关的代码。</p>
 <p>我们可以断点进这个函数，然后继续找。或者，我们直接搜索 <code>vk</code>。</p>
-<p><img src="http://asset.cjting.cn/FgPsfPNSU-t8PhBHlQpRiDpCqUVF.png" alt=""></p>
+<p><img src="/image/FgPsfPNSU-t8PhBHlQpRiDpCqUVF.png" alt=""></p>
 <p>然后我们就发现 <code>vk</code> 的值等于 <code>L(y + &quot;r5*^5;}2#${XF[h+;'./.Q'1;,-]f'p[&quot; + p)</code>。到这里就简单了，通过断点可以发现 <code>y</code> 就是 <code>rt</code>，<code>p</code> 是 <code>devid</code>，而 <code>L</code> 是一个求 md5 值的函数。</p>
 <p>所以 <code>vk</code> 的签名算法是 <code>vk = md5(rt + &quot;r5*^5;}2#${XF[h+;'./.Q'1;,-]f'p[&quot; + devid)</code></p>
 <p>现在整个消息体的结构我们都清楚了，我们试着构造消息体请求斗鱼服务器看看能不能得到响应。</p>
@@ -321,7 +321,7 @@ ws.on(<span style="color:#d14">&#34;message&#34;</span>, payload =&gt; {
   }
 })
 </code></pre></div><p>成功了！</p>
-<p><img src="http://asset.cjting.cn/Ful4n8KK-B5sBNFK9i8eEX3oUIIu.png" alt=""></p>
+<p><img src="/image/Ful4n8KK-B5sBNFK9i8eEX3oUIIu.png" alt=""></p>
 <h3 id="ocr">OCR</h3>
 <p>获取到字体 ID 和假数据以后，接下来我们要做的就是使用字体渲染一张图片，然后调用 OCR 工具识别图片。</p>
 <p>我们先使用字体 ID 将字体下载下来，字体的下载 URL 是固定的 <code>https://shark.douyucdn.cn/app/douyu/res/font/FONT_ID.woff</code>。</p>
@@ -356,7 +356,7 @@ ws.on(<span style="color:#d14">&#34;message&#34;</span>, payload =&gt; {
   <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
 }
 </code></pre></div><p>SDL 渲染速度非常快，结果也很清楚，用来 OCR 应该足够了。</p>
-<p><img src="http://asset.cjting.cn/FpSLekVg2B25ags6kwehiDgAgZ0r.png" alt=""></p>
+<p><img src="/image/FpSLekVg2B25ags6kwehiDgAgZ0r.png" alt=""></p>
 <p>图形识别这一块我并没有什么太多经验，但是没关系，感谢开源世界。我们 Google OCR，很容易就会找到一个看起来很厉害的库 <a href="https://github.com/tesseract-ocr/tesseract">tesseract</a>。</p>
 <p>先安装它 <code>brew install tesseract</code>。</p>
 <p>项目本身是 C++ 的，我们可以直接用 C++ 调用。但是因为后面我打算使用 Go 写一个完整的关注人数爬虫，所以这里我们使用 Go 来调用。</p>
@@ -379,7 +379,7 @@ ws.on(<span style="color:#d14">&#34;message&#34;</span>, payload =&gt; {
   fmt.<span style="color:#900;font-weight:bold">Println</span>(text)
 }
 </code></pre></div><p>然后我们很顺利地就得到了结果，开源万岁！🎉</p>
-<p><img src="http://asset.cjting.cn/Fp-epduQcenYERhgqPyFAhesEOJl.png" alt=""></p>
+<p><img src="/image/Fp-epduQcenYERhgqPyFAhesEOJl.png" alt=""></p>
 <h3 id="最终实现">最终实现</h3>
 <p>最后，我们把上面的各个步骤整合一下，使用 Go 来实现一个完整的斗鱼关注人数爬虫，最终的代码在这里 <a href="https://github.com/cj1128/douyu-crawler-demo">douyu-crawler-demo</a>。</p>
 <p>代码的大致流程如下：</p>
@@ -536,7 +536,7 @@ Parsing 'post' table...
 Parsing 'gasp' table...
 Parsing 'GSUB' table...
 </code></pre><p>使用上文提到的 HTML 使用 <code>fake.ttf</code> 渲染 0 ~ 9，可以看到，我们成功地制作了一个混淆字体。</p>
-<p><img src="http://asset.cjting.cn/FsXY7liRLS9B1_55DC3HQCY0Va7a.png" alt=""></p>
+<p><img src="/image/FsXY7liRLS9B1_55DC3HQCY0Va7a.png" alt=""></p>
 <p><a href="https://github.com/cj1128/douyu-crawler-demo/blob/master/genfont.py">genfont.py</a> 是我使用 Python 编写的脚本，可以自动生成任意数量的混淆字体。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># 使用 hack.subset.ttf 为基础生成 20 个混淆字体</span>
 $ ./genfont.py hack.subset.ttf <span style="color:#099">20</span>

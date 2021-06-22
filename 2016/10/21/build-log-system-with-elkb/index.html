@@ -50,7 +50,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://asset.cjting.cn/9b85365dgw1f8qjr6igesj21kw0w7ac4.jpg">
+    <header class="post__header" data-cover="/image/9b85365dgw1f8qjr6igesj21kw0w7ac4.jpg">
       <a href="/">
         HOME
       </a>
@@ -319,7 +319,7 @@ outpugst <span style="color:#000;font-weight:bold">{</span>
 <p>Kibana 不需要什么配置，直接启动即可。<code>service kibana start</code>，默认运行在 5601 端口。如果考虑到安全性，也可以将 Kibana 配置为只监听本机，然后使用 Nginx 进行反向代理并控制权限，这里就不再赘述了。</p>
 <p>接下来我们需要产生点日志，然后在 Kibana 中能查看到就说明系统工作正常了。我们用 curl 随便请求一下 client 上的 Nginx 来产生一点日志。然后，打开 Kibana，<code>http://[server ip]:5601</code>。刚进去的时候，我们先要配置一下 Kibana 的 <code>Index Pattern</code>，告诉 Kibana 我们想看哪个 Index 的数据，输入 <code>nginx*</code> 即可，然后点击 <code>Discover</code> 浏览数据。</p>
 <p>最终效果如下，我们可以在 Kibana 中浏览我们的 Nginx 日志，并进行任意搜索。</p>
-<p><img src="http://asset.cjting.cn/9b85365djw1f8zwhs3j5vj21h50mijxx.jpg" alt=""></p>
+<p><img src="/image/9b85365djw1f8zwhs3j5vj21h50mijxx.jpg" alt=""></p>
           </div>
 
           <div id="post__comments">

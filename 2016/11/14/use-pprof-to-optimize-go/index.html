@@ -50,7 +50,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://asset.cjting.cn/9b85365djw1f9xjicmnn713r0p178e.jpg">
+    <header class="post__header" data-cover="/image/9b85365djw1f9xjicmnn713r0p178e.jpg">
       <a href="/">
         HOME
       </a>
@@ -84,7 +84,7 @@
 </blockquote>
 <p>我是十分赞同这句话的，并且在开发过程中也深有体会。什么叫做 <em>过早的优化</em> 呢？即不需要考虑优化的时候你在考虑优化。这绝对不意味着可以任性地写代码，随意地选择数据结构和算法。这句话是告诉我们，在程序开发的早期阶段，程序员应该专注在程序的 <strong>逻辑实现</strong> 上，而不是专注在程序的 <strong>性能优化</strong> 上。用正确的数据结构和算法，优美合理的语句实现你要的功能。而不是满脑子在想：“这个函数是不是可以优化一下？”。</p>
 <p>我们都知道，性能最好的代码往往并不是优美直观的代码，往往看起来非常晦涩。下图是 JS 转换字符串到数字的三个方法在 Chrome 下的性能对比。可以看出，<code>+</code> 是最快的方法。但是 <code>+str</code> 这种写法明显是不如 <code>parseInt(str)</code> 或者是 <code>Number(str)</code> 容易理解。<em>Donald E.Knuth</em> 的那句话，我的理解就是在提醒我们，不用使用 <code>+str</code>，而应该使用更加语义化的 <code>parseInt(str)</code>。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgw1f9xaluvkarj20qp0733zq.jpg" alt=""></p>
+<p><img src="/image/9b85365dgw1f9xaluvkarj20qp0733zq.jpg" alt=""></p>
 <p>不应该过早的优化，那么应该做的就是在适当的时候进行优化。程序在功能开发完毕并且测试好以后，就可以进入优化环节了。所有的优化都应该基于性能分析（Profiling），凭空想象进行优化是一件很危险并且没有效率的事情。很多你觉得可以优化的点说不定编译器早替你做了，很多你觉得很慢的地方说不定非常快。</p>
 <p>Golang 提供了非常棒的 Profiling 工具，可以很容易地得到 CPU 和内存的 Profiling 数据。更加赞的是，Golang 还提供了工具来可视化这些数据，一眼就可以看出程序的性能瓶颈在哪儿，调优从未如此轻松。</p>
 <h2 id="package-pprof">Package pprof</h2>
@@ -127,7 +127,7 @@
 	<span style="color:#000;font-weight:bold">return</span> <span style="color:#900;font-weight:bold">fibonacci</span>(n<span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">+</span> <span style="color:#900;font-weight:bold">fibonacci</span>(n<span style="color:#000;font-weight:bold">-</span><span style="color:#099">2</span>)
 }
 </code></pre></div><p>编译以后，运行程序便可以生成 <code>cpu-profile.prof</code> 文件。使用 <code>go tool pprof finabocci cpu-profile.prof</code> 进入 Profiling 控制台，输入<code>web</code> 指令跳入浏览器中查看 Golang 为我们生成的可视化性能数据。</p>
-<p><img src="http://asset.cjting.cn/9b85365djw1f9xgcymlqpj20zo0h3jvw.jpg" alt=""></p>
+<p><img src="/image/9b85365djw1f9xgcymlqpj20zo0h3jvw.jpg" alt=""></p>
 <h2 id="benchmark-test">Benchmark Test</h2>
 <p>每一次都手动引入 <code>pprof</code> 包比较麻烦，也没有必要。一般 Golang 的性能测试我们会使用 Golang 提供的 Benchmark 功能，Golang 提供了命令行参数我们可以直接得到测试文件中 Benchmark 的 Profiling 数据。不需要添加任何代码。</p>
 <p>下面我们来写一个 Benchmark 测试一下 Golang 的标准库函数 <code>rand.Intn</code> 的性能如何。</p>
@@ -168,7 +168,7 @@ Showing top <span style="color:#099">5</span> nodes out of <span style="color:#0
 <p>下面我用 <a href="https://github.com/paddie/godoku">Godoku</a> 这个项目为例，看看怎么具体优化一个程序。Godoku 是一个 Go 编写的暴力破解数独的程序，逻辑比较简单，从上到下从左到右扫描每一个空格，从 1 到 9 开始填写数字，一旦数字无效（行冲突，列冲突或者 9 宫格冲突），那么就换一个数字，如果所有数字都换了还无效，那么就退回上一个格子，继续这个过程。</p>
 <h3 id="step1">Step1</h3>
 <p>程序自带了测试和 Benchmark，所以我们先来生成一个 Profiling 文件，看看哪个地方开销最大。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgw1f9xhhnlv05j20s70mcafx.jpg" alt=""></p>
+<p><img src="/image/9b85365dgw1f9xhhnlv05j20s70mcafx.jpg" alt=""></p>
 <p>很明显，<code>ValidInSquare</code>这个函数开销很大，这个函数是检测一个数字在九宫格里面存不存在，作者的实现如下。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-golang" data-lang="golang"><span style="color:#000;font-weight:bold">func</span> (s <span style="color:#000;font-weight:bold">*</span>Sudoku) <span style="color:#900;font-weight:bold">ValidInSquare</span>(row, col, val <span style="color:#458;font-weight:bold">int</span>) <span style="color:#458;font-weight:bold">bool</span> {
 	row, col = <span style="color:#0086b3">int</span>(row<span style="color:#000;font-weight:bold">/</span><span style="color:#099">3</span>)<span style="color:#000;font-weight:bold">*</span><span style="color:#099">3</span>, <span style="color:#0086b3">int</span>(col<span style="color:#000;font-weight:bold">/</span><span style="color:#099">3</span>)<span style="color:#000;font-weight:bold">*</span><span style="color:#099">3</span>
@@ -204,7 +204,7 @@ Showing top <span style="color:#099">5</span> nodes out of <span style="color:#0
 	<span style="color:#000;font-weight:bold">return</span> !s.<span style="color:#900;font-weight:bold">checkRegion</span>(row, col, val)
 }
 </code></pre></div><p>再运行一次测试，看看性能改善了多少。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgw1f9xhx008q9j212g0m3q8x.jpg" alt=""></p>
+<p><img src="/image/9b85365dgw1f9xhx008q9j212g0m3q8x.jpg" alt=""></p>
 <p>很好！CPU 开销已经由 9770ms 降低到了 5460ms，性能提高 79%。现在程序的性能瓶颈已经是 <code>ValidInColumnAndRow</code> 这个函数了。</p>
 <h3 id="step3">Step3</h3>
 <p>作者 <code>ValidInColumnAndRow</code> 函数的实现仍然是直观简单的循环。</p>
@@ -234,7 +234,7 @@ Showing top <span style="color:#099">5</span> nodes out of <span style="color:#0
 	<span style="color:#000;font-weight:bold">return</span> !s.<span style="color:#900;font-weight:bold">checkRowOrCol</span>(row, col, val)
 }
 </code></pre></div><p>我们再来看看 Profiling 数据。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgw1f9xi9qhf6uj211m0idjvs.jpg" alt=""></p>
+<p><img src="/image/9b85365dgw1f9xi9qhf6uj211m0idjvs.jpg" alt=""></p>
 <p>性能再次得到了提升，由 5460ms 降低到了 3610ms。初步看来，已经没有了明显可以优化的地方了。到此为止，我们的程序性能已经得到了 170% 的提升！我们并没有怎么努力，只不过是生成了 Profiling 文件，一眼看出问题在哪儿，然后针对性地优化而已。</p>
 <p>感谢 Golang 提供了这套超赞的 pprof 工具，性能调优变得如此轻松和愉悦。这里我所举的只是 pprof 功能的冰山一角，pprof 的强大功能远不止这些。比如可以使用 <code>list</code> 指令查看函数的源码中每一行代码的开销以及使用 <code>weblist</code> 指令查看函数汇编以后每一句汇编指令的开销等等。不仅是 CPU Profiling，pprof 同样支持 Memory Profiling，可以帮助你检查程序中内存的分配情况。总之，在 pprof 的帮助下，程序的开销信息变得一清二楚，优化自然变得轻而易举。</p>
           </div>

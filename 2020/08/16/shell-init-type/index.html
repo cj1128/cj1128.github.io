@@ -50,7 +50,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://asset.cjting.cn/FgNP1hv-An94wEaBmEuMraLR457-.jpg">
+    <header class="post__header" data-cover="/image/FgNP1hv-An94wEaBmEuMraLR457-.jpg">
       <a href="/">
         HOME
       </a>
@@ -192,7 +192,7 @@
 <p>日常我们在终端中执行脚本，都是 <code>non-login + non-interactive</code> 这种情况，也就是没有任何启动文件，为什么没有出问题？这是因为所有的进程都会从父进程中继承环境变量，而对日常使用影响最大的 PATH 变量会被继承过来，所以一般不会出问题。</p>
 <p>除了上述的默认行为，我们也可以使用 Bash 的一些选项来调整启动文件，比如 <code>--rcfile</code>, <code>--noprofile</code>, <code>--norc</code>，以及使用 <code>-l</code> 和 <code>-i</code> 来调整 Bash 的启动类型。</p>
 <p>最后我们总结一下，可以得到这样一幅图。</p>
-<p><img src="http://asset.cjting.cn/Fp3wlzbJBjk9xBPbr-t8SHf9KTbb.png" alt=""></p>
+<p><img src="/image/Fp3wlzbJBjk9xBPbr-t8SHf9KTbb.png" alt=""></p>
 <p>是的，看起来很复杂，欢迎来到真实世界🙂。好在我们无需去记住这些细节，只要做到如果有一天遇到了问题，有一个清晰的排查方向就行了。</p>
 <p>日常使用中，对于 Bash 的配置就放在 <code>~/.bashrc</code> 中即可。<code>~/.bash_profile</code> 一般会含有 source <code>~/.bashrc</code> 的代码，所以不管 login 还是 non-login， <code>.bashrc</code> 文件都会被执行。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># Manjaro 默认的 ~/.bash_profile</span>

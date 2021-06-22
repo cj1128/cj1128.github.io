@@ -34,7 +34,7 @@
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/Fkc6gm7qyhWpzfzhPpDqHwDtO2ML.png" class="webfeedsFeaturedVisual">
+            <img src="/image/Fkc6gm7qyhWpzfzhPpDqHwDtO2ML.png" class="webfeedsFeaturedVisual">
 
             <p>热重载是一个非常好用的功能，可以在不重启的情况下更新应用，从而大大提高开发效率。</p>
 <p>前端的 Wepback，后端的 Ruby/Python/Elixir，移动端的 Flutter 都有热重载，属于用过以后就回不去的 Killer Feature。</p>
@@ -43,7 +43,7 @@
 <h2 id="showtime">Showtime</h2>
 <p>我们先来看看，最后的效果如何。</p>
 <video controls>
-  <source src="http://asset.cjting.cn/FrUTcH3rMiOk_2TaWamOutbVvWgs.mp4" type="video/mp4">
+  <source src="/image/FrUTcH3rMiOk_2TaWamOutbVvWgs.mp4" type="video/mp4">
 </video>
 <p>这里我用 SDL 打开了一个窗口进行绘制，通过热重载，我们可以在不重启程序的情况下修改绘图代码并查看效果。</p>
 <p>相比于传统的修改、编译、运行，热重载有两个核心优势，特别是在游戏开发中。</p>
@@ -240,10 +240,10 @@ Dynamic section at offset 0x2de8 contains <span style="color:#099">27</span> ent
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/FtjQZJYq8i7cRUwvcLX63Qqnvggz.png" class="webfeedsFeaturedVisual">
+            <img src="/image/FtjQZJYq8i7cRUwvcLX63Qqnvggz.jpg" class="webfeedsFeaturedVisual">
 
             <p>之前学汇编的时候观察到一个现象，我在 C 语言中写了一个函数进行除法操作，但是编译得到的汇编代码中却没有除法指令，取而代之的是一条乘法指令。</p>
-<p><img src="http://asset.cjting.cn/FjCkN1q9ePhijDTEBzws-jI0B7w1.png" alt=""></p>
+<p><img src="/image/FjCkN1q9ePhijDTEBzws-jI0B7w1.png" alt=""></p>
 <p>图片对应的 GodBolt 地址在 <a href="https://gcc.godbolt.org/z/YrK4vnY1E">这里</a>，可以看到有一个 <code>imulq</code> 指令，这是一个乘法指令，乘了一个奇怪的数字 1431655766。</p>
 <p>为什么编译器要这样操作？为什么能这样操作？1431655766 这个数字又是怎么来的？</p>
 <h2 id="assembly-code">Assembly Code</h2>
@@ -650,11 +650,11 @@ div3ByMul: 39334   div3: 48546
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/FohSIOjDywFAmZueZxCU1QrNi1sm.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/FohSIOjDywFAmZueZxCU1QrNi1sm.jpg" class="webfeedsFeaturedVisual">
 
             <p>现如今的 Web，HTTPS 早已经成为标配，公开的 HTTP 网站已经和 Flash 一样，慢慢在消亡了。</p>
 <p>启用 HTTPS 的核心是一个叫做 <strong>证书</strong> 的东西。不知道大家是否有留意，前几年上 12306 的时候，浏览器都会提示「您的链接不是私密链接」，这其实就是因为 12306 的证书有问题。如果点击「继续前往」，打开 12306 网站，它会提示你下载安装它提供的“根证书”。</p>
-<p><img src="http://asset.cjting.cn/FrBOHRLcNkDuAUnDstdn4Sjk4xMr.png" alt=""></p>
+<p><img src="/image/FrBOHRLcNkDuAUnDstdn4Sjk4xMr.png" alt=""></p>
 <p>那么，证书是什么？里面含有什么内容？浏览器为什么会不信任 12306 的证书？为什么下载 12306 提供的根证书就可以解决这个问题？根证书又是什么？</p>
 <h2 id="证书公钥和私钥">证书，公钥和私钥</h2>
 <p>我们先来简单回顾一下 TLS 和 HTTPS。关于这个话题，我在 <a href="/2016/09/05/build-a-https-site-from-scratch/">从零开始搭建一个 HTTPS 网站</a> 这篇博客中有详细的论述，对细节感兴趣的朋友可以先去读一下这篇博客。</p>
@@ -720,7 +720,7 @@ div3ByMul: 39334   div3: 48546
 <h3 id="根证书有时效吗过期了怎么办">根证书有时效吗？过期了怎么办？</h3>
 <p>每个证书都有有效时间，根证书自然也不例外。</p>
 <p>在 Mac 上，打开 Keychain Access，选择侧边的 <code>System Roots</code> 就可以看到我们系统中安装的所有根证书。</p>
-<p><img src="http://asset.cjting.cn/FirK2IaLZGajhfpLAORBz6CL6NiD.png" alt=""></p>
+<p><img src="/image/FirK2IaLZGajhfpLAORBz6CL6NiD.png" alt=""></p>
 <p>其中很明显地显示了一栏叫做「Expires」，过期时间。</p>
 <p>那么，根证书过期了怎么办？</p>
 <p>答案是不怎么办，在过期前 CA 会生成新的根证书，并和各大产商合作，在操作系统升级的时候安装到我们的设备上。</p>
@@ -732,7 +732,7 @@ div3ByMul: 39334   div3: 48546
 <h3 id="根证书有什么特征根证书的签名是什么">根证书有什么特征？根证书的签名是什么？</h3>
 <p>每个证书中都含有当前证书对象 Subject 的信息以及该证书的签发者 Issuer 的信息。</p>
 <p>根证书的特征是 Subject 和 Issuer 的信息是一致的，也就是所谓的「自签名」（Self-Signed）。</p>
-<p><img src="http://asset.cjting.cn/FuWvD3k8eGdc6j81xg3ZDPd72hfJ.png" alt=""></p>
+<p><img src="/image/FuWvD3k8eGdc6j81xg3ZDPd72hfJ.png" alt=""></p>
 <p>因为证书的签名是由上级证书的私钥来签的，根证书没有上级证书，所有根证书的签名是用自己的私钥签的。</p>
 <p>我们可以来验证一下，以 GitHub 使用的根证书 DigiCert High Assurance EV Root CA 为例。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># 首先，打开 Keychain Access，找到上述证书，拖拽出来</span>
@@ -896,7 +896,7 @@ $ openssl x509 -in DigiCert_SHA2_High_Assurance_Server_CA.pem -text -noout | gre
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/FnMniJy5zFNdS5hK8UcXxwcvnoKC.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/FnMniJy5zFNdS5hK8UcXxwcvnoKC.jpg" class="webfeedsFeaturedVisual">
 
             <p>Hello World 应该是每一位程序员的启蒙程序，出自于 <a href="https://en.wikipedia.org/wiki/Brian_Kernighan">Brian Kernighan</a> 和 <a href="https://en.wikipedia.org/wiki/Dennis_Ritchie">Dennis Ritchie</a> 的一代经典著作 <a href="https://en.wikipedia.org/wiki/The_C_Programming_Language">The C Programming Language</a>。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#998;font-style:italic">// hello.c
@@ -1384,7 +1384,7 @@ EOF
 
           <description><![CDATA[
             
-            <img src="https://asset.cjting.cn/FlijgHgi1MIL_TKTl6i9eZdvIvix.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/FlijgHgi1MIL_TKTl6i9eZdvIvix.jpg" class="webfeedsFeaturedVisual">
 
             <p>BitTorrent 想必大家应该都不陌生，中文名叫做“种子”。</p>
 <p>“种子”到底是什么？我一直不太清楚。在写这个项目之前，我对“种子”的认识停留在使用层面。</p>
@@ -1775,7 +1775,7 @@ $ ./node_modules/.bin/bittorrent-tracker --http
   <span class="post__tip__span">T</span>ip: 当然，开源也有很多精致的软件，比如 <a href="https://github.com/iina/iina">iina</a>。
 </div>
 <p>打开 Folx，选择 <code>File -&gt; Create Torrent File</code>，随便选择一个文件，填入 Tracker 地址，我们就得到了一个种子。</p>
-<p><img src="http://asset.cjting.cn/Fj8tqLOSaNgHiLJ1neUm1m8yHfXv.png" alt=""></p>
+<p><img src="/image/Fj8tqLOSaNgHiLJ1neUm1m8yHfXv.png" alt=""></p>
 <p>至此，我们终于解决了测试种子的问题🎉 可以开始着手编写代码了~</p>
 <h2 id="afterthought">Afterthought</h2>
 <p><a href="https://github.com/cj1128/tinyTorrent">tinyTorrent</a> 是我最后完成的 BT 下载器。</p>
@@ -1855,7 +1855,7 @@ $ ./node_modules/.bin/bittorrent-tracker --http
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/Fi3BVvyRelkPNZ-GdNYw1bAcobCK.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/Fi3BVvyRelkPNZ-GdNYw1bAcobCK.jpg" class="webfeedsFeaturedVisual">
 
             <p>2020.10.09 更新：<strong>最近收到了一封官方的邮件，希望我把仓库隐藏起来，避免新同学直接 copy 我的代码。既然是来自官方的要求，自然毫不犹豫地配合。仓库和我归档的 Winter 2020 课程现在都不可见了，想要学习这门课程的同学可以直接去官方站点学习，祝大家学习愉快~</strong></p>
 <p><a href="http://cs107e.github.io/">CS107e</a> 全称为 <em>CS107e: Computer Systems from the Ground Up</em>，是斯坦福大学的一门计算机课程，也是我目前为止发现的最好的关于硬件、底层和 C 的一门课程。</p>
@@ -1889,23 +1889,23 @@ $ ./node_modules/.bin/bittorrent-tracker --http
 <p>CS107e 让我如此喜欢的原因就在于，它把<strong>计算机的本质彻底地暴露在你面前，所有的抽象全部拿掉，你接触的就是最原始的硬件</strong>。没有操作系统，没有各种库，没有键盘，没有鼠标，没有显示器，一切从头开始。</p>
 <p>因为是真正的硬件，我们需要自己动手去绕线，去组装电路，这种动手的乐趣和软硬件的结合，对我来说简直太有趣了。</p>
 <p>从控制树莓派点亮一盏灯：</p>
-<p><img src="http://asset.cjting.cn/FrDheJ0DE-ONw_LuXblotUFw00Fa.gif" alt=""></p>
+<p><img src="/image/FrDheJ0DE-ONw_LuXblotUFw00Fa.gif" alt=""></p>
 <p>到加上一个按钮实现开关：</p>
-<p><img src="http://asset.cjting.cn/FnrNK1ne17DRpaIZSAONWcebU8Mc.gif" alt=""></p>
+<p><img src="/image/FnrNK1ne17DRpaIZSAONWcebU8Mc.gif" alt=""></p>
 <p>再到实现自己的 Larson Scanner：</p>
 <video controls autoplay muted loop>
-  <source src="http://asset.cjting.cn/Fmr8kaOBr8mmrgf9JPTDHzrS_wrL.mp4" type="video/mp4">
+  <source src="/image/Fmr8kaOBr8mmrgf9JPTDHzrS_wrL.mp4" type="video/mp4">
 </video>
 <p>从实现一个简单的时钟：</p>
 <video controls autoplay muted loop>
-  <source src="http://asset.cjting.cn/Fq0dcHfCKl_9H3wLItvE3I1Y4aGV.mp4" type="video/mp4">
+  <source src="/image/Fq0dcHfCKl_9H3wLItvE3I1Y4aGV.mp4" type="video/mp4">
 </video>
 <p>到驱动 PS2 键盘：</p>
-<p><img src="http://asset.cjting.cn/FruyRlglkpHynmKRfcM9XTtiLENX.jpeg" alt=""></p>
+<p><img src="/image/FruyRlglkpHynmKRfcM9XTtiLENX.jpeg" alt=""></p>
 <p>从绘制简单的图形：</p>
-<p><img src="http://asset.cjting.cn/Fr4g9O2qc0tTQF-HRalT_oyXUm58.jpeg" alt=""></p>
+<p><img src="/image/Fr4g9O2qc0tTQF-HRalT_oyXUm58.jpeg" alt=""></p>
 <p>到实现完整的 Shell：</p>
-<p><img src="http://asset.cjting.cn/FoYnBc9WqXMtOhaQWYmfDzd1k3Se.jpeg" alt=""></p>
+<p><img src="/image/FoYnBc9WqXMtOhaQWYmfDzd1k3Se.jpeg" alt=""></p>
 <p>每一步都充满了乐趣和挑战。</p>
 <p><a href="https://github.com/cj1128/cs107e-review">cs107e-review</a> 仓库是我的学习笔记，这门课程前后大概花了一年时间才学完。所有的问题、作业和扩展作业，我都给出了自己的解答，不一定完全正确，但是可以给需要的人参考。</p>
 <p>笔记是用英文写的，因为想锻炼一下自己的英文写作。这门课程在不停的更新，我学习的版本是 Winter 2020。考虑到对照笔记去看最新的课程，可能会对应不上，所以我把 Winter 2020 版本的课程归档了一份，放在了 <a href="https://cs107e.cjting.me">这里</a>。</p>
@@ -1984,7 +1984,7 @@ Reference Manual</a></li>
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/FgNP1hv-An94wEaBmEuMraLR457-.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/FgNP1hv-An94wEaBmEuMraLR457-.jpg" class="webfeedsFeaturedVisual">
 
             <p>Shell 对程序员来说是必不可少的生产力工具。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">$ figlet &lt;&lt;&lt; &#34;Hello Shell&#34;
@@ -2098,7 +2098,7 @@ Reference Manual</a></li>
 <p>日常我们在终端中执行脚本，都是 <code>non-login + non-interactive</code> 这种情况，也就是没有任何启动文件，为什么没有出问题？这是因为所有的进程都会从父进程中继承环境变量，而对日常使用影响最大的 PATH 变量会被继承过来，所以一般不会出问题。</p>
 <p>除了上述的默认行为，我们也可以使用 Bash 的一些选项来调整启动文件，比如 <code>--rcfile</code>, <code>--noprofile</code>, <code>--norc</code>，以及使用 <code>-l</code> 和 <code>-i</code> 来调整 Bash 的启动类型。</p>
 <p>最后我们总结一下，可以得到这样一幅图。</p>
-<p><img src="http://asset.cjting.cn/Fp3wlzbJBjk9xBPbr-t8SHf9KTbb.png" alt=""></p>
+<p><img src="/image/Fp3wlzbJBjk9xBPbr-t8SHf9KTbb.png" alt=""></p>
 <p>是的，看起来很复杂，欢迎来到真实世界🙂。好在我们无需去记住这些细节，只要做到如果有一天遇到了问题，有一个清晰的排查方向就行了。</p>
 <p>日常使用中，对于 Bash 的配置就放在 <code>~/.bashrc</code> 中即可。<code>~/.bash_profile</code> 一般会含有 source <code>~/.bashrc</code> 的代码，所以不管 login 还是 non-login， <code>.bashrc</code> 文件都会被执行。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># Manjaro 默认的 ~/.bash_profile</span>
@@ -2199,11 +2199,11 @@ Reference Manual</a></li>
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/FuVqI-ejvbgBEDfa4NxH6sjjzb0o.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/FuVqI-ejvbgBEDfa4NxH6sjjzb0o.jpg" class="webfeedsFeaturedVisual">
 
             <p>之前因为业务原因需要爬取一批斗鱼主播的相关数据，在这过程中我发现斗鱼使用了一种很有意思的反爬技术，字体反爬。</p>
 <p>打开任何一个斗鱼主播的直播间，例如 <a href="https://www.douyu.com/7874579">这个主播</a>，他的关注人数数据显示在右上角：</p>
-<p><img src="http://asset.cjting.cn/Fp11DQiiqvE_vQddpXH1tgazywrA.png" alt=""></p>
+<p><img src="/image/Fp11DQiiqvE_vQddpXH1tgazywrA.png" alt=""></p>
 <p>斗鱼在关注数据这里使用了字体反爬。什么是字体反爬？也就是通过自定义字体来自定义字符与渲染图形的映射。比如，字符 1 实际渲染的是 9，那么如果 HTML 中的数字是 111，实际显示就是 999。</p>
 <p>在这种技术下，传统的通过解析 HTML 文档获取数据的方式就失效了，因为获取到的数据并不是真实数据。</p>
 <div class="post__tip">
@@ -2211,7 +2211,7 @@ Reference Manual</a></li>
 </div>
 <h2 id="进攻">进攻</h2>
 <p>感兴趣的读者可以打开控制台，看看显示关注人数的那个 span 元素里面的内容，会发现根本不是显示的数字。</p>
-<p><img src="http://asset.cjting.cn/Fta2MA78inWQx-YXBJsQ-9dWh3Br.png" alt=""></p>
+<p><img src="/image/Fta2MA78inWQx-YXBJsQ-9dWh3Br.png" alt=""></p>
 <p>从上图可以看出，显示的是 59605，这个是真实值，但是字符却是 96809，这个是虚假值。右边的 <code>font-family</code> 告诉我们这个元素使用了一个自定义字体。</p>
 <p>从 Network 面板中的我们可以找到这个字体，具体链接是 <a href="https://shark.douyucdn.cn/app/douyu/res/font/mpepc5unpb.woff">mpepc5unpb.woff</a>。</p>
 <p>如果大家将字体下载下来，使用如下的 HTML 代码来渲染它，我们就可以看得很清楚：</p>
@@ -2238,7 +2238,7 @@ Reference Manual</a></li>
   &lt;/<span style="color:#000080">div</span>&gt;
 &lt;/<span style="color:#000080">body</span>&gt;
 &lt;/<span style="color:#000080">html</span>&gt;
-</code></pre></div><p><img src="http://asset.cjting.cn/Fvk8_hOHE5ac4YpWHy_j7idottWG.png" alt=""></p>
+</code></pre></div><p><img src="/image/Fvk8_hOHE5ac4YpWHy_j7idottWG.png" alt=""></p>
 <p>在这个字体中，字符 <code>0</code> 会渲染图形 <code>0</code>，字符 <code>1</code> 会渲染图形 <code>7</code>，以此类推，因此，HTML 中的字符 <code>96809</code> 渲染的图形就是 <code>59605</code>。</p>
 <p>这个原理不难理解，我们甚至不需要知道字体文件内部的具体格式。因为不管怎样，字体内部一定有一个映射关系。这个关系规定了什么样的字符渲染什么样的图形。</p>
 <p>正常情况下，字符 1 对应的图形是 1 的形状，但是通过修改字体，我们就可以让字符 1 对应的图形是 9 的形状，或者说，其他任意形状。</p>
@@ -2288,7 +2288,7 @@ Reference Manual</a></li>
 <p>现在我们来找数据源，看看斗鱼的 JS 到底是从哪里获取的字体信息和假数据。</p>
 <p>这其实是一个很有意思的过程，我建议有兴趣的同学先暂停下来，花点时间自己试着找找，看能不能找到。</p>
 <p>我的第一个想法很简单，JS 一定是通过某个接口得到了这些数据，那么，我们把所有网络请求导出为 HAR 格式，然后在里面搜索试试。</p>
-<p><img src="http://asset.cjting.cn/Fq-dtkNrMytLeymlkrYvFC4vypzV.png" alt=""></p>
+<p><img src="/image/Fq-dtkNrMytLeymlkrYvFC4vypzV.png" alt=""></p>
 <div class="post__tip">
   <span class="post__tip__span">T</span>ip: 点击上图中标记为红色的按钮就可以导出请求为 HAR 格式，HAR 是一个文本格式，非常有利于搜索。
 </div>
@@ -2309,10 +2309,10 @@ Reference Manual</a></li>
   }
 }).observe(<span style="color:#0086b3">document</span>, {childList<span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">true</span>, subtree<span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">true</span>})
 </code></pre></div><p>通过 <a href="https://www.tampermonkey.net/">Tampermonkey</a> 加载上面的代码，刷新，等待断点触发。</p>
-<p><img src="http://asset.cjting.cn/FiL0ZC_TXcbRcuw8HwUUUn65oB9w.png" alt=""></p>
+<p><img src="/image/FiL0ZC_TXcbRcuw8HwUUUn65oB9w.png" alt=""></p>
 <p>从上面的调用栈可以看出，数据来源自 WebSocket。</p>
 <p>去 Network 面板中看一下，果然是这样。</p>
-<p><img src="http://asset.cjting.cn/Fq8Fro93Owx2qIK0GVvjB-KcwAMw.png" alt=""></p>
+<p><img src="/image/Fq8Fro93Owx2qIK0GVvjB-KcwAMw.png" alt=""></p>
 <div class="post__tip">
   <span class="post__tip__span">T</span>ip: 之后爬取像斗鱼这样的复杂网站，应该先检查一下 WebSocket 中的消息。
 </div>
@@ -2321,7 +2321,7 @@ Reference Manual</a></li>
 <h3 id="协议">协议</h3>
 <p>分析 WebSocket 消息会发现，客户端连接以后会发送一条登录消息，然后服务端会回复多个消息，其中，就有我们感兴趣的 <code>followed_count</code>。</p>
 <p>客户端发送的消息如下：</p>
-<p><img src="http://asset.cjting.cn/FuQwIkMoJdPyskwe1E_jFezsbBkk.png" alt=""></p>
+<p><img src="/image/FuQwIkMoJdPyskwe1E_jFezsbBkk.png" alt=""></p>
 <p>虽然是二进制消息，但是可以看到消息主体都是可读的文本，很明显，斗鱼这里是自己实现了一个内部协议格式。</p>
 <p>开头 12 个字节暂时不清楚什么含义，然后紧跟着一段键值对数据，使用 <code>@=</code> 连接键和值，使用 <code>/</code> 分割，最后跟上 <code>/\x00</code>。</p>
 <p>多查看几个直播间以后，对于开头的 12 个字节，我们不难分析出前四个字节和消息长度有关，使用 Little Endian，中间四个字节和前四个字节相同，而最后四个字节是固定值 <code>0xb1 0x02 0x00 0x00</code>。</p>
@@ -2370,18 +2370,18 @@ ws.on(<span style="color:#d14">&#34;message&#34;</span>, payload =&gt; {
 <p>对于 <code>dfl</code>, <code>ver</code>, <code>aver</code>, <code>dmbt</code>, <code>dmbv</code> 这些字段，我们会发现随便修改都不会影响结果，说明我们的之前的猜测是正确的。</p>
 <p>所以，现在剩下的问题就是要搞清楚 <code>vk</code> 的签名规则，这个只能从源码入手。</p>
 <p>Chrome 检查器中对于每个网络请求都会显示它的 Initiator，也就是这个请求是什么代码发起的。</p>
-<p><img src="http://asset.cjting.cn/FovjSlp1Srpyg5rxzb4UAbUgLnq3.png" alt=""></p>
+<p><img src="/image/FovjSlp1Srpyg5rxzb4UAbUgLnq3.png" alt=""></p>
 <p>鼠标放上去可以看到完整的调用栈。</p>
-<p><img src="http://asset.cjting.cn/Fv229dbVo8CcUkUxA2mQqhbUQRv7.png" alt=""></p>
+<p><img src="/image/Fv229dbVo8CcUkUxA2mQqhbUQRv7.png" alt=""></p>
 <p>我们的思路是找到发送消息的地方，打上断点，通过调用栈往上找。</p>
 <p>所以打开最上面的 <code>playerSDK-room_4a27f53.js</code> 文件，搜索关键字 <code>send</code>，很容易找到下面这段代码。</p>
-<p><img src="http://asset.cjting.cn/Fp_7vBkxaKHx5DLxAY3Td1rcoZNn.png" alt=""></p>
+<p><img src="/image/Fp_7vBkxaKHx5DLxAY3Td1rcoZNn.png" alt=""></p>
 <p>通过断点我们可以看出，登录消息就是通过这里发送的，因为 <code>e</code> 是登录的消息体。</p>
 <p>展开调用栈，会发现有一个函数叫做 <code>userLogin</code>，点进去。</p>
-<p><img src="http://asset.cjting.cn/FuvEM10TjNMxYOCIioM_Bjsc7wLe.png" alt=""></p>
+<p><img src="/image/FuvEM10TjNMxYOCIioM_Bjsc7wLe.png" alt=""></p>
 <p>可以发现我们来到了 <code>common-pre~9fd51f5d.js</code> 文件，可以猜到 <code>h.default.jsEncrypt.async()</code> 这段代码应该就是签名相关的代码。</p>
 <p>我们可以断点进这个函数，然后继续找。或者，我们直接搜索 <code>vk</code>。</p>
-<p><img src="http://asset.cjting.cn/FgPsfPNSU-t8PhBHlQpRiDpCqUVF.png" alt=""></p>
+<p><img src="/image/FgPsfPNSU-t8PhBHlQpRiDpCqUVF.png" alt=""></p>
 <p>然后我们就发现 <code>vk</code> 的值等于 <code>L(y + &quot;r5*^5;}2#${XF[h+;'./.Q'1;,-]f'p[&quot; + p)</code>。到这里就简单了，通过断点可以发现 <code>y</code> 就是 <code>rt</code>，<code>p</code> 是 <code>devid</code>，而 <code>L</code> 是一个求 md5 值的函数。</p>
 <p>所以 <code>vk</code> 的签名算法是 <code>vk = md5(rt + &quot;r5*^5;}2#${XF[h+;'./.Q'1;,-]f'p[&quot; + devid)</code></p>
 <p>现在整个消息体的结构我们都清楚了，我们试着构造消息体请求斗鱼服务器看看能不能得到响应。</p>
@@ -2444,7 +2444,7 @@ ws.on(<span style="color:#d14">&#34;message&#34;</span>, payload =&gt; {
   }
 })
 </code></pre></div><p>成功了！</p>
-<p><img src="http://asset.cjting.cn/Ful4n8KK-B5sBNFK9i8eEX3oUIIu.png" alt=""></p>
+<p><img src="/image/Ful4n8KK-B5sBNFK9i8eEX3oUIIu.png" alt=""></p>
 <h3 id="ocr">OCR</h3>
 <p>获取到字体 ID 和假数据以后，接下来我们要做的就是使用字体渲染一张图片，然后调用 OCR 工具识别图片。</p>
 <p>我们先使用字体 ID 将字体下载下来，字体的下载 URL 是固定的 <code>https://shark.douyucdn.cn/app/douyu/res/font/FONT_ID.woff</code>。</p>
@@ -2479,7 +2479,7 @@ ws.on(<span style="color:#d14">&#34;message&#34;</span>, payload =&gt; {
   <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
 }
 </code></pre></div><p>SDL 渲染速度非常快，结果也很清楚，用来 OCR 应该足够了。</p>
-<p><img src="http://asset.cjting.cn/FpSLekVg2B25ags6kwehiDgAgZ0r.png" alt=""></p>
+<p><img src="/image/FpSLekVg2B25ags6kwehiDgAgZ0r.png" alt=""></p>
 <p>图形识别这一块我并没有什么太多经验，但是没关系，感谢开源世界。我们 Google OCR，很容易就会找到一个看起来很厉害的库 <a href="https://github.com/tesseract-ocr/tesseract">tesseract</a>。</p>
 <p>先安装它 <code>brew install tesseract</code>。</p>
 <p>项目本身是 C++ 的，我们可以直接用 C++ 调用。但是因为后面我打算使用 Go 写一个完整的关注人数爬虫，所以这里我们使用 Go 来调用。</p>
@@ -2502,7 +2502,7 @@ ws.on(<span style="color:#d14">&#34;message&#34;</span>, payload =&gt; {
   fmt.<span style="color:#900;font-weight:bold">Println</span>(text)
 }
 </code></pre></div><p>然后我们很顺利地就得到了结果，开源万岁！🎉</p>
-<p><img src="http://asset.cjting.cn/Fp-epduQcenYERhgqPyFAhesEOJl.png" alt=""></p>
+<p><img src="/image/Fp-epduQcenYERhgqPyFAhesEOJl.png" alt=""></p>
 <h3 id="最终实现">最终实现</h3>
 <p>最后，我们把上面的各个步骤整合一下，使用 Go 来实现一个完整的斗鱼关注人数爬虫，最终的代码在这里 <a href="https://github.com/cj1128/douyu-crawler-demo">douyu-crawler-demo</a>。</p>
 <p>代码的大致流程如下：</p>
@@ -2659,7 +2659,7 @@ Parsing 'post' table...
 Parsing 'gasp' table...
 Parsing 'GSUB' table...
 </code></pre><p>使用上文提到的 HTML 使用 <code>fake.ttf</code> 渲染 0 ~ 9，可以看到，我们成功地制作了一个混淆字体。</p>
-<p><img src="http://asset.cjting.cn/FsXY7liRLS9B1_55DC3HQCY0Va7a.png" alt=""></p>
+<p><img src="/image/FsXY7liRLS9B1_55DC3HQCY0Va7a.png" alt=""></p>
 <p><a href="https://github.com/cj1128/douyu-crawler-demo/blob/master/genfont.py">genfont.py</a> 是我使用 Python 编写的脚本，可以自动生成任意数量的混淆字体。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># 使用 hack.subset.ttf 为基础生成 20 个混淆字体</span>
 $ ./genfont.py hack.subset.ttf <span style="color:#099">20</span>
@@ -2696,7 +2696,7 @@ $ ls result/generated <span style="color:#998;font-style:italic"># 结果存储�
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/FrxGU8-3EO8dEfXB-zxLk_L3b4pK.png" class="webfeedsFeaturedVisual">
+            <img src="/image/FrxGU8-3EO8dEfXB-zxLk_L3b4pK.png" class="webfeedsFeaturedVisual">
 
             <p>很早之前我就想写一个 GBA 模拟器，因为小时候的 GBA 游戏给我留下了深刻的印象。</p>
 <p>口袋妖怪、孤岛求生、牧场物语这些 GBA 的经典游戏，在那个时候还玩着小霸王的我眼中，无异于打开了新世界的大门，原来游戏可以这样的有趣。</p>
@@ -2721,7 +2721,7 @@ A 0 B F
 <p>其中 sound timer 用来控制 CHIP-8 发出声音。当 sound timer 不为 0 的时候，CHIP-8 会发出一个声音，具体的声音由实现来定。</p>
 <p>我们的目标是编写一个 CHIP-8 模拟器在我们的系统上来模拟 CHIP-8 虚拟机，从而可以运行 CHIP-8 程序，</p>
 <p>最终完成时的效果如下，图中在运行的程序是俄罗斯方块。</p>
-<p><img src="http://asset.cjting.cn/FtbhROUInp7O-OOHurKuK6fVQ7VK.png" alt=""></p>
+<p><img src="/image/FtbhROUInp7O-OOHurKuK6fVQ7VK.png" alt=""></p>
 <h2 id="spec">Spec</h2>
 <p>上面只是简单介绍了一下 CHIP-8，如果要着手编写模拟器，我们需要更加详细的 Spec，以下是我主要参考的两个资料：</p>
 <ul>
@@ -2847,7 +2847,7 @@ SDL_QueueAudio(audioDevice, buf, bufLength);
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/FvnQbq-MpgcAKuLDYeuhUuern_Yr.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/FvnQbq-MpgcAKuLDYeuhUuern_Yr.jpg" class="webfeedsFeaturedVisual">
 
             <p>从我接触计算机开始到现在 Sublime 一直是我的主力编辑器，现代化的 UI、流畅的速度以及众多的插件，特别是各种开箱即用的特性，让他一直默默成为我的生产力助手。</p>
 <p>我尽量避免使用各种 IDE，除非万不得以，有些工作不使用配套的工具十分麻烦，比如苹果的 XCode 和谷歌的 Android Studio。如果做 Android/iOS 开发，不用这些工具当然可以，但是绝对是不推荐的方案。第三方工具永远不会有官方的工具更新的快，同时，各种教程资料也不会针对第三方工具，一旦遇到问题只能靠自己解决，这个时间投入，是非常不值得的。</p>
@@ -2869,10 +2869,10 @@ SDL_QueueAudio(audioDevice, buf, bufLength);
 <li>对 Vim 的知识积累会带来价值，越使用，越了解，越熟练。</li>
 </ul>
 <p>有一次在看 <a href="https://handmadehero.org/">Handmade Hero</a> 时，我实在太想要 Emacs 中那个 <strong>构建、显示错误信息、跳转到错误行</strong> 这个功能了，大大解放了生产力。</p>
-<p><img src="http://asset.cjting.cn/lq6s1RwXWtdSZunK3V4AFhpO5kEL.gif" alt=""></p>
+<p><img src="/image/lq6s1RwXWtdSZunK3V4AFhpO5kEL.gif" alt=""></p>
 <p>Sublime 自带的构建系统可以构建也可以跳转到错误行，但是，构建信息是显示在底部的而不是侧边，看起来非常不方便。我使用了 <a href="https://packagecontrol.io/packages/sublime-text-2-buildview">sublime text 2 buildview</a> 这个插件将构建信息显示到侧边，但是这个插件又不能跳转到错误行，以至于每次我都要自己看错误信息，然后手动跳转，别提多烦了。</p>
 <p>Sublime 默认的构建是输出在底部，位置无法调整：</p>
-<p><img src="http://asset.cjting.cn/FgoHDJ0reZJl2bl9ZD3OOZsMZBek.png" alt=""></p>
+<p><img src="/image/FgoHDJ0reZJl2bl9ZD3OOZsMZBek.png" alt=""></p>
 <p>为了这个功能，也为了以后 N 个想要的功能，我下定决心迁移到 Vim。前后花了大概一个月的时间才把我想要的各项功能都在 Vim 中实现了。</p>
 <p>我先是通过 <a href="https://learnvimscriptthehardway.stevelosh.com/">Learn Vimscript the Hard Way</a> 系统地学习了 Vimscript。</p>
 <p>然后花了大量的时间阅读 Vim 的手册，从 <code>:help usr_01.txt</code> 开始，理解 Vim 中的各个概念，Buffer, Window, Tab, Session, Mode, Syntax, Map, Text Object 等等等等。</p>
@@ -2921,7 +2921,7 @@ set tabstop=2
 <li><code>Region</code>: 一个连续的区域</li>
 <li><code>Selection</code>: 当前选中的内容，由一或多个 Region 构成，因为 Sublime 允许多个光标，所以需要区分 Region 和 Selection</li>
 </ul>
-<p><img src="http://asset.cjting.cn/FgSf8kONWHFqqBXVLy5yQDXO-ocX.png" alt=""></p>
+<p><img src="/image/FgSf8kONWHFqqBXVLy5yQDXO-ocX.png" alt=""></p>
 <h2 id="hello-world-plugin">Hello World Plugin</h2>
 <p>现在我们来编写一个 Hello World 插件感受一下 Sublime 的插件开发。我们要实现的功能很简单，按下 <code>ctrl+-</code>，在当前光标位置插入 <code>Hello, World!</code>。</p>
 <p>首先，使用菜单新建一个插件，保存为 <code>hello.py</code>。Sublime 默认填充的内容如下：</p>
@@ -2940,7 +2940,7 @@ set tabstop=2
 }
 </code></pre></div><p>注意，Command 的名字是 <code>camel_case</code>，而 Class 的名字是 <code>PascalCase</code>，同时不用带最后面的 <code>Command</code>。比如类的名字是 <code>MyAwesomeCommand</code>，那么配置快捷键时对应的 Command 名字是 <code>my_awesome</code> 就行了。</p>
 <p>配置好以后我们的插件就可以工作了，按下 <code>ctrl+-</code> 会发现最前面插入了 <code>Hello, World!</code>。</p>
-<p><img src="http://asset.cjting.cn/FrQGL9ISx_JJ6qrRLP_Z_ccOoZHF.gif" alt=""></p>
+<p><img src="/image/FrQGL9ISx_JJ6qrRLP_Z_ccOoZHF.gif" alt=""></p>
 <p>但这离我们要的效果还差了一点，我们的目标是在当前光标位置插入内容，而不是在文件的最前面。</p>
 <p>很明显，我们要修改 <code>view.insert</code> 方法的第二个参数，这个参数不用看文档也可以猜到表示的是插入内容的位置。</p>
 <p>所以，现在任务变成了如何获取当前光标的位置。查看 Sublime 文档会发现，<code>view.sel()</code> 方法会返回当前 View 的 <code>Selection</code> 对象，根据 <code>Selection</code> 对象可以获取到 <code>Region</code> 对象，根据 <code>Region</code> 对象就可以获取到位置的偏移量。</p>
@@ -2954,13 +2954,13 @@ set tabstop=2
     selections <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>sel()
     <span style="color:#000;font-weight:bold">if</span> <span style="color:#0086b3">len</span>(selections) <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">1</span> <span style="color:#000;font-weight:bold">and</span> selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>begin() <span style="color:#000;font-weight:bold">==</span> selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>end():
       <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>insert(edit, selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>begin(), <span style="color:#d14">&#34;Hello, World!&#34;</span>)
-</code></pre></div><p><img src="http://asset.cjting.cn/Fv7cIbgvITQv5GEasA4W04435vxI.gif" alt=""></p>
+</code></pre></div><p><img src="/image/Fv7cIbgvITQv5GEasA4W04435vxI.gif" alt=""></p>
 <h2 id="buildx">BuildX</h2>
 <p>现在我们来看看怎样实现一个插件实现我想要的 构建、侧边显示错误信息、快速跳转错误行 的功能。我给这个插件起名叫做 BuildX。</p>
 <p>首先，Sublime 是自带构建系统的，叫做 Build System，是一个很好用的工具，我们可以使用它来构建任意项目，配置很简单，这里不再展开。</p>
 <p>Sublime 的构建系统默认会输出内容到底部的 Exec Panel，看起来很难受。平时我写代码，编辑器都会开两列，方便互相对照，我希望构建以后能在侧边看到输出信息而不是要低头去底部看，就像上面的 Emacs 那样。</p>
 <p>我们的插件最终效果如下，构建以后，侧边显示输出信息，同时可以快速跳转到报错的行。</p>
-<p><img src="http://asset.cjting.cn/Ft6ukJ3VEUopUnL0hXtEpSkn8S-l.gif" alt=""></p>
+<p><img src="/image/Ft6ukJ3VEUopUnL0hXtEpSkn8S-l.gif" alt=""></p>
 <p>参考了 <code>sublime text 2 buildview</code> 的实现，插件的设计思路是：</p>
 <ul>
 <li>监听 Sublime 的构建，Sublime 会输出内容到底部的 Exec Panel</li>
@@ -3087,7 +3087,7 @@ set tabstop=2
 
     <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">True</span>
 </code></pre></div><p>到了这里，核心功能就已经有了，构建的输出可以在 Target View 中显示，从现在开始我们就可以摆脱底部的 Exec Panel 了。</p>
-<p><img src="http://asset.cjting.cn/Fn3sCw7H8q7ZJAtx2znBsuSHf4LK.gif" alt=""></p>
+<p><img src="/image/Fn3sCw7H8q7ZJAtx2znBsuSHf4LK.gif" alt=""></p>
 <h2 id="最后">最后</h2>
 <p>当然插件离最后可用还有一些细节要打磨，比如</p>
 <ul>
@@ -3102,7 +3102,7 @@ set tabstop=2
 <p>我最后完成的代码在这里 <a href="https://github.com/cj1128/sublime-buildx">sublime-buildx</a>。内容很简单，没有什么复杂的，但是实现的这个功能对我来说却大大提高了生产力。我想如果对 Sublime 的 API 有了解的人，实现这样的插件应该花不了两个小时。</p>
 <p>两个小时就可以解决的问题，为什么要推翻整个系统重来？之后任何的重大动作都要仔细评估是否值得。</p>
 <p>XKCD 的这幅漫画很能引发思考，在你动手 切换工具/造工具/改进工具 的时候，一定要评估一下你投入的时间以及节省的时间是否匹配。</p>
-<p><img src="http://asset.cjting.cn/Ft_ZecIdlpHJGqhla063FcO3txrv.png" alt=""></p>
+<p><img src="/image/Ft_ZecIdlpHJGqhla063FcO3txrv.png" alt=""></p>
 <p>如果说一个任务你每天做一次，每次耗费 6 分钟，你觉得很慢，动手改进，改进到了 1 分钟，那么这次改进带来的提升是节省了 5 分钟，以五年为例，一共为你节省了 6 天。问题是，将一个工具从 6 分钟改进到 1 分钟如此巨大的性能提升 6 天内你能搞定吗？如果搞不定的话，就要好好想想了。</p>
           ]]>
           </description>
@@ -3124,7 +3124,7 @@ set tabstop=2
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/FlHruid2di9QJ-HK0CTL0OeL6pNM.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/FlHruid2di9QJ-HK0CTL0OeL6pNM.jpg" class="webfeedsFeaturedVisual">
 
             <p>1976 年以前，所有的加密都是如下方式：</p>
 <ul>
@@ -3567,7 +3567,7 @@ Decrypt result: <span style="color:#099">1024</span>
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/FmiIWhP-NK5UDBmgXxkwkvHg29Zg.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/FmiIWhP-NK5UDBmgXxkwkvHg29Zg.jpg" class="webfeedsFeaturedVisual">
 
             <p>之前用 Go 编写过一个简单的服务器和客户端，用来测试 Go 的 HTTP 性能，无意中发现了一个奇怪的问题。</p>
 <p>在我的 Mac 上客户端程序会非常稳定地遇到 <em>Connection Reset</em> 的错误，让人一头雾水。</p>
@@ -3658,7 +3658,7 @@ Decrypt result: <span style="color:#099">1024</span>
 <p>有一个很重要的点就是：<strong>Mac 是基于 BSD 的，和 Linux 在很多地方是有不同的</strong>。所以，在 Mac 上测试，没问题自然好，有问题第一反应应该是去 Linux 上测试，毕竟 Linux 才是生产机器。</p>
 <p>先透露一下结论，上面这个问题根本原因在于：<strong>全连接队列满了</strong>。</p>
 <p>我们首先来复习一下 TCP 三次握手，下面是 TCP 的状态变化图。</p>
-<p><img src="http://asset.cjting.cn/FuLfMxUTfLJeZgkFQuJvez1oeAAI.png" alt=""></p>
+<p><img src="/image/FuLfMxUTfLJeZgkFQuJvez1oeAAI.png" alt=""></p>
 <p>TCP 通信不管上层怎么封装，最下面用的始终是 Socket 的一套接口。</p>
 <p>基本过程是，Server 调用 <code>listen</code> 监听端口，客户端使用 <code>connect</code> 发起连接，然后 Server 使用 <code>accept</code> 获取已经到达 <code>ESTABLISHED</code> 状态的连接，然后进行读写。</p>
 <p>从数据包来看：</p>
@@ -3782,9 +3782,9 @@ tcp <span style="color:#000;font-weight:bold">=</span> TCP(dport<span style="col
 attack() <span style="color:#998;font-style:italic"># 发送大量的 SYN 包给目标地址</span>
 </code></pre></div><p>启动 <code>attack</code> 以后，此时我们试着用 <code>telnet localhost 8877</code> 去连接 8877 端口，会发现无法连接，说明攻击奏效了，因为半连接队列满了，Server 直接丢弃了 SYN 包，新的客户端无法和 Server 建立通讯。</p>
 <p>查看 tcpdump 的输出，我们会发现全部都是 SYN/ACK 包，因为 Server 没有收到客户端的 ACK，所以会超时重发 SYN/ACK 给客户端。</p>
-<p><img src="http://asset.cjting.cn/FnRuxggtfoszNF6p6Ax1W34L7IYM.png" alt=""></p>
+<p><img src="/image/FnRuxggtfoszNF6p6Ax1W34L7IYM.png" alt=""></p>
 <p>使用 <code>netstat</code> 获取 Socket 状态，会看到 16 个处于 <code>SYN_RECV</code> 的 Socket。</p>
-<p><img src="http://asset.cjting.cn/FhTwQcNe0Uuxex-M6gM2S_obva8S.png" alt=""></p>
+<p><img src="/image/FhTwQcNe0Uuxex-M6gM2S_obva8S.png" alt=""></p>
 <h2 id="全连接队列溢出">全连接队列溢出</h2>
 <p>如果全连接队满了又会怎么样？应用程序调用 <code>accept</code> 的速度太慢，或者请求太多，都会导致这个情况。</p>
 <p>当系统收到三次握手中第三次的 ACK 包，正常情况下应该是从半连接队列中取出连接，更改状态，放入全连接队列中。此时如果全连接队列满了的话：</p>
@@ -3820,7 +3820,7 @@ idx <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">
 }
 </code></pre></div><p><code>sk-&gt;sk_ack_backlog</code> 是当前的全连接队列长度，<code>sk-&gt;sk_max_ack_backlog</code> 是配置的全连接队列最大长度，猜想验证了。</p>
 <p>这里顺手提一下 <code>ss</code> 这个工具，一个现代化的用于取代 <code>netstat</code> 的工具，使用它，我们可以看到全连接队列的长度。</p>
-<p><img src="http://asset.cjting.cn/FqGFoNM8OPnt1J6xBfFN4k9pzDsj.png" alt=""></p>
+<p><img src="/image/FqGFoNM8OPnt1J6xBfFN4k9pzDsj.png" alt=""></p>
 <p>对于监听中的 Socket，<code>Recv-Q</code> 表示全连接队列当前的长度，<code>Send-Q</code> 表示全连接队列配置的长度。可以看到，对于 8877 端口，一个是 2，一个是 1。</p>
 <p>我们可以通过 <code>netstat -s | rg -i listen</code> 来得知因为全连接队列溢出导致的连接丢弃数量是多少。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ netstat -s | rg -i listen
@@ -3832,7 +3832,7 @@ idx <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">
 <span style="color:#998;font-style:italic"># 只阻止目标端口为 8877 的 RST 包</span>
 $ iptables -A OUTPUT -p tcp --tcp-flags RST RST --dport <span style="color:#099">8877</span> -j DROP
 </code></pre></div><p>使用 <code>connect</code> 函数我们会发现，Server 会返回一个 RST 包，同时也不存在 <code>SYN_RECV</code> 状态的连接。</p>
-<p><img src="http://asset.cjting.cn/FvB_BwUp1vO5BImwmJD5EJN6ymMX.png" alt=""></p>
+<p><img src="/image/FvB_BwUp1vO5BImwmJD5EJN6ymMX.png" alt=""></p>
 <h2 id="回到-mac">回到 Mac</h2>
 <p>最后，我们回到最开始的那个问题。</p>
 <p>为什么那段 Go 程序在 Mac 上报错了？我们可以猜测一下，应该是 Mac 的 <code>somaxconn</code> 参数比较小，导致全连接队列溢出，导致内核给新的连接发送了 RST 包。</p>
@@ -3872,7 +3872,7 @@ $ iptables -A OUTPUT -p tcp --tcp-flags RST RST --dport <span style="color:#099"
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/Fk_kBecsmewI-l6GwB9HsQBNQqsW.jpeg" class="webfeedsFeaturedVisual">
+            <img src="/image/Fk_kBecsmewI-l6GwB9HsQBNQqsW.jpeg" class="webfeedsFeaturedVisual">
 
             <p>图片是大部分网页的重要组成部分，一般情况下，我们不会太关注这方面的问题，需要显示图片直接一个 <code>img</code> 标签搞定。</p>
 <p>但实际上，无论是对于提高加载速度，还是对于优化用户体验，优化图片都是一个重要的手段。</p>
@@ -3891,7 +3891,7 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
 </span><span style="color:#d14"></span>awk <span style="color:#d14">&#39;{print $9,$5}&#39;</span> |<span style="color:#d14">\
 </span><span style="color:#d14"></span>numfmt --field<span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> --to<span style="color:#000;font-weight:bold">=</span>iec |<span style="color:#d14">\
 </span><span style="color:#d14"></span>column -t | bat
-</code></pre></div><p><img src="http://asset.cjting.cn/9b85365dgy1g5i03r4vdnj20h7051wfj.jpg" alt=""></p>
+</code></pre></div><p><img src="/image/9b85365dgy1g5i03r4vdnj20h7051wfj.jpg" alt=""></p>
 <p>筛选出需要压缩的图片以后，接下来就是压缩、比对、调整参数。图片压缩的工具实在是太多了，Google <em>image compression tool</em> 选择会多得你眼花缭乱。</p>
 <p>这里顺口提一下 Google 出品的 <a href="https://squoosh.app/">squoosh</a> 在线图片压缩服务，看起来不错，虽然我没怎么用过。</p>
 <p>这里我选择使用 <a href="https://github.com/imagemin/imagemin">imagemin</a>，相比于一些在线工具或者 App，自己写脚本更灵活一些。</p>
@@ -3922,11 +3922,11 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
 </code></pre></div><p>注意，<code>quality</code> 参数需要自己测试去确定，怎样在质量和尺寸中权衡，每个团队有自己的标准。</p>
 <h3 id="progressive-vs-baseline">Progressive VS Baseline</h3>
 <p>JPEG 根据显示方式的不同，分为两种。Progressive JPEG 会先加载模糊的整张图片，然后变的越来越清晰。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1g5hw2y2pipj21900u0kjq.jpg" alt=""></p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1g5hw3pr599j20lc07ngu4.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1g5hw2y2pipj21900u0kjq.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1g5hw3pr599j20lc07ngu4.jpg" alt=""></p>
 <p>而 Baseline JPEG 会先清晰地加载图片的一部分，然后慢慢显示剩余的部分。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1g5hw2y2pipj21900u0kjq.jpg" alt=""></p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1g5hw39pw5bj20lc07n7b9.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1g5hw2y2pipj21900u0kjq.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1g5hw39pw5bj20lc07n7b9.jpg" alt=""></p>
 <p>从视觉效果来说，Progressive JPEG 自然更好一些。但它也有一些缺点，比如它的解码速度比 Baseline JPEG 要慢，占用的 CPU 时间更多。</p>
 <p>如果是桌面浏览器，这点性能问题自然无所谓，但是如果是移动端，就不得不考虑。工程本来就是权衡的艺术。</p>
 <p>默认情况下，MozJPEG 生成的是 Progressive JPEG，可以通过 <a href="https://github.com/imagemin/imagemin-mozjpeg#progressive">选项</a> 调整。</p>
@@ -3954,7 +3954,7 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
 </ul>
 <p>这个过程没法完全自动化，因为压缩过后的图片究竟在视觉上能不能替换原图，这个过程需要人来判别，全部交给机器是不太放心的。毕竟只有在保证质量的情况下减小体积才有意义。</p>
 <p>oimg 的输出如下，可以很方便地看出压缩的效果如何。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1g5i0rjw4qpj20n402qaak.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1g5i0rjw4qpj20n402qaak.jpg" alt=""></p>
 <h2 id="响应式图片">响应式图片</h2>
 <p>图片压缩的问题解决完了，现在我们来看看响应式图片。</p>
 <p>所谓响应式图片，关键就一点：<strong>根据客户端的情况返回最适合客户端的图片</strong>。</p>
@@ -4121,7 +4121,7 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/Fly_Jp2zD-BbHRl-97_m7PqwbTvX.jpeg" class="webfeedsFeaturedVisual">
+            <img src="/image/Fly_Jp2zD-BbHRl-97_m7PqwbTvX.jpeg" class="webfeedsFeaturedVisual">
 
             <p>代理的英文叫做 <em>Proxy</em>，是计算机中的常用软件。</p>
 <p>简单来说，代理的功能犹如它的名字所示：代替某人来处理某事。</p>
@@ -4196,7 +4196,7 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
 <p>最后，我们使用 <a href="http://www.squid-cache.org/">Squid</a> 来搭建一个恶作剧代理，这个代理会将所有的图片翻转过来。</p>
 <p>Squid 是一个很常用的正向代理软件，可以用来做访问控制，网站缓存等等。这里我们使用 Squid 的 <em>URL Rewrite</em> 功能，对于所有的图片请求，将图片下载到本地，然后调用 <code>mogrify</code> 翻转图片，最后将翻转以后的图片返回给客户端。</p>
 <p>这样做的效果就是，当你上网浏览时，所有的图片都是倒过来的😉，效果如下：</p>
-<p><img src="http://asset.cjting.cn/FkC-GZsJPKErvn7WW3GVdhfhB9aE.jpg" alt=""></p>
+<p><img src="/image/FkC-GZsJPKErvn7WW3GVdhfhB9aE.jpg" alt=""></p>
 <p>想象这样一个场景：在一个阳光明媚的午后，你发现你的邻居在蹭你的网，你并没有选择修改密码，而是默默地启动这个恶作剧代理，配置你的路由器，使用 iptables 将蹭网流量转发到这个代理。于此同时，你的邻居发现，前一刻还十分精彩的互联网世界，突然颠倒了，他苦苦思索，他不知所措，他深深地被这个世界的恶意所伤害。</p>
 <p>关于恶作剧代理的具体代码可以去 GitHub 仓库 <a href="https://github.com/cj1128/squid-trick-proxy-demo">squid-trick-proxy-demo</a> 上查看。</p>
           ]]>
@@ -4217,7 +4217,7 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/FgUXmK5q8oVb8ZKJStDsqVtd_PXj.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/FgUXmK5q8oVb8ZKJStDsqVtd_PXj.jpg" class="webfeedsFeaturedVisual">
 
             <p>字符串是任何一个编程语言中的重要概念，同时也是一个非常复杂的问题。</p>
 <p>日常编码中可能并不一定能见到它的复杂性，下面是几个字符串操作，使用你最熟悉的编程语言，看看结果如何。</p>
@@ -4384,7 +4384,7 @@ Uncaught SyntaxError<span style="color:#000;font-weight:bold">:</span> Invalid r
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/FiDsImkj3TOme4jW4eezs3b-n2Uw.jpeg" class="webfeedsFeaturedVisual">
+            <img src="/image/FiDsImkj3TOme4jW4eezs3b-n2Uw.jpeg" class="webfeedsFeaturedVisual">
 
             <p>DNS 全称 <code>Domain Name System</code>，是我们每天都在使用的基础互联网设施。</p>
 <p>它被发明出来的原因很简单，计算机之间的通信用的是 IP 地址，是一串数字，人类记忆起来十分不方便，因此，我们给地址起个名字，然后将名字和 IP 之间的关系记录起来，这样，我们只用记住名字就行了。</p>
@@ -4577,7 +4577,7 @@ cjting.me.              <span style="color:#099">86400</span>   IN      NS      
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/FtsKJCGdjEVMPYYiuCucEfkwa3pn.jpeg" class="webfeedsFeaturedVisual">
+            <img src="/image/FtsKJCGdjEVMPYYiuCucEfkwa3pn.jpeg" class="webfeedsFeaturedVisual">
 
             <p><code>HTTP Basic Auth</code> 是 HTTP 提供的一种验证方式，因为明文传输用户名和密码，非 HTTPS 环境下很不安全，一般用的非常少。但是在某些情况下用一用还是非常方便的，比如，一些静态站点例如文档系统可以使用 HTTP Basic Auth 进行简单的权限验证。</p>
 <h2 id="流程">流程</h2>
@@ -4636,7 +4636,7 @@ cjting.me.              <span style="color:#099">86400</span>   IN      NS      
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/FlKmTvbJZO1j12pQzImT2EbtVgac.jpeg" class="webfeedsFeaturedVisual">
+            <img src="/image/FlKmTvbJZO1j12pQzImT2EbtVgac.jpeg" class="webfeedsFeaturedVisual">
 
             <p>最近这段时间一直在忙着迁移博客，把原本基于 Jekyll 的博客迁移到了 Hugo 上。</p>
 <p>之所以从 Jekyll 迁移的原因并不复杂，就是一个字：<strong>慢</strong>。Jekyll 的速度实在是太慢了，我只有几十篇文章，在 Watch 模式下，每次改动，重新生成都要花费 3 秒钟，实在是太慢了。</p>
@@ -4748,7 +4748,7 @@ hugo server --buildDrafts
 <blockquote>
 <p>git checkout skeleton</p>
 </blockquote>
-<p><img src="http://asset.cjting.cn/9b85365dgy1fgesi9dqzwj20lz0ay0ss.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1fgesi9dqzwj20lz0ay0ss.jpg" alt=""></p>
 <p>这里来梳理一下，当 Hugo 编译我们站点时，发现 <code>content/_index.md</code> 文件，Hugo 会使用 <code>layouts/index.html</code> 和 <code>layouts/_default/baseof.html</code> 模板来渲染这个文件，并将得到的 HTML 文件放在结果文件夹的根目录下，当我们访问首页时，就会看到这个文件。</p>
 <p>现在，我们要规划一下博客的结构，然后一一实现。</p>
 <ul>
@@ -4781,7 +4781,7 @@ hugo server --buildDrafts
   &lt;/<span style="color:#000080">main</span>&gt;
 {{ end }}
 </code></pre></div><p>浏览器页面如下。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1fgeslx5j0ij20ly0bgglo.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1fgeslx5j0ij20ly0bgglo.jpg" alt=""></p>
 <p>看起来，header 生效了，但是，为什么两个分类的名称叫做 <code>_index</code> 呢？这是因为，默认情况下，Hugo 会使用分类对应的源文件的 <code>title</code>属性，这个属性默认是文件名。</p>
 <p>编辑 <code>content/c1/_index.md</code> 文件和 <code>content/c2/_index.md</code> 文件的 <code>title</code> 属性，改为 <code>分类1</code> 和 <code>分类2</code>，这次就正确了。</p>
 <h2 id="分类页">分类页</h2>
@@ -4807,7 +4807,7 @@ hugo server --buildDrafts
   &lt;/<span style="color:#000080">div</span>&gt;
 {{ end }}
 </code></pre></div><p>模板代码的含义是根据日期和时间来渲染分类下的博文，效果如下。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1fgetkmelx0j20nl0azq30.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1fgetkmelx0j20nl0azq30.jpg" alt=""></p>
 <h2 id="博文页">博文页</h2>
 <p>最后，便是展示单篇博文的博文页，使用的模板是 <code>single.html</code>，新建文件 <code>layouts/_default/single.html</code> 如下。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-html" data-lang="html">{{ define &#34;main&#34; }}
@@ -4816,7 +4816,7 @@ hugo server --buildDrafts
   &lt;/<span style="color:#000080">article</span>&gt;
 {{ end }}
 </code></pre></div><p>很简单，直接渲染博文内容，<code>http://localhost:1313/c1/p1/</code> 页面如下。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1fgetqxr6fhj20nl078mx4.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1fgetqxr6fhj20nl078mx4.jpg" alt=""></p>
 <p>目前为止，我们的博客基本结构就搭建好了。</p>
 <blockquote>
 <p>git checkout basic</p>
@@ -4838,7 +4838,7 @@ hugo server --buildDrafts
 &lt;/<span style="color:#000080">body</span>&gt;
 &lt;/<span style="color:#000080">html</span>&gt;
 </code></pre></div><p>引入 JS 的道理同上。至于具体的样式代码，这里就不再赘述了。最终效果如下。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1fgfz1ofshej20sj0e33ys.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1fgfz1ofshej20sj0e33ys.jpg" alt=""></p>
 <blockquote>
 <p>git checkout final</p>
 </blockquote>
@@ -4868,7 +4868,7 @@ hugo server --buildDrafts
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/FvSatw-mAY94H60cISWGryzrCODq.jpeg" class="webfeedsFeaturedVisual">
+            <img src="/image/FvSatw-mAY94H60cISWGryzrCODq.jpeg" class="webfeedsFeaturedVisual">
 
             <p>diff 是我们每天都要使用的一个功能，每次提交时，我都习惯先用 <code>git diff --cached</code> 看看这次提交更改了些什么，确定没问题，然后再 <code>git commit</code>。git 生成的 diff 非常直观，直观到我从来都没有去思考过 diff 是怎么生成的，觉得这应该是很简单的一件事，两个文件做个对比，不就行了。</p>
 <h2 id="什么是直观的-diff">什么是直观的 diff</h2>
@@ -4919,7 +4919,7 @@ hugo server --buildDrafts
 <p>抽象的过程交给算法科学家了，抽象的结果是：<strong>寻找 diff 的过程可以被表示为图搜索</strong>。</p>
 <p>什么意思呢？还是以两个字符串，src=<strong>ABCABBA</strong>，dst=<strong>CBABAC</strong> 为例，根据这两个字符串我们可以构造下面一张图，横轴是 src 内容，纵轴是 dst 内容。</p>
 <p>那么，图中每一条从左上角到右下角的路径，都表示一个 diff。向右表示“删除”，向下表示”新增“，对角线则表示“原内容保持不动“。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1ffjxfo7r42j20lm0nudhx.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1ffjxfo7r42j20lm0nudhx.jpg" alt=""></p>
 <p>比如，我们选择这样一条路径：</p>
 <ol>
 <li>(0, 0) -&gt; (1, 0)</li>
@@ -4965,7 +4965,7 @@ hugo server --buildDrafts
 - B
   A
 + C
-</code></pre></div><p><img src="http://asset.cjting.cn/9b85365dgy1ffjz1967znj20p20k9gmg.jpg" alt=""></p>
+</code></pre></div><p><img src="/image/9b85365dgy1ffjz1967znj20p20k9gmg.jpg" alt=""></p>
 <p>现在我们可以知道，其实 Myers 算法是一个典型的”动态规划“算法，也就是说，父问题的求解归结为子问题的求解。要知道 d=5 时所有 k 对应的最优坐标，必须先要知道 d=4 时所有 k 对应的最优坐标，要知道 d=4 时的答案，必须先求解 d=3，以此类推，和 01 背包问题很是相似。</p>
 <h2 id="实现">实现</h2>
 <p>算法原理知道以后，实现便是一件简单的事情了，<a href="https://github.com/cj1128/myers-diff">myers-diff</a> 仓库是我使用 Go 实现的一个版本，基本流程如下：</p>
@@ -5004,7 +5004,7 @@ hugo server --buildDrafts
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/Fud1bDjGGvmZBEMsM5y_Crfg77Kb.jpeg" class="webfeedsFeaturedVisual">
+            <img src="/image/Fud1bDjGGvmZBEMsM5y_Crfg77Kb.jpeg" class="webfeedsFeaturedVisual">
 
             <p>最近一直在思考如何对线上服务做深度监控。基础的服务可用性监控很简单，定期 Ping 即可。但是怎样才能监控服务器的一些更加关键的数据呢？比如，每一个 API Point 的请求次数（QPS），最大响应时间，平均响应时间等。最终我希望实现的效果是有一个 Dashboard，我可以清楚地看到各种参数曲线，对服务器的运行情况了然于胸。</p>
 <p>绘制 Dashboard 不难，目前提供数据可视化的工具很多，随便选一个都能满足需要。关键问题是，怎样将整个流程打通？</p>
@@ -5146,16 +5146,16 @@ http_request_count(endpoint=&#34;/c&#34;) 3
 	resp.Body.<span style="color:#900;font-weight:bold">Close</span>()
 }
 </code></pre></div><p>启动 Prometheus <code>prometheus -config.file config.yml</code> 以后，再启动我们的测试程序 <code>go run test.go</code>。打开 Prometheus 控制台 <code>localhost:9090/targets</code> 就可以看到 Prometheus 正在抓取数据，一切正常。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1fdki1jpblnj21gk06mjs1.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1fdki1jpblnj21gk06mjs1.jpg" alt=""></p>
 <h3 id="控制台">控制台</h3>
 <p>Prometheus 的一个强大之处在于可以使用各种函数和操作符来查询数据。在上面的测试程序中，每个数据都带有 <code>endpoint</code> 这个标签，表示请求的路径。打开 Prometheus 的控制台 <code>http://localhost:9090/graph</code>，点击 <code>console</code> 标签页，输入 <code>http_request_count{endpoint=&quot;/a&quot;}</code> 就可以查询路径为 <code>/a</code> 的 API Point 到目前为止的总请求数。如果想看 QPS 的话，可以使用自带的函数 <code>rate</code>，<code>rate(http_request_count[10s])</code> 表示以 10s 作为时间单元来统计 QPS。</p>
 <p>Prometheus 的控制台自带一个简单的绘图系统，点击 <code>graph</code>标签页，输入表达式就可以看到图表。例如，输入 <code>rate(http_request_count{endpoint=&quot;/test&quot;}[10s])</code> 就可以看到我们测试程序中 <code>/test</code>路径的 QPS，从图中可以明显发现，每隔一段时间就会有一个波峰流量。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1fdkick67anj21ha0lw416.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1fdkick67anj21ha0lw416.jpg" alt=""></p>
 <p><code>httpRequestDuration</code> 是一个 Summary 类型的指标，比简单的 Counter 要复杂，会生成三个数据项。分别是 <code>http_request_duration_sum</code> 表示响应时间加在一起的总和，<code>http_request_duration_count</code> 表示响应时间的总个数，以及<code>http_request_duration</code> 表示响应时间的分布情况，这个数据项会使用 <code>quantile</code> 标签对响应时间进行分组。</p>
 <p>如下图所示，<code>quantile=0.5</code> 值为 50，表示 50% 的请求响应时间都在 50ms 以下。<code>quantile=0.9</code> 的值为 54，表示 90% 的请求响应时间都在 54ms 以下。但是，<code>quantile=0.99</code> 的值为 103，表示 99% 的请求响应时间在 103ms 以下。这就说明了一个问题，那就是极个别的请求耗费了大量时间。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1fdkikzfoyyj21gp0k8tat.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1fdkikzfoyyj21gp0k8tat.jpg" alt=""></p>
 <p>通过使用表达式 <code>http_request_duration_sum / http_request_duration_count</code> 我们可以得到平均响应时间，如下图。当然，这个图的作用不大（平均数往往反映不了什么问题），不像上图那样，我们无法看出有部分请求花费了大量时间。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1fdkiurz15sj21h70kftap.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1fdkiurz15sj21h70kftap.jpg" alt=""></p>
 <p>以上只是对数据项的最简单利用，Prometheus 自带了很多函数和操作符，可以方便地对数据进行处理，具体可以参考<a href="https://prometheus.io/docs/querying/basics/">官方文档</a>。</p>
 <h2 id="grafana">Grafana</h2>
 <p>Prometheus 自带的图表是非常基础的，只能用来临时查看一下数据。如果要构建强大的 Dashboard，还是需要更加专业的工具才行。这个工具就是 <a href="http://grafana.org/">Grafana</a>。</p>
@@ -5167,10 +5167,10 @@ http_request_count(endpoint=&#34;/c&#34;) 3
 </code></pre></div><p>Grafana 默认监听在 3000 端口上，默认用户名和密码都是 <code>admin</code>。</p>
 <h3 id="设置">设置</h3>
 <p>输入用户名和密码以后，进入 Grafana 页面。第一件事是要设置数据源 (Data Source)，即 Grafana 从什么地方获取数据，选择 Prometheus 即可。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1fdll4hyc91j20sk0joaeg.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1fdll4hyc91j20sk0joaeg.jpg" alt=""></p>
 <p>数据源设置好以后，接下来就是创建 Dashboard 了。Dashboard 里面可以放置很多组件。比如，图表，状态值，表格，文字等等。这里我们选择 <code>Graph</code>图表，Grafana 会创建一个默认的空图表。</p>
 <p>点击图表标题，选择 <code>Edit</code> 来编辑图表参数。最重要的参数就是 <code>Metrics</code> 标签里的 <code>Query</code>字段，这个字段定义了我们的图表到底要展示什么数据。输入 <code>rate(http_request_count{endpoint=&quot;/test&quot;}[10s])</code>，就可以看到 <code>/test</code> 路径的 QPS 曲线了。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1fdllazj0cvj20ya0k841q.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1fdllazj0cvj20ya0k841q.jpg" alt=""></p>
 <p>同理，在 Query 中输入 <code>http_request_duration</code> 就可以得到响应时间曲线。通过使用 Prometheus 提供的操作符和函数，我们可以对数据进行我们想要的任意可视化，十分灵活。</p>
 <p>在这两个工具的配合使用下，对服务器信息的监控变得非常简单。首先，服务器定义一个 HTTP 接口，暴露出想要监控的数据，然后使用 Prometheus 收集并存储这些数据，最后在 Grafana 中绘制这些数据。一个完整的监控方案就诞生了。</p>
 <p>当然，在实际系统中，还缺少了一个环节，那就是报警。监控发现问题以后，需要马上报警通知相关的维护人员。这是另外一个话题了，以后再介绍。</p>
@@ -5194,10 +5194,10 @@ http_request_count(endpoint=&#34;/c&#34;) 3
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/FpensV5yWTWbHKwENPRdEvUtEsYW.jpeg" class="webfeedsFeaturedVisual">
+            <img src="/image/FpensV5yWTWbHKwENPRdEvUtEsYW.jpeg" class="webfeedsFeaturedVisual">
 
             <p>很早之前就看过到关于 <a href="http://commits.io">commits.io</a> 的一个帖子，这个站点专门制作代码明信片。什么是代码明信片呢？如下图。</p>
-<p><img src="http://asset.cjting.cn/007FEWc7ly1g1f3o6zdtwj30sj0ee45m.jpg" alt=""></p>
+<p><img src="/image/007FEWc7ly1g1f3o6zdtwj30sj0ee45m.jpg" alt=""></p>
 <p>背景是代码，然后中间印上指定的图案，就是一幅代码明信片了。看起来有点意思，将自己的得意作品做成一个代码明信片打印出来挂在办公室将是一个非常不错的装饰选择 😉。</p>
 <p>当时我就在想，这东西挺有意思，有空自己做一个，当然，事情一多也就忘记了。最近，我又看到了一个帖子，<a href="http://www.east5th.co/blog/2017/02/13/build-your-own-code-poster-with-elixir/">Build your own code poster with elixir</a>，是说怎样用 Elixir 来制作代码明信片的。Elixir 是我最近正在研究的语言，不过我觉得它不适合拿来干这个，这种程序，拿 Go 做一个 CLI 最合适，编译好了就可以发放给亲朋好友体验了。说干就干，再不能拖延了。</p>
 <p>一个程序，无非是：输入、处理、输出。老话说的好，<strong>程序就是数据结构 + 算法</strong>。数据结构用来表示数据，算法用来处理数据。我们先来看看我们要开发的代码明信片程序的这三个方面分别是什么。</p>
@@ -5216,7 +5216,7 @@ http_request_count(endpoint=&#34;/c&#34;) 3
 <li>单个字符的高度（charHeight），得出方法同字符宽度。</li>
 </ul>
 <p>这里，我使用 <code>Hack</code> 字体为例，可以看出，当字体选择 Hack，字体大小为 16.63px 像素时，单个字符的宽度是 10，高度是 19。</p>
-<p><img src="http://asset.cjting.cn/007FEWc7ly1g1f3oef7bsj30mn0fgab6.jpg" alt=""></p>
+<p><img src="/image/007FEWc7ly1g1f3oef7bsj30mn0fgab6.jpg" alt=""></p>
 <p>最后，图片尺寸一般比代码明信片的尺寸要小，放在中央位置。所以，我们还需要一个背景颜色（bgColor），对于位置不在图片中的字符，应该填充背景色。</p>
 <h2 id="输出">输出</h2>
 <p>最终处理完毕后，以什么样的格式输出呢？作为一个整天和浏览器打交道的人，我觉得输出为一个 HTML 文件是最为方便的，直接交给浏览器去渲染。</p>
@@ -5242,9 +5242,9 @@ http_request_count(endpoint=&#34;/c&#34;) 3
 <p>到这里，程序的实现就很清楚了，借助于 Go 强大的标准库，需要我们编写的代码其实很少，作为一个周末项目练练手是非常不错的选择。</p>
 <h2 id="结果">结果</h2>
 <p>最终，程序在仓库在 Github 上，<a href="http://github.com/cj1128/codeposter">codeposter</a>。测试了几幅图片，效果还不错。默认使用的字体是 <code>Hack</code>，字体大小为 7 x 14，明信片宽度是 114 x 54。如果想提高字符的密度，也就是 <strong>分辨率</strong>，减少字体大小即可😜。</p>
-<p><img src="http://asset.cjting.cn/007FEWc7ly1g1f3oqy7ldj30m80l4n55.jpg" alt=""></p>
-<p><img src="http://asset.cjting.cn/007FEWc7ly1g1f3ox5d2gj30m70l37ce.jpg" alt=""></p>
-<p><img src="http://asset.cjting.cn/007FEWc7ly1g1f3p3nf61j30m70l3wmc.jpg" alt=""></p>
+<p><img src="/image/007FEWc7ly1g1f3oqy7ldj30m80l4n55.jpg" alt=""></p>
+<p><img src="/image/007FEWc7ly1g1f3ox5d2gj30m70l37ce.jpg" alt=""></p>
+<p><img src="/image/007FEWc7ly1g1f3p3nf61j30m70l3wmc.jpg" alt=""></p>
           ]]>
           </description>
         </item>
@@ -5267,7 +5267,7 @@ http_request_count(endpoint=&#34;/c&#34;) 3
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/007FEWc7ly1g1f3uidzsqj31hc0goafm.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/007FEWc7ly1g1f3uidzsqj31hc0goafm.jpg" class="webfeedsFeaturedVisual">
 
             <p>注：因为七牛 API 修改，编辑于 2019-03-25T16:20:00。</p>
 <p>最近在使用过程中发现 <strong>图床on微博</strong> 出了点问题，响应体的 JSON 解析错误，不用想都知道肯定是微博修改了响应体的数据结构（微博图片上传接口响应体是 html 和 json 混在一起，十分专业）。简单修复了一下，测试的时候却发现，微博的图片上传接口变得不再稳定了，经常 404。看来微博图床是不能用了，正好我早就觉得微博不是个好图床，缺点如下：</p>
@@ -5382,7 +5382,7 @@ Authorization:  QBox &lt;AccessToken&gt;
   })
 }
 </code></pre></div><p>到这里，核心功能就做好了，剩下的就是 UI 层面的事情，在 <em>图床on微博</em> 的基础上，将历史记录功能优化成了和 Unsplash 一样的三栏显示。最终效果如下所示，关于插件的安装使用仓库 README 中有详细说明，<a href="https://github.com/cj1128/pic-on-qiniu">仓库地址</a>。</p>
-<p><img src="http://asset.cjting.cn/007FEWc7ly1g1f3v5j3f4g31810jcnpd.gif" alt=""></p>
+<p><img src="/image/007FEWc7ly1g1f3v5j3f4g31810jcnpd.gif" alt=""></p>
           ]]>
           </description>
         </item>
@@ -5401,7 +5401,7 @@ Authorization:  QBox &lt;AccessToken&gt;
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/9b85365djw1f9xjicmnn713r0p178e.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/9b85365djw1f9xjicmnn713r0p178e.jpg" class="webfeedsFeaturedVisual">
 
             <p><em>Donald E.Knuth</em> 说过一句非常著名的话，<strong>过早的优化是万恶之源</strong>，原文如下：</p>
 <blockquote>
@@ -5409,7 +5409,7 @@ Authorization:  QBox &lt;AccessToken&gt;
 </blockquote>
 <p>我是十分赞同这句话的，并且在开发过程中也深有体会。什么叫做 <em>过早的优化</em> 呢？即不需要考虑优化的时候你在考虑优化。这绝对不意味着可以任性地写代码，随意地选择数据结构和算法。这句话是告诉我们，在程序开发的早期阶段，程序员应该专注在程序的 <strong>逻辑实现</strong> 上，而不是专注在程序的 <strong>性能优化</strong> 上。用正确的数据结构和算法，优美合理的语句实现你要的功能。而不是满脑子在想：“这个函数是不是可以优化一下？”。</p>
 <p>我们都知道，性能最好的代码往往并不是优美直观的代码，往往看起来非常晦涩。下图是 JS 转换字符串到数字的三个方法在 Chrome 下的性能对比。可以看出，<code>+</code> 是最快的方法。但是 <code>+str</code> 这种写法明显是不如 <code>parseInt(str)</code> 或者是 <code>Number(str)</code> 容易理解。<em>Donald E.Knuth</em> 的那句话，我的理解就是在提醒我们，不用使用 <code>+str</code>，而应该使用更加语义化的 <code>parseInt(str)</code>。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgw1f9xaluvkarj20qp0733zq.jpg" alt=""></p>
+<p><img src="/image/9b85365dgw1f9xaluvkarj20qp0733zq.jpg" alt=""></p>
 <p>不应该过早的优化，那么应该做的就是在适当的时候进行优化。程序在功能开发完毕并且测试好以后，就可以进入优化环节了。所有的优化都应该基于性能分析（Profiling），凭空想象进行优化是一件很危险并且没有效率的事情。很多你觉得可以优化的点说不定编译器早替你做了，很多你觉得很慢的地方说不定非常快。</p>
 <p>Golang 提供了非常棒的 Profiling 工具，可以很容易地得到 CPU 和内存的 Profiling 数据。更加赞的是，Golang 还提供了工具来可视化这些数据，一眼就可以看出程序的性能瓶颈在哪儿，调优从未如此轻松。</p>
 <h2 id="package-pprof">Package pprof</h2>
@@ -5452,7 +5452,7 @@ Authorization:  QBox &lt;AccessToken&gt;
 	<span style="color:#000;font-weight:bold">return</span> <span style="color:#900;font-weight:bold">fibonacci</span>(n<span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">+</span> <span style="color:#900;font-weight:bold">fibonacci</span>(n<span style="color:#000;font-weight:bold">-</span><span style="color:#099">2</span>)
 }
 </code></pre></div><p>编译以后，运行程序便可以生成 <code>cpu-profile.prof</code> 文件。使用 <code>go tool pprof finabocci cpu-profile.prof</code> 进入 Profiling 控制台，输入<code>web</code> 指令跳入浏览器中查看 Golang 为我们生成的可视化性能数据。</p>
-<p><img src="http://asset.cjting.cn/9b85365djw1f9xgcymlqpj20zo0h3jvw.jpg" alt=""></p>
+<p><img src="/image/9b85365djw1f9xgcymlqpj20zo0h3jvw.jpg" alt=""></p>
 <h2 id="benchmark-test">Benchmark Test</h2>
 <p>每一次都手动引入 <code>pprof</code> 包比较麻烦，也没有必要。一般 Golang 的性能测试我们会使用 Golang 提供的 Benchmark 功能，Golang 提供了命令行参数我们可以直接得到测试文件中 Benchmark 的 Profiling 数据。不需要添加任何代码。</p>
 <p>下面我们来写一个 Benchmark 测试一下 Golang 的标准库函数 <code>rand.Intn</code> 的性能如何。</p>
@@ -5493,7 +5493,7 @@ Showing top <span style="color:#099">5</span> nodes out of <span style="color:#0
 <p>下面我用 <a href="https://github.com/paddie/godoku">Godoku</a> 这个项目为例，看看怎么具体优化一个程序。Godoku 是一个 Go 编写的暴力破解数独的程序，逻辑比较简单，从上到下从左到右扫描每一个空格，从 1 到 9 开始填写数字，一旦数字无效（行冲突，列冲突或者 9 宫格冲突），那么就换一个数字，如果所有数字都换了还无效，那么就退回上一个格子，继续这个过程。</p>
 <h3 id="step1">Step1</h3>
 <p>程序自带了测试和 Benchmark，所以我们先来生成一个 Profiling 文件，看看哪个地方开销最大。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgw1f9xhhnlv05j20s70mcafx.jpg" alt=""></p>
+<p><img src="/image/9b85365dgw1f9xhhnlv05j20s70mcafx.jpg" alt=""></p>
 <p>很明显，<code>ValidInSquare</code>这个函数开销很大，这个函数是检测一个数字在九宫格里面存不存在，作者的实现如下。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-golang" data-lang="golang"><span style="color:#000;font-weight:bold">func</span> (s <span style="color:#000;font-weight:bold">*</span>Sudoku) <span style="color:#900;font-weight:bold">ValidInSquare</span>(row, col, val <span style="color:#458;font-weight:bold">int</span>) <span style="color:#458;font-weight:bold">bool</span> {
 	row, col = <span style="color:#0086b3">int</span>(row<span style="color:#000;font-weight:bold">/</span><span style="color:#099">3</span>)<span style="color:#000;font-weight:bold">*</span><span style="color:#099">3</span>, <span style="color:#0086b3">int</span>(col<span style="color:#000;font-weight:bold">/</span><span style="color:#099">3</span>)<span style="color:#000;font-weight:bold">*</span><span style="color:#099">3</span>
@@ -5529,7 +5529,7 @@ Showing top <span style="color:#099">5</span> nodes out of <span style="color:#0
 	<span style="color:#000;font-weight:bold">return</span> !s.<span style="color:#900;font-weight:bold">checkRegion</span>(row, col, val)
 }
 </code></pre></div><p>再运行一次测试，看看性能改善了多少。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgw1f9xhx008q9j212g0m3q8x.jpg" alt=""></p>
+<p><img src="/image/9b85365dgw1f9xhx008q9j212g0m3q8x.jpg" alt=""></p>
 <p>很好！CPU 开销已经由 9770ms 降低到了 5460ms，性能提高 79%。现在程序的性能瓶颈已经是 <code>ValidInColumnAndRow</code> 这个函数了。</p>
 <h3 id="step3">Step3</h3>
 <p>作者 <code>ValidInColumnAndRow</code> 函数的实现仍然是直观简单的循环。</p>
@@ -5559,7 +5559,7 @@ Showing top <span style="color:#099">5</span> nodes out of <span style="color:#0
 	<span style="color:#000;font-weight:bold">return</span> !s.<span style="color:#900;font-weight:bold">checkRowOrCol</span>(row, col, val)
 }
 </code></pre></div><p>我们再来看看 Profiling 数据。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgw1f9xi9qhf6uj211m0idjvs.jpg" alt=""></p>
+<p><img src="/image/9b85365dgw1f9xi9qhf6uj211m0idjvs.jpg" alt=""></p>
 <p>性能再次得到了提升，由 5460ms 降低到了 3610ms。初步看来，已经没有了明显可以优化的地方了。到此为止，我们的程序性能已经得到了 170% 的提升！我们并没有怎么努力，只不过是生成了 Profiling 文件，一眼看出问题在哪儿，然后针对性地优化而已。</p>
 <p>感谢 Golang 提供了这套超赞的 pprof 工具，性能调优变得如此轻松和愉悦。这里我所举的只是 pprof 功能的冰山一角，pprof 的强大功能远不止这些。比如可以使用 <code>list</code> 指令查看函数的源码中每一行代码的开销以及使用 <code>weblist</code> 指令查看函数汇编以后每一句汇编指令的开销等等。不仅是 CPU Profiling，pprof 同样支持 Memory Profiling，可以帮助你检查程序中内存的分配情况。总之，在 pprof 的帮助下，程序的开销信息变得一清二楚，优化自然变得轻而易举。</p>
           ]]>
@@ -5582,7 +5582,7 @@ Showing top <span style="color:#099">5</span> nodes out of <span style="color:#0
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/9b85365djw1f9ji109m0jj21jk0rstb8.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/9b85365djw1f9ji109m0jj21jk0rstb8.jpg" class="webfeedsFeaturedVisual">
 
             <p>每一个需要让用户等待的应用都应该有加载界面，可以是简单的文本，比如 <code>加载中…</code>，也可以是有趣的动画。当然，一个好玩的加载动画能够大大增加用户等待的耐心，谁喜欢枯燥的文字呢。所以，投入点时间寻找或者制作一个加载动画是很有意义的。感谢 SVG 和相关的动画技术，现在制作一款复杂的动画已经变得十分容易了。</p>
 <p>这里我使用 SVG 的形变技术（Shape Morphing）来做一个简单的矩形、三角形、圆形变换的动画。</p>
@@ -5590,7 +5590,7 @@ Showing top <span style="color:#099">5</span> nodes out of <span style="color:#0
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 <h2 id="svg-shape-morphing">SVG Shape Morphing</h2>
 <p>上面的动画里，有三个量在变换。图形的形状，图形的位置以及颜色。位置和颜色都是比较简单的，CSS Transition 就可以搞定。问题就是形状的变化比较复杂。形变技术理解起来比较简单，图形从一个形状变换到另一个形状，无非就是构成图形的顶点位置发生了变化。所以，只要将开始图形和结束图形的顶点之间的对应关系找到，然后对顶点进行 transition 就行了。从这可以看出，SVG 的形变必须要求开始图形和结束图形的顶点数一定要相同，如下所示。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgw1f9jdl0i3e2g20a008gh6t.gif" alt=""></p>
+<p><img src="/image/9b85365dgw1f9jdl0i3e2g20a008gh6t.gif" alt=""></p>
 <p data-height="500" data-theme-id="light" data-slug-hash="XNJBOy" data-default-tab="result" data-user="fatelovely" data-embed-version="2" data-pen-title="SVG Morphing Demo" class="codepen">See the Pen <a href="http://codepen.io/fatelovely/pen/XNJBOy/">SVG Morphing Demo</a> by fatelovely (<a href="http://codepen.io/fatelovely">@fatelovely</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 <h2 id="gsap">GSAP</h2>
@@ -5667,9 +5667,9 @@ nightmare.run(<span style="color:#000;font-weight:bold">function</span>(err) {
   }
 })
 </code></pre></div><p>运行以后，可以在 loading 文件夹里面看到所有截屏出来的图片，将多余的图片剔除掉以后，上传到 <a href="http://gifcreator.me/">gifcreator</a> 上，调整一下速度，然后导出即可。</p>
-<p><img src="http://asset.cjting.cn/9b85365djw1f9jheun5t8j20rt0r60yg.jpg" alt=""></p>
+<p><img src="/image/9b85365djw1f9jheun5t8j20rt0r60yg.jpg" alt=""></p>
 <p>最终，GIF 效果如下。</p>
-<img width="100" src="http://asset.cjting.cn/9b85365djw1f9jhfdkgy8g20b40b4wfc.gif">
+<img width="100" src="/image/9b85365djw1f9jhfdkgy8g20b40b4wfc.gif">
           ]]>
           </description>
         </item>
@@ -5696,7 +5696,7 @@ nightmare.run(<span style="color:#000;font-weight:bold">function</span>(err) {
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/9b85365dgw1f8qjr6igesj21kw0w7ac4.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/9b85365dgw1f8qjr6igesj21kw0w7ac4.jpg" class="webfeedsFeaturedVisual">
 
             <p>当今的软件开发 <strong>多核</strong> 以及 <strong>分布</strong> 已经成为了常态，基本上稍大型的应用都是多台机器分布式部署。分布式在提高性能的同时也带来了很多问题，今天我们只讨论一点，那就是如何处理多台机器线上系统的日志。</p>
 <p>以我司的某个应用 T 为例，部署在了百度云 5 台机子上，其中一台拥有公网 IP，使用了百度云提供的负载均衡服务。每次想要在日志中检索某个关键字时，基本步骤如下：</p>
@@ -5933,7 +5933,7 @@ outpugst <span style="color:#000;font-weight:bold">{</span>
 <p>Kibana 不需要什么配置，直接启动即可。<code>service kibana start</code>，默认运行在 5601 端口。如果考虑到安全性，也可以将 Kibana 配置为只监听本机，然后使用 Nginx 进行反向代理并控制权限，这里就不再赘述了。</p>
 <p>接下来我们需要产生点日志，然后在 Kibana 中能查看到就说明系统工作正常了。我们用 curl 随便请求一下 client 上的 Nginx 来产生一点日志。然后，打开 Kibana，<code>http://[server ip]:5601</code>。刚进去的时候，我们先要配置一下 Kibana 的 <code>Index Pattern</code>，告诉 Kibana 我们想看哪个 Index 的数据，输入 <code>nginx*</code> 即可，然后点击 <code>Discover</code> 浏览数据。</p>
 <p>最终效果如下，我们可以在 Kibana 中浏览我们的 Nginx 日志，并进行任意搜索。</p>
-<p><img src="http://asset.cjting.cn/9b85365djw1f8zwhs3j5vj21h50mijxx.jpg" alt=""></p>
+<p><img src="/image/9b85365djw1f8zwhs3j5vj21h50mijxx.jpg" alt=""></p>
           ]]>
           </description>
         </item>
@@ -5952,7 +5952,7 @@ outpugst <span style="color:#000;font-weight:bold">{</span>
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/9b85365djw1f7fb60zgzaj21kw11xgyy.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/9b85365djw1f7fb60zgzaj21kw11xgyy.jpg" class="webfeedsFeaturedVisual">
 
             <p>我们都知道 HTTP 是非常不安全的，不安全的根源在于 HTTP 是明文传输。你在谷歌搜索了一个关键词（假设 Google 使用 HTTP），HTTP 数据包从你的计算机传送到服务器的过程中，中间经过的任意一个设备都可以轻松解析你的数据包，获取你的关键词，你的隐私毫无保障。</p>
 <p>你的信息被人获取只是明文传输的其中一个问题。总体来说，明文传输有三个问题：</p>
@@ -5989,7 +5989,7 @@ outpugst <span style="color:#000;font-weight:bold">{</span>
 </ol>
 <h3 id="具体流程">具体流程</h3>
 <p>根据上面的论述，SSL/TLS 协议的核心便是怎样安全的生成一个 <em>对话密钥</em> 来加密之后的通信。这个过程称之为 <em>握手</em>。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgw1f7fdsr6gbzj20tv0m3q7r.jpg" alt=""></p>
+<p><img src="/image/9b85365dgw1f7fdsr6gbzj20tv0m3q7r.jpg" alt=""></p>
 <p>握手一共有四次请求，注意，这些请求都是明文的（也没法加密）。</p>
 <h4 id="客户端请求-clienthello">客户端请求 (ClientHello)</h4>
 <p>首先，客户端（通常是浏览器）先向服务器发送请求，这一步叫做 <code>ClientHello</code>，
@@ -6069,9 +6069,9 @@ firewall-cmd --reload
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#0086b3">cd</span> /opt/letsencrypt
 ./letsencrypt-auto certonly -a webroot --webroot-path<span style="color:#000;font-weight:bold">=</span>/usr/share/nginx/html -d leaningmoon.io <span style="color:#998;font-style:italic"># 可以使用多个 -d 添加多个域名</span>
 </code></pre></div><p>回车之后，<code>letsencrypt</code> 会进行一系列操作生成所需的证书文件，最后会有一个弹窗，提示你输入电子邮件地址，如果证书丢了，可以恢复。</p>
-<p><img src="http://asset.cjting.cn/9b85365djw1f7hzf480y7j20sp0ap3zk.jpg" alt=""></p>
+<p><img src="/image/9b85365djw1f7hzf480y7j20sp0ap3zk.jpg" alt=""></p>
 <p>最后，<code>letsencrypt</code> 的输出结果如下。</p>
-<p><img src="http://asset.cjting.cn/9b85365djw1f7hzfmf062j20v60bj456.jpg" alt=""></p>
+<p><img src="/image/9b85365djw1f7hzfmf062j20v60bj456.jpg" alt=""></p>
 <p>可以看到，最为关键的证书文件存放在 <code>/etc/letsencrypt/live/leaningmoon.io/fullchain.pem</code>。</p>
 <h4 id="配置-nginx">配置 Nginx</h4>
 <p>最后一步便是配置 Nginx 采用我们的证书文件并开启 HTTPS。这里推荐一个网站，<a href="https://cipherli.st/">cipherli.st</a>，这个网站提供了当前主流的 Web 服务器怎样开启 HTTPS 的推荐配置，很值得参考。这里我们直接复制他提供的 Nginx 配置。</p>
@@ -6106,7 +6106,7 @@ firewall-cmd --reload
   <span style="color:#000;font-weight:bold">ssl_certificate_key</span> <span style="color:#d14">/etc/letsencrypt/live/leaningmoon.io/privkey.pem</span>;
 }
 </code></pre></div><p>重启 Nginx，<code>systemctl reload nginx</code>。再次访问网站，我们可以看到，我们的网站也多了一把可爱的小绿锁~</p>
-<p><img src="http://asset.cjting.cn/9b85365dgw1f7hzuvhh4jj212h0bqgpx.jpg" alt=""></p>
+<p><img src="/image/9b85365dgw1f7hzuvhh4jj212h0bqgpx.jpg" alt=""></p>
 <p><strong>参考链接</strong></p>
 <ul>
 <li><a href="http://www.ruanyifeng.com/blog/2016/08/migrate-from-http-to-https.html">HTTPS 升级指南</a></li>
@@ -6131,7 +6131,7 @@ firewall-cmd --reload
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/9b85365djw1f7bjp0tf5dj21jk0ikq95.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/9b85365djw1f7bjp0tf5dj21jk0ikq95.jpg" class="webfeedsFeaturedVisual">
 
             <p>在日常开发过程中，我们经常要配置各种
 host，比如公司内部的各种服务，或者测试项目的时候暂时把生产环境 URL 配置到本地上等等。一般采取的方法都是每个人手动编辑自己的 <code>/etc/hosts</code> 文件。这个做法有两个缺点：</p>
@@ -6183,7 +6183,7 @@ server=8.8.4.4
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/9b85365djw1f7bk8tdwtej21kw0w0gry.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/9b85365djw1f7bk8tdwtej21kw0w0gry.jpg" class="webfeedsFeaturedVisual">
 
             <p>很多时候，我们都有这样的需求：需要将本地正在开发的服务暴露在公网上，也就是从外网直接访问我们本机上的服务。正常情况下，这是办不到的，因为我们的本机并没有公网 IP，我们的本机处在内网当中。</p>
 <p>这里需要顺手提及一个知识：NAT 穿透。我们的机器一般都在路由器的内网当中，IP 地址基本上都是 <code>192.168.x.x</code> 系列，我们并没有公网 IP，那么如何访问外网呢？我们打开浏览器访问 Google，Google 与我们主机之间如何通信？假设我们主机 IP 为 <code>192.168.0.100</code>，路由器 LAN IP 为 <code>192.168.0.1</code>，WAN IP 为 <code>211.22.145.234（这是一个公网IP）</code>，Google 服务器 IP 为 <code>74.125.204.101</code>，详细通信流程如下。</p>
@@ -6199,7 +6199,7 @@ server=8.8.4.4
 <p>从上面可以看出，内网机器能够和外网通信，全靠拥有公网 IP 的路由器做交通枢纽。路由器通过查询 NAT 表，来确定数据包该发送给内网哪台机器。所以内网多台机器都可以通过这一台路由器和外网进行通信，这极大的节省了宝贵的公网 IP 资源。</p>
 <p>NAT 表项是在内网主动和外网通信的过程中构建的，如果外网主动访问内网，那么自然没有表项，也就访问不到。如果想要从外网访问内网，根据上面的原理我们可以有两种做法。</p>
 <p>首先，我们可以手动添加 NAT 表项，大部分路由器里面都有这个设置项。我的 NETGEAR 路由器的设置页面如图所示。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgw1f43dxm3ux6j21gz0jo78u.jpg" alt=""></p>
+<p><img src="/image/9b85365dgw1f43dxm3ux6j21gz0jo78u.jpg" alt=""></p>
 <p>另一种办法，是找一个公网服务器做中介。比如服务器 A，流程如下。</p>
 <ul>
 <li>开发主机和服务器 A 构建一条连接</li>
@@ -6218,7 +6218,7 @@ openssl req -new -x509 -nodes -key base.key -days <span style="color:#099">10000
 openssl genrsa -out server.key <span style="color:#099">2048</span>
 openssl req -new -key server.key -subj <span style="color:#d14">&#34;/CN=[NGROK_BASE_DOMAIN]&#34;</span> -out server.csr
 openssl x509 -req -in server.csr -CA base.pem -CAkey base.key -CAcreateserial -days <span style="color:#099">10000</span> -out server.crt
-</code></pre></div><p><img src="http://asset.cjting.cn/9b85365djw1f439iat2lpj20qi0g5grx.jpg" alt=""></p>
+</code></pre></div><p><img src="/image/9b85365djw1f439iat2lpj20qi0g5grx.jpg" alt=""></p>
 <p>第三步，拷贝证书文件，然后编译相应的客户端和服务器程序。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">cp base.pem assets/client/tls/ngrokroot.crt
 <span style="color:#008080">GOOS</span><span style="color:#000;font-weight:bold">=</span>linux make release-linux <span style="color:#998;font-style:italic"># 服务器是 linux，我们需要交叉编译</span>
@@ -6232,14 +6232,14 @@ ssh root@<span style="color:#000;font-weight:bold">[</span>host<span style="colo
 <span style="color:#0086b3">cd</span> ~/ngrok
 ./ngrokd -tlsKey<span style="color:#000;font-weight:bold">=</span>server.key -tlsCrt<span style="color:#000;font-weight:bold">=</span>server.crt -domain<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;[NGROK_BASE_DOMAIN]&#34;</span> -httpAddr<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;:80&#34;</span> -httpsAddr<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;:443&#34;</span>
 </code></pre></div><p>第五步，配置域名解析。解析 <code>[NGROK_BASE_DOMAIN]</code> 以及 <code>*.[NGROK_BASE_DOMAIN]</code> 地址到服务器上。我使用的是 DNSPOD，截图如下。</p>
-<p><img src="http://asset.cjting.cn/9b85365djw1f43rtmytwvj20nn0bqwgl.jpg" alt=""></p>
+<p><img src="/image/9b85365djw1f43rtmytwvj20nn0bqwgl.jpg" alt=""></p>
 <p>最后一步，配置客户端，启动客户端程序。客户端的默认配置文件位置是 <code>$HOME/.ngrok</code>，填入以下配置。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000080">server_addr</span>:<span style="color:#bbb"> </span>[NGROK_BASE_DOMAIN]:4443<span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#000080">trust_host_root_certs</span>:<span style="color:#bbb"> </span><span style="color:#000;font-weight:bold">false</span><span style="color:#bbb">
 </span></code></pre></div><p>然后启动客户端。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">./ngrok -subdomain <span style="color:#0086b3">test</span> <span style="color:#099">8080</span>
 </code></pre></div><p>客户端会转发本地 8080 端口的服务到 <code>test.[NGROK_BASE_DOMAIN]</code> 上。以我为例，只要我访问 <code>test.tunnel.cjting.me</code>，就可以看到开发主机上 8080 端口的内容。实现了外网访问内容的目标。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgw1f43t9r2wshj20iq06i74v.jpg" alt=""></p>
+<p><img src="/image/9b85365dgw1f43t9r2wshj20iq06i74v.jpg" alt=""></p>
 <p>最后提一点：客户端和服务器连接是需要验证证书的。只有我们同时编译的客户端和服务器才能连接上。在新的电脑上重新编译客户端去连接一个已部署的服务器，是无法连接的。因此建议存档一份客户端程序。</p>
           ]]>
           </description>
@@ -6261,7 +6261,7 @@ ssh root@<span style="color:#000;font-weight:bold">[</span>host<span style="colo
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/9b85365djw1f7bm61rer2j21hc0u0q58.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/9b85365djw1f7bm61rer2j21hc0u0q58.jpg" class="webfeedsFeaturedVisual">
 
             <p>之前写博客需要的图片全部都是本地存储，非常麻烦。流程如下：先用截图工具截图（QQ 截图就很好用），然后移动到目标文件夹，然后在 Markdown 中输入绝对路径（Jekyll 生成站点以后路径会变化，所以不能使用相对路径）。除了麻烦以外，在 Markdown 中编写时还是看不到图的，因为路径不对。</p>
 <p>上次花点时间把所有的图片全部迁移到微博图床了。在 Chrome Web Store 中搜索了一下，选了<a href="https://chrome.google.com/webstore/detail/%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9A%E5%9B%BE%E5%BA%8A/fdfdnfpdplfbbnemmmoklbfjbhecpnhf?utm_source=chrome-ntp-icon">新浪微博图床</a>。功能是可以用的，不过有一些问题，最让我无法忍受的就是一点击按钮就会弹出一个 Chrome 的空白窗口，无法关闭，只有重启 Chrome 才行，这个实在是忍无可忍。</p>
@@ -6319,7 +6319,7 @@ ssh root@<span style="color:#000;font-weight:bold">[</span>host<span style="colo
 <p>剩下的便是编码了~大家有兴趣可以自己作为周末项目练练手~</p>
 <p>最后，这是完整项目的 <a href="https://github.com/cj1128/pic-on-weibo">Github Repo</a>，这是插件的<a href="https://chrome.google.com/webstore/detail/%E5%9B%BE%E5%BA%8Aon%E5%BE%AE%E5%8D%9A/opblldeehobgiedgjgamaklagilmkagc/related">地址</a>。欢迎大家使用和评分，需要什么功能或者有什么不满，都可以去 GitHub 吐槽。</p>
 <p>PS：如果翻墙不方便的话，可以 clone 仓库，<code>npm install &amp;&amp; npm run build</code>，接着进入 <code>Chrome Extensions</code> 选项，打开开发者模式，然后把 <code>chrome</code> 目录拖进去就可以使用插件了（GIF 如下，有图床了就是任性~）。</p>
-<p><img src="http://asset.cjting.cn/9b85365djw1f2twd1698tg21a90p51ky.gif" alt=""></p>
+<p><img src="/image/9b85365djw1f2twd1698tg21a90p51ky.gif" alt=""></p>
           ]]>
           </description>
         </item>
@@ -6336,7 +6336,7 @@ ssh root@<span style="color:#000;font-weight:bold">[</span>host<span style="colo
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/9b85365dgw1f7bmcscnvij21jk112496.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/9b85365dgw1f7bmcscnvij21jk112496.jpg" class="webfeedsFeaturedVisual">
 
             <p>推荐阅读：</p>
 <ul>
@@ -6355,7 +6355,7 @@ ssh root@<span style="color:#000;font-weight:bold">[</span>host<span style="colo
 <p>再考虑到我们需要追踪每个 ajax 的错误信息，一旦有错误立刻显示错误页面，这个问题似乎没有那么好解决。传统的解决方法我们不可避免的要跟踪状态，比如当前有没有错误？内容已经到第几章了？这种代码写出来很容易出错而且很难看。</p>
 <p>作者在这个 <a href="https://gist.github.com/jakearchibald/0e652d95c07442f205ce">gist</a> 上面贴出了文中问题的一些解法对比，包括使用 Promise，使用传统的状态追踪等。这个 gist 下面有个评论中使用了 RxJS，代码十分简洁优美，很是引人注目。</p>
 <p><a href="https://github.com/Reactive-Extensions/RxJS">RxJS</a> 指的是 <strong>Functional Reactive Programming extensions for JavsScript</strong>，Functional Reactive Programming 是一种编程思想，并不局限于某一个语言。这种思想的核心就是流，RxJS 中的使用的术语是 <code>Observable</code>，但是我觉得这个词不好理解，用流也就是 <code>Stream</code> 更好理解。流代表的是一个随着时间而变化的序列，在这过程中，它可以产生值，或者错误，或者终止信号，只有这三种情况。</p>
-<p><img src="http://asset.cjting.cn/9b85365djw1f238lhm2c4j20e807974m.jpg" alt=""></p>
+<p><img src="/image/9b85365djw1f238lhm2c4j20e807974m.jpg" alt=""></p>
 <p>流的引入最大的优点是我们有了一个手段来表示“无尽”的东西，并且可以对它们进行各种变换，就像我们处理数组那样。处理数组我们有 <code>map</code>, <code>filter</code>，<code>reduce</code> 这几个核心方法。对于流我们也有类似这些的基本方法，这里推荐一个好用的网站 <a href="http://rxmarbles.com/">RxMarbles</a>，非常直观的显示一些方法是怎样操作流的。</p>
 <p>面向流的编程基本过程就是，创建代表原始输入的流，对它们进行组合、过滤等各种操作，最后生成我们感兴趣的结果流，监听结果流（subscribe）并进行相应操作即可，监听的时候提供三个函数，分别用于处理流产生了值，流产生了错误以及流结束这三种情况。</p>
 <p>这里用 RxJS 首页的自动补全（auto completion）例子来看一看怎么使用 RxJS。自动补全是搜索框中很常见的一个功能，随着用户的输入，系统会自动在下拉框中显示相关的词汇供用户选择，也可以起到给用户一些提示的作用，这是一个很方便的功能。实现思路也比较简单，根据用户目前输入的词汇去获取词汇列表，然后显示。但是这里面有几个细节：</p>
@@ -6375,7 +6375,7 @@ ssh root@<span style="color:#000;font-weight:bold">[</span>host<span style="colo
   .distinctUntilChanged()
 </code></pre></div><p><code>resultInputStream</code> 代表的便是每一个需要请求后台的用户输入值，这个还不是最终的 Stream。最终的 <code>suggestionStream</code> 应该代表的是后台返回的结果，我们监听然后显示 suggestions，就大功告成了。现在剩下的任务便是怎么由 <code>resultInputStream</code> 得到 <code>suggestionStream</code>。</p>
 <p>这里我们要介绍两个重要的方法，分别是 <code>flatMap</code> 以及 <code>flatMapLatest</code>。<code>map</code> 方法是根据流（mainStream）里面的值，产生一个新的值，如果这个新的值是一个流（subStream）怎么办呢？大部分情况下，我们会希望这个新的流（subStream）它的值出现在 mainStream 中，这样我们可以直接监听 mainStream 而不用去监听每一个 subStream，如图所示：</p>
-<p><img src="http://asset.cjting.cn/9b85365djw1f23ftn0686j208z04cdg4.jpg" alt=""></p>
+<p><img src="/image/9b85365djw1f23ftn0686j208z04cdg4.jpg" alt=""></p>
 <p><code>flatMap</code> 就是这样一个方法，<code>flatMapLatest</code> 顾名思义，他只会处理最新的 subStream，之前的 subStream 的值全部丢掉。这非常吻合我们的需求，因为当用户输入新的字符串时，之前的字符串的返回结果我们不再需要了。</p>
 <p>有了 <code>flatMapLatest</code> 这个方法，我们接下来需要做的便是写一个方法，根据 <code>resultInputStream</code> 的每个值，请求后台，返回一个 subStream（返回 romise 便可，RxJS 会自动帮我们转换为 Stream)。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#000;font-weight:bold">function</span> searchWikipedia (term) {
@@ -6407,7 +6407,7 @@ ssh root@<span style="color:#000;font-weight:bold">[</span>host<span style="colo
   })
 </code></pre></div><p>最终的代码可以看<a href="https://jsbin.com/luvamizavo/1/edit?html,js,output">这里</a>。</p>
 <p>上面是一个使用 RxJS 的经典例子，下面我们再来看一个例子。</p>
-<p><img src="http://asset.cjting.cn/9b85365djw1f23koqhfbmj20n10603yk.jpg" alt=""></p>
+<p><img src="/image/9b85365djw1f23koqhfbmj20n10603yk.jpg" alt=""></p>
 <p>这是一个十分常见的用户注册表单，几乎每一个网站都要实现的功能。实现起来也比较简单，用户点击 Submit 的时候提交内容到后台就行了，根据后台的结果再进行反馈，比如后台返回成功，则告诉用户注册成功，跳转到个人中心，后台返回“用户名已存在”，则告诉用户注册失败，重新输入。</p>
 <p>但是，我们也可以做一些事情来提高这个简单表单的用户体验，包括但不限于：</p>
 <ul>
@@ -6626,7 +6626,7 @@ buttonStateStream.subscribe(
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/9b85365dgw1f7bmdt86ltj21kw0w0wgf.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/9b85365dgw1f7bmdt86ltj21kw0w0wgf.jpg" class="webfeedsFeaturedVisual">
 
             <p>很久之前曾看到一个很有意思的 JS 问题，</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#998;font-style:italic">// 定义一个函数 add，满足如下性质：
@@ -6704,7 +6704,7 @@ a <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/9b85365djw1f7bmw01i31j21hc0zkgr3.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/9b85365djw1f7bmw01i31j21hc0zkgr3.jpg" class="webfeedsFeaturedVisual">
 
             <p>这一切，都要从这篇文章说起，<a href="http://www.codersnotes.com/notes/being-sneaky-in-c">Being Sneaky in C</a>。</p>
 <p>通过这篇文章，我了解到，原来外国有一种比赛，叫做 <em>Underhanded C</em>（中文翻译：有猫腻的 C），完成规定的题目，要求是写出看起来毫无问题的代码，但是却偷偷的藏有 Bug 或者说后门。</p>
@@ -6770,7 +6770,7 @@ uint8 <span style="color:#000;font-weight:bold">*</span>block2 <span style="colo
 
           <description><![CDATA[
             
-            <img src="http://asset.cjting.cn/9b85365dgw1f7bo2l69u3j21jk111gui.jpg" class="webfeedsFeaturedVisual">
+            <img src="/image/9b85365dgw1f7bo2l69u3j21jk111gui.jpg" class="webfeedsFeaturedVisual">
 
             <p>很早之前就碰到过&quot;乱码&quot;这个现象，当时非常困惑，完全不能理解发生了什么。</p>
 <p>上大学以后，虽然开始接触计算机，不过我就没看到过具体讲解字符编码的内容。对这个领域始终是感到非常模糊。</p>
@@ -6781,7 +6781,7 @@ uint8 <span style="color:#000;font-weight:bold">*</span>block2 <span style="colo
 <p>其他的所有字符编码都是同理，比如汉字的经典编码 GBK。</p>
 <p>以 丁 这个汉字为例，GBK 编码为 <code>0xB6A1</code>，存储为二进制是 <code>10110110 10100001</code>（直接将 B6A1 换成二进制），两个字节。</p>
 <p>用工具查看内部字节可以看出，如图：</p>
-<p><img src="http://asset.cjting.cn/9b85365djw1f23cmmpfu1j20ex01qaa9.jpg" alt=""></p>
+<p><img src="/image/9b85365djw1f23cmmpfu1j20ex01qaa9.jpg" alt=""></p>
 <p>同样的道理，如果使用 utf-8 编码，丁在 Unicode 字符集中的编号为 <code>0x4E01</code>，但它存储在计算机中并不是简单的将 <code>0x4E01</code> 翻译为对应的二进制。</p>
 <p>这里就要分清楚两个概念，字符集和字符编码。字符集是定义字符的，每一个字符在字符集中都有一个唯一的编号，Unicode 就是一个字符集，丁这个字符在 Unicode 字符集的编号是 0x4E01。</p>
 <p>字符编码是指将字符编号变换成二进制的方法。一个字符编号，有很多种方式可以存储在计算机中。例如，我想存储编号 10，我可以存储为二进制的 20，每次在计算机中取得数字后除以二就得到了我的编号。至于为什么不直接存储编号，大多是出于兼容性和方便解码的考虑。</p>

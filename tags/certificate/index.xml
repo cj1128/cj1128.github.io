@@ -15,7 +15,7 @@
       <guid>https://cjting.me/2021/03/02/how-to-validate-tls-certificate/</guid>
       <description>&lt;p&gt;现如今的 Web，HTTPS 早已经成为标配，公开的 HTTP 网站已经和 Flash 一样，慢慢在消亡了。&lt;/p&gt;
 &lt;p&gt;启用 HTTPS 的核心是一个叫做 &lt;strong&gt;证书&lt;/strong&gt; 的东西。不知道大家是否有留意，前几年上 12306 的时候，浏览器都会提示「您的链接不是私密链接」，这其实就是因为 12306 的证书有问题。如果点击「继续前往」，打开 12306 网站，它会提示你下载安装它提供的“根证书”。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://asset.cjting.cn/FrBOHRLcNkDuAUnDstdn4Sjk4xMr.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cjting.me/image/FrBOHRLcNkDuAUnDstdn4Sjk4xMr.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;那么，证书是什么？里面含有什么内容？浏览器为什么会不信任 12306 的证书？为什么下载 12306 提供的根证书就可以解决这个问题？根证书又是什么？&lt;/p&gt;</description>
     </item>
     

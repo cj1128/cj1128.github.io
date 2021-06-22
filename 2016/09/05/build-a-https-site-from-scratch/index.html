@@ -50,7 +50,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://asset.cjting.cn/9b85365djw1f7fb60zgzaj21kw11xgyy.jpg">
+    <header class="post__header" data-cover="/image/9b85365djw1f7fb60zgzaj21kw11xgyy.jpg">
       <a href="/">
         HOME
       </a>
@@ -115,7 +115,7 @@
 </ol>
 <h3 id="具体流程">具体流程</h3>
 <p>根据上面的论述，SSL/TLS 协议的核心便是怎样安全的生成一个 <em>对话密钥</em> 来加密之后的通信。这个过程称之为 <em>握手</em>。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgw1f7fdsr6gbzj20tv0m3q7r.jpg" alt=""></p>
+<p><img src="/image/9b85365dgw1f7fdsr6gbzj20tv0m3q7r.jpg" alt=""></p>
 <p>握手一共有四次请求，注意，这些请求都是明文的（也没法加密）。</p>
 <h4 id="客户端请求-clienthello">客户端请求 (ClientHello)</h4>
 <p>首先，客户端（通常是浏览器）先向服务器发送请求，这一步叫做 <code>ClientHello</code>，
@@ -195,9 +195,9 @@ firewall-cmd --reload
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#0086b3">cd</span> /opt/letsencrypt
 ./letsencrypt-auto certonly -a webroot --webroot-path<span style="color:#000;font-weight:bold">=</span>/usr/share/nginx/html -d leaningmoon.io <span style="color:#998;font-style:italic"># 可以使用多个 -d 添加多个域名</span>
 </code></pre></div><p>回车之后，<code>letsencrypt</code> 会进行一系列操作生成所需的证书文件，最后会有一个弹窗，提示你输入电子邮件地址，如果证书丢了，可以恢复。</p>
-<p><img src="http://asset.cjting.cn/9b85365djw1f7hzf480y7j20sp0ap3zk.jpg" alt=""></p>
+<p><img src="/image/9b85365djw1f7hzf480y7j20sp0ap3zk.jpg" alt=""></p>
 <p>最后，<code>letsencrypt</code> 的输出结果如下。</p>
-<p><img src="http://asset.cjting.cn/9b85365djw1f7hzfmf062j20v60bj456.jpg" alt=""></p>
+<p><img src="/image/9b85365djw1f7hzfmf062j20v60bj456.jpg" alt=""></p>
 <p>可以看到，最为关键的证书文件存放在 <code>/etc/letsencrypt/live/leaningmoon.io/fullchain.pem</code>。</p>
 <h4 id="配置-nginx">配置 Nginx</h4>
 <p>最后一步便是配置 Nginx 采用我们的证书文件并开启 HTTPS。这里推荐一个网站，<a href="https://cipherli.st/">cipherli.st</a>，这个网站提供了当前主流的 Web 服务器怎样开启 HTTPS 的推荐配置，很值得参考。这里我们直接复制他提供的 Nginx 配置。</p>
@@ -232,7 +232,7 @@ firewall-cmd --reload
   <span style="color:#000;font-weight:bold">ssl_certificate_key</span> <span style="color:#d14">/etc/letsencrypt/live/leaningmoon.io/privkey.pem</span>;
 }
 </code></pre></div><p>重启 Nginx，<code>systemctl reload nginx</code>。再次访问网站，我们可以看到，我们的网站也多了一把可爱的小绿锁~</p>
-<p><img src="http://asset.cjting.cn/9b85365dgw1f7hzuvhh4jj212h0bqgpx.jpg" alt=""></p>
+<p><img src="/image/9b85365dgw1f7hzuvhh4jj212h0bqgpx.jpg" alt=""></p>
 <p><strong>参考链接</strong></p>
 <ul>
 <li><a href="http://www.ruanyifeng.com/blog/2016/08/migrate-from-http-to-https.html">HTTPS 升级指南</a></li>

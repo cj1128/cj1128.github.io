@@ -50,7 +50,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://asset.cjting.cn/9b85365djw1f7bk8tdwtej21kw0w0gry.jpg">
+    <header class="post__header" data-cover="/image/9b85365djw1f7bk8tdwtej21kw0w0gry.jpg">
       <a href="/">
         HOME
       </a>
@@ -92,7 +92,7 @@
 <p>从上面可以看出，内网机器能够和外网通信，全靠拥有公网 IP 的路由器做交通枢纽。路由器通过查询 NAT 表，来确定数据包该发送给内网哪台机器。所以内网多台机器都可以通过这一台路由器和外网进行通信，这极大的节省了宝贵的公网 IP 资源。</p>
 <p>NAT 表项是在内网主动和外网通信的过程中构建的，如果外网主动访问内网，那么自然没有表项，也就访问不到。如果想要从外网访问内网，根据上面的原理我们可以有两种做法。</p>
 <p>首先，我们可以手动添加 NAT 表项，大部分路由器里面都有这个设置项。我的 NETGEAR 路由器的设置页面如图所示。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgw1f43dxm3ux6j21gz0jo78u.jpg" alt=""></p>
+<p><img src="/image/9b85365dgw1f43dxm3ux6j21gz0jo78u.jpg" alt=""></p>
 <p>另一种办法，是找一个公网服务器做中介。比如服务器 A，流程如下。</p>
 <ul>
 <li>开发主机和服务器 A 构建一条连接</li>
@@ -111,7 +111,7 @@ openssl req -new -x509 -nodes -key base.key -days <span style="color:#099">10000
 openssl genrsa -out server.key <span style="color:#099">2048</span>
 openssl req -new -key server.key -subj <span style="color:#d14">&#34;/CN=[NGROK_BASE_DOMAIN]&#34;</span> -out server.csr
 openssl x509 -req -in server.csr -CA base.pem -CAkey base.key -CAcreateserial -days <span style="color:#099">10000</span> -out server.crt
-</code></pre></div><p><img src="http://asset.cjting.cn/9b85365djw1f439iat2lpj20qi0g5grx.jpg" alt=""></p>
+</code></pre></div><p><img src="/image/9b85365djw1f439iat2lpj20qi0g5grx.jpg" alt=""></p>
 <p>第三步，拷贝证书文件，然后编译相应的客户端和服务器程序。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">cp base.pem assets/client/tls/ngrokroot.crt
 <span style="color:#008080">GOOS</span><span style="color:#000;font-weight:bold">=</span>linux make release-linux <span style="color:#998;font-style:italic"># 服务器是 linux，我们需要交叉编译</span>
@@ -125,14 +125,14 @@ ssh root@<span style="color:#000;font-weight:bold">[</span>host<span style="colo
 <span style="color:#0086b3">cd</span> ~/ngrok
 ./ngrokd -tlsKey<span style="color:#000;font-weight:bold">=</span>server.key -tlsCrt<span style="color:#000;font-weight:bold">=</span>server.crt -domain<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;[NGROK_BASE_DOMAIN]&#34;</span> -httpAddr<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;:80&#34;</span> -httpsAddr<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;:443&#34;</span>
 </code></pre></div><p>第五步，配置域名解析。解析 <code>[NGROK_BASE_DOMAIN]</code> 以及 <code>*.[NGROK_BASE_DOMAIN]</code> 地址到服务器上。我使用的是 DNSPOD，截图如下。</p>
-<p><img src="http://asset.cjting.cn/9b85365djw1f43rtmytwvj20nn0bqwgl.jpg" alt=""></p>
+<p><img src="/image/9b85365djw1f43rtmytwvj20nn0bqwgl.jpg" alt=""></p>
 <p>最后一步，配置客户端，启动客户端程序。客户端的默认配置文件位置是 <code>$HOME/.ngrok</code>，填入以下配置。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000080">server_addr</span>:<span style="color:#bbb"> </span>[NGROK_BASE_DOMAIN]:4443<span style="color:#bbb">
 </span><span style="color:#bbb"></span><span style="color:#000080">trust_host_root_certs</span>:<span style="color:#bbb"> </span><span style="color:#000;font-weight:bold">false</span><span style="color:#bbb">
 </span></code></pre></div><p>然后启动客户端。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">./ngrok -subdomain <span style="color:#0086b3">test</span> <span style="color:#099">8080</span>
 </code></pre></div><p>客户端会转发本地 8080 端口的服务到 <code>test.[NGROK_BASE_DOMAIN]</code> 上。以我为例，只要我访问 <code>test.tunnel.cjting.me</code>，就可以看到开发主机上 8080 端口的内容。实现了外网访问内容的目标。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgw1f43t9r2wshj20iq06i74v.jpg" alt=""></p>
+<p><img src="/image/9b85365dgw1f43t9r2wshj20iq06i74v.jpg" alt=""></p>
 <p>最后提一点：客户端和服务器连接是需要验证证书的。只有我们同时编译的客户端和服务器才能连接上。在新的电脑上重新编译客户端去连接一个已部署的服务器，是无法连接的。因此建议存档一份客户端程序。</p>
           </div>
 

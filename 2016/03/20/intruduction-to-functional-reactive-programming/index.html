@@ -50,7 +50,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://asset.cjting.cn/9b85365dgw1f7bmcscnvij21jk112496.jpg">
+    <header class="post__header" data-cover="/image/9b85365dgw1f7bmcscnvij21jk112496.jpg">
       <a href="/">
         HOME
       </a>
@@ -97,7 +97,7 @@
 <p>再考虑到我们需要追踪每个 ajax 的错误信息，一旦有错误立刻显示错误页面，这个问题似乎没有那么好解决。传统的解决方法我们不可避免的要跟踪状态，比如当前有没有错误？内容已经到第几章了？这种代码写出来很容易出错而且很难看。</p>
 <p>作者在这个 <a href="https://gist.github.com/jakearchibald/0e652d95c07442f205ce">gist</a> 上面贴出了文中问题的一些解法对比，包括使用 Promise，使用传统的状态追踪等。这个 gist 下面有个评论中使用了 RxJS，代码十分简洁优美，很是引人注目。</p>
 <p><a href="https://github.com/Reactive-Extensions/RxJS">RxJS</a> 指的是 <strong>Functional Reactive Programming extensions for JavsScript</strong>，Functional Reactive Programming 是一种编程思想，并不局限于某一个语言。这种思想的核心就是流，RxJS 中的使用的术语是 <code>Observable</code>，但是我觉得这个词不好理解，用流也就是 <code>Stream</code> 更好理解。流代表的是一个随着时间而变化的序列，在这过程中，它可以产生值，或者错误，或者终止信号，只有这三种情况。</p>
-<p><img src="http://asset.cjting.cn/9b85365djw1f238lhm2c4j20e807974m.jpg" alt=""></p>
+<p><img src="/image/9b85365djw1f238lhm2c4j20e807974m.jpg" alt=""></p>
 <p>流的引入最大的优点是我们有了一个手段来表示“无尽”的东西，并且可以对它们进行各种变换，就像我们处理数组那样。处理数组我们有 <code>map</code>, <code>filter</code>，<code>reduce</code> 这几个核心方法。对于流我们也有类似这些的基本方法，这里推荐一个好用的网站 <a href="http://rxmarbles.com/">RxMarbles</a>，非常直观的显示一些方法是怎样操作流的。</p>
 <p>面向流的编程基本过程就是，创建代表原始输入的流，对它们进行组合、过滤等各种操作，最后生成我们感兴趣的结果流，监听结果流（subscribe）并进行相应操作即可，监听的时候提供三个函数，分别用于处理流产生了值，流产生了错误以及流结束这三种情况。</p>
 <p>这里用 RxJS 首页的自动补全（auto completion）例子来看一看怎么使用 RxJS。自动补全是搜索框中很常见的一个功能，随着用户的输入，系统会自动在下拉框中显示相关的词汇供用户选择，也可以起到给用户一些提示的作用，这是一个很方便的功能。实现思路也比较简单，根据用户目前输入的词汇去获取词汇列表，然后显示。但是这里面有几个细节：</p>
@@ -117,7 +117,7 @@
   .distinctUntilChanged()
 </code></pre></div><p><code>resultInputStream</code> 代表的便是每一个需要请求后台的用户输入值，这个还不是最终的 Stream。最终的 <code>suggestionStream</code> 应该代表的是后台返回的结果，我们监听然后显示 suggestions，就大功告成了。现在剩下的任务便是怎么由 <code>resultInputStream</code> 得到 <code>suggestionStream</code>。</p>
 <p>这里我们要介绍两个重要的方法，分别是 <code>flatMap</code> 以及 <code>flatMapLatest</code>。<code>map</code> 方法是根据流（mainStream）里面的值，产生一个新的值，如果这个新的值是一个流（subStream）怎么办呢？大部分情况下，我们会希望这个新的流（subStream）它的值出现在 mainStream 中，这样我们可以直接监听 mainStream 而不用去监听每一个 subStream，如图所示：</p>
-<p><img src="http://asset.cjting.cn/9b85365djw1f23ftn0686j208z04cdg4.jpg" alt=""></p>
+<p><img src="/image/9b85365djw1f23ftn0686j208z04cdg4.jpg" alt=""></p>
 <p><code>flatMap</code> 就是这样一个方法，<code>flatMapLatest</code> 顾名思义，他只会处理最新的 subStream，之前的 subStream 的值全部丢掉。这非常吻合我们的需求，因为当用户输入新的字符串时，之前的字符串的返回结果我们不再需要了。</p>
 <p>有了 <code>flatMapLatest</code> 这个方法，我们接下来需要做的便是写一个方法，根据 <code>resultInputStream</code> 的每个值，请求后台，返回一个 subStream（返回 romise 便可，RxJS 会自动帮我们转换为 Stream)。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#000;font-weight:bold">function</span> searchWikipedia (term) {
@@ -149,7 +149,7 @@
   })
 </code></pre></div><p>最终的代码可以看<a href="https://jsbin.com/luvamizavo/1/edit?html,js,output">这里</a>。</p>
 <p>上面是一个使用 RxJS 的经典例子，下面我们再来看一个例子。</p>
-<p><img src="http://asset.cjting.cn/9b85365djw1f23koqhfbmj20n10603yk.jpg" alt=""></p>
+<p><img src="/image/9b85365djw1f23koqhfbmj20n10603yk.jpg" alt=""></p>
 <p>这是一个十分常见的用户注册表单，几乎每一个网站都要实现的功能。实现起来也比较简单，用户点击 Submit 的时候提交内容到后台就行了，根据后台的结果再进行反馈，比如后台返回成功，则告诉用户注册成功，跳转到个人中心，后台返回“用户名已存在”，则告诉用户注册失败，重新输入。</p>
 <p>但是，我们也可以做一些事情来提高这个简单表单的用户体验，包括但不限于：</p>
 <ul>

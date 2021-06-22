@@ -50,7 +50,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://asset.cjting.cn/FvSatw-mAY94H60cISWGryzrCODq.jpeg">
+    <header class="post__header" data-cover="/image/FvSatw-mAY94H60cISWGryzrCODq.jpeg">
       <a href="/">
         HOME
       </a>
@@ -129,7 +129,7 @@
 <p>抽象的过程交给算法科学家了，抽象的结果是：<strong>寻找 diff 的过程可以被表示为图搜索</strong>。</p>
 <p>什么意思呢？还是以两个字符串，src=<strong>ABCABBA</strong>，dst=<strong>CBABAC</strong> 为例，根据这两个字符串我们可以构造下面一张图，横轴是 src 内容，纵轴是 dst 内容。</p>
 <p>那么，图中每一条从左上角到右下角的路径，都表示一个 diff。向右表示“删除”，向下表示”新增“，对角线则表示“原内容保持不动“。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1ffjxfo7r42j20lm0nudhx.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1ffjxfo7r42j20lm0nudhx.jpg" alt=""></p>
 <p>比如，我们选择这样一条路径：</p>
 <ol>
 <li>(0, 0) -&gt; (1, 0)</li>
@@ -175,7 +175,7 @@
 - B
   A
 + C
-</code></pre></div><p><img src="http://asset.cjting.cn/9b85365dgy1ffjz1967znj20p20k9gmg.jpg" alt=""></p>
+</code></pre></div><p><img src="/image/9b85365dgy1ffjz1967znj20p20k9gmg.jpg" alt=""></p>
 <p>现在我们可以知道，其实 Myers 算法是一个典型的”动态规划“算法，也就是说，父问题的求解归结为子问题的求解。要知道 d=5 时所有 k 对应的最优坐标，必须先要知道 d=4 时所有 k 对应的最优坐标，要知道 d=4 时的答案，必须先求解 d=3，以此类推，和 01 背包问题很是相似。</p>
 <h2 id="实现">实现</h2>
 <p>算法原理知道以后，实现便是一件简单的事情了，<a href="https://github.com/cj1128/myers-diff">myers-diff</a> 仓库是我使用 Go 实现的一个版本，基本流程如下：</p>

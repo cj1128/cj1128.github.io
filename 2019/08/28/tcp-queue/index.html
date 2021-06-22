@@ -50,7 +50,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://asset.cjting.cn/FmiIWhP-NK5UDBmgXxkwkvHg29Zg.jpg">
+    <header class="post__header" data-cover="/image/FmiIWhP-NK5UDBmgXxkwkvHg29Zg.jpg">
       <a href="/">
         HOME
       </a>
@@ -169,7 +169,7 @@
 <p>有一个很重要的点就是：<strong>Mac 是基于 BSD 的，和 Linux 在很多地方是有不同的</strong>。所以，在 Mac 上测试，没问题自然好，有问题第一反应应该是去 Linux 上测试，毕竟 Linux 才是生产机器。</p>
 <p>先透露一下结论，上面这个问题根本原因在于：<strong>全连接队列满了</strong>。</p>
 <p>我们首先来复习一下 TCP 三次握手，下面是 TCP 的状态变化图。</p>
-<p><img src="http://asset.cjting.cn/FuLfMxUTfLJeZgkFQuJvez1oeAAI.png" alt=""></p>
+<p><img src="/image/FuLfMxUTfLJeZgkFQuJvez1oeAAI.png" alt=""></p>
 <p>TCP 通信不管上层怎么封装，最下面用的始终是 Socket 的一套接口。</p>
 <p>基本过程是，Server 调用 <code>listen</code> 监听端口，客户端使用 <code>connect</code> 发起连接，然后 Server 使用 <code>accept</code> 获取已经到达 <code>ESTABLISHED</code> 状态的连接，然后进行读写。</p>
 <p>从数据包来看：</p>
@@ -293,9 +293,9 @@ tcp <span style="color:#000;font-weight:bold">=</span> TCP(dport<span style="col
 attack() <span style="color:#998;font-style:italic"># 发送大量的 SYN 包给目标地址</span>
 </code></pre></div><p>启动 <code>attack</code> 以后，此时我们试着用 <code>telnet localhost 8877</code> 去连接 8877 端口，会发现无法连接，说明攻击奏效了，因为半连接队列满了，Server 直接丢弃了 SYN 包，新的客户端无法和 Server 建立通讯。</p>
 <p>查看 tcpdump 的输出，我们会发现全部都是 SYN/ACK 包，因为 Server 没有收到客户端的 ACK，所以会超时重发 SYN/ACK 给客户端。</p>
-<p><img src="http://asset.cjting.cn/FnRuxggtfoszNF6p6Ax1W34L7IYM.png" alt=""></p>
+<p><img src="/image/FnRuxggtfoszNF6p6Ax1W34L7IYM.png" alt=""></p>
 <p>使用 <code>netstat</code> 获取 Socket 状态，会看到 16 个处于 <code>SYN_RECV</code> 的 Socket。</p>
-<p><img src="http://asset.cjting.cn/FhTwQcNe0Uuxex-M6gM2S_obva8S.png" alt=""></p>
+<p><img src="/image/FhTwQcNe0Uuxex-M6gM2S_obva8S.png" alt=""></p>
 <h2 id="全连接队列溢出">全连接队列溢出</h2>
 <p>如果全连接队满了又会怎么样？应用程序调用 <code>accept</code> 的速度太慢，或者请求太多，都会导致这个情况。</p>
 <p>当系统收到三次握手中第三次的 ACK 包，正常情况下应该是从半连接队列中取出连接，更改状态，放入全连接队列中。此时如果全连接队列满了的话：</p>
@@ -331,7 +331,7 @@ idx <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">
 }
 </code></pre></div><p><code>sk-&gt;sk_ack_backlog</code> 是当前的全连接队列长度，<code>sk-&gt;sk_max_ack_backlog</code> 是配置的全连接队列最大长度，猜想验证了。</p>
 <p>这里顺手提一下 <code>ss</code> 这个工具，一个现代化的用于取代 <code>netstat</code> 的工具，使用它，我们可以看到全连接队列的长度。</p>
-<p><img src="http://asset.cjting.cn/FqGFoNM8OPnt1J6xBfFN4k9pzDsj.png" alt=""></p>
+<p><img src="/image/FqGFoNM8OPnt1J6xBfFN4k9pzDsj.png" alt=""></p>
 <p>对于监听中的 Socket，<code>Recv-Q</code> 表示全连接队列当前的长度，<code>Send-Q</code> 表示全连接队列配置的长度。可以看到，对于 8877 端口，一个是 2，一个是 1。</p>
 <p>我们可以通过 <code>netstat -s | rg -i listen</code> 来得知因为全连接队列溢出导致的连接丢弃数量是多少。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ netstat -s | rg -i listen
@@ -343,7 +343,7 @@ idx <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">
 <span style="color:#998;font-style:italic"># 只阻止目标端口为 8877 的 RST 包</span>
 $ iptables -A OUTPUT -p tcp --tcp-flags RST RST --dport <span style="color:#099">8877</span> -j DROP
 </code></pre></div><p>使用 <code>connect</code> 函数我们会发现，Server 会返回一个 RST 包，同时也不存在 <code>SYN_RECV</code> 状态的连接。</p>
-<p><img src="http://asset.cjting.cn/FvB_BwUp1vO5BImwmJD5EJN6ymMX.png" alt=""></p>
+<p><img src="/image/FvB_BwUp1vO5BImwmJD5EJN6ymMX.png" alt=""></p>
 <h2 id="回到-mac">回到 Mac</h2>
 <p>最后，我们回到最开始的那个问题。</p>
 <p>为什么那段 Go 程序在 Mac 上报错了？我们可以猜测一下，应该是 Mac 的 <code>somaxconn</code> 参数比较小，导致全连接队列溢出，导致内核给新的连接发送了 RST 包。</p>

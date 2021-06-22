@@ -50,7 +50,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://asset.cjting.cn/Fly_Jp2zD-BbHRl-97_m7PqwbTvX.jpeg">
+    <header class="post__header" data-cover="/image/Fly_Jp2zD-BbHRl-97_m7PqwbTvX.jpeg">
       <a href="/">
         HOME
       </a>
@@ -149,7 +149,7 @@
 <p>最后，我们使用 <a href="http://www.squid-cache.org/">Squid</a> 来搭建一个恶作剧代理，这个代理会将所有的图片翻转过来。</p>
 <p>Squid 是一个很常用的正向代理软件，可以用来做访问控制，网站缓存等等。这里我们使用 Squid 的 <em>URL Rewrite</em> 功能，对于所有的图片请求，将图片下载到本地，然后调用 <code>mogrify</code> 翻转图片，最后将翻转以后的图片返回给客户端。</p>
 <p>这样做的效果就是，当你上网浏览时，所有的图片都是倒过来的😉，效果如下：</p>
-<p><img src="http://asset.cjting.cn/FkC-GZsJPKErvn7WW3GVdhfhB9aE.jpg" alt=""></p>
+<p><img src="/image/FkC-GZsJPKErvn7WW3GVdhfhB9aE.jpg" alt=""></p>
 <p>想象这样一个场景：在一个阳光明媚的午后，你发现你的邻居在蹭你的网，你并没有选择修改密码，而是默默地启动这个恶作剧代理，配置你的路由器，使用 iptables 将蹭网流量转发到这个代理。于此同时，你的邻居发现，前一刻还十分精彩的互联网世界，突然颠倒了，他苦苦思索，他不知所措，他深深地被这个世界的恶意所伤害。</p>
 <p>关于恶作剧代理的具体代码可以去 GitHub 仓库 <a href="https://github.com/cj1128/squid-trick-proxy-demo">squid-trick-proxy-demo</a> 上查看。</p>
           </div>

@@ -102,7 +102,7 @@
 
         <div class="index__item__content post__content">
           <p>之前学汇编的时候观察到一个现象，我在 C 语言中写了一个函数进行除法操作，但是编译得到的汇编代码中却没有除法指令，取而代之的是一条乘法指令。</p>
-<p><img src="http://asset.cjting.cn/FjCkN1q9ePhijDTEBzws-jI0B7w1.png" alt=""></p>
+<p><img src="/image/FjCkN1q9ePhijDTEBzws-jI0B7w1.png" alt=""></p>
 <p>图片对应的 GodBolt 地址在 <a href="https://gcc.godbolt.org/z/YrK4vnY1E">这里</a>，可以看到有一个 <code>imulq</code> 指令，这是一个乘法指令，乘了一个奇怪的数字 1431655766。</p>
 <p>为什么编译器要这样操作？为什么能这样操作？1431655766 这个数字又是怎么来的？</p>
         </div>
@@ -122,7 +122,7 @@
         <div class="index__item__content post__content">
           <p>现如今的 Web，HTTPS 早已经成为标配，公开的 HTTP 网站已经和 Flash 一样，慢慢在消亡了。</p>
 <p>启用 HTTPS 的核心是一个叫做 <strong>证书</strong> 的东西。不知道大家是否有留意，前几年上 12306 的时候，浏览器都会提示「您的链接不是私密链接」，这其实就是因为 12306 的证书有问题。如果点击「继续前往」，打开 12306 网站，它会提示你下载安装它提供的“根证书”。</p>
-<p><img src="http://asset.cjting.cn/FrBOHRLcNkDuAUnDstdn4Sjk4xMr.png" alt=""></p>
+<p><img src="/image/FrBOHRLcNkDuAUnDstdn4Sjk4xMr.png" alt=""></p>
 <p>那么，证书是什么？里面含有什么内容？浏览器为什么会不信任 12306 的证书？为什么下载 12306 提供的根证书就可以解决这个问题？根证书又是什么？</p>
         </div>
 
@@ -240,7 +240,7 @@
         <div class="index__item__content post__content">
           <p>之前因为业务原因需要爬取一批斗鱼主播的相关数据，在这过程中我发现斗鱼使用了一种很有意思的反爬技术，字体反爬。</p>
 <p>打开任何一个斗鱼主播的直播间，例如 <a href="https://www.douyu.com/7874579">这个主播</a>，他的关注人数数据显示在右上角：</p>
-<p><img src="http://asset.cjting.cn/Fp11DQiiqvE_vQddpXH1tgazywrA.png" alt=""></p>
+<p><img src="/image/Fp11DQiiqvE_vQddpXH1tgazywrA.png" alt=""></p>
 <p>斗鱼在关注数据这里使用了字体反爬。什么是字体反爬？也就是通过自定义字体来自定义字符与渲染图形的映射。比如，字符 1 实际渲染的是 9，那么如果 HTML 中的数字是 111，实际显示就是 999。</p>
 <p>在这种技术下，传统的通过解析 HTML 文档获取数据的方式就失效了，因为获取到的数据并不是真实数据。</p>
         </div>

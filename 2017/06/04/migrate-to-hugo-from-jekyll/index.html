@@ -50,7 +50,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="http://asset.cjting.cn/FlKmTvbJZO1j12pQzImT2EbtVgac.jpeg">
+    <header class="post__header" data-cover="/image/FlKmTvbJZO1j12pQzImT2EbtVgac.jpeg">
       <a href="/">
         HOME
       </a>
@@ -190,7 +190,7 @@ hugo server --buildDrafts
 <blockquote>
 <p>git checkout skeleton</p>
 </blockquote>
-<p><img src="http://asset.cjting.cn/9b85365dgy1fgesi9dqzwj20lz0ay0ss.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1fgesi9dqzwj20lz0ay0ss.jpg" alt=""></p>
 <p>这里来梳理一下，当 Hugo 编译我们站点时，发现 <code>content/_index.md</code> 文件，Hugo 会使用 <code>layouts/index.html</code> 和 <code>layouts/_default/baseof.html</code> 模板来渲染这个文件，并将得到的 HTML 文件放在结果文件夹的根目录下，当我们访问首页时，就会看到这个文件。</p>
 <p>现在，我们要规划一下博客的结构，然后一一实现。</p>
 <ul>
@@ -223,7 +223,7 @@ hugo server --buildDrafts
   &lt;/<span style="color:#000080">main</span>&gt;
 {{ end }}
 </code></pre></div><p>浏览器页面如下。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1fgeslx5j0ij20ly0bgglo.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1fgeslx5j0ij20ly0bgglo.jpg" alt=""></p>
 <p>看起来，header 生效了，但是，为什么两个分类的名称叫做 <code>_index</code> 呢？这是因为，默认情况下，Hugo 会使用分类对应的源文件的 <code>title</code>属性，这个属性默认是文件名。</p>
 <p>编辑 <code>content/c1/_index.md</code> 文件和 <code>content/c2/_index.md</code> 文件的 <code>title</code> 属性，改为 <code>分类1</code> 和 <code>分类2</code>，这次就正确了。</p>
 <h2 id="分类页">分类页</h2>
@@ -249,7 +249,7 @@ hugo server --buildDrafts
   &lt;/<span style="color:#000080">div</span>&gt;
 {{ end }}
 </code></pre></div><p>模板代码的含义是根据日期和时间来渲染分类下的博文，效果如下。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1fgetkmelx0j20nl0azq30.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1fgetkmelx0j20nl0azq30.jpg" alt=""></p>
 <h2 id="博文页">博文页</h2>
 <p>最后，便是展示单篇博文的博文页，使用的模板是 <code>single.html</code>，新建文件 <code>layouts/_default/single.html</code> 如下。</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-html" data-lang="html">{{ define &#34;main&#34; }}
@@ -258,7 +258,7 @@ hugo server --buildDrafts
   &lt;/<span style="color:#000080">article</span>&gt;
 {{ end }}
 </code></pre></div><p>很简单，直接渲染博文内容，<code>http://localhost:1313/c1/p1/</code> 页面如下。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1fgetqxr6fhj20nl078mx4.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1fgetqxr6fhj20nl078mx4.jpg" alt=""></p>
 <p>目前为止，我们的博客基本结构就搭建好了。</p>
 <blockquote>
 <p>git checkout basic</p>
@@ -280,7 +280,7 @@ hugo server --buildDrafts
 &lt;/<span style="color:#000080">body</span>&gt;
 &lt;/<span style="color:#000080">html</span>&gt;
 </code></pre></div><p>引入 JS 的道理同上。至于具体的样式代码，这里就不再赘述了。最终效果如下。</p>
-<p><img src="http://asset.cjting.cn/9b85365dgy1fgfz1ofshej20sj0e33ys.jpg" alt=""></p>
+<p><img src="/image/9b85365dgy1fgfz1ofshej20sj0e33ys.jpg" alt=""></p>
 <blockquote>
 <p>git checkout final</p>
 </blockquote>
