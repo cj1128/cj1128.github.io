@@ -62,7 +62,7 @@
       owner: "cj1128",
       admin: ["cj1128"],
       id: location.pathname,
-      labels: PAGE.tags.concat("gitalk"),
+      labels: ["gitalk"],
       title: PAGE.title,
     })
     gitalk.render("post__comments")
