@@ -2,19 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://cjting.me/tags/c/</loc>
-    <lastmod>2021-06-10T23:10:10+08:00</lastmod>
-  </url><url>
     <loc>https://cjting.me/</loc>
+    <lastmod>2021-08-07T00:57:45+08:00</lastmod>
+  </url><url>
+    <loc>https://cjting.me/post/</loc>
+    <lastmod>2021-08-07T00:57:45+08:00</lastmod>
+  </url><url>
+    <loc>https://cjting.me/2021/08/07/fourier-transform-and-audio-visualization/</loc>
+    <lastmod>2021-08-07T00:57:45+08:00</lastmod>
+  </url><url>
+    <loc>https://cjting.me/tags/c/</loc>
     <lastmod>2021-06-10T23:10:10+08:00</lastmod>
   </url><url>
     <loc>https://cjting.me/tags/ld/</loc>
     <lastmod>2021-06-10T23:10:10+08:00</lastmod>
   </url><url>
     <loc>https://cjting.me/tags/linker/</loc>
-    <lastmod>2021-06-10T23:10:10+08:00</lastmod>
-  </url><url>
-    <loc>https://cjting.me/post/</loc>
     <lastmod>2021-06-10T23:10:10+08:00</lastmod>
   </url><url>
     <loc>https://cjting.me/tags/</loc>

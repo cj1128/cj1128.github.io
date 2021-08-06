@@ -77,6 +77,29 @@
     
     
       <div class="index__item">
+        <a class="index__item__title hvr-underline-from-left" href="/2017/03/12/use-prometheus-to-monitor-server/">
+          使用 Prometheus 监控服务器性能
+        </a>
+
+        <div class="index__item__content post__content">
+          <p>最近一直在思考如何对线上服务做深度监控。基础的服务可用性监控很简单，定期 Ping 即可。但是怎样才能监控服务器的一些更加关键的数据呢？比如，每一个 API Point 的请求次数（QPS），最大响应时间，平均响应时间等。最终我希望实现的效果是有一个 Dashboard，我可以清楚地看到各种参数曲线，对服务器的运行情况了然于胸。</p>
+<p>绘制 Dashboard 不难，目前提供数据可视化的工具很多，随便选一个都能满足需要。关键问题是，怎样将整个流程打通？</p>
+<ul>
+<li>服务器该以怎样的形式暴露出数据？</li>
+<li>数据怎样被收集和存储起来？</li>
+<li>存储起来的数据怎样提供给数据可视化工具？</li>
+<li>怎样做到足够灵活，可以可视化自己感兴趣的任意数据？</li>
+</ul>
+        </div>
+
+        <div class="index__item__meta">
+          <div>
+            2017.03.12
+          </div>
+        </div>
+      </div>
+    
+      <div class="index__item">
         <a class="index__item__title hvr-underline-from-left" href="/2017/02/18/write-a-code-post-generator-with-go/">
           使用 Go 编写代码明信片生成器
         </a>
@@ -249,30 +272,6 @@ host，比如公司内部的各种服务，或者测试项目的时候暂时把�
         <div class="index__item__meta">
           <div>
             2016.04.06
-          </div>
-        </div>
-      </div>
-    
-      <div class="index__item">
-        <a class="index__item__title hvr-underline-from-left" href="/2016/03/20/intruduction-to-functional-reactive-programming/">
-          Functional Reactive Programming 简介
-        </a>
-
-        <div class="index__item__content post__content">
-          <p>推荐阅读：</p>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=XRYN2xt11Ek">Netflix JavaScript Talks - Async JavaScript with Reactive Extensions</a></li>
-<li><a href="https://gist.github.com/staltz/868e7e9bc2a7b8c1f754">The introduction to Reactive Programming you&rsquo;ve been missing</a></li>
-</ul>
-<p>HTML5Rocks 有一篇关于 <a href="http://www.html5rocks.com/en/tutorials/es6/promises/">Promise</a> 的经典文章，通过引入这样一个问题来说明 Promise 的优越性，问题如下：</p>
-<blockquote>
-<p>我们需要渲染一个故事，首先我们获取故事的 json，渲染标题 (story.heading)，然后再根据其中的 charpter url，获取每一章的内容，并显示。中间出了任何问题，显示错误信息。</p>
-</blockquote>
-        </div>
-
-        <div class="index__item__meta">
-          <div>
-            2016.03.20
           </div>
         </div>
       </div>
