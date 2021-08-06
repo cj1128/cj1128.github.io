@@ -16,7 +16,7 @@
 
   function initDesktop() {
     var script = document.createElement("script")
-    script.src = "/asset/desktop.js"
+    script.src = "/asset/pc.js"
     document.body.append(script)
   }
 

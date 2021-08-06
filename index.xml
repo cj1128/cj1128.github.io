@@ -388,14 +388,6 @@ console.log(audioBuffer)
       
     
       
-    
-      
-    
-      
-    
-      
-    
-      
         <item>
           <title>热重载 C</title>
           <link>https://cjting.me/2021/06/10/hot-reload-c/</link>
@@ -589,16 +581,6 @@ Dynamic section at offset 0x2de8 contains <span style="color:#099">27</span> ent
           ]]>
           </description>
         </item>
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
       
     
       
@@ -1006,12 +988,6 @@ div3ByMul: 39334   div3: 48546
       
     
       
-    
-      
-    
-      
-    
-      
         <item>
           <title>安全背后: 浏览器是如何校验证书的</title>
           <link>https://cjting.me/2021/03/02/how-to-validate-tls-certificate/</link>
@@ -1251,10 +1227,6 @@ $ openssl x509 -in DigiCert_SHA2_High_Assurance_Server_CA.pem -text -noout | gre
           ]]>
           </description>
         </item>
-      
-    
-      
-    
       
     
       
@@ -1740,12 +1712,6 @@ EOF
       
     
       
-    
-      
-    
-      
-    
-      
         <item>
           <title>tinyTorrent: 从头写一个 Deno 的 BitTorrent 下载器</title>
           <link>https://cjting.me/2020/10/31/tinytorrent-a-deno-bt-downloader/</link>
@@ -2215,8 +2181,6 @@ $ ./node_modules/.bin/bittorrent-tracker --http
       
     
       
-    
-      
         <item>
           <title>CS107e: 树莓派，ARM 和操作系统</title>
           <link>https://cjting.me/2020/09/11/cs107e-review/</link>
@@ -2335,14 +2299,6 @@ Reference Manual</a></li>
           ]]>
           </description>
         </item>
-      
-    
-      
-    
-      
-    
-      
-    
       
     
       
@@ -2552,12 +2508,6 @@ Reference Manual</a></li>
           ]]>
           </description>
         </item>
-      
-    
-      
-    
-      
-    
       
     
       
@@ -3054,10 +3004,6 @@ $ ls result/generated <span style="color:#998;font-style:italic"># 结果存储�
       
     
       
-    
-      
-    
-      
         <item>
           <title>用 C 实现一个 CHIP-8 模拟器</title>
           <link>https://cjting.me/2020/06/07/chip8-emulator/</link>
@@ -3202,10 +3148,6 @@ SDL_QueueAudio(audioDevice, buf, bufLength);
           ]]>
           </description>
         </item>
-      
-    
-      
-    
       
     
       
@@ -3479,10 +3421,6 @@ set tabstop=2
           ]]>
           </description>
         </item>
-      
-    
-      
-    
       
     
       
@@ -3923,12 +3861,6 @@ Decrypt result: <span style="color:#099">1024</span>
       
     
       
-    
-      
-    
-      
-    
-      
         <item>
           <title>从一次 Connection Reset 说起，TCP 半连接队列与全连接队列</title>
           <link>https://cjting.me/2019/08/28/tcp-queue/</link>
@@ -4228,12 +4160,6 @@ $ iptables -A OUTPUT -p tcp --tcp-flags RST RST --dport <span style="color:#099"
       
     
       
-    
-      
-    
-      
-    
-      
         <item>
           <title>从图片优化说起</title>
           <link>https://cjting.me/2019/07/29/image-optimization/</link>
@@ -4481,8 +4407,6 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
       
     
       
-    
-      
         <item>
           <title>正向代理与反向代理</title>
           <link>https://cjting.me/2018/08/11/forward-proxy-and-reverse-proxy/</link>
@@ -4574,8 +4498,6 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
           ]]>
           </description>
         </item>
-      
-    
       
     
       
@@ -4739,8 +4661,6 @@ Uncaught SyntaxError<span style="color:#000;font-weight:bold">:</span> Invalid r
           ]]>
           </description>
         </item>
-      
-    
       
     
       
@@ -4935,10 +4855,6 @@ cjting.me.              <span style="color:#099">86400</span>   IN      NS      
       
     
       
-    
-      
-    
-      
         <item>
           <title>HTTP Basic Auth 是怎么样工作的</title>
           <link>https://cjting.me/2018/03/31/how-http-basic-auth-work/</link>
@@ -4989,12 +4905,6 @@ cjting.me.              <span style="color:#099">86400</span>   IN      NS      
           ]]>
           </description>
         </item>
-      
-    
-      
-    
-      
-    
       
     
       
@@ -5226,10 +5136,6 @@ hugo server --buildDrafts
       
     
       
-    
-      
-    
-      
         <item>
           <title>Git 是怎样生成 diff 的：Myers 算法</title>
           <link>https://cjting.me/2017/05/13/how-git-generate-diff/</link>
@@ -5357,12 +5263,6 @@ hugo server --buildDrafts
           ]]>
           </description>
         </item>
-      
-    
-      
-    
-      
-    
       
     
       
@@ -5552,10 +5452,6 @@ http_request_count(endpoint=&#34;/c&#34;) 3
       
     
       
-    
-      
-    
-      
         <item>
           <title>使用 Go 编写代码明信片生成器</title>
           <link>https://cjting.me/2017/02/18/write-a-code-post-generator-with-go/</link>
@@ -5620,12 +5516,6 @@ http_request_count(endpoint=&#34;/c&#34;) 3
           ]]>
           </description>
         </item>
-      
-    
-      
-    
-      
-    
       
     
       
@@ -5758,8 +5648,6 @@ Authorization:  QBox &lt;AccessToken&gt;
           ]]>
           </description>
         </item>
-      
-    
       
     
       
@@ -5940,10 +5828,6 @@ Showing top <span style="color:#099">5</span> nodes out of <span style="color:#0
       
     
       
-    
-      
-    
-      
         <item>
           <title>使用 SVG Morphing 制作自己的加载动画</title>
           <link>https://cjting.me/2016/11/07/make-loading-animation-with-svg-morphing/</link>
@@ -6045,16 +5929,6 @@ nightmare.run(<span style="color:#000;font-weight:bold">function</span>(err) {
           ]]>
           </description>
         </item>
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
       
     
       
@@ -6312,8 +6186,6 @@ outpugst <span style="color:#000;font-weight:bold">{</span>
       
     
       
-    
-      
         <item>
           <title>从零开始搭建一个 HTTPS 网站</title>
           <link>https://cjting.me/2016/09/05/build-a-https-site-from-scratch/</link>
@@ -6491,8 +6363,6 @@ firewall-cmd --reload
       
     
       
-    
-      
         <item>
           <title>使用 Dnsmasq 搭建内网 DNS 服务器</title>
           <link>https://cjting.me/2016/08/20/use-dnsmasq-to-build-own-dns-server/</link>
@@ -6538,10 +6408,6 @@ server=8.8.4.4
           ]]>
           </description>
         </item>
-      
-    
-      
-    
       
     
       
@@ -6616,10 +6482,6 @@ ssh root@<span style="color:#000;font-weight:bold">[</span>host<span style="colo
           ]]>
           </description>
         </item>
-      
-    
-      
-    
       
     
       
@@ -6980,14 +6842,6 @@ buttonStateStream.subscribe(
       
     
       
-    
-      
-    
-      
-    
-      
-    
-      
         <item>
           <title>JavaScript Infinite Currying</title>
           <link>https://cjting.me/2016/01/17/javascript-infinite-currying/</link>
@@ -7126,12 +6980,6 @@ uint8 <span style="color:#000;font-weight:bold">*</span>block2 <span style="colo
       
     
       
-    
-      
-    
-      
-    
-      
         <item>
           <title>关于字符编码</title>
           <link>https://cjting.me/2014/04/24/about-string-encoding/</link>
@@ -7165,8 +7013,6 @@ uint8 <span style="color:#000;font-weight:bold">*</span>block2 <span style="colo
           ]]>
           </description>
         </item>
-      
-    
       
     
   </channel>
