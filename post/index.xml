@@ -13,9 +13,9 @@
       <pubDate>Sat, 07 Aug 2021 00:57:45 +0800</pubDate>
       
       <guid>https://cjting.me/2021/08/07/fourier-transform-and-audio-visualization/</guid>
-      <description>&lt;p&gt;印象中使用的第一个 PC 音乐播放器就是「千千静听」，大概是 08 年左右。我还清楚地记得它自带了一首梁静茹的歌「Love is everything」，动听的旋律至今萦绕耳旁。&lt;/p&gt;
+      <description>&lt;p&gt;印象中使用的第一个 PC 音乐播放器是「千千静听」，大概是 08 年左右。我还清楚地记得它自带了一首梁静茹的歌「Love is everything」，动听的旋律至今萦绕耳旁。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;qianqian.jpeg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;p&gt;千千静听的左上角有一组随着音乐跳动的柱子，我想大家都习以为常了，很多播放器都有这功能。但是其实有没有想过，这里是怎么实现的？&lt;/p&gt;
+&lt;p&gt;千千静听的左上角有一组随着音乐跳动的柱子，我想大家都习以为常了，很多播放器都有这功能。但是其实有没有想过，这是怎么实现的？&lt;/p&gt;
 &lt;p&gt;要理解这个问题，我们首先要理解声音是什么。&lt;/p&gt;</description>
     </item>
     
