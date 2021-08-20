@@ -50,7 +50,7 @@
 <body>
   
   <div class="post">
-    <header class="post__header" data-cover="/image/Fk_kBecsmewI-l6GwB9HsQBNQqsW.jpeg">
+    <header class="post__header" data-cover="cover.jpeg">
       <a href="/">
         HOME
       </a>
@@ -97,7 +97,7 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
 </span><span style="color:#d14"></span>awk <span style="color:#d14">&#39;{print $9,$5}&#39;</span> |<span style="color:#d14">\
 </span><span style="color:#d14"></span>numfmt --field<span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> --to<span style="color:#000;font-weight:bold">=</span>iec |<span style="color:#d14">\
 </span><span style="color:#d14"></span>column -t | bat
-</code></pre></div><p><img src="/image/9b85365dgy1g5i03r4vdnj20h7051wfj.jpg" alt=""></p>
+</code></pre></div><p><img src="shell.jpeg" alt=""></p>
 <p>筛选出需要压缩的图片以后，接下来就是压缩、比对、调整参数。图片压缩的工具实在是太多了，Google <em>image compression tool</em> 选择会多得你眼花缭乱。</p>
 <p>这里顺口提一下 Google 出品的 <a href="https://squoosh.app/">squoosh</a> 在线图片压缩服务，看起来不错，虽然我没怎么用过。</p>
 <p>这里我选择使用 <a href="https://github.com/imagemin/imagemin">imagemin</a>，相比于一些在线工具或者 App，自己写脚本更灵活一些。</p>
@@ -128,11 +128,11 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
 </code></pre></div><p>注意，<code>quality</code> 参数需要自己测试去确定，怎样在质量和尺寸中权衡，每个团队有自己的标准。</p>
 <h3 id="progressive-vs-baseline">Progressive VS Baseline</h3>
 <p>JPEG 根据显示方式的不同，分为两种。Progressive JPEG 会先加载模糊的整张图片，然后变的越来越清晰。</p>
-<p><img src="/image/9b85365dgy1g5hw2y2pipj21900u0kjq.jpg" alt=""></p>
-<p><img src="/image/9b85365dgy1g5hw3pr599j20lc07ngu4.jpg" alt=""></p>
+<p><img src="keke.jpg" alt=""></p>
+<p><img src="keke.progress.jpg" alt=""></p>
 <p>而 Baseline JPEG 会先清晰地加载图片的一部分，然后慢慢显示剩余的部分。</p>
-<p><img src="/image/9b85365dgy1g5hw2y2pipj21900u0kjq.jpg" alt=""></p>
-<p><img src="/image/9b85365dgy1g5hw39pw5bj20lc07n7b9.jpg" alt=""></p>
+<p><img src="keke.jpg" alt=""></p>
+<p><img src="keke.baseline.jpg" alt=""></p>
 <p>从视觉效果来说，Progressive JPEG 自然更好一些。但它也有一些缺点，比如它的解码速度比 Baseline JPEG 要慢，占用的 CPU 时间更多。</p>
 <p>如果是桌面浏览器，这点性能问题自然无所谓，但是如果是移动端，就不得不考虑。工程本来就是权衡的艺术。</p>
 <p>默认情况下，MozJPEG 生成的是 Progressive JPEG，可以通过 <a href="https://github.com/imagemin/imagemin-mozjpeg#progressive">选项</a> 调整。</p>
@@ -160,7 +160,7 @@ fd -e png -e jpeg -e jpg -e svg |<span style="color:#d14">\
 </ul>
 <p>这个过程没法完全自动化，因为压缩过后的图片究竟在视觉上能不能替换原图，这个过程需要人来判别，全部交给机器是不太放心的。毕竟只有在保证质量的情况下减小体积才有意义。</p>
 <p>oimg 的输出如下，可以很方便地看出压缩的效果如何。</p>
-<p><img src="/image/9b85365dgy1g5i0rjw4qpj20n402qaak.jpg" alt=""></p>
+<p><img src="shell2.jpg" alt=""></p>
 <h2 id="响应式图片">响应式图片</h2>
 <p>图片压缩的问题解决完了，现在我们来看看响应式图片。</p>
 <p>所谓响应式图片，关键就一点：<strong>根据客户端的情况返回最适合客户端的图片</strong>。</p>
