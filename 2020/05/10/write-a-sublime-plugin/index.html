@@ -108,11 +108,11 @@
 <p>最后通读了 <a href="https://pragprog.com/book/dnvim2/practical-vim-second-edition">Practical Vim</a> 这本书。</p>
 <p>接下来就是安装配置各种插件，阅读插件的文档以及根据各种网络上的 <code>.vimrc</code> 来配置自己的 <code>.vimrc</code>，时不时再读一下各种 setting 的文档，比如 <code>:help shiftround</code> 理解一下配置项到底在干什么。</p>
 <p>比如下面这是一个很常见的 Vim 配置，但是 <code>shiftwidth</code> 和 <code>softtabstop</code> 以及 <code>tabstop</code> 有什么区别？设置成不一样会怎么样？</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">set expandtab &#34; tabs are spaces
-set shiftwidth=2
-set softtabstop=2
-set tabstop=2
-</code></pre></div><p>要真的理解 Vim 掌握 Vim 毫无疑问是要花费大量时间的。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>set expandtab &#34; tabs are spaces
+</span></span><span style="display:flex;"><span>set shiftwidth=2
+</span></span><span style="display:flex;"><span>set softtabstop=2
+</span></span><span style="display:flex;"><span>set tabstop=2
+</span></span></code></pre></div><p>要真的理解 Vim 掌握 Vim 毫无疑问是要花费大量时间的。</p>
 <p>粗略列一下我在 Vim 中配置的一些功能：</p>
 <ul>
 <li>Buffer 管理（删除，重命名，快速切换）</li>
@@ -154,20 +154,20 @@ set tabstop=2
 <h2 id="hello-world-plugin">Hello World Plugin</h2>
 <p>现在我们来编写一个 Hello World 插件感受一下 Sublime 的插件开发。我们要实现的功能很简单，按下 <code>ctrl+-</code>，在当前光标位置插入 <code>Hello, World!</code>。</p>
 <p>首先，使用菜单新建一个插件，保存为 <code>hello.py</code>。Sublime 默认填充的内容如下：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python"><span style="color:#000;font-weight:bold">import</span> <span style="color:#555">sublime</span>
-<span style="color:#000;font-weight:bold">import</span> <span style="color:#555">sublime_plugin</span>
-
-<span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">ExampleCommand</span>(sublime_plugin<span style="color:#000;font-weight:bold">.</span>TextCommand):
-  <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">run</span>(<span style="color:#999">self</span>, edit):
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>insert(edit, <span style="color:#099">0</span>, <span style="color:#d14">&#34;Hello, World!&#34;</span>)
-</code></pre></div><p>Sublime 提供了几个基础类用于我们继承来实现一些基本功能，比如 <code>TextCommand</code> 用于实现文本操作，<code>EventListener</code> 实现事件监听。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">import</span> <span style="color:#555">sublime</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">import</span> <span style="color:#555">sublime_plugin</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">ExampleCommand</span>(sublime_plugin<span style="color:#000;font-weight:bold">.</span>TextCommand):
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">run</span>(<span style="color:#999">self</span>, edit):
+</span></span><span style="display:flex;"><span>    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>insert(edit, <span style="color:#099">0</span>, <span style="color:#d14">&#34;Hello, World!&#34;</span>)
+</span></span></code></pre></div><p>Sublime 提供了几个基础类用于我们继承来实现一些基本功能，比如 <code>TextCommand</code> 用于实现文本操作，<code>EventListener</code> 实现事件监听。</p>
 <p>这个默认插件定义了 <code>ExampleCommand</code>，每次运行时，调用 view 的 <code>insert</code> 方法插入 <code>Hello, World!</code> 字符串到 0 位置，也就是最前面。</p>
 <p>定义了 Command 以后，我们绑定一个快捷键到这个 Command 就可以运行它。在 Command Paletee，输入 <code>Preferences: Key Bindings</code> 打开快捷键配置，输入以下配置：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-json" data-lang="json">{
-  <span style="color:#000080">&#34;keys&#34;</span>: [<span style="color:#d14">&#34;ctrl+-&#34;</span>],
-  <span style="color:#000080">&#34;command&#34;</span>: <span style="color:#d14">&#34;example&#34;</span>
-}
-</code></pre></div><p>注意，Command 的名字是 <code>camel_case</code>，而 Class 的名字是 <code>PascalCase</code>，同时不用带最后面的 <code>Command</code>。比如类的名字是 <code>MyAwesomeCommand</code>，那么配置快捷键时对应的 Command 名字是 <code>my_awesome</code> 就行了。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#000080">&#34;keys&#34;</span>: [<span style="color:#d14">&#34;ctrl+-&#34;</span>],
+</span></span><span style="display:flex;"><span>  <span style="color:#000080">&#34;command&#34;</span>: <span style="color:#d14">&#34;example&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>注意，Command 的名字是 <code>camel_case</code>，而 Class 的名字是 <code>PascalCase</code>，同时不用带最后面的 <code>Command</code>。比如类的名字是 <code>MyAwesomeCommand</code>，那么配置快捷键时对应的 Command 名字是 <code>my_awesome</code> 就行了。</p>
 <p>配置好以后我们的插件就可以工作了，按下 <code>ctrl+-</code> 会发现最前面插入了 <code>Hello, World!</code>。</p>
 <p><img src="/image/FrQGL9ISx_JJ6qrRLP_Z_ccOoZHF.gif" alt=""></p>
 <p>但这离我们要的效果还差了一点，我们的目标是在当前光标位置插入内容，而不是在文件的最前面。</p>
@@ -175,15 +175,15 @@ set tabstop=2
 <p>所以，现在任务变成了如何获取当前光标的位置。查看 Sublime 文档会发现，<code>view.sel()</code> 方法会返回当前 View 的 <code>Selection</code> 对象，根据 <code>Selection</code> 对象可以获取到 <code>Region</code> 对象，根据 <code>Region</code> 对象就可以获取到位置的偏移量。</p>
 <p>光标在闪烁表示当前没有选中任何东西，也就是 Region 的 start 和 end 偏移量是相同的。我们根据这个条件来检查当前是否是光标状态还是选中状态，插件只有在光标状态才工作。</p>
 <p>使用这些知识，我们就可以来改造这个插件了，代码很简单就不多说了。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python"><span style="color:#000;font-weight:bold">import</span> <span style="color:#555">sublime</span>
-<span style="color:#000;font-weight:bold">import</span> <span style="color:#555">sublime_plugin</span>
-
-<span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">ExampleCommand</span>(sublime_plugin<span style="color:#000;font-weight:bold">.</span>TextCommand):
-  <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">run</span>(<span style="color:#999">self</span>, edit):
-    selections <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>sel()
-    <span style="color:#000;font-weight:bold">if</span> <span style="color:#0086b3">len</span>(selections) <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">1</span> <span style="color:#000;font-weight:bold">and</span> selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>begin() <span style="color:#000;font-weight:bold">==</span> selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>end():
-      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>insert(edit, selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>begin(), <span style="color:#d14">&#34;Hello, World!&#34;</span>)
-</code></pre></div><p><img src="/image/Fv7cIbgvITQv5GEasA4W04435vxI.gif" alt=""></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">import</span> <span style="color:#555">sublime</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">import</span> <span style="color:#555">sublime_plugin</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">ExampleCommand</span>(sublime_plugin<span style="color:#000;font-weight:bold">.</span>TextCommand):
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">run</span>(<span style="color:#999">self</span>, edit):
+</span></span><span style="display:flex;"><span>    selections <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>sel()
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">if</span> <span style="color:#0086b3">len</span>(selections) <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">1</span> <span style="color:#000;font-weight:bold">and</span> selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>begin() <span style="color:#000;font-weight:bold">==</span> selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>end():
+</span></span><span style="display:flex;"><span>      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>insert(edit, selections[<span style="color:#099">0</span>]<span style="color:#000;font-weight:bold">.</span>begin(), <span style="color:#d14">&#34;Hello, World!&#34;</span>)
+</span></span></code></pre></div><p><img src="/image/Fv7cIbgvITQv5GEasA4W04435vxI.gif" alt=""></p>
 <h2 id="buildx">BuildX</h2>
 <p>现在我们来看看怎样实现一个插件实现我想要的 构建、侧边显示错误信息、快速跳转错误行 的功能。我给这个插件起名叫做 BuildX。</p>
 <p>首先，Sublime 是自带构建系统的，叫做 Build System，是一个很好用的工具，我们可以使用它来构建任意项目，配置很简单，这里不再展开。</p>
@@ -202,120 +202,120 @@ set tabstop=2
 <p>所以换一个思路，我们监听这个 Command 对应的快捷键是否按下了。Sublime 中每个快捷键都可以带上 Context，插件中可以实现一个方法叫做 <code>on_query_context</code> 然后动态返回是否要触发对应的 Command。这样设计的好处在于同样的快捷键在不同的场景中可以运行不同的 Command。</p>
 <p>通过“滥用”这个技术，我们可以监听到某个快捷键是否按下。具体做法是配置一个快捷键用于触发构建，同时带上一个 Context，然后在 EventListener 的 <code>on_query_context</code> 方法中判断是否存在这个 Context，如果存在，我们就知道快捷键按下了，也就是说，构建开始了。</p>
 <p>快捷键配置：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-json" data-lang="json">[
-  {
-    <span style="color:#000080">&#34;keys&#34;</span>: [<span style="color:#d14">&#34;super+b&#34;</span>],
-    <span style="color:#000080">&#34;command&#34;</span>: <span style="color:#d14">&#34;build&#34;</span>,
-    <span style="color:#000080">&#34;context&#34;</span>: [{<span style="color:#000080">&#34;key&#34;</span>: <span style="color:#d14">&#34;for_buildx&#34;</span>, <span style="color:#000080">&#34;operator&#34;</span>:<span style="color:#d14">&#34;equal&#34;</span>, <span style="color:#000080">&#34;operand&#34;</span>:<span style="color:#000;font-weight:bold">true</span>}]
-  },
-]
-</code></pre></div><p>BuildX 插件：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python"><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">BuildXListener</span>(sublime_plugin<span style="color:#000;font-weight:bold">.</span>EventListener):
-  <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_query_context</span>(<span style="color:#999">self</span>, view, key, <span style="color:#000;font-weight:bold">*</span>args):
-    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#39;for_buildx&#39;</span>:
-      <span style="color:#998;font-style:italic"># 取消执行快捷键对应的 Command</span>
-      <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">None</span>
-
-    <span style="color:#998;font-style:italic"># 此时我们知道构建开始了</span>
-    <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">True</span>
-</code></pre></div><h3 id="监听-exec-panel">监听 Exec Panel</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>[
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;keys&#34;</span>: [<span style="color:#d14">&#34;super+b&#34;</span>],
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;command&#34;</span>: <span style="color:#d14">&#34;build&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;context&#34;</span>: [{<span style="color:#000080">&#34;key&#34;</span>: <span style="color:#d14">&#34;for_buildx&#34;</span>, <span style="color:#000080">&#34;operator&#34;</span>:<span style="color:#d14">&#34;equal&#34;</span>, <span style="color:#000080">&#34;operand&#34;</span>:<span style="color:#000;font-weight:bold">true</span>}]
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div><p>BuildX 插件：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">BuildXListener</span>(sublime_plugin<span style="color:#000;font-weight:bold">.</span>EventListener):
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_query_context</span>(<span style="color:#999">self</span>, view, key, <span style="color:#000;font-weight:bold">*</span>args):
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#39;for_buildx&#39;</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#998;font-style:italic"># 取消执行快捷键对应的 Command</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic"># 此时我们知道构建开始了</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">True</span>
+</span></span></code></pre></div><h3 id="监听-exec-panel">监听 Exec Panel</h3>
 <p>通过 Window 的 <code>get_output_panel</code> 方法我们可以获取到 Exec Panel 对应的 View，然后就可以使用 EventListener 去监听这个 View 是否修改了。</p>
 <p>如果这个 View 的 <code>on_modified</code> 出发了，说明构建内容正在输出。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python"><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">BuildXListener</span>(sublime_plugin<span style="color:#000;font-weight:bold">.</span>EventListener):
-  source_view <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">None</span>
-
-  <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_modified</span>(<span style="color:#999">self</span>, view):
-    <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">is</span> <span style="color:#999">None</span>:
-      <span style="color:#000;font-weight:bold">return</span>
-
-    <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view<span style="color:#000;font-weight:bold">.</span>id() <span style="color:#000;font-weight:bold">!=</span> view<span style="color:#000;font-weight:bold">.</span>id():
-      <span style="color:#000;font-weight:bold">return</span>
-
-    <span style="color:#998;font-style:italic"># 到了这里说明 Exec Panel 的内容更新了</span>
-
-  <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_query_context</span>(<span style="color:#999">self</span>, view, key, <span style="color:#000;font-weight:bold">*</span>args):
-    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#39;for_buildx&#39;</span>:
-      <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">None</span>
-
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14">&#39;exec&#39;</span>)
-
-    <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">True</span>
-</code></pre></div><h3 id="创建-target-view">创建 Target View</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">BuildXListener</span>(sublime_plugin<span style="color:#000;font-weight:bold">.</span>EventListener):
+</span></span><span style="display:flex;"><span>  source_view <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_modified</span>(<span style="color:#999">self</span>, view):
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">is</span> <span style="color:#000;font-weight:bold">None</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#000;font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view<span style="color:#000;font-weight:bold">.</span>id() <span style="color:#000;font-weight:bold">!=</span> view<span style="color:#000;font-weight:bold">.</span>id():
+</span></span><span style="display:flex;"><span>      <span style="color:#000;font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic"># 到了这里说明 Exec Panel 的内容更新了</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_query_context</span>(<span style="color:#999">self</span>, view, key, <span style="color:#000;font-weight:bold">*</span>args):
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#39;for_buildx&#39;</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14">&#39;exec&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">True</span>
+</span></span></code></pre></div><h3 id="创建-target-view">创建 Target View</h3>
 <p>得到构建内容以后，我们要做的就是输出到我们的 Target View 中去，在此之前，我们先要创建这个 View。</p>
 <p>这一步很简单，调用 <code>Window</code> 的 <code>new_file</code> 函数就可以得到一个 View，同时注意设置它的属性为 Scratch，也就是说，关闭它的时候 Sublime 不会提醒你保存它。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python"><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">BuildXListener</span>(sublime_plugin<span style="color:#000;font-weight:bold">.</span>EventListener):
-  source_view <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">None</span>
-  target_view <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">None</span>
-  window <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">None</span>
-
-  <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_modified</span>(<span style="color:#999">self</span>, view):
-    <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">is</span> <span style="color:#999">None</span>:
-      <span style="color:#000;font-weight:bold">return</span>
-
-    <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view<span style="color:#000;font-weight:bold">.</span>id() <span style="color:#000;font-weight:bold">!=</span> view<span style="color:#000;font-weight:bold">.</span>id():
-      <span style="color:#000;font-weight:bold">return</span>
-
-    <span style="color:#998;font-style:italic"># 创建 target view</span>
-    <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view <span style="color:#000;font-weight:bold">is</span> <span style="color:#999">None</span>:
-      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>window<span style="color:#000;font-weight:bold">.</span>new_file()
-      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_name(<span style="color:#d14">&#39;Build Output&#39;</span>)
-      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_scratch(<span style="color:#999">True</span>)
-
-  <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_query_context</span>(<span style="color:#999">self</span>, view, key, <span style="color:#000;font-weight:bold">*</span>args):
-    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#39;for_buildx&#39;</span>:
-      <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">None</span>
-
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>window <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14">&#39;exec&#39;</span>)
-
-    <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">True</span>
-</code></pre></div><p>这样每次构建时，如果没有 Target View，就会新建一个。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">BuildXListener</span>(sublime_plugin<span style="color:#000;font-weight:bold">.</span>EventListener):
+</span></span><span style="display:flex;"><span>  source_view <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">None</span>
+</span></span><span style="display:flex;"><span>  target_view <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">None</span>
+</span></span><span style="display:flex;"><span>  window <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_modified</span>(<span style="color:#999">self</span>, view):
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">is</span> <span style="color:#000;font-weight:bold">None</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#000;font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view<span style="color:#000;font-weight:bold">.</span>id() <span style="color:#000;font-weight:bold">!=</span> view<span style="color:#000;font-weight:bold">.</span>id():
+</span></span><span style="display:flex;"><span>      <span style="color:#000;font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic"># 创建 target view</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view <span style="color:#000;font-weight:bold">is</span> <span style="color:#000;font-weight:bold">None</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>window<span style="color:#000;font-weight:bold">.</span>new_file()
+</span></span><span style="display:flex;"><span>      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_name(<span style="color:#d14">&#39;Build Output&#39;</span>)
+</span></span><span style="display:flex;"><span>      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_scratch(<span style="color:#000;font-weight:bold">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_query_context</span>(<span style="color:#999">self</span>, view, key, <span style="color:#000;font-weight:bold">*</span>args):
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#39;for_buildx&#39;</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>window <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()
+</span></span><span style="display:flex;"><span>    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14">&#39;exec&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">True</span>
+</span></span></code></pre></div><p>这样每次构建时，如果没有 Target View，就会新建一个。</p>
 <h3 id="拷贝-exec-panel-中的内容">拷贝 Exec Panel 中的内容</h3>
 <p>最后，我们要做的就是在 <code>on_modified</code> 的时候拷贝内容到我们的 Target View 中。</p>
 <p>首先，我们通过 <code>view.substr</code> 函数读取到 Exec Panel 中的内容，然后使用 <code>view.replace</code> 函数将该内容写到 Target View 中。</p>
 <p>因为 <code>view.replace</code> 需要一个 <code>Edit</code> 对象，所以我们需要创建一个 TextCommand 来执行这个方法。</p>
 <p>因为 <code>on_modified</code> 可能会触发多次，所以我们需要一个变量来记录一下最后一次写的位置是什么。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-python" data-lang="python"><span style="color:#000;font-weight:bold">import</span> <span style="color:#555">sublime</span>
-<span style="color:#000;font-weight:bold">import</span> <span style="color:#555">sublime_plugin</span>
-
-<span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">ContentReplace</span>(sublime_plugin<span style="color:#000;font-weight:bold">.</span>TextCommand):
-  <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">run</span>(<span style="color:#999">self</span>, edit, start, end, text):
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>replace(edit, sublime<span style="color:#000;font-weight:bold">.</span>Region(start, end), text)
-
-<span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">BuildXListener</span>(sublime_plugin<span style="color:#000;font-weight:bold">.</span>EventListener):
-  source_view <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">None</span>
-  target_view <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">None</span>
-  window <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">None</span>
-  last_pos <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>
-
-  <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_modified</span>(<span style="color:#999">self</span>, view):
-    <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">is</span> <span style="color:#999">None</span>:
-      <span style="color:#000;font-weight:bold">return</span>
-
-    <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view<span style="color:#000;font-weight:bold">.</span>id() <span style="color:#000;font-weight:bold">!=</span> view<span style="color:#000;font-weight:bold">.</span>id():
-      <span style="color:#000;font-weight:bold">return</span>
-
-    <span style="color:#998;font-style:italic"># 创建 target view</span>
-    <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view <span style="color:#000;font-weight:bold">is</span> <span style="color:#999">None</span>:
-      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>window<span style="color:#000;font-weight:bold">.</span>new_file()
-      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_name(<span style="color:#d14">&#39;Build Output&#39;</span>)
-      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_scratch(<span style="color:#999">True</span>)
-
-    <span style="color:#998;font-style:italic"># 复制内容到 target view</span>
-    new_pos <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>size()
-    region <span style="color:#000;font-weight:bold">=</span> sublime<span style="color:#000;font-weight:bold">.</span>Region(<span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>last_pos, new_pos)
-    content <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>substr(region)
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>run_command(<span style="color:#d14">&#39;content_replace&#39;</span>, {<span style="color:#d14">&#39;start&#39;</span>: <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>last_pos, <span style="color:#d14">&#39;end&#39;</span>: new_pos, <span style="color:#d14">&#39;text&#39;</span>: content})
-
-  <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_query_context</span>(<span style="color:#999">self</span>, view, key, <span style="color:#000;font-weight:bold">*</span>args):
-    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#39;for_buildxy&#39;</span>:
-      <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">None</span>
-
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>window <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()
-    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14">&#39;exec&#39;</span>)
-
-    <span style="color:#000;font-weight:bold">return</span> <span style="color:#999">True</span>
-</code></pre></div><p>到了这里，核心功能就已经有了，构建的输出可以在 Target View 中显示，从现在开始我们就可以摆脱底部的 Exec Panel 了。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">import</span> <span style="color:#555">sublime</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">import</span> <span style="color:#555">sublime_plugin</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">ContentReplace</span>(sublime_plugin<span style="color:#000;font-weight:bold">.</span>TextCommand):
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">run</span>(<span style="color:#999">self</span>, edit, start, end, text):
+</span></span><span style="display:flex;"><span>    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>view<span style="color:#000;font-weight:bold">.</span>replace(edit, sublime<span style="color:#000;font-weight:bold">.</span>Region(start, end), text)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">BuildXListener</span>(sublime_plugin<span style="color:#000;font-weight:bold">.</span>EventListener):
+</span></span><span style="display:flex;"><span>  source_view <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">None</span>
+</span></span><span style="display:flex;"><span>  target_view <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">None</span>
+</span></span><span style="display:flex;"><span>  window <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">None</span>
+</span></span><span style="display:flex;"><span>  last_pos <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_modified</span>(<span style="color:#999">self</span>, view):
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">is</span> <span style="color:#000;font-weight:bold">None</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#000;font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view<span style="color:#000;font-weight:bold">.</span>id() <span style="color:#000;font-weight:bold">!=</span> view<span style="color:#000;font-weight:bold">.</span>id():
+</span></span><span style="display:flex;"><span>      <span style="color:#000;font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic"># 创建 target view</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">if</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view <span style="color:#000;font-weight:bold">is</span> <span style="color:#000;font-weight:bold">None</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view <span style="color:#000;font-weight:bold">=</span> <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>window<span style="color:#000;font-weight:bold">.</span>new_file()
+</span></span><span style="display:flex;"><span>      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_name(<span style="color:#d14">&#39;Build Output&#39;</span>)
+</span></span><span style="display:flex;"><span>      <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>set_scratch(<span style="color:#000;font-weight:bold">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic"># 复制内容到 target view</span>
+</span></span><span style="display:flex;"><span>    new_pos <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>size()
+</span></span><span style="display:flex;"><span>    region <span style="color:#000;font-weight:bold">=</span> sublime<span style="color:#000;font-weight:bold">.</span>Region(<span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>last_pos, new_pos)
+</span></span><span style="display:flex;"><span>    content <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>substr(region)
+</span></span><span style="display:flex;"><span>    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>target_view<span style="color:#000;font-weight:bold">.</span>run_command(<span style="color:#d14">&#39;content_replace&#39;</span>, {<span style="color:#d14">&#39;start&#39;</span>: <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>last_pos, <span style="color:#d14">&#39;end&#39;</span>: new_pos, <span style="color:#d14">&#39;text&#39;</span>: content})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">on_query_context</span>(<span style="color:#999">self</span>, view, key, <span style="color:#000;font-weight:bold">*</span>args):
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">if</span> key <span style="color:#000;font-weight:bold">!=</span> <span style="color:#d14">&#39;for_buildxy&#39;</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>window <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()
+</span></span><span style="display:flex;"><span>    <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>source_view <span style="color:#000;font-weight:bold">=</span> view<span style="color:#000;font-weight:bold">.</span>window()<span style="color:#000;font-weight:bold">.</span>get_output_panel(<span style="color:#d14">&#39;exec&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">True</span>
+</span></span></code></pre></div><p>到了这里，核心功能就已经有了，构建的输出可以在 Target View 中显示，从现在开始我们就可以摆脱底部的 Exec Panel 了。</p>
 <p><img src="/image/Fn3sCw7H8q7ZJAtx2znBsuSHf4LK.gif" alt=""></p>
 <h2 id="最后">最后</h2>
 <p>当然插件离最后可用还有一些细节要打磨，比如</p>

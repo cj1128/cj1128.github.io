@@ -120,28 +120,28 @@
 <h4 id="客户端请求-clienthello">客户端请求 (ClientHello)</h4>
 <p>首先，客户端（通常是浏览器）先向服务器发送请求，这一步叫做 <code>ClientHello</code>，
 请求携带以下信息：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">1. 客户端支持的协议版本（这是为了和服务器协商使用什么版本的 SSL/TLS 进行通信）
-2. 客户端生成的一个随机数 n1
-3. 客户端支持的加密方法，比如 RSA（这是为了和服务器协商使用什么加密方法）
-</code></pre></div><h4 id="服务器响应-serverhello">服务器响应 (ServerHello)</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>1. 客户端支持的协议版本（这是为了和服务器协商使用什么版本的 SSL/TLS 进行通信）
+</span></span><span style="display:flex;"><span>2. 客户端生成的一个随机数 n1
+</span></span><span style="display:flex;"><span>3. 客户端支持的加密方法，比如 RSA（这是为了和服务器协商使用什么加密方法）
+</span></span></code></pre></div><h4 id="服务器响应-serverhello">服务器响应 (ServerHello)</h4>
 <p>服务器收到客户端请求之后，向客户端发送响应，这一步叫做 <code>ServerHello</code>，
 响应携带以下信息：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">1. 确认通信使用的 SSL/TLS 版本
-2. 服务器生成的一个随机数 n2
-3. 服务器的数字证书
-4. 确认加密方法，比如 RSA
-</code></pre></div><h4 id="客户端回应">客户端回应</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>1. 确认通信使用的 SSL/TLS 版本
+</span></span><span style="display:flex;"><span>2. 服务器生成的一个随机数 n2
+</span></span><span style="display:flex;"><span>3. 服务器的数字证书
+</span></span><span style="display:flex;"><span>4. 确认加密方法，比如 RSA
+</span></span></code></pre></div><h4 id="客户端回应">客户端回应</h4>
 <p>客户端收到浏览器的响应后，首先验证服务器的证书时候有效。如果证书不是由权威结构颁发 (比如 12306)，证书包含的域名和实际域名不一致或者证书已经过期，那么浏览器会警告用户，由用户决定是否继续访问。</p>
 <p>如果证书没有问题，客户端便会从证书中取出服务器的公钥，然后发送一个请求，携带以下信息。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">1. 一个随机数 n3，这个随机数用服务器公钥加密，防止被窃听
-2. 编码改变通知，表示之后所有的信息都将会使用双方商定的加密方法加密发送
-3. 客户端握手结束通知，表示客户端的握手阶段已经结束
-</code></pre></div><p>客户端此时有三个随机数，n1，n2，n3，根据这个三个随机数，客户端使用一定的算法生成通信所需的对话密钥。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>1. 一个随机数 n3，这个随机数用服务器公钥加密，防止被窃听
+</span></span><span style="display:flex;"><span>2. 编码改变通知，表示之后所有的信息都将会使用双方商定的加密方法加密发送
+</span></span><span style="display:flex;"><span>3. 客户端握手结束通知，表示客户端的握手阶段已经结束
+</span></span></code></pre></div><p>客户端此时有三个随机数，n1，n2，n3，根据这个三个随机数，客户端使用一定的算法生成通信所需的对话密钥。</p>
 <h4 id="服务器最后响应">服务器最后响应</h4>
 <p>服务器收到客户端的随机数之后，使用私钥将其解密，这时，服务器也拥有了 n1，n2，n3 这三个随机数，服务器便可以生成和客户端一致的对话密钥。然后向客户端发送最后的响应。信息如下：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">1. 编码改变通知，表示随后的信息都将用双方商定的加密方法和密钥发送
-2. 服务器握手结束通知，表示服务器端的握手阶段已经结束
-</code></pre></div><p>到了这里，客户端和服务器就可以使用对话密钥加密之后所有的通信过程。第三方无法窃听，都是乱码看不懂。也无法篡改，SSL 使用 MAC(Message Authentication Code) 来校验信息。更无法冒充，因为没有对话密钥。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>1. 编码改变通知，表示随后的信息都将用双方商定的加密方法和密钥发送
+</span></span><span style="display:flex;"><span>2. 服务器握手结束通知，表示服务器端的握手阶段已经结束
+</span></span></code></pre></div><p>到了这里，客户端和服务器就可以使用对话密钥加密之后所有的通信过程。第三方无法窃听，都是乱码看不懂。也无法篡改，SSL 使用 MAC(Message Authentication Code) 来校验信息。更无法冒充，因为没有对话密钥。</p>
 <h2 id="https">HTTPS</h2>
 <p>HTTPS 便是 <code>HTTP Over SSL</code>，使用 SSL 协议来加密 HTTP 通讯过程。SSL 协议本质上是提供了一个加密通道，我们在这个通道中传输 HTTP，便是 HTTPS 协议。</p>
 <h3 id="证书">证书</h3>
@@ -166,10 +166,10 @@
 <p>除了三个级别以外，证书还分为三个覆盖范围：</p>
 <ul>
 <li>
-<p>单域名证书：只能用于单一域名，a.com 的证书不能用于 <a href="http://www.a.com">www.a.com</a></p>
+<p>单域名证书：只能用于单一域名，a.com 的证书不能用于 <a href="https://www.a.com">www.a.com</a></p>
 </li>
 <li>
-<p>通配符证书：可以用于域名下的所有子域名，*.a.com 的证书可以用于 a.com，也可以用于 <a href="http://www.a.com">www.a.com</a></p>
+<p>通配符证书：可以用于域名下的所有子域名，*.a.com 的证书可以用于 a.com，也可以用于 <a href="https://www.a.com">www.a.com</a></p>
 </li>
 <li>
 <p>多域名证书，可以用于多个域名，比如 a.com，b.com</p>
@@ -180,58 +180,58 @@
 <p>这里，我使用一台新的 <code>CentOS 7</code> VPS 来演示怎样从头搭建一个 HTTPS 网站。</p>
 <h4 id="安装客户端">安装客户端</h4>
 <p>先安装基础工具。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">yum update
-yum install -y git vim
-</code></pre></div><p>然后，我们来安装 <code>letsencrypt</code> 客户端。目前，安装 <code>letsencrpyt</code> 客户端最好的方式便是直接克隆代码仓库。我们登录到服务器上，将 <code>letsencrypt</code> 的仓库克隆到本地。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">git clone https://github.com/letsencrypt/letsencrypt /opt/letsencrypt
-</code></pre></div><p>最后，我们安装 <code>nginx</code> 作为我们的 web server。<code>yum install -y nginx</code>，安装好之后，<code>systemctl start nginx</code> 启动。默认情况下，<code>CentOS 7</code> 只开放了 <code>DHCP</code> 和 <code>SSH</code> 的端口，我们需要手动把端口开放一下。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">firewall-cmd --permanent --add-service<span style="color:#000;font-weight:bold">=</span>http 
-firewall-cmd --permanent --add-service<span style="color:#000;font-weight:bold">=</span>https
-firewall-cmd --reload
-</code></pre></div><p>将自己的域名配置到这台 VPS 上。这里，我使用 <code>leaningmoon.io</code> 为例。访问网站，可以看到默认的 nginx 页面。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>yum update
+</span></span><span style="display:flex;"><span>yum install -y git vim
+</span></span></code></pre></div><p>然后，我们来安装 <code>letsencrypt</code> 客户端。目前，安装 <code>letsencrpyt</code> 客户端最好的方式便是直接克隆代码仓库。我们登录到服务器上，将 <code>letsencrypt</code> 的仓库克隆到本地。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/letsencrypt/letsencrypt /opt/letsencrypt
+</span></span></code></pre></div><p>最后，我们安装 <code>nginx</code> 作为我们的 web server。<code>yum install -y nginx</code>，安装好之后，<code>systemctl start nginx</code> 启动。默认情况下，<code>CentOS 7</code> 只开放了 <code>DHCP</code> 和 <code>SSH</code> 的端口，我们需要手动把端口开放一下。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>firewall-cmd --permanent --add-service<span style="color:#000;font-weight:bold">=</span>http 
+</span></span><span style="display:flex;"><span>firewall-cmd --permanent --add-service<span style="color:#000;font-weight:bold">=</span>https
+</span></span><span style="display:flex;"><span>firewall-cmd --reload
+</span></span></code></pre></div><p>将自己的域名配置到这台 VPS 上。这里，我使用 <code>leaningmoon.io</code> 为例。访问网站，可以看到默认的 nginx 页面。</p>
 <h4 id="生成证书">生成证书</h4>
 <p>我们使用 <code>letsencrypt</code> 来生成 HTTPS 所需的证书。作为一个免费的解决方案，<code>letsencrypt</code> 只提供域名认证证书（这很合理，组织机构可以自己购买高级证书）。所以，我们只要能证明域名是自己所有即可。最简单的方式是用 <code>letsencrypt</code> 的 <code>webroot</code> 验证方式，在 VPS 上告诉 <code>letsencrypt</code> nginx 的 <code>webroot</code> 和你的域名，<code>letsencrypt</code> 会在 <code>webroot</code> 的 <code>.well-known</code> 文件夹中放置一个特别的文件，然后使用域名去访问这个文件，如果可以访问到，当然能够证明域名是你的了。</p>
 <p>默认的 Nginx 配置不用任何修改，Nginx 默认的 <code>webroot</code> 是 <code>/usr/share/nginx/html</code>。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#0086b3">cd</span> /opt/letsencrypt
-./letsencrypt-auto certonly -a webroot --webroot-path<span style="color:#000;font-weight:bold">=</span>/usr/share/nginx/html -d leaningmoon.io <span style="color:#998;font-style:italic"># 可以使用多个 -d 添加多个域名</span>
-</code></pre></div><p>回车之后，<code>letsencrypt</code> 会进行一系列操作生成所需的证书文件，最后会有一个弹窗，提示你输入电子邮件地址，如果证书丢了，可以恢复。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#0086b3">cd</span> /opt/letsencrypt
+</span></span><span style="display:flex;"><span>./letsencrypt-auto certonly -a webroot --webroot-path<span style="color:#000;font-weight:bold">=</span>/usr/share/nginx/html -d leaningmoon.io <span style="color:#998;font-style:italic"># 可以使用多个 -d 添加多个域名</span>
+</span></span></code></pre></div><p>回车之后，<code>letsencrypt</code> 会进行一系列操作生成所需的证书文件，最后会有一个弹窗，提示你输入电子邮件地址，如果证书丢了，可以恢复。</p>
 <p><img src="/image/9b85365djw1f7hzf480y7j20sp0ap3zk.jpg" alt=""></p>
 <p>最后，<code>letsencrypt</code> 的输出结果如下。</p>
 <p><img src="/image/9b85365djw1f7hzfmf062j20v60bj456.jpg" alt=""></p>
 <p>可以看到，最为关键的证书文件存放在 <code>/etc/letsencrypt/live/leaningmoon.io/fullchain.pem</code>。</p>
 <h4 id="配置-nginx">配置 Nginx</h4>
 <p>最后一步便是配置 Nginx 采用我们的证书文件并开启 HTTPS。这里推荐一个网站，<a href="https://cipherli.st/">cipherli.st</a>，这个网站提供了当前主流的 Web 服务器怎样开启 HTTPS 的推荐配置，很值得参考。这里我们直接复制他提供的 Nginx 配置。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-nginx" data-lang="nginx"><span style="color:#000;font-weight:bold">server</span> {
-  <span style="color:#000;font-weight:bold">listen</span>       <span style="color:#099">80</span> <span style="color:#d14">default_server</span>;
-  <span style="color:#000;font-weight:bold">server_name</span>  <span style="color:#d14">leaningmoon.io</span>;
-  <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">301</span> <span style="color:#d14">https://</span><span style="color:#008080">$server_name$request_uri</span>;
-}
-
-<span style="color:#000;font-weight:bold">server</span> {
-  <span style="color:#998;font-style:italic"># SSL Configuration
-</span><span style="color:#998;font-style:italic"></span>  <span style="color:#000;font-weight:bold">listen</span> <span style="color:#099">443</span> <span style="color:#d14">ssl</span> <span style="color:#d14">default_server</span>;
-  <span style="color:#000;font-weight:bold">root</span>         <span style="color:#d14">/usr/share/nginx/html</span>;
-
-  <span style="color:#998;font-style:italic"># copy from https://cipherli.st
-</span><span style="color:#998;font-style:italic"></span>  <span style="color:#000;font-weight:bold">ssl_protocols</span> <span style="color:#d14">TLSv1</span> <span style="color:#d14">TLSv1.1</span> <span style="color:#d14">TLSv1.2</span>;
-  <span style="color:#000;font-weight:bold">ssl_prefer_server_ciphers</span> <span style="color:#008080">on</span>;
-  <span style="color:#000;font-weight:bold">ssl_ciphers</span> <span style="color:#d14">&#34;EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH&#34;</span>;
-  <span style="color:#000;font-weight:bold">ssl_ecdh_curve</span> <span style="color:#d14">secp384r1</span>; <span style="color:#998;font-style:italic"># Requires nginx &gt;= 1.1.0
-</span><span style="color:#998;font-style:italic"></span>  <span style="color:#000;font-weight:bold">ssl_session_cache</span> <span style="color:#d14">shared:SSL:10m</span>;
-  <span style="color:#000;font-weight:bold">ssl_session_tickets</span> <span style="color:#008080">off</span>; <span style="color:#998;font-style:italic"># Requires nginx &gt;= 1.5.9
-</span><span style="color:#998;font-style:italic"></span>  <span style="color:#000;font-weight:bold">ssl_stapling</span> <span style="color:#008080">on</span>; <span style="color:#998;font-style:italic"># Requires nginx &gt;= 1.3.7
-</span><span style="color:#998;font-style:italic"></span>  <span style="color:#000;font-weight:bold">ssl_stapling_verify</span> <span style="color:#008080">on</span>; <span style="color:#998;font-style:italic"># Requires nginx =&gt; 1.3.7
-</span><span style="color:#998;font-style:italic"></span>  <span style="color:#000;font-weight:bold">resolver</span> <span style="color:#099">8</span><span style="color:#d14">.8.8.8</span> <span style="color:#099">8</span><span style="color:#d14">.8.4.4</span> <span style="color:#d14">valid=300s</span>;
-  <span style="color:#000;font-weight:bold">resolver_timeout</span> <span style="color:#d14">5s</span>;
-  <span style="color:#000;font-weight:bold">add_header</span> <span style="color:#d14">Strict-Transport-Security</span> <span style="color:#d14">&#34;max-age=63072000</span>; <span style="color:#000;font-weight:bold">includeSubDomains</span>; <span style="color:#000;font-weight:bold">preload&#34;</span>;
-  <span style="color:#000;font-weight:bold">add_header</span> <span style="color:#d14">X-Frame-Options</span> <span style="color:#d14">DENY</span>;
-  <span style="color:#000;font-weight:bold">add_header</span> <span style="color:#d14">X-Content-Type-Options</span> <span style="color:#d14">nosniff</span>;
-
-  <span style="color:#998;font-style:italic"># specify cert files
-</span><span style="color:#998;font-style:italic"></span>  <span style="color:#000;font-weight:bold">ssl_certificate</span> <span style="color:#d14">/etc/letsencrypt/live/leaningmoon.io/fullchain.pem</span>;
-  <span style="color:#000;font-weight:bold">ssl_certificate_key</span> <span style="color:#d14">/etc/letsencrypt/live/leaningmoon.io/privkey.pem</span>;
-}
-</code></pre></div><p>重启 Nginx，<code>systemctl reload nginx</code>。再次访问网站，我们可以看到，我们的网站也多了一把可爱的小绿锁~</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">server</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">listen</span>       <span style="color:#099">80</span> <span style="color:#d14">default_server</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">server_name</span>  <span style="color:#d14">leaningmoon.io</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">301</span> <span style="color:#d14">https://</span><span style="color:#008080">$server_name$request_uri</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">server</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#998;font-style:italic"># SSL Configuration
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>  <span style="color:#000;font-weight:bold">listen</span> <span style="color:#099">443</span> <span style="color:#d14">ssl</span> <span style="color:#d14">default_server</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">root</span>         <span style="color:#d14">/usr/share/nginx/html</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#998;font-style:italic"># copy from https://cipherli.st
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>  <span style="color:#000;font-weight:bold">ssl_protocols</span> <span style="color:#d14">TLSv1</span> <span style="color:#d14">TLSv1.1</span> <span style="color:#d14">TLSv1.2</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">ssl_prefer_server_ciphers</span> <span style="color:#008080">on</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">ssl_ciphers</span> <span style="color:#d14">&#34;EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH&#34;</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">ssl_ecdh_curve</span> <span style="color:#d14">secp384r1</span>; <span style="color:#998;font-style:italic"># Requires nginx &gt;= 1.1.0
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>  <span style="color:#000;font-weight:bold">ssl_session_cache</span> <span style="color:#d14">shared:SSL:10m</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">ssl_session_tickets</span> <span style="color:#008080">off</span>; <span style="color:#998;font-style:italic"># Requires nginx &gt;= 1.5.9
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>  <span style="color:#000;font-weight:bold">ssl_stapling</span> <span style="color:#008080">on</span>; <span style="color:#998;font-style:italic"># Requires nginx &gt;= 1.3.7
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>  <span style="color:#000;font-weight:bold">ssl_stapling_verify</span> <span style="color:#008080">on</span>; <span style="color:#998;font-style:italic"># Requires nginx =&gt; 1.3.7
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>  <span style="color:#000;font-weight:bold">resolver</span> <span style="color:#099">8</span><span style="color:#d14">.8.8.8</span> <span style="color:#099">8</span><span style="color:#d14">.8.4.4</span> <span style="color:#d14">valid=300s</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">resolver_timeout</span> <span style="color:#d14">5s</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">add_header</span> <span style="color:#d14">Strict-Transport-Security</span> <span style="color:#d14">&#34;max-age=63072000</span>; <span style="color:#000;font-weight:bold">includeSubDomains</span>; <span style="color:#000;font-weight:bold">preload&#34;</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">add_header</span> <span style="color:#d14">X-Frame-Options</span> <span style="color:#d14">DENY</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">add_header</span> <span style="color:#d14">X-Content-Type-Options</span> <span style="color:#d14">nosniff</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#998;font-style:italic"># specify cert files
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>  <span style="color:#000;font-weight:bold">ssl_certificate</span> <span style="color:#d14">/etc/letsencrypt/live/leaningmoon.io/fullchain.pem</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">ssl_certificate_key</span> <span style="color:#d14">/etc/letsencrypt/live/leaningmoon.io/privkey.pem</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>重启 Nginx，<code>systemctl reload nginx</code>。再次访问网站，我们可以看到，我们的网站也多了一把可爱的小绿锁~</p>
 <p><img src="/image/9b85365dgw1f7hzuvhh4jj212h0bqgpx.jpg" alt=""></p>
 <p><strong>参考链接</strong></p>
 <ul>

@@ -141,88 +141,88 @@
 <p>这就给 JS 中的 Unicode 处理带来了很多问题，基本上所有的字符串操作函数在处理非 BMP 字符时都是错误的。</p>
 <h3 id="length">length</h3>
 <p>最基本的问题就是，非 BMP 的字符，由于使用了 Surrogate Pair，含有两个编码单元，导致 JS 认为字符的长度为 2，这显然不是我们要的结果。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#d14">&#34;😜&#34;</span>.length <span style="color:#998;font-style:italic">// 2
-</span></code></pre></div><p>解决这个问题，可以自己编写一个 <code>strLength</code> 函数，特别处理码点范围在 <code>0xD800 - 0xDFFF</code> 中的字符，当然这比较麻烦，简单的方案是使用 <a href="https://github.com/bestiejs/punycode.js/">Punycode</a> 库。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#000;font-weight:bold">var</span> puny <span style="color:#000;font-weight:bold">=</span> require(<span style="color:#d14">&#34;punycode&#34;</span>)
-puny.ucs2.decode(<span style="color:#d14">&#34;😜&#34;</span>).length <span style="color:#998;font-style:italic">// 1
-</span></code></pre></div><p>或者利用 ES6 的新特性：ES6 中的 <code>for of</code> 循环可以正确识别 Unicode，这也就使得和 for of 循环使用相同机制的 <code>...</code> 操作符可以正确识别 Unicode。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#998;font-style:italic">// 这个做法很浪费内存
-</span><span style="color:#998;font-style:italic"></span>[...<span style="color:#d14">&#34;😜&#34;</span>].length <span style="color:#998;font-style:italic">// 1
-</span></code></pre></div><h3 id="charat--charcodeat">charAt &amp;&amp; charCodeAt</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#d14">&#34;😜&#34;</span>.length <span style="color:#998;font-style:italic">// 2
+</span></span></span></code></pre></div><p>解决这个问题，可以自己编写一个 <code>strLength</code> 函数，特别处理码点范围在 <code>0xD800 - 0xDFFF</code> 中的字符，当然这比较麻烦，简单的方案是使用 <a href="https://github.com/bestiejs/punycode.js/">Punycode</a> 库。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">var</span> puny <span style="color:#000;font-weight:bold">=</span> require(<span style="color:#d14">&#34;punycode&#34;</span>)
+</span></span><span style="display:flex;"><span>puny.ucs2.decode(<span style="color:#d14">&#34;😜&#34;</span>).length <span style="color:#998;font-style:italic">// 1
+</span></span></span></code></pre></div><p>或者利用 ES6 的新特性：ES6 中的 <code>for of</code> 循环可以正确识别 Unicode，这也就使得和 for of 循环使用相同机制的 <code>...</code> 操作符可以正确识别 Unicode。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#998;font-style:italic">// 这个做法很浪费内存
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>[...<span style="color:#d14">&#34;😜&#34;</span>].length <span style="color:#998;font-style:italic">// 1
+</span></span></span></code></pre></div><h3 id="charat--charcodeat">charAt &amp;&amp; charCodeAt</h3>
 <p><code>charAt</code> 以及 <code>charCodeAt</code> 两个方法用于返回某个偏移量的字符和字符码点，对于非 BMP 字符，返回结果是错的，返回的是 Lead Surrogate 的字符和码点。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#d14">&#34;😜&#34;</span>.charAt(<span style="color:#099">0</span>) <span style="color:#998;font-style:italic">// &#34;�&#34;
-</span><span style="color:#998;font-style:italic"></span><span style="color:#d14">&#34;😜&#34;</span>.charCodeAt(<span style="color:#099">0</span>) <span style="color:#998;font-style:italic">// 55357
-</span></code></pre></div><p>可以使用 ES6 的 <code>String.prototype.codePointAt</code> 和 <code>String.fromCodePoint</code> 两个方法来解决这个问题。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#d14">&#34;😜&#34;</span>.codePointAt(<span style="color:#099">0</span>) <span style="color:#998;font-style:italic">// 128540
-</span><span style="color:#998;font-style:italic"></span><span style="color:#0086b3">String</span>.fromCodePoint(<span style="color:#d14">&#34;a😜b&#34;</span>.codePointAt(<span style="color:#099">1</span>)) <span style="color:#998;font-style:italic">// &#34;😜&#34;
-</span></code></pre></div><h3 id="unicode-escape">Unicode Escape</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#d14">&#34;😜&#34;</span>.charAt(<span style="color:#099">0</span>) <span style="color:#998;font-style:italic">// &#34;�&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#d14">&#34;😜&#34;</span>.charCodeAt(<span style="color:#099">0</span>) <span style="color:#998;font-style:italic">// 55357
+</span></span></span></code></pre></div><p>可以使用 ES6 的 <code>String.prototype.codePointAt</code> 和 <code>String.fromCodePoint</code> 两个方法来解决这个问题。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#d14">&#34;😜&#34;</span>.codePointAt(<span style="color:#099">0</span>) <span style="color:#998;font-style:italic">// 128540
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#0086b3">String</span>.fromCodePoint(<span style="color:#d14">&#34;a😜b&#34;</span>.codePointAt(<span style="color:#099">1</span>)) <span style="color:#998;font-style:italic">// &#34;😜&#34;
+</span></span></span></code></pre></div><h3 id="unicode-escape">Unicode Escape</h3>
 <p>JS 中允许使用 <code>\udddd</code> 以及 <code>\xdd</code> 的形式指定十六进制的数字插入字符。但是对于非 BMP 的字符，使用这个方式插入，需要首先得到 Surrogate Pair 才行，不能直接根据码点插入，比较麻烦。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#d14">&#34;\u1F61C&#34;</span> <span style="color:#998;font-style:italic">// &#34;ὡC&#34;
-</span></code></pre></div><p>ES6新提供了 <code>\u{}</code> 方式，使得根据码点插入字符变得非常简单。注意 escape 中填写的都是码点的十六进制值。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#d14">&#34;\u{1F61C}&#34;</span> <span style="color:#998;font-style:italic">// &#34;😜&#34;
-</span></code></pre></div><h3 id="substring-substr-slice">Substring, Substr, Slice</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#d14">&#34;\u1F61C&#34;</span> <span style="color:#998;font-style:italic">// &#34;ὡC&#34;
+</span></span></span></code></pre></div><p>ES6新提供了 <code>\u{}</code> 方式，使得根据码点插入字符变得非常简单。注意 escape 中填写的都是码点的十六进制值。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#d14">&#34;\u{1F61C}&#34;</span> <span style="color:#998;font-style:italic">// &#34;😜&#34;
+</span></span></span></code></pre></div><h3 id="substring-substr-slice">Substring, Substr, Slice</h3>
 <p>这三个函数的行为很类似，参数的含义以及是否允许负数索引上有一些细微的不同。他们同样也都不能正确处理非 BMP 字符。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#d14">&#34;😜&#34;</span>.substr(<span style="color:#099">0</span>, <span style="color:#099">1</span>) <span style="color:#998;font-style:italic">// &#34;�&#34;
-</span><span style="color:#998;font-style:italic"></span><span style="color:#d14">&#34;😜&#34;</span>.substring(<span style="color:#099">0</span>, <span style="color:#099">1</span>) <span style="color:#998;font-style:italic">// &#34;�&#34;
-</span><span style="color:#998;font-style:italic"></span><span style="color:#d14">&#34;😜&#34;</span>.slice(<span style="color:#099">0</span>, <span style="color:#099">1</span>) <span style="color:#998;font-style:italic">// &#34;�&#34;
-</span></code></pre></div><p>我们可以利用 ES6 的 <code>for of</code> 实现重新编写这三个函数，下面的实现只用来说明思路，并不完全。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#0086b3">String</span>.prototype.newSubstr <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">function</span>(start, length) {
-  <span style="color:#000;font-weight:bold">return</span> [...<span style="color:#000;font-weight:bold">this</span>].slice(start, start <span style="color:#000;font-weight:bold">+</span> length).join(<span style="color:#d14">&#34;&#34;</span>)
-}
-<span style="color:#0086b3">String</span>.prototype.newSubstring <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">function</span>(start, end) {
-  <span style="color:#000;font-weight:bold">return</span> [...<span style="color:#000;font-weight:bold">this</span>].slice(start, end).join(<span style="color:#d14">&#34;&#34;</span>)
-}
-<span style="color:#0086b3">String</span>.prototype.newSlice <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">function</span>(start, end) {
-  <span style="color:#000;font-weight:bold">return</span> [...<span style="color:#000;font-weight:bold">this</span>].slice(start, end).join(<span style="color:#d14">&#34;&#34;</span>)
-}
-<span style="color:#d14">&#34;😜&#34;</span>.newSubstr(<span style="color:#099">0</span>, <span style="color:#099">1</span>) <span style="color:#998;font-style:italic">// &#34;😜&#34;
-</span><span style="color:#998;font-style:italic"></span><span style="color:#d14">&#34;😜&#34;</span>.newSubstring(<span style="color:#099">0</span>, <span style="color:#099">1</span>) <span style="color:#998;font-style:italic">// &#34;😜&#34;
-</span><span style="color:#998;font-style:italic"></span><span style="color:#d14">&#34;😜&#34;</span>.newSlice(<span style="color:#099">0</span>, <span style="color:#099">1</span>) <span style="color:#998;font-style:italic">// &#34;😜&#34;
-</span></code></pre></div><p>其他的一些函数都可以用类似的思路解决，不在赘述了。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#d14">&#34;😜&#34;</span>.substr(<span style="color:#099">0</span>, <span style="color:#099">1</span>) <span style="color:#998;font-style:italic">// &#34;�&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#d14">&#34;😜&#34;</span>.substring(<span style="color:#099">0</span>, <span style="color:#099">1</span>) <span style="color:#998;font-style:italic">// &#34;�&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#d14">&#34;😜&#34;</span>.slice(<span style="color:#099">0</span>, <span style="color:#099">1</span>) <span style="color:#998;font-style:italic">// &#34;�&#34;
+</span></span></span></code></pre></div><p>我们可以利用 ES6 的 <code>for of</code> 实现重新编写这三个函数，下面的实现只用来说明思路，并不完全。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#0086b3">String</span>.prototype.newSubstr <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">function</span>(start, length) {
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">return</span> [...<span style="color:#000;font-weight:bold">this</span>].slice(start, start <span style="color:#000;font-weight:bold">+</span> length).join(<span style="color:#d14">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#0086b3">String</span>.prototype.newSubstring <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">function</span>(start, end) {
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">return</span> [...<span style="color:#000;font-weight:bold">this</span>].slice(start, end).join(<span style="color:#d14">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#0086b3">String</span>.prototype.newSlice <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">function</span>(start, end) {
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">return</span> [...<span style="color:#000;font-weight:bold">this</span>].slice(start, end).join(<span style="color:#d14">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;😜&#34;</span>.newSubstr(<span style="color:#099">0</span>, <span style="color:#099">1</span>) <span style="color:#998;font-style:italic">// &#34;😜&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#d14">&#34;😜&#34;</span>.newSubstring(<span style="color:#099">0</span>, <span style="color:#099">1</span>) <span style="color:#998;font-style:italic">// &#34;😜&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#d14">&#34;😜&#34;</span>.newSlice(<span style="color:#099">0</span>, <span style="color:#099">1</span>) <span style="color:#998;font-style:italic">// &#34;😜&#34;
+</span></span></span></code></pre></div><p>其他的一些函数都可以用类似的思路解决，不在赘述了。</p>
 <h3 id="regexp-dot">Regexp Dot</h3>
 <p>JS 中的正则，在处理非 BMP 字符时同样存在问题。</p>
 <p>我们首先来看 <code>.</code> 字符。<code>.</code> 字符在正则中的含义是匹配非换行符以外的任意字符。但是在 JS 中，<code>.</code> 只能匹配一个编码单元，对于使用两个编码单元的非 BMP 字符，则无法匹配。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#009926">/./</span>.test(<span style="color:#d14">&#34;😜&#34;</span>) <span style="color:#998;font-style:italic">// false
-</span></code></pre></div><p>这个问题的解决方案有两个。第一，自己编写范围来匹配非 BMP 字符。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#009926">/[\u0000-\uD7FF][\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]/</span>.test(<span style="color:#d14">&#34;😜&#34;</span>) <span style="color:#998;font-style:italic">// true
-</span></code></pre></div><p>第二，使用 ES6 引入的 <code>u</code> 标志。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#009926">/./u</span>.test(<span style="color:#d14">&#34;😜&#34;</span>) <span style="color:#998;font-style:italic">// true
-</span></code></pre></div><h3 id="regexp-range">Regexp Range</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#009926">/./</span>.test(<span style="color:#d14">&#34;😜&#34;</span>) <span style="color:#998;font-style:italic">// false
+</span></span></span></code></pre></div><p>这个问题的解决方案有两个。第一，自己编写范围来匹配非 BMP 字符。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#009926">/[\u0000-\uD7FF][\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]/</span>.test(<span style="color:#d14">&#34;😜&#34;</span>) <span style="color:#998;font-style:italic">// true
+</span></span></span></code></pre></div><p>第二，使用 ES6 引入的 <code>u</code> 标志。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#009926">/./u</span>.test(<span style="color:#d14">&#34;😜&#34;</span>) <span style="color:#998;font-style:italic">// true
+</span></span></span></code></pre></div><h3 id="regexp-range">Regexp Range</h3>
 <p>第二个问题是正则中的范围。范围中如果使用了非 BMP 字符，JS 会报错。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#009926">/[😆-😜]/</span>.test(<span style="color:#d14">&#34;😜&#34;</span>)
-Uncaught SyntaxError<span style="color:#000;font-weight:bold">:</span> Invalid regular expression<span style="color:#000;font-weight:bold">:</span> <span style="color:#009926">/[😆-😜]/</span><span style="color:#000;font-weight:bold">:</span> Range out <span style="color:#000;font-weight:bold">of</span> order <span style="color:#000;font-weight:bold">in</span> character <span style="color:#000;font-weight:bold">class</span>
-    at <span style="color:#000;font-weight:bold">&lt;</span>anonymous<span style="color:#000;font-weight:bold">&gt;:</span><span style="color:#099">1</span><span style="color:#000;font-weight:bold">:</span><span style="color:#099">1</span>
-</code></pre></div><p>出错的原因在于 <code>/[😆-😜]/</code> 在 JS 中等价于 <code>/[\uD83D\uDE06-\uD83D\uDE1C]/</code>，而 <code>\uDE06-\uD83D</code> 会被解释为一个范围，而这个范围的起始值比结束值要大，因此错误。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#009926">/[😆-😜]/</span>.test(<span style="color:#d14">&#34;😜&#34;</span>)
+</span></span><span style="display:flex;"><span>Uncaught SyntaxError<span style="color:#000;font-weight:bold">:</span> Invalid regular expression<span style="color:#000;font-weight:bold">:</span> <span style="color:#009926">/[😆-😜]/</span><span style="color:#000;font-weight:bold">:</span> Range out <span style="color:#000;font-weight:bold">of</span> order <span style="color:#000;font-weight:bold">in</span> character <span style="color:#000;font-weight:bold">class</span>
+</span></span><span style="display:flex;"><span>    at <span style="color:#000;font-weight:bold">&lt;</span>anonymous<span style="color:#000;font-weight:bold">&gt;:</span><span style="color:#099">1</span><span style="color:#000;font-weight:bold">:</span><span style="color:#099">1</span>
+</span></span></code></pre></div><p>出错的原因在于 <code>/[😆-😜]/</code> 在 JS 中等价于 <code>/[\uD83D\uDE06-\uD83D\uDE1C]/</code>，而 <code>\uDE06-\uD83D</code> 会被解释为一个范围，而这个范围的起始值比结束值要大，因此错误。</p>
 <p>解决方法同样有两个。第一，改写正则。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#009926">/\uD83D[\uDE06-\uDE1C]/</span>.test(<span style="color:#d14">&#34;😆&#34;</span>) <span style="color:#998;font-style:italic">// true
-</span></code></pre></div><p>第二，还是使用 ES6 引入的 <code>u</code> 标志。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#009926">/[😆-😜]/u</span>.test(<span style="color:#d14">&#34;😜&#34;</span>) <span style="color:#998;font-style:italic">// true
-</span><span style="color:#998;font-style:italic"></span><span style="color:#009926">/[\u{1F606}-\u{1F61C}]/u</span>.test(<span style="color:#d14">&#34;😜&#34;</span>) <span style="color:#998;font-style:italic">// true
-</span></code></pre></div><h2 id="unicode-normalization">Unicode Normalization</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#009926">/\uD83D[\uDE06-\uDE1C]/</span>.test(<span style="color:#d14">&#34;😆&#34;</span>) <span style="color:#998;font-style:italic">// true
+</span></span></span></code></pre></div><p>第二，还是使用 ES6 引入的 <code>u</code> 标志。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#009926">/[😆-😜]/u</span>.test(<span style="color:#d14">&#34;😜&#34;</span>) <span style="color:#998;font-style:italic">// true
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#009926">/[\u{1F606}-\u{1F61C}]/u</span>.test(<span style="color:#d14">&#34;😜&#34;</span>) <span style="color:#998;font-style:italic">// true
+</span></span></span></code></pre></div><h2 id="unicode-normalization">Unicode Normalization</h2>
 <p>最后，我们来谈谈 Unicode 的规整化。这个问题和 JS 没关系，是 Unicode 字符集本身的问题。</p>
 <p>根据 Unicode 定义，有些字符属于 <em>修饰字符</em>，也就是和别的字符一起出现的时候会修饰别的字符，两个合在一起构成一个我们人眼中的字符。</p>
 <p>比如，<code>ë</code> 这个字符，由两个 Unicode 码点构成，分别是 <code>U+0065</code> 和 <code>U+0308</code>。这两个都是 Unicode 中的合法字符，拥有自己的码点，但他们合在一起的时候，构成一个我们人类眼中的字符。</p>
 <p>同时，在 Unicode 中，还有一个单独的字符 <code>ë</code>，码点为 <code>U+00EB</code>。</p>
 <p><code>ë</code> 和 <code>ë</code> 在我们眼中是一样的字符，但在 Unicode 中却是不同的表现，一个是由两个字符拼接而成，另一个是独立的字符，因此，如果直接比较的话，肯定是不相等的。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#d14">&#34;ë&#34;</span> <span style="color:#000;font-weight:bold">===</span> <span style="color:#d14">&#34;ë&#34;</span> <span style="color:#998;font-style:italic">// false
-</span></code></pre></div><p>这时候就需要引入规整化，将字符转变为某种特定的形式。Unicode 中定义了四种形式，常用的两种是：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#d14">&#34;ë&#34;</span> <span style="color:#000;font-weight:bold">===</span> <span style="color:#d14">&#34;ë&#34;</span> <span style="color:#998;font-style:italic">// false
+</span></span></span></code></pre></div><p>这时候就需要引入规整化，将字符转变为某种特定的形式。Unicode 中定义了四种形式，常用的两种是：</p>
 <ol>
 <li><code>NFD</code>: Normalization Form Canonical Decomposition，将所有的单个的复合字符转换为多个字符拼接而成的形式</li>
 <li><code>NFC</code>: Normalization Form Canonical Composition，将所有的拼接而成的符合字符转换为单个字符的形式</li>
 </ol>
 <p>因此，在比较 Unicode 字符串之前，我们需要对两边的字符串规整化到相同的形式，这样结果才是准确的。ES6 中引入的 <code>String.prototype.normalize</code> 方法可以用于字符串的规整化。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#d14">&#34;ë&#34;</span>.normalize(<span style="color:#d14">&#34;NFC&#34;</span>) <span style="color:#000;font-weight:bold">===</span> <span style="color:#d14">&#34;ë&#34;</span>.normalize(<span style="color:#d14">&#34;NFC&#34;</span>) <span style="color:#998;font-style:italic">// true
-</span></code></pre></div><h2 id="reverse-the-string">Reverse the String</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#d14">&#34;ë&#34;</span>.normalize(<span style="color:#d14">&#34;NFC&#34;</span>) <span style="color:#000;font-weight:bold">===</span> <span style="color:#d14">&#34;ë&#34;</span>.normalize(<span style="color:#d14">&#34;NFC&#34;</span>) <span style="color:#998;font-style:italic">// true
+</span></span></span></code></pre></div><h2 id="reverse-the-string">Reverse the String</h2>
 <p>由于存在修饰字符，使得字符串取反变成了一个复杂的操作。</p>
 <p>如果不考虑非 BMP 字符，在 JS 中，对字符串取反的一般方式为 <code>str.split(&quot;&quot;).reverse().join(&quot;&quot;)</code>。</p>
 <p>考虑到非 BM 字符，我们可以使用 <code>[...str].reverse().join(&quot;&quot;)</code>。</p>
 <p>但是，如果含有修饰字符的话，使用 <code>...</code> 一样无法返回正确的结果。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js">[...<span style="color:#d14">&#34;mañana&#34;</span>].reverse().join(<span style="color:#d14">&#34;&#34;</span>) <span style="color:#998;font-style:italic">// &#34;anãnam&#34;
-</span></code></pre></div><p>这里的问题在于对于 <code>&quot;mañana&quot;</code> 使用 <code>...</code> 产生的字符数组为 <code>[&quot;m&quot;, &quot;a&quot;, &quot;n&quot;, &quot;̃&quot;, &quot;a&quot;, &quot;n&quot;, &quot;a&quot;]</code>，取反以后，修饰字符会跟在 <code>a</code> 的后面，从而产生 <code>ã</code>。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>[...<span style="color:#d14">&#34;mañana&#34;</span>].reverse().join(<span style="color:#d14">&#34;&#34;</span>) <span style="color:#998;font-style:italic">// &#34;anãnam&#34;
+</span></span></span></code></pre></div><p>这里的问题在于对于 <code>&quot;mañana&quot;</code> 使用 <code>...</code> 产生的字符数组为 <code>[&quot;m&quot;, &quot;a&quot;, &quot;n&quot;, &quot;̃&quot;, &quot;a&quot;, &quot;n&quot;, &quot;a&quot;]</code>，取反以后，修饰字符会跟在 <code>a</code> 的后面，从而产生 <code>ã</code>。</p>
 <p>这个问题需要做手动做一些的处理，在取反之前，将修饰字符和被修饰的字符颠倒一下顺序，然后再取反就行了。我们可以直接使用 <a href="https://github.com/mathiasbynens/esrever">esrever</a> 库来处理。</p>
 <p>esrever 的 <code>reverse</code> 函数具体实现可以看<a href="https://github.com/mathiasbynens/esrever/blob/14b34013dad49106ca08c0e65919f1fc8fea5331/src/esrever.js#L23">这里</a>。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js">esrever.reverse(<span style="color:#d14">&#34;mañana&#34;</span>) <span style="color:#998;font-style:italic">// &#34;anañam&#34;
-</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>esrever.reverse(<span style="color:#d14">&#34;mañana&#34;</span>) <span style="color:#998;font-style:italic">// &#34;anañam&#34;
+</span></span></span></code></pre></div>
           </div>
 
           <div id="post__comments">

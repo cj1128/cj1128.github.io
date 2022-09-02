@@ -109,99 +109,99 @@
 <p>DNS 相关的常用工具有两个，一个是 <code>dig</code>，功能强大，十分灵活。</p>
 <p>用法是 <code>dig &lt;记录类型&gt; &lt;查询名称&gt;</code>。</p>
 <p>例如，我想知道根域名服务器的相关信息。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ dig ns . <span style="color:#998;font-style:italic"># 注意，`.`代表根域名，这条指令表示查询根域名的NS记录</span>
-; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; ns .
-;; global options: +cmd
-;; Got answer:
-;; -&gt;&gt;HEADER<span style="color:#d14">&lt;&lt;- opco</span>de: QUERY, status: NOERROR, id: <span style="color:#099">12846</span>
-;; flags: qr rd ra; QUERY: 1, ANSWER: 13, AUTHORITY: 0, ADDITIONAL: <span style="color:#099">0</span>
-
-;; QUESTION SECTION:
-;.        IN  NS
-
-;; ANSWER SECTION:
-.     <span style="color:#099">40368</span> IN  NS  h.root-servers.net.
-.     <span style="color:#099">40368</span> IN  NS  m.root-servers.net.
-.     <span style="color:#099">40368</span> IN  NS  f.root-servers.net.
-.     <span style="color:#099">40368</span> IN  NS  c.root-servers.net.
-.     <span style="color:#099">40368</span> IN  NS  e.root-servers.net.
-.     <span style="color:#099">40368</span> IN  NS  l.root-servers.net.
-.     <span style="color:#099">40368</span> IN  NS  k.root-servers.net.
-.     <span style="color:#099">40368</span> IN  NS  a.root-servers.net.
-.     <span style="color:#099">40368</span> IN  NS  i.root-servers.net.
-.     <span style="color:#099">40368</span> IN  NS  b.root-servers.net.
-.     <span style="color:#099">40368</span> IN  NS  d.root-servers.net.
-.     <span style="color:#099">40368</span> IN  NS  g.root-servers.net.
-.     <span style="color:#099">40368</span> IN  NS  j.root-servers.net.
-
-;; Query time: <span style="color:#099">10</span> msec
-;; SERVER: 116.228.111.118#53<span style="color:#000;font-weight:bold">(</span>116.228.111.118<span style="color:#000;font-weight:bold">)</span>
-;; WHEN: Tue May  <span style="color:#099">1</span> 16:53:16 <span style="color:#099">2018</span>
-;; MSG SIZE  rcvd: <span style="color:#099">228</span>
-</code></pre></div><p>从返回的结果可以看出，根域名有 13 条 <code>NS</code> 记录，对应 13 组域名服务器。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ dig ns . <span style="color:#998;font-style:italic"># 注意，`.`代表根域名，这条指令表示查询根域名的NS记录</span>
+</span></span><span style="display:flex;"><span>; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; ns .
+</span></span><span style="display:flex;"><span>;; global options: +cmd
+</span></span><span style="display:flex;"><span>;; Got answer:
+</span></span><span style="display:flex;"><span>;; -&gt;&gt;HEADER<span style="color:#d14">&lt;&lt;- opco</span>de: QUERY, status: NOERROR, id: <span style="color:#099">12846</span>
+</span></span><span style="display:flex;"><span>;; flags: qr rd ra; QUERY: 1, ANSWER: 13, AUTHORITY: 0, ADDITIONAL: <span style="color:#099">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>;; QUESTION SECTION:
+</span></span><span style="display:flex;"><span>;.        IN  NS
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>;; ANSWER SECTION:
+</span></span><span style="display:flex;"><span>.     <span style="color:#099">40368</span> IN  NS  h.root-servers.net.
+</span></span><span style="display:flex;"><span>.     <span style="color:#099">40368</span> IN  NS  m.root-servers.net.
+</span></span><span style="display:flex;"><span>.     <span style="color:#099">40368</span> IN  NS  f.root-servers.net.
+</span></span><span style="display:flex;"><span>.     <span style="color:#099">40368</span> IN  NS  c.root-servers.net.
+</span></span><span style="display:flex;"><span>.     <span style="color:#099">40368</span> IN  NS  e.root-servers.net.
+</span></span><span style="display:flex;"><span>.     <span style="color:#099">40368</span> IN  NS  l.root-servers.net.
+</span></span><span style="display:flex;"><span>.     <span style="color:#099">40368</span> IN  NS  k.root-servers.net.
+</span></span><span style="display:flex;"><span>.     <span style="color:#099">40368</span> IN  NS  a.root-servers.net.
+</span></span><span style="display:flex;"><span>.     <span style="color:#099">40368</span> IN  NS  i.root-servers.net.
+</span></span><span style="display:flex;"><span>.     <span style="color:#099">40368</span> IN  NS  b.root-servers.net.
+</span></span><span style="display:flex;"><span>.     <span style="color:#099">40368</span> IN  NS  d.root-servers.net.
+</span></span><span style="display:flex;"><span>.     <span style="color:#099">40368</span> IN  NS  g.root-servers.net.
+</span></span><span style="display:flex;"><span>.     <span style="color:#099">40368</span> IN  NS  j.root-servers.net.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>;; Query time: <span style="color:#099">10</span> msec
+</span></span><span style="display:flex;"><span>;; SERVER: 116.228.111.118#53<span style="color:#000;font-weight:bold">(</span>116.228.111.118<span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>;; WHEN: Tue May  <span style="color:#099">1</span> 16:53:16 <span style="color:#099">2018</span>
+</span></span><span style="display:flex;"><span>;; MSG SIZE  rcvd: <span style="color:#099">228</span>
+</span></span></code></pre></div><p>从返回的结果可以看出，根域名有 13 条 <code>NS</code> 记录，对应 13 组域名服务器。</p>
 <p>使用 <code>dig</code> 获取 <code>cjting.me</code> 的 IPv4 地址。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ dig cjting.me <span style="color:#998;font-style:italic"># 记录类型默认为 `A`</span>
-; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; cjting.me
-;; global options: +cmd
-;; Got answer:
-;; -&gt;&gt;HEADER<span style="color:#d14">&lt;&lt;- opco</span>de: QUERY, status: NOERROR, id: <span style="color:#099">25983</span>
-;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: <span style="color:#099">0</span>
-
-;; QUESTION SECTION:
-;cjting.me.     IN  A
-
-;; ANSWER SECTION:
-cjting.me.    <span style="color:#099">598</span> IN  A 192.30.252.153
-cjting.me.    <span style="color:#099">598</span> IN  A 192.30.252.154
-
-;; Query time: <span style="color:#099">10</span> msec
-;; SERVER: 116.228.111.118#53<span style="color:#000;font-weight:bold">(</span>116.228.111.118<span style="color:#000;font-weight:bold">)</span>
-;; WHEN: Tue May  <span style="color:#099">1</span> 16:55:06 <span style="color:#099">2018</span>
-;; MSG SIZE  rcvd: <span style="color:#099">59</span>
-</code></pre></div><p>可以看到，<code>cjting.me</code> 这个域名有两条 <code>A</code> 记录，即查询到了两条 IP 地址。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ dig cjting.me <span style="color:#998;font-style:italic"># 记录类型默认为 `A`</span>
+</span></span><span style="display:flex;"><span>; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; cjting.me
+</span></span><span style="display:flex;"><span>;; global options: +cmd
+</span></span><span style="display:flex;"><span>;; Got answer:
+</span></span><span style="display:flex;"><span>;; -&gt;&gt;HEADER<span style="color:#d14">&lt;&lt;- opco</span>de: QUERY, status: NOERROR, id: <span style="color:#099">25983</span>
+</span></span><span style="display:flex;"><span>;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: <span style="color:#099">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>;; QUESTION SECTION:
+</span></span><span style="display:flex;"><span>;cjting.me.     IN  A
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>;; ANSWER SECTION:
+</span></span><span style="display:flex;"><span>cjting.me.    <span style="color:#099">598</span> IN  A 192.30.252.153
+</span></span><span style="display:flex;"><span>cjting.me.    <span style="color:#099">598</span> IN  A 192.30.252.154
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>;; Query time: <span style="color:#099">10</span> msec
+</span></span><span style="display:flex;"><span>;; SERVER: 116.228.111.118#53<span style="color:#000;font-weight:bold">(</span>116.228.111.118<span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>;; WHEN: Tue May  <span style="color:#099">1</span> 16:55:06 <span style="color:#099">2018</span>
+</span></span><span style="display:flex;"><span>;; MSG SIZE  rcvd: <span style="color:#099">59</span>
+</span></span></code></pre></div><p>可以看到，<code>cjting.me</code> 这个域名有两条 <code>A</code> 记录，即查询到了两条 IP 地址。</p>
 <p>第二个指令是 <code>host</code> 指令，相比 <code>dig</code> 指令，功能比较简单，输出也比较简洁。</p>
 <p>使用 <code>host</code> 获取 <code>cjting.me</code> 的相关信息。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ host cjting.me
-cjting.me has address 192.30.252.154
-cjting.me has address 192.30.252.153
-</code></pre></div><h2 id="一次完整的查询">一次完整的查询</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ host cjting.me
+</span></span><span style="display:flex;"><span>cjting.me has address 192.30.252.154
+</span></span><span style="display:flex;"><span>cjting.me has address 192.30.252.153
+</span></span></code></pre></div><h2 id="一次完整的查询">一次完整的查询</h2>
 <p><code>dig</code> 有一个很高级的功能，叫做 <code>trace</code>，即可以追踪输出每一级查询的具体信息，而不是只给一个最终结果。</p>
 <p>下面我们来看一个完整的例子，<code>dig +trace cjting.me</code>，看看到底发生了哪些请求，最终的IP地址是如何得到的。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ dig +trace cjting.me
-; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; +trace cjting.me @8.8.8.8
-;; global options: +cmd
-.                       <span style="color:#099">209918</span>  IN      NS      a.root-servers.net.
-.                       <span style="color:#099">209918</span>  IN      NS      m.root-servers.net.
-.                       <span style="color:#099">209918</span>  IN      NS      b.root-servers.net.
-.                       <span style="color:#099">209918</span>  IN      NS      l.root-servers.net.
-.                       <span style="color:#099">209918</span>  IN      NS      f.root-servers.net.
-.                       <span style="color:#099">209918</span>  IN      NS      d.root-servers.net.
-.                       <span style="color:#099">209918</span>  IN      NS      j.root-servers.net.
-.                       <span style="color:#099">209918</span>  IN      NS      i.root-servers.net.
-.                       <span style="color:#099">209918</span>  IN      NS      g.root-servers.net.
-.                       <span style="color:#099">209918</span>  IN      NS      k.root-servers.net.
-.                       <span style="color:#099">209918</span>  IN      NS      e.root-servers.net.
-.                       <span style="color:#099">209918</span>  IN      NS      h.root-servers.net.
-.                       <span style="color:#099">209918</span>  IN      NS      c.root-servers.net.
-;; Received <span style="color:#099">228</span> bytes from 8.8.8.8#53<span style="color:#000;font-weight:bold">(</span>8.8.8.8<span style="color:#000;font-weight:bold">)</span> in <span style="color:#099">117</span> ms
-
-me.                     <span style="color:#099">172800</span>  IN      NS      a2.nic.me.
-me.                     <span style="color:#099">172800</span>  IN      NS      a0.nic.me.
-me.                     <span style="color:#099">172800</span>  IN      NS      c0.nic.me.
-me.                     <span style="color:#099">172800</span>  IN      NS      b0.nic.me.
-me.                     <span style="color:#099">172800</span>  IN      NS      b2.nic.me.
-;; Received <span style="color:#099">336</span> bytes from 199.9.14.201#53<span style="color:#000;font-weight:bold">(</span>199.9.14.201<span style="color:#000;font-weight:bold">)</span> in <span style="color:#099">768</span> ms
-
-cjting.me.              <span style="color:#099">86400</span>   IN      NS      f1g1ns2.dnspod.net.
-cjting.me.              <span style="color:#099">86400</span>   IN      NS      f1g1ns1.dnspod.net.
-;; Received <span style="color:#099">81</span> bytes from 199.253.60.1#53<span style="color:#000;font-weight:bold">(</span>199.253.60.1<span style="color:#000;font-weight:bold">)</span> in <span style="color:#099">361</span> ms
-
-cjting.me.              <span style="color:#099">600</span>     IN      A       192.30.252.154
-cjting.me.              <span style="color:#099">600</span>     IN      A       192.30.252.153
-cjting.me.              <span style="color:#099">86400</span>   IN      NS      f1g1ns1.dnspod.net.
-cjting.me.              <span style="color:#099">86400</span>   IN      NS      f1g1ns2.dnspod.net.
-;; Received <span style="color:#099">123</span> bytes from 180.163.19.15#53<span style="color:#000;font-weight:bold">(</span>180.163.19.15<span style="color:#000;font-weight:bold">)</span> in <span style="color:#099">8</span> ms
-</code></pre></div><p><code>dig</code> 会输出每一步的关键信息，但并不完整。例如，第二段中，<code>dig</code> 询问 <code>199.9.14.201</code> 获取到了 <code>.me</code> 域名的相关信息，但是 <code>199.9.14.201</code> 这个 IP 是如何来的呢？</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ dig +trace cjting.me
+</span></span><span style="display:flex;"><span>; &lt;&lt;&gt;&gt; DiG 9.8.3-P1 &lt;&lt;&gt;&gt; +trace cjting.me @8.8.8.8
+</span></span><span style="display:flex;"><span>;; global options: +cmd
+</span></span><span style="display:flex;"><span>.                       <span style="color:#099">209918</span>  IN      NS      a.root-servers.net.
+</span></span><span style="display:flex;"><span>.                       <span style="color:#099">209918</span>  IN      NS      m.root-servers.net.
+</span></span><span style="display:flex;"><span>.                       <span style="color:#099">209918</span>  IN      NS      b.root-servers.net.
+</span></span><span style="display:flex;"><span>.                       <span style="color:#099">209918</span>  IN      NS      l.root-servers.net.
+</span></span><span style="display:flex;"><span>.                       <span style="color:#099">209918</span>  IN      NS      f.root-servers.net.
+</span></span><span style="display:flex;"><span>.                       <span style="color:#099">209918</span>  IN      NS      d.root-servers.net.
+</span></span><span style="display:flex;"><span>.                       <span style="color:#099">209918</span>  IN      NS      j.root-servers.net.
+</span></span><span style="display:flex;"><span>.                       <span style="color:#099">209918</span>  IN      NS      i.root-servers.net.
+</span></span><span style="display:flex;"><span>.                       <span style="color:#099">209918</span>  IN      NS      g.root-servers.net.
+</span></span><span style="display:flex;"><span>.                       <span style="color:#099">209918</span>  IN      NS      k.root-servers.net.
+</span></span><span style="display:flex;"><span>.                       <span style="color:#099">209918</span>  IN      NS      e.root-servers.net.
+</span></span><span style="display:flex;"><span>.                       <span style="color:#099">209918</span>  IN      NS      h.root-servers.net.
+</span></span><span style="display:flex;"><span>.                       <span style="color:#099">209918</span>  IN      NS      c.root-servers.net.
+</span></span><span style="display:flex;"><span>;; Received <span style="color:#099">228</span> bytes from 8.8.8.8#53<span style="color:#000;font-weight:bold">(</span>8.8.8.8<span style="color:#000;font-weight:bold">)</span> in <span style="color:#099">117</span> ms
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>me.                     <span style="color:#099">172800</span>  IN      NS      a2.nic.me.
+</span></span><span style="display:flex;"><span>me.                     <span style="color:#099">172800</span>  IN      NS      a0.nic.me.
+</span></span><span style="display:flex;"><span>me.                     <span style="color:#099">172800</span>  IN      NS      c0.nic.me.
+</span></span><span style="display:flex;"><span>me.                     <span style="color:#099">172800</span>  IN      NS      b0.nic.me.
+</span></span><span style="display:flex;"><span>me.                     <span style="color:#099">172800</span>  IN      NS      b2.nic.me.
+</span></span><span style="display:flex;"><span>;; Received <span style="color:#099">336</span> bytes from 199.9.14.201#53<span style="color:#000;font-weight:bold">(</span>199.9.14.201<span style="color:#000;font-weight:bold">)</span> in <span style="color:#099">768</span> ms
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cjting.me.              <span style="color:#099">86400</span>   IN      NS      f1g1ns2.dnspod.net.
+</span></span><span style="display:flex;"><span>cjting.me.              <span style="color:#099">86400</span>   IN      NS      f1g1ns1.dnspod.net.
+</span></span><span style="display:flex;"><span>;; Received <span style="color:#099">81</span> bytes from 199.253.60.1#53<span style="color:#000;font-weight:bold">(</span>199.253.60.1<span style="color:#000;font-weight:bold">)</span> in <span style="color:#099">361</span> ms
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cjting.me.              <span style="color:#099">600</span>     IN      A       192.30.252.154
+</span></span><span style="display:flex;"><span>cjting.me.              <span style="color:#099">600</span>     IN      A       192.30.252.153
+</span></span><span style="display:flex;"><span>cjting.me.              <span style="color:#099">86400</span>   IN      NS      f1g1ns1.dnspod.net.
+</span></span><span style="display:flex;"><span>cjting.me.              <span style="color:#099">86400</span>   IN      NS      f1g1ns2.dnspod.net.
+</span></span><span style="display:flex;"><span>;; Received <span style="color:#099">123</span> bytes from 180.163.19.15#53<span style="color:#000;font-weight:bold">(</span>180.163.19.15<span style="color:#000;font-weight:bold">)</span> in <span style="color:#099">8</span> ms
+</span></span></code></pre></div><p><code>dig</code> 会输出每一步的关键信息，但并不完整。例如，第二段中，<code>dig</code> 询问 <code>199.9.14.201</code> 获取到了 <code>.me</code> 域名的相关信息，但是 <code>199.9.14.201</code> 这个 IP 是如何来的呢？</p>
 <p>下面我列出这中间发生的完整步骤，假设我的本机 IP 是 192.168.0.100，DNS Server 的 IP 是 192.168.0.1。</p>
 <ol>
 <li>192.168.0.100 -&gt; 192.168.0.1: <code>.</code>的 NS 记录是什么？</li>

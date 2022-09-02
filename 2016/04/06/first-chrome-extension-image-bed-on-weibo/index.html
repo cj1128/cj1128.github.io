@@ -99,37 +99,37 @@
 <h2 id="实现">实现</h2>
 <h3 id="chrome-插件">Chrome 插件</h3>
 <p>首先，我们要做的是 Chrome 插件，先去看看 <a href="https://developer.chrome.com/extensions/getstarted">chrome extension get started</a>，可以发现，Chrome 插件其实很简单，提供一个 Manifest 指定一些元信息，其他就是用 Web 技术和 Chrome 提供的一些 api 来完成功能了。基本上都是我们熟悉并喜爱的东西。这里我们要用的就是最简单的 <code>Browser Actions</code>，提供一个按钮，然后点击以后跳转到我们的应用页面就行了，先来看看 <code>manifest.json</code>。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-json" data-lang="json">{
-  <span style="color:#000080">&#34;manifest_version&#34;</span>: <span style="color:#099">2</span>,
-  <span style="color:#000080">&#34;name&#34;</span>: <span style="color:#d14">&#34;图床on微博&#34;</span>,
-  <span style="color:#000080">&#34;description&#34;</span>: <span style="color:#d14">&#34;支持拖拽上传，复制上传，批量上传以及浏览上传历史记录&#34;</span>,
-  <span style="color:#000080">&#34;version&#34;</span>: <span style="color:#d14">&#34;1.0&#34;</span>,
-  <span style="color:#000080">&#34;icons&#34;</span>: {
-    <span style="color:#000080">&#34;16&#34;</span>: <span style="color:#d14">&#34;icon16.png&#34;</span>,
-    <span style="color:#000080">&#34;48&#34;</span>: <span style="color:#d14">&#34;icon128.png&#34;</span>,
-    <span style="color:#000080">&#34;128&#34;</span>: <span style="color:#d14">&#34;icon128.png&#34;</span>
-  },
-  <span style="color:#000080">&#34;browser_action&#34;</span>: {
-    <span style="color:#000080">&#34;default_icon&#34;</span>: {
-      <span style="color:#000080">&#34;19&#34;</span>: <span style="color:#d14">&#34;icon19.png&#34;</span>,
-      <span style="color:#000080">&#34;38&#34;</span>: <span style="color:#d14">&#34;icon38.png&#34;</span>
-    },
-   <span style="color:#000080">&#34;default_title&#34;</span>: <span style="color:#d14">&#34;图床on微博&#34;</span>
-  },
-  <span style="color:#000080">&#34;background&#34;</span>:{
-    <span style="color:#000080">&#34;scripts&#34;</span>:[<span style="color:#d14">&#34;background.js&#34;</span>],
-    <span style="color:#000080">&#34;persistent&#34;</span>: <span style="color:#000;font-weight:bold">false</span>
-  },
-  <span style="color:#000080">&#34;permissions&#34;</span>: [
-    <span style="color:#d14">&#34;http://*/&#34;</span>
-   ]
-}
-</code></pre></div><p><code>background</code> 指定插件的 background script，在这个 js 中，我们监听按钮的点击事件，当按钮点击的时候，打开我们的应用页面。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript">chrome.browserAction.onClicked.addListener(<span style="color:#000;font-weight:bold">function</span>() {
-  <span style="color:#000;font-weight:bold">var</span> url <span style="color:#000;font-weight:bold">=</span> chrome.extension.getURL(<span style="color:#d14">&#34;app.html&#34;</span>)
-  chrome.tabs.create({ url<span style="color:#000;font-weight:bold">:</span> url })
-})
-</code></pre></div><p><code>permissions</code> 用于申请权限，我们设置为 <code>http://*/</code> 意味着我们可以请求任意的网址（HTTP 协议），解决了跨域问题。剩下来的就是开发 app.html 了，到这里，Chrome 插件的部分已经全部完成了。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#000080">&#34;manifest_version&#34;</span>: <span style="color:#099">2</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000080">&#34;name&#34;</span>: <span style="color:#d14">&#34;图床on微博&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000080">&#34;description&#34;</span>: <span style="color:#d14">&#34;支持拖拽上传，复制上传，批量上传以及浏览上传历史记录&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000080">&#34;version&#34;</span>: <span style="color:#d14">&#34;1.0&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000080">&#34;icons&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;16&#34;</span>: <span style="color:#d14">&#34;icon16.png&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;48&#34;</span>: <span style="color:#d14">&#34;icon128.png&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;128&#34;</span>: <span style="color:#d14">&#34;icon128.png&#34;</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#000080">&#34;browser_action&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;default_icon&#34;</span>: {
+</span></span><span style="display:flex;"><span>      <span style="color:#000080">&#34;19&#34;</span>: <span style="color:#d14">&#34;icon19.png&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#000080">&#34;38&#34;</span>: <span style="color:#d14">&#34;icon38.png&#34;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>   <span style="color:#000080">&#34;default_title&#34;</span>: <span style="color:#d14">&#34;图床on微博&#34;</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#000080">&#34;background&#34;</span>:{
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;scripts&#34;</span>:[<span style="color:#d14">&#34;background.js&#34;</span>],
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;persistent&#34;</span>: <span style="color:#000;font-weight:bold">false</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#000080">&#34;permissions&#34;</span>: [
+</span></span><span style="display:flex;"><span>    <span style="color:#d14">&#34;http://*/&#34;</span>
+</span></span><span style="display:flex;"><span>   ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>background</code> 指定插件的 background script，在这个 js 中，我们监听按钮的点击事件，当按钮点击的时候，打开我们的应用页面。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>chrome.browserAction.onClicked.addListener(<span style="color:#000;font-weight:bold">function</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">var</span> url <span style="color:#000;font-weight:bold">=</span> chrome.extension.getURL(<span style="color:#d14">&#34;app.html&#34;</span>)
+</span></span><span style="display:flex;"><span>  chrome.tabs.create({ url<span style="color:#000;font-weight:bold">:</span> url })
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div><p><code>permissions</code> 用于申请权限，我们设置为 <code>http://*/</code> 意味着我们可以请求任意的网址（HTTP 协议），解决了跨域问题。剩下来的就是开发 app.html 了，到这里，Chrome 插件的部分已经全部完成了。</p>
 <h3 id="app">app</h3>
 <p>习惯了使用 React 开发的我，决定还是使用 React 来开发，虽然会引入 React 这个庞大的库（大约 140kb），但是 Chrome 插件是打包安装的，不会影响加载速度。</p>
 <p>关于拖拽功能的实现，网上有很多插件，我粗略找了一下，都非常复杂，比如 <a href="http://www.dropzonejs.com/">Dropzone.js</a>，不仅实现了拖拽，还帮你实现了文件上传、上传进度等一些列功能。并不需要，我们需要的是一个最简单的拖拽插件，当用户拖拽文件进入的时候，调用我们的回调函数并且传递 file 参数就行了。幸运的是，我找到了 <a href="https://github.com/okonet/react-dropzone">react-dropzone</a>，好用到不行。</p>

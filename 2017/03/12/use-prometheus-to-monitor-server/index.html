@@ -97,129 +97,129 @@
 <h3 id="格式">格式</h3>
 <p>Prometheus 获取数据的策略是 <strong>Pull</strong> 而不是 <strong>Push</strong>，也就是说，它会自己去抓取，而不用你来推送。抓取使用的是 HTTP 协议，在配置文件中指定目标程序的端口，路径及间隔时间即可。这也就意味着任何程序想要使用 Prometheus 存储数据都很简单，定义一个 HTTP 接口即可。</p>
 <p>Prometheus 的数据格式是简单的文本格式，可以直接阅读。其中，<code>#</code>号开头的是注释，除此之外，每一行一个数据项，数据名在前，值在后。<code>{}</code>中是标签，一条数据可以有多个标签。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text"># HELP go_gc_duration_seconds A summary of the GC invocation durations.
-# TYPE go_gc_duration_seconds summary
-http_request_count{endpoint=&#34;/a&#34;} 10
-http_request_count{endpoint=&#34;/b&#34;} 200
-http_request_count(endpoint=&#34;/c&#34;) 3
-</code></pre></div><h3 id="配置">配置</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span># HELP go_gc_duration_seconds A summary of the GC invocation durations.
+</span></span><span style="display:flex;"><span># TYPE go_gc_duration_seconds summary
+</span></span><span style="display:flex;"><span>http_request_count{endpoint=&#34;/a&#34;} 10
+</span></span><span style="display:flex;"><span>http_request_count{endpoint=&#34;/b&#34;} 200
+</span></span><span style="display:flex;"><span>http_request_count(endpoint=&#34;/c&#34;) 3
+</span></span></code></pre></div><h3 id="配置">配置</h3>
 <p>Prometheus 使用 YAML 进行配置。<code>global</code> 配置一些全局信息，<code>scrape_configs</code> 配置具体想要抓取的目标。这段配置的含义是：启动一个叫做 <code>go-test</code> 的任务，每隔五秒钟，访问 <code>localhost:8888/metrics</code> 获取数据。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#000080">global</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#000080">scrape_interval</span>:<span style="color:#bbb">     </span>15s<span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># By default, scrape targets every 15 seconds.</span><span style="color:#bbb">
-</span><span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#998;font-style:italic"># Attach these labels to any time series or alerts when communicating with</span><span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#998;font-style:italic"># external systems (federation, remote storage, Alertmanager).</span><span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#000080">external_labels</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#000080">monitor</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#39;codelab-monitor&#39;</span><span style="color:#bbb">
-</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#998;font-style:italic"># A scrape configuration containing exactly one endpoint to scrape:</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#998;font-style:italic"># Here it&#39;s Prometheus itself.</span><span style="color:#bbb">
-</span><span style="color:#bbb"></span><span style="color:#000080">scrape_configs</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">  </span><span style="color:#998;font-style:italic"># The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.</span><span style="color:#bbb">
-</span><span style="color:#bbb">  </span>- <span style="color:#000080">job_name</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#39;go-test&#39;</span><span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#000080">metrics_path</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#34;/metrics&#34;</span><span style="color:#bbb">
-</span><span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#998;font-style:italic"># Override the global default and scrape targets from this job every 5 seconds.</span><span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#000080">scrape_interval</span>:<span style="color:#bbb"> </span>5s<span style="color:#bbb">
-</span><span style="color:#bbb">
-</span><span style="color:#bbb">    </span><span style="color:#000080">static_configs</span>:<span style="color:#bbb">
-</span><span style="color:#bbb">      </span>- <span style="color:#000080">targets</span>:<span style="color:#bbb"> </span>[<span style="color:#d14">&#39;localhost:8888&#39;</span>]<span style="color:#bbb">
-</span></code></pre></div><h3 id="测试程序">测试程序</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#000080">global</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#000080">scrape_interval</span>:<span style="color:#bbb">     </span>15s<span style="color:#bbb"> </span><span style="color:#998;font-style:italic"># By default, scrape targets every 15 seconds.</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#998;font-style:italic"># Attach these labels to any time series or alerts when communicating with</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#998;font-style:italic"># external systems (federation, remote storage, Alertmanager).</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#000080">external_labels</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#000080">monitor</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#39;codelab-monitor&#39;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#998;font-style:italic"># A scrape configuration containing exactly one endpoint to scrape:</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#998;font-style:italic"># Here it&#39;s Prometheus itself.</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#000080">scrape_configs</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#998;font-style:italic"># The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>- <span style="color:#000080">job_name</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#39;go-test&#39;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#000080">metrics_path</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#34;/metrics&#34;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#998;font-style:italic"># Override the global default and scrape targets from this job every 5 seconds.</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#000080">scrape_interval</span>:<span style="color:#bbb"> </span>5s<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#000080">static_configs</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span>- <span style="color:#000080">targets</span>:<span style="color:#bbb"> </span>[<span style="color:#d14">&#39;localhost:8888&#39;</span>]<span style="color:#bbb">
+</span></span></span></code></pre></div><h3 id="测试程序">测试程序</h3>
 <p>我们来写一个程序测试一下 Prometheus 的功能。虽然可以手动返回 Prometheus 需要的数据，但是使用开发好的客户端会更加方便。</p>
 <p>这里我们使用 Go 语言，编写一个简单的服务器和客户端。客户端会以一个稳定的速度请求服务器的 <code>/test</code> 路径，但是每两分钟会加大流量，持续 30 秒再回到之前的水平。服务器 95% 的情况下会花费 50ms 进行响应，还有 5% 的情况下会花费 100ms。</p>
 <p>这里我们定义了两个指标，<code>httpRequestCount</code> 记录 HTTP 的请求数，<code>httpRequestDuration</code> 记录响应时间，他们都有一个 <code>endpoint</code> 标签用于记录请求路径。这两个指标分别是 <code>Counter</code> 类型和 <code>Summary</code> 类型，Prometheus 定义了四种指标类型，基本涵盖了各种用例场景，具体可以去看<a href="https://prometheus.io/docs/concepts/metric_types/">相关文档</a>。简单来说，Counter 类型的数据表示一个只会向上增加的数据，比如请求数。而 Summary 类型的数据表示一个按区间分布的数据，比如响应时间或者请求体大小。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-go" data-lang="go"><span style="color:#000;font-weight:bold">package</span> main
-
-<span style="color:#000;font-weight:bold">import</span> (
-	<span style="color:#d14">&#34;log&#34;</span>
-	<span style="color:#d14">&#34;math/rand&#34;</span>
-	<span style="color:#d14">&#34;net/http&#34;</span>
-	<span style="color:#d14">&#34;time&#34;</span>
-
-	<span style="color:#d14">&#34;github.com/prometheus/client_golang/prometheus&#34;</span>
-	<span style="color:#d14">&#34;github.com/prometheus/client_golang/prometheus/promhttp&#34;</span>
-)
-
-<span style="color:#000;font-weight:bold">var</span> httpRequestCount = prometheus.<span style="color:#900;font-weight:bold">NewCounterVec</span>(
-	prometheus.CounterOpts{
-		Name: <span style="color:#d14">&#34;http_request_count&#34;</span>,
-		Help: <span style="color:#d14">&#34;http request count&#34;</span>,
-	},
-	[]<span style="color:#458;font-weight:bold">string</span>{<span style="color:#d14">&#34;endpoint&#34;</span>},
-)
-
-<span style="color:#000;font-weight:bold">var</span> httpRequestDuration = prometheus.<span style="color:#900;font-weight:bold">NewSummaryVec</span>(
-	prometheus.SummaryOpts{
-		Name: <span style="color:#d14">&#34;http_request_duration&#34;</span>,
-		Help: <span style="color:#d14">&#34;http request duration&#34;</span>,
-	},
-	[]<span style="color:#458;font-weight:bold">string</span>{<span style="color:#d14">&#34;endpoint&#34;</span>},
-)
-
-<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">init</span>() {
-	prometheus.<span style="color:#900;font-weight:bold">MustRegister</span>(httpRequestCount)
-	prometheus.<span style="color:#900;font-weight:bold">MustRegister</span>(httpRequestDuration)
-}
-
-<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>() {
-	http.<span style="color:#900;font-weight:bold">Handle</span>(<span style="color:#d14">&#34;/metrics&#34;</span>, promhttp.<span style="color:#900;font-weight:bold">Handler</span>())
-	http.<span style="color:#900;font-weight:bold">HandleFunc</span>(<span style="color:#d14">&#34;/test&#34;</span>, handler)
-	<span style="color:#000;font-weight:bold">go</span> <span style="color:#000;font-weight:bold">func</span>() {
-		http.<span style="color:#900;font-weight:bold">ListenAndServe</span>(<span style="color:#d14">&#34;:8888&#34;</span>, <span style="color:#000;font-weight:bold">nil</span>)
-	}()
-	<span style="color:#900;font-weight:bold">startClient</span>()
-	doneChan <span style="color:#000;font-weight:bold">:=</span> <span style="color:#0086b3">make</span>(<span style="color:#000;font-weight:bold">chan</span> <span style="color:#000;font-weight:bold">struct</span>{})
-	<span style="color:#000;font-weight:bold">&lt;-</span>doneChan
-}
-
-<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">handler</span>(w http.ResponseWriter, r <span style="color:#000;font-weight:bold">*</span>http.Request) {
-	start <span style="color:#000;font-weight:bold">:=</span> time.<span style="color:#900;font-weight:bold">Now</span>()
-	path <span style="color:#000;font-weight:bold">:=</span> r.URL.Path
-	httpRequestCount.<span style="color:#900;font-weight:bold">WithLabelValues</span>(path).<span style="color:#900;font-weight:bold">Inc</span>()
-
-	n <span style="color:#000;font-weight:bold">:=</span> rand.<span style="color:#900;font-weight:bold">Intn</span>(<span style="color:#099">100</span>)
-	<span style="color:#000;font-weight:bold">if</span> n <span style="color:#000;font-weight:bold">&gt;=</span> <span style="color:#099">95</span> {
-		time.<span style="color:#900;font-weight:bold">Sleep</span>(<span style="color:#099">100</span> <span style="color:#000;font-weight:bold">*</span> time.Millisecond)
-	} <span style="color:#000;font-weight:bold">else</span> {
-		time.<span style="color:#900;font-weight:bold">Sleep</span>(<span style="color:#099">50</span> <span style="color:#000;font-weight:bold">*</span> time.Millisecond)
-	}
-
-	elapsed <span style="color:#000;font-weight:bold">:=</span> (<span style="color:#458;font-weight:bold">float64</span>)(time.<span style="color:#900;font-weight:bold">Since</span>(start) <span style="color:#000;font-weight:bold">/</span> time.Millisecond)
-	httpRequestDuration.<span style="color:#900;font-weight:bold">WithLabelValues</span>(path).<span style="color:#900;font-weight:bold">Observe</span>(elapsed)
-}
-
-<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">startClient</span>() {
-	sleepTime <span style="color:#000;font-weight:bold">:=</span> <span style="color:#099">1000</span>
-
-	<span style="color:#000;font-weight:bold">go</span> <span style="color:#000;font-weight:bold">func</span>() {
-		ticker <span style="color:#000;font-weight:bold">:=</span> time.<span style="color:#900;font-weight:bold">NewTicker</span>(<span style="color:#099">2</span> <span style="color:#000;font-weight:bold">*</span> time.Minute)
-		<span style="color:#000;font-weight:bold">for</span> {
-			<span style="color:#000;font-weight:bold">&lt;-</span>ticker.C
-			sleepTime = <span style="color:#099">200</span>
-			<span style="color:#000;font-weight:bold">&lt;-</span>time.<span style="color:#900;font-weight:bold">After</span>(<span style="color:#099">30</span> <span style="color:#000;font-weight:bold">*</span> time.Second)
-			sleepTime = <span style="color:#099">1000</span>
-		}
-	}()
-
-	<span style="color:#000;font-weight:bold">for</span> i <span style="color:#000;font-weight:bold">:=</span> <span style="color:#099">0</span>; i &lt; <span style="color:#099">100</span>; i<span style="color:#000;font-weight:bold">++</span> {
-		<span style="color:#000;font-weight:bold">go</span> <span style="color:#000;font-weight:bold">func</span>() {
-			<span style="color:#000;font-weight:bold">for</span> {
-				<span style="color:#900;font-weight:bold">sendRequest</span>()
-				time.<span style="color:#900;font-weight:bold">Sleep</span>((time.Duration)(sleepTime) <span style="color:#000;font-weight:bold">*</span> time.Millisecond)
-			}
-		}()
-	}
-}
-
-<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">sendRequest</span>() {
-	resp, err <span style="color:#000;font-weight:bold">:=</span> http.<span style="color:#900;font-weight:bold">Get</span>(<span style="color:#d14">&#34;http://localhost:8888/test&#34;</span>)
-	<span style="color:#000;font-weight:bold">if</span> err <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">nil</span> {
-		log.<span style="color:#900;font-weight:bold">Println</span>(err)
-		<span style="color:#000;font-weight:bold">return</span>
-	}
-	resp.Body.<span style="color:#900;font-weight:bold">Close</span>()
-}
-</code></pre></div><p>启动 Prometheus <code>prometheus -config.file config.yml</code> 以后，再启动我们的测试程序 <code>go run test.go</code>。打开 Prometheus 控制台 <code>localhost:9090/targets</code> 就可以看到 Prometheus 正在抓取数据，一切正常。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">package</span> main
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">import</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#d14">&#34;log&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#d14">&#34;math/rand&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#d14">&#34;net/http&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#d14">&#34;time&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#d14">&#34;github.com/prometheus/client_golang/prometheus&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#d14">&#34;github.com/prometheus/client_golang/prometheus/promhttp&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">var</span> httpRequestCount = prometheus.<span style="color:#900;font-weight:bold">NewCounterVec</span>(
+</span></span><span style="display:flex;"><span>	prometheus.CounterOpts{
+</span></span><span style="display:flex;"><span>		Name: <span style="color:#d14">&#34;http_request_count&#34;</span>,
+</span></span><span style="display:flex;"><span>		Help: <span style="color:#d14">&#34;http request count&#34;</span>,
+</span></span><span style="display:flex;"><span>	},
+</span></span><span style="display:flex;"><span>	[]<span style="color:#458;font-weight:bold">string</span>{<span style="color:#d14">&#34;endpoint&#34;</span>},
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">var</span> httpRequestDuration = prometheus.<span style="color:#900;font-weight:bold">NewSummaryVec</span>(
+</span></span><span style="display:flex;"><span>	prometheus.SummaryOpts{
+</span></span><span style="display:flex;"><span>		Name: <span style="color:#d14">&#34;http_request_duration&#34;</span>,
+</span></span><span style="display:flex;"><span>		Help: <span style="color:#d14">&#34;http request duration&#34;</span>,
+</span></span><span style="display:flex;"><span>	},
+</span></span><span style="display:flex;"><span>	[]<span style="color:#458;font-weight:bold">string</span>{<span style="color:#d14">&#34;endpoint&#34;</span>},
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">init</span>() {
+</span></span><span style="display:flex;"><span>	prometheus.<span style="color:#900;font-weight:bold">MustRegister</span>(httpRequestCount)
+</span></span><span style="display:flex;"><span>	prometheus.<span style="color:#900;font-weight:bold">MustRegister</span>(httpRequestDuration)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>() {
+</span></span><span style="display:flex;"><span>	http.<span style="color:#900;font-weight:bold">Handle</span>(<span style="color:#d14">&#34;/metrics&#34;</span>, promhttp.<span style="color:#900;font-weight:bold">Handler</span>())
+</span></span><span style="display:flex;"><span>	http.<span style="color:#900;font-weight:bold">HandleFunc</span>(<span style="color:#d14">&#34;/test&#34;</span>, handler)
+</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">go</span> <span style="color:#000;font-weight:bold">func</span>() {
+</span></span><span style="display:flex;"><span>		http.<span style="color:#900;font-weight:bold">ListenAndServe</span>(<span style="color:#d14">&#34;:8888&#34;</span>, <span style="color:#000;font-weight:bold">nil</span>)
+</span></span><span style="display:flex;"><span>	}()
+</span></span><span style="display:flex;"><span>	<span style="color:#900;font-weight:bold">startClient</span>()
+</span></span><span style="display:flex;"><span>	doneChan <span style="color:#000;font-weight:bold">:=</span> <span style="color:#0086b3">make</span>(<span style="color:#000;font-weight:bold">chan</span> <span style="color:#000;font-weight:bold">struct</span>{})
+</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">&lt;-</span>doneChan
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">handler</span>(w http.ResponseWriter, r <span style="color:#000;font-weight:bold">*</span>http.Request) {
+</span></span><span style="display:flex;"><span>	start <span style="color:#000;font-weight:bold">:=</span> time.<span style="color:#900;font-weight:bold">Now</span>()
+</span></span><span style="display:flex;"><span>	path <span style="color:#000;font-weight:bold">:=</span> r.URL.Path
+</span></span><span style="display:flex;"><span>	httpRequestCount.<span style="color:#900;font-weight:bold">WithLabelValues</span>(path).<span style="color:#900;font-weight:bold">Inc</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	n <span style="color:#000;font-weight:bold">:=</span> rand.<span style="color:#900;font-weight:bold">Intn</span>(<span style="color:#099">100</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">if</span> n <span style="color:#000;font-weight:bold">&gt;=</span> <span style="color:#099">95</span> {
+</span></span><span style="display:flex;"><span>		time.<span style="color:#900;font-weight:bold">Sleep</span>(<span style="color:#099">100</span> <span style="color:#000;font-weight:bold">*</span> time.Millisecond)
+</span></span><span style="display:flex;"><span>	} <span style="color:#000;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>		time.<span style="color:#900;font-weight:bold">Sleep</span>(<span style="color:#099">50</span> <span style="color:#000;font-weight:bold">*</span> time.Millisecond)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	elapsed <span style="color:#000;font-weight:bold">:=</span> (<span style="color:#458;font-weight:bold">float64</span>)(time.<span style="color:#900;font-weight:bold">Since</span>(start) <span style="color:#000;font-weight:bold">/</span> time.Millisecond)
+</span></span><span style="display:flex;"><span>	httpRequestDuration.<span style="color:#900;font-weight:bold">WithLabelValues</span>(path).<span style="color:#900;font-weight:bold">Observe</span>(elapsed)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">startClient</span>() {
+</span></span><span style="display:flex;"><span>	sleepTime <span style="color:#000;font-weight:bold">:=</span> <span style="color:#099">1000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">go</span> <span style="color:#000;font-weight:bold">func</span>() {
+</span></span><span style="display:flex;"><span>		ticker <span style="color:#000;font-weight:bold">:=</span> time.<span style="color:#900;font-weight:bold">NewTicker</span>(<span style="color:#099">2</span> <span style="color:#000;font-weight:bold">*</span> time.Minute)
+</span></span><span style="display:flex;"><span>		<span style="color:#000;font-weight:bold">for</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#000;font-weight:bold">&lt;-</span>ticker.C
+</span></span><span style="display:flex;"><span>			sleepTime = <span style="color:#099">200</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#000;font-weight:bold">&lt;-</span>time.<span style="color:#900;font-weight:bold">After</span>(<span style="color:#099">30</span> <span style="color:#000;font-weight:bold">*</span> time.Second)
+</span></span><span style="display:flex;"><span>			sleepTime = <span style="color:#099">1000</span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">for</span> i <span style="color:#000;font-weight:bold">:=</span> <span style="color:#099">0</span>; i &lt; <span style="color:#099">100</span>; i<span style="color:#000;font-weight:bold">++</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#000;font-weight:bold">go</span> <span style="color:#000;font-weight:bold">func</span>() {
+</span></span><span style="display:flex;"><span>			<span style="color:#000;font-weight:bold">for</span> {
+</span></span><span style="display:flex;"><span>				<span style="color:#900;font-weight:bold">sendRequest</span>()
+</span></span><span style="display:flex;"><span>				time.<span style="color:#900;font-weight:bold">Sleep</span>((time.Duration)(sleepTime) <span style="color:#000;font-weight:bold">*</span> time.Millisecond)
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>		}()
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">sendRequest</span>() {
+</span></span><span style="display:flex;"><span>	resp, err <span style="color:#000;font-weight:bold">:=</span> http.<span style="color:#900;font-weight:bold">Get</span>(<span style="color:#d14">&#34;http://localhost:8888/test&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">if</span> err <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span>		log.<span style="color:#900;font-weight:bold">Println</span>(err)
+</span></span><span style="display:flex;"><span>		<span style="color:#000;font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	resp.Body.<span style="color:#900;font-weight:bold">Close</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>启动 Prometheus <code>prometheus -config.file config.yml</code> 以后，再启动我们的测试程序 <code>go run test.go</code>。打开 Prometheus 控制台 <code>localhost:9090/targets</code> 就可以看到 Prometheus 正在抓取数据，一切正常。</p>
 <p><img src="/image/9b85365dgy1fdki1jpblnj21gk06mjs1.jpg" alt=""></p>
 <h3 id="控制台">控制台</h3>
 <p>Prometheus 的一个强大之处在于可以使用各种函数和操作符来查询数据。在上面的测试程序中，每个数据都带有 <code>endpoint</code> 这个标签，表示请求的路径。打开 Prometheus 的控制台 <code>http://localhost:9090/graph</code>，点击 <code>console</code> 标签页，输入 <code>http_request_count{endpoint=&quot;/a&quot;}</code> 就可以查询路径为 <code>/a</code> 的 API Point 到目前为止的总请求数。如果想看 QPS 的话，可以使用自带的函数 <code>rate</code>，<code>rate(http_request_count[10s])</code> 表示以 10s 作为时间单元来统计 QPS。</p>
@@ -237,8 +237,8 @@ http_request_count(endpoint=&#34;/c&#34;) 3
 <p>同样是去官网下载相应的<a href="http://grafana.org/download/">安装包</a>。Mac 用户可以再次感受到 brew 的优越性。<code>brew install grafana</code>。</p>
 <h3 id="启动">启动</h3>
 <p>直接用默认配置就挺好的。在 Mac 上，启动指令如下。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ grafana-server --config<span style="color:#000;font-weight:bold">=</span>/usr/local/etc/grafana/grafana.ini --homepath /usr/local/share/grafana cfg:default.paths.logs<span style="color:#000;font-weight:bold">=</span>/usr/local/var/log/grafana cfg:default.paths.data<span style="color:#000;font-weight:bold">=</span>/usr/local/var/lib/grafana cfg:default.paths.plugins<span style="color:#000;font-weight:bold">=</span>/usr/local/var/lib/grafana/plugins
-</code></pre></div><p>Grafana 默认监听在 3000 端口上，默认用户名和密码都是 <code>admin</code>。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ grafana-server --config<span style="color:#000;font-weight:bold">=</span>/usr/local/etc/grafana/grafana.ini --homepath /usr/local/share/grafana cfg:default.paths.logs<span style="color:#000;font-weight:bold">=</span>/usr/local/var/log/grafana cfg:default.paths.data<span style="color:#000;font-weight:bold">=</span>/usr/local/var/lib/grafana cfg:default.paths.plugins<span style="color:#000;font-weight:bold">=</span>/usr/local/var/lib/grafana/plugins
+</span></span></code></pre></div><p>Grafana 默认监听在 3000 端口上，默认用户名和密码都是 <code>admin</code>。</p>
 <h3 id="设置">设置</h3>
 <p>输入用户名和密码以后，进入 Grafana 页面。第一件事是要设置数据源 (Data Source)，即 Grafana 从什么地方获取数据，选择 Prometheus 即可。</p>
 <p><img src="/image/9b85365dgy1fdll4hyc91j20sk0joaeg.jpg" alt=""></p>

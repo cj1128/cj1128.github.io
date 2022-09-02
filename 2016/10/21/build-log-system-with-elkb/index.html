@@ -108,213 +108,213 @@
 <h2 id="安装">安装</h2>
 <p>这里使用 CentOS 7 为例来说明怎么装这几个软件。其中 ELK 只需要安装在进行日志收集分析的服务器（server）上，而Beats是每一台产生日志的机器（client）都需要安装，当然也可能包括日志收集服务器本身。</p>
 <h3 id="java">Java</h3>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-shell" data-lang="shell">$ yum install java-1.8.0
-</code></pre></div><h3 id="ealstic-search">Ealstic Search</h3>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-shell" data-lang="shell">$ rpm --import http://packages.elastic.co/GPG-KEY-elasticsearch
-$ <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;[elasticsearch-2.x]
-</span><span style="color:#d14">name=Elasticsearch repository for 2.x packages
-</span><span style="color:#d14">baseurl=http://packages.elastic.co/elasticsearch/2.x/centos
-</span><span style="color:#d14">gpgcheck=1
-</span><span style="color:#d14">gpgkey=http://packages.elastic.co/GPG-KEY-elasticsearch
-</span><span style="color:#d14">enabled=1
-</span><span style="color:#d14">&#39;</span> | tee /etc/yum.repos.d/elasticsearch.repo
-$ yum install elasticsearch
-</code></pre></div><h3 id="logstash">Logstash</h3>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-shell" data-lang="shell">$ vim /etc/yum.repos.d/logstash.repo
-<span style="color:#998;font-style:italic"># 添加以下内容</span>
-<span style="color:#000;font-weight:bold">[</span>logstash-2.4<span style="color:#000;font-weight:bold">]</span>
-<span style="color:#008080">name</span><span style="color:#000;font-weight:bold">=</span>logstash repository <span style="color:#000;font-weight:bold">for</span> 2.2 packages
-<span style="color:#008080">baseurl</span><span style="color:#000;font-weight:bold">=</span>http://packages.elasticsearch.org/logstash/2.2/centos
-<span style="color:#008080">gpgcheck</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>
-<span style="color:#008080">gpgkey</span><span style="color:#000;font-weight:bold">=</span>http://packages.elasticsearch.org/GPG-KEY-elasticsearch
-<span style="color:#008080">enabled</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>
-<span style="color:#998;font-style:italic"># 安装</span>
-$ yum install logstash
-</code></pre></div><h3 id="kibana">Kibana</h3>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-shell" data-lang="shell">$ vim /etc/yum.repos.d/kibana.repo
-<span style="color:#998;font-style:italic"># 添加以下内容</span>
-<span style="color:#000;font-weight:bold">[</span>kibana-4.6<span style="color:#000;font-weight:bold">]</span>
-<span style="color:#008080">name</span><span style="color:#000;font-weight:bold">=</span>Kibana repository <span style="color:#000;font-weight:bold">for</span> 4.4.x packages
-<span style="color:#008080">baseurl</span><span style="color:#000;font-weight:bold">=</span>http://packages.elastic.co/kibana/4.4/centos
-<span style="color:#008080">gpgcheck</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>
-<span style="color:#008080">gpgkey</span><span style="color:#000;font-weight:bold">=</span>http://packages.elastic.co/GPG-KEY-elasticsearch
-<span style="color:#008080">enabled</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>
-<span style="color:#998;font-style:italic"># 安装</span>
-$ yum install kibana
-</code></pre></div><h3 id="beats">Beats</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ yum install java-1.8.0
+</span></span></code></pre></div><h3 id="ealstic-search">Ealstic Search</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ rpm --import http://packages.elastic.co/GPG-KEY-elasticsearch
+</span></span><span style="display:flex;"><span>$ <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;[elasticsearch-2.x]
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">name=Elasticsearch repository for 2.x packages
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">baseurl=http://packages.elastic.co/elasticsearch/2.x/centos
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">gpgcheck=1
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">gpgkey=http://packages.elastic.co/GPG-KEY-elasticsearch
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">enabled=1
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">&#39;</span> | tee /etc/yum.repos.d/elasticsearch.repo
+</span></span><span style="display:flex;"><span>$ yum install elasticsearch
+</span></span></code></pre></div><h3 id="logstash">Logstash</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ vim /etc/yum.repos.d/logstash.repo
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 添加以下内容</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">[</span>logstash-2.4<span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#008080">name</span><span style="color:#000;font-weight:bold">=</span>logstash repository <span style="color:#000;font-weight:bold">for</span> 2.2 packages
+</span></span><span style="display:flex;"><span><span style="color:#008080">baseurl</span><span style="color:#000;font-weight:bold">=</span>http://packages.elasticsearch.org/logstash/2.2/centos
+</span></span><span style="display:flex;"><span><span style="color:#008080">gpgcheck</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#008080">gpgkey</span><span style="color:#000;font-weight:bold">=</span>http://packages.elasticsearch.org/GPG-KEY-elasticsearch
+</span></span><span style="display:flex;"><span><span style="color:#008080">enabled</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 安装</span>
+</span></span><span style="display:flex;"><span>$ yum install logstash
+</span></span></code></pre></div><h3 id="kibana">Kibana</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ vim /etc/yum.repos.d/kibana.repo
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 添加以下内容</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">[</span>kibana-4.6<span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#008080">name</span><span style="color:#000;font-weight:bold">=</span>Kibana repository <span style="color:#000;font-weight:bold">for</span> 4.4.x packages
+</span></span><span style="display:flex;"><span><span style="color:#008080">baseurl</span><span style="color:#000;font-weight:bold">=</span>http://packages.elastic.co/kibana/4.4/centos
+</span></span><span style="display:flex;"><span><span style="color:#008080">gpgcheck</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#008080">gpgkey</span><span style="color:#000;font-weight:bold">=</span>http://packages.elastic.co/GPG-KEY-elasticsearch
+</span></span><span style="display:flex;"><span><span style="color:#008080">enabled</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 安装</span>
+</span></span><span style="display:flex;"><span>$ yum install kibana
+</span></span></code></pre></div><h3 id="beats">Beats</h3>
 <p>Beats 分为很多种，每一种收集特定的信息。常用的是 <code>Filebeat</code>，监听文件变化，传送文件内容。一般日志系统使用 Filebeat 就够了。</p>
 <p>我们切换到 client 上。首先同样需要导入 <code>GPG KEY</code>。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-shell" data-lang="shell">$ rpm --import http://packages.elastic.co/GPG-KEY-elasticsearch
-</code></pre></div><p>创建新的 repo 并安装。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-shell" data-lang="shell">$ vim /etc/yum.repos.d/elastic-beats.repo
-<span style="color:#998;font-style:italic"># 添加以下内容</span>
-<span style="color:#000;font-weight:bold">[</span>beats<span style="color:#000;font-weight:bold">]</span>
-<span style="color:#008080">name</span><span style="color:#000;font-weight:bold">=</span>Elastic Beats Repository
-<span style="color:#008080">baseurl</span><span style="color:#000;font-weight:bold">=</span>https://packages.elastic.co/beats/yum/el/<span style="color:#008080">$basearch</span>
-<span style="color:#008080">enabled</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>
-<span style="color:#008080">gpgkey</span><span style="color:#000;font-weight:bold">=</span>https://packages.elastic.co/GPG-KEY-elasticsearch
-<span style="color:#008080">gpgcheck</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>
-<span style="color:#998;font-style:italic"># 安装</span>
-$ yum install filebeat
-</code></pre></div><h2 id="elastic-search">Elastic Search</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ rpm --import http://packages.elastic.co/GPG-KEY-elasticsearch
+</span></span></code></pre></div><p>创建新的 repo 并安装。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ vim /etc/yum.repos.d/elastic-beats.repo
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 添加以下内容</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">[</span>beats<span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#008080">name</span><span style="color:#000;font-weight:bold">=</span>Elastic Beats Repository
+</span></span><span style="display:flex;"><span><span style="color:#008080">baseurl</span><span style="color:#000;font-weight:bold">=</span>https://packages.elastic.co/beats/yum/el/<span style="color:#008080">$basearch</span>
+</span></span><span style="display:flex;"><span><span style="color:#008080">enabled</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#008080">gpgkey</span><span style="color:#000;font-weight:bold">=</span>https://packages.elastic.co/GPG-KEY-elasticsearch
+</span></span><span style="display:flex;"><span><span style="color:#008080">gpgcheck</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 安装</span>
+</span></span><span style="display:flex;"><span>$ yum install filebeat
+</span></span></code></pre></div><h2 id="elastic-search">Elastic Search</h2>
 <p>Elastic Search 不需要太多配置，只需要阻止一下外网访问即可。修改配置文件 <code>/etc/elasticsearch/elasticsearch.yml</code>。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-shell" data-lang="shell">network.host: localhost
-</code></pre></div><p>启动 Elastic Search: <code>service elasticsearch start</code>。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>network.host: localhost
+</span></span></code></pre></div><p>启动 Elastic Search: <code>service elasticsearch start</code>。</p>
 <p>Elastic Search 本身可以认为是一个 NoSQL 数据库，通过 REST API 来操作。数据存储在 <code>Index</code> 中，Index 在 Elastic Search 中就相当于 SQL 中的表。因为 Elastci Search 主要是用来对数据进行检索，所以 Index 有一个配置叫做 <code>mapping</code>。我们使用 mapping 来告诉 Elastic Search 数据的一些相关信息，比如，某个字段是什么数据类型，是否创建索引等。我们先来玩玩 Elastic Search，使用官方提供的<a href="https://www.elastic.co/guide/en/kibana/3.0/snippets/shakespeare.json">莎士比亚数据集</a>为例。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-shell" data-lang="shell">$ curl localhost:9200/_cat/indices?v <span style="color:#998;font-style:italic"># 查看当前所有的 index</span>
-health status index pri rep docs.count docs.deleted store.size pri.store.size <span style="color:#998;font-style:italic"># 没有任何 index</span>
-<span style="color:#998;font-style:italic"># 创建 shakespeare 索引，并设置 mapping 信息</span>
-<span style="color:#998;font-style:italic"># speaker 字段和 play_name 不需要分析，Elastic Search 默认会拆分字符串中的每个词并进行索引</span>
-$ curl -XPUT http://localhost:9200/shakespeare -d <span style="color:#d14">&#39;
-</span><span style="color:#d14">{
-</span><span style="color:#d14"> &#34;mappings&#34; : {
-</span><span style="color:#d14">  &#34;_default_&#34; : {
-</span><span style="color:#d14">   &#34;properties&#34; : {
-</span><span style="color:#d14">    &#34;speaker&#34; : {&#34;type&#34;: &#34;string&#34;, &#34;index&#34; : &#34;not_analyzed&#34; },
-</span><span style="color:#d14">    &#34;play_name&#34; : {&#34;type&#34;: &#34;string&#34;, &#34;index&#34; : &#34;not_analyzed&#34; },
-</span><span style="color:#d14">    &#34;line_id&#34; : { &#34;type&#34; : &#34;integer&#34; },
-</span><span style="color:#d14">    &#34;speech_number&#34; : { &#34;type&#34; : &#34;integer&#34; }
-</span><span style="color:#d14">   }
-</span><span style="color:#d14">  }
-</span><span style="color:#d14"> }
-</span><span style="color:#d14">}
-</span><span style="color:#d14">&#39;</span>;
-$ curl localhost:9200/_cat/indices?v <span style="color:#998;font-style:italic"># 查看索引</span>
-health status index       pri rep docs.count docs.deleted store.size pri.store.size
-yellow open   shakespeare   <span style="color:#099">5</span>   <span style="color:#099">1</span>          <span style="color:#099">0</span>            <span style="color:#099">0</span>       260b           260b
-<span style="color:#998;font-style:italic"># 下载数据，并将数据集 load 进索引中</span>
-$ wget https://www.elastic.co/guide/en/kibana/3.0/snippets/shakespeare.json
-$ curl -XPOST <span style="color:#d14">&#39;localhost:9200/shakespeare/_bulk?pretty&#39;</span> --data-binary @shakespeare.json
-<span style="color:#998;font-style:italic"># 以上操作完成后，Elastic Search 中就已经有了我们 load 的所有数据，并建立好了索引，我们可以开始查询了</span>
-<span style="color:#998;font-style:italic"># 查询一下含有 &#39;man&#39; 这个词的 text_entry</span>
-$ curl -s <span style="color:#d14">&#39;localhost:9200/shakespeare/_search?q=text_entry:man&amp;pretty=1&amp;size=20&#39;</span> | jq <span style="color:#d14">&#39;.hits.hits | .[]._source.text_entry&#39;</span>
-<span style="color:#d14">&#34;man.&#34;</span>
-<span style="color:#d14">&#34;Man?&#34;</span>
-<span style="color:#d14">&#34;man.&#34;</span>
-<span style="color:#d14">&#34;Why, man?&#34;</span>
-<span style="color:#d14">&#34;Worthy man!&#34;</span>
-<span style="color:#d14">&#34;Every man,&#34;</span>
-<span style="color:#d14">&#34;complete man.&#34;</span>
-<span style="color:#d14">&#34;married man?&#34;</span>
-<span style="color:#d14">&#34;melancholy man.&#34;</span>
-<span style="color:#d14">&#34;Speak, man.&#34;</span>
-<span style="color:#d14">&#34;Why, man?&#34;</span>
-<span style="color:#d14">&#34;What, man?&#34;</span>
-<span style="color:#d14">&#34;prave man.&#34;</span>
-<span style="color:#d14">&#34;Speak, man.&#34;</span>
-<span style="color:#d14">&#34;Why, man?&#34;</span>
-<span style="color:#d14">&#34;So man and man should be;&#34;</span>
-<span style="color:#d14">&#34;O, the difference of man and man!&#34;</span>
-<span style="color:#d14">&#34;The young man is an honest man.&#34;</span>
-<span style="color:#d14">&#34;A gross fat man.&#34;</span>
-<span style="color:#d14">&#34;plain-dealing man?&#34;</span>
-</code></pre></div><p>下面我们通过解析 Nginx 的访问日志来说明怎么配合使用 ELKB。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ curl localhost:9200/_cat/indices?v <span style="color:#998;font-style:italic"># 查看当前所有的 index</span>
+</span></span><span style="display:flex;"><span>health status index pri rep docs.count docs.deleted store.size pri.store.size <span style="color:#998;font-style:italic"># 没有任何 index</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 创建 shakespeare 索引，并设置 mapping 信息</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># speaker 字段和 play_name 不需要分析，Elastic Search 默认会拆分字符串中的每个词并进行索引</span>
+</span></span><span style="display:flex;"><span>$ curl -XPUT http://localhost:9200/shakespeare -d <span style="color:#d14">&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">{
+</span></span></span><span style="display:flex;"><span><span style="color:#d14"> &#34;mappings&#34; : {
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">  &#34;_default_&#34; : {
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">   &#34;properties&#34; : {
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">    &#34;speaker&#34; : {&#34;type&#34;: &#34;string&#34;, &#34;index&#34; : &#34;not_analyzed&#34; },
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">    &#34;play_name&#34; : {&#34;type&#34;: &#34;string&#34;, &#34;index&#34; : &#34;not_analyzed&#34; },
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">    &#34;line_id&#34; : { &#34;type&#34; : &#34;integer&#34; },
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">    &#34;speech_number&#34; : { &#34;type&#34; : &#34;integer&#34; }
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">   }
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">  }
+</span></span></span><span style="display:flex;"><span><span style="color:#d14"> }
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">}
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">&#39;</span>;
+</span></span><span style="display:flex;"><span>$ curl localhost:9200/_cat/indices?v <span style="color:#998;font-style:italic"># 查看索引</span>
+</span></span><span style="display:flex;"><span>health status index       pri rep docs.count docs.deleted store.size pri.store.size
+</span></span><span style="display:flex;"><span>yellow open   shakespeare   <span style="color:#099">5</span>   <span style="color:#099">1</span>          <span style="color:#099">0</span>            <span style="color:#099">0</span>       260b           260b
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 下载数据，并将数据集 load 进索引中</span>
+</span></span><span style="display:flex;"><span>$ wget https://www.elastic.co/guide/en/kibana/3.0/snippets/shakespeare.json
+</span></span><span style="display:flex;"><span>$ curl -XPOST <span style="color:#d14">&#39;localhost:9200/shakespeare/_bulk?pretty&#39;</span> --data-binary @shakespeare.json
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 以上操作完成后，Elastic Search 中就已经有了我们 load 的所有数据，并建立好了索引，我们可以开始查询了</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 查询一下含有 &#39;man&#39; 这个词的 text_entry</span>
+</span></span><span style="display:flex;"><span>$ curl -s <span style="color:#d14">&#39;localhost:9200/shakespeare/_search?q=text_entry:man&amp;pretty=1&amp;size=20&#39;</span> | jq <span style="color:#d14">&#39;.hits.hits | .[]._source.text_entry&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;man.&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;Man?&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;man.&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;Why, man?&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;Worthy man!&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;Every man,&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;complete man.&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;married man?&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;melancholy man.&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;Speak, man.&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;Why, man?&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;What, man?&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;prave man.&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;Speak, man.&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;Why, man?&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;So man and man should be;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;O, the difference of man and man!&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;The young man is an honest man.&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;A gross fat man.&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;plain-dealing man?&#34;</span>
+</span></span></code></pre></div><p>下面我们通过解析 Nginx 的访问日志来说明怎么配合使用 ELKB。</p>
 <h2 id="解析-nginx-访问日志">解析 Nginx 访问日志</h2>
 <p>整个过程的流程比较简单，Filebeat 收集日志传送给 Logstash，Logstash 解析好了以后，写入到 Elastic Search 中，最后我们使用 Kibana 来查看这些日志并进行检索。</p>
 <h3 id="filebeat">Filebeat</h3>
 <p>首先切换到 client 上，我们来配置 Filebeat。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-shell" data-lang="shell">$ vim /etc/filebeat/filebeat.yml
-...
-prospectors:
-  -
-    paths:
-      - /var/log/nginx/access.log
-    <span style="color:#998;font-style:italic"># 找到 document_type 字段，取消注释，这个字段会告诉 Logstash 日志的类型，对应 Logstash 中的 type 字段</span>
-    document_type: nginx
-...
-<span style="color:#998;font-style:italic"># 默认输出为 Elastic Search，注释掉，使用 Logstash</span>
-logstash:
-  hosts: <span style="color:#000;font-weight:bold">[</span><span style="color:#d14">&#34;IP:5044&#34;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#998;font-style:italic"># 注意更改这里的 IP</span>
-</code></pre></div><h3 id="logstash-1">Logstash</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ vim /etc/filebeat/filebeat.yml
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>prospectors:
+</span></span><span style="display:flex;"><span>  -
+</span></span><span style="display:flex;"><span>    paths:
+</span></span><span style="display:flex;"><span>      - /var/log/nginx/access.log
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic"># 找到 document_type 字段，取消注释，这个字段会告诉 Logstash 日志的类型，对应 Logstash 中的 type 字段</span>
+</span></span><span style="display:flex;"><span>    document_type: nginx
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 默认输出为 Elastic Search，注释掉，使用 Logstash</span>
+</span></span><span style="display:flex;"><span>logstash:
+</span></span><span style="display:flex;"><span>  hosts: <span style="color:#000;font-weight:bold">[</span><span style="color:#d14">&#34;IP:5044&#34;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#998;font-style:italic"># 注意更改这里的 IP</span>
+</span></span></code></pre></div><h3 id="logstash-1">Logstash</h3>
 <p>Logstash 的配置相对麻烦一下，因为 Logstash 需要接受输入，进行处理然后产生输出。Logstash 采用 <code>input</code>, <code>filter</code>, <code>output</code> 的三段配置法。input 配置输入源，filter 配置对输入源中的信息怎样进行处理，而 output 配置输出位置。</p>
 <p>一般情况下，input 为 beat，filter 中我们解析 input 获取到的日志，得到我们想要的字段，而output 为 Elastic Search。这里我们以 Nginx 的访问日志为例。filter 中有一个关键的东西叫做 <code>grok</code>，我们使用这个东西来解析日志结构。Logstash 提供了一些默认的 <a href="https://github.com/elastic/logstash/blob/v1.4.2/patterns/grok-patterns">Pattern</a>，方便我们解析用。当然，我们也可以自己用正则来自定义 pattern 匹配日志内容。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-shell" data-lang="shell">$ vim /etc/logstash/conf.d/nginx.conf
-input <span style="color:#000;font-weight:bold">{</span>
-  beats <span style="color:#000;font-weight:bold">{</span>
-    <span style="color:#008080">port</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#099">5044</span>
-  <span style="color:#000;font-weight:bold">}</span>
-<span style="color:#000;font-weight:bold">}</span>
-
-filter <span style="color:#000;font-weight:bold">{</span>
-  <span style="color:#000;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">[</span>type<span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&#34;nginx&#34;</span> <span style="color:#000;font-weight:bold">{</span> <span style="color:#998;font-style:italic"># 这里的type是日志类型，我们在后面的filebeat中设定</span>
-    grok <span style="color:#000;font-weight:bold">{</span>
-      <span style="color:#008080">match</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#000;font-weight:bold">{</span> <span style="color:#d14">&#34;message&#34;</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#d14">&#34;%{COMBINEDAPACHELOG} %{QS:gzip_ratio}&#34;</span> <span style="color:#000;font-weight:bold">}</span> <span style="color:#998;font-style:italic"># 使用自带的pattern即可，注意空格</span>
-      <span style="color:#008080">remove_field</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#000;font-weight:bold">[</span><span style="color:#d14">&#34;beat&#34;</span>, <span style="color:#d14">&#34;input_type&#34;</span>, <span style="color:#d14">&#34;message&#34;</span>, <span style="color:#d14">&#34;offset&#34;</span>, <span style="color:#d14">&#34;tags&#34;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#998;font-style:italic"># filebeat添加的字段，我们不需要</span>
-    <span style="color:#000;font-weight:bold">}</span>
-    
-    <span style="color:#998;font-style:italic"># 更改匹配到的字段的数据类型</span>
-    mutate <span style="color:#000;font-weight:bold">{</span>
-      <span style="color:#008080">convert</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#000;font-weight:bold">[</span><span style="color:#d14">&#34;response&#34;</span>, <span style="color:#d14">&#34;integer&#34;</span><span style="color:#000;font-weight:bold">]</span>
-      <span style="color:#008080">convert</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#000;font-weight:bold">[</span><span style="color:#d14">&#34;bytes&#34;</span>, <span style="color:#d14">&#34;integer&#34;</span><span style="color:#000;font-weight:bold">]</span>
-      <span style="color:#008080">convert</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#000;font-weight:bold">[</span><span style="color:#d14">&#34;responsetime&#34;</span>, <span style="color:#d14">&#34;float&#34;</span><span style="color:#000;font-weight:bold">]</span>
-    <span style="color:#000;font-weight:bold">}</span>
-    
-    <span style="color:#998;font-style:italic"># 指定时间戳字段以及具体的格式</span>
-    date <span style="color:#000;font-weight:bold">{</span>
-      <span style="color:#008080">match</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#000;font-weight:bold">[</span><span style="color:#d14">&#34;timestamp&#34;</span>, <span style="color:#d14">&#34;dd/MMM/YYYY:HH:mm:ss Z&#34;</span><span style="color:#000;font-weight:bold">]</span>
-      <span style="color:#008080">remove_field</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#000;font-weight:bold">[</span><span style="color:#d14">&#34;timestamp&#34;</span><span style="color:#000;font-weight:bold">]</span>
-    <span style="color:#000;font-weight:bold">}</span>
-  <span style="color:#000;font-weight:bold">}</span>
-<span style="color:#000;font-weight:bold">}</span>
-
-outpugst <span style="color:#000;font-weight:bold">{</span>
-  elasticsearch <span style="color:#000;font-weight:bold">{</span>
-    <span style="color:#008080">hosts</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;localhost:9200&#34;</span> <span style="color:#000;font-weight:bold">]</span>
-    <span style="color:#008080">index</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#d14">&#34;%{type}-%{+YYYY.MM.dd}&#34;</span> <span style="color:#998;font-style:italic"># index 中含有时间戳</span>
-  <span style="color:#000;font-weight:bold">}</span>
-<span style="color:#000;font-weight:bold">}</span>
-</code></pre></div><p><code>service logstash start</code> 启动 Logstash 即可，注意，他的启动速度很慢。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ vim /etc/logstash/conf.d/nginx.conf
+</span></span><span style="display:flex;"><span>input <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>  beats <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008080">port</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#099">5044</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>filter <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">[</span>type<span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&#34;nginx&#34;</span> <span style="color:#000;font-weight:bold">{</span> <span style="color:#998;font-style:italic"># 这里的type是日志类型，我们在后面的filebeat中设定</span>
+</span></span><span style="display:flex;"><span>    grok <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#008080">match</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#000;font-weight:bold">{</span> <span style="color:#d14">&#34;message&#34;</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#d14">&#34;%{COMBINEDAPACHELOG} %{QS:gzip_ratio}&#34;</span> <span style="color:#000;font-weight:bold">}</span> <span style="color:#998;font-style:italic"># 使用自带的pattern即可，注意空格</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#008080">remove_field</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#000;font-weight:bold">[</span><span style="color:#d14">&#34;beat&#34;</span>, <span style="color:#d14">&#34;input_type&#34;</span>, <span style="color:#d14">&#34;message&#34;</span>, <span style="color:#d14">&#34;offset&#34;</span>, <span style="color:#d14">&#34;tags&#34;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#998;font-style:italic"># filebeat添加的字段，我们不需要</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic"># 更改匹配到的字段的数据类型</span>
+</span></span><span style="display:flex;"><span>    mutate <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#008080">convert</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#000;font-weight:bold">[</span><span style="color:#d14">&#34;response&#34;</span>, <span style="color:#d14">&#34;integer&#34;</span><span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#008080">convert</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#000;font-weight:bold">[</span><span style="color:#d14">&#34;bytes&#34;</span>, <span style="color:#d14">&#34;integer&#34;</span><span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#008080">convert</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#000;font-weight:bold">[</span><span style="color:#d14">&#34;responsetime&#34;</span>, <span style="color:#d14">&#34;float&#34;</span><span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#998;font-style:italic"># 指定时间戳字段以及具体的格式</span>
+</span></span><span style="display:flex;"><span>    date <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#008080">match</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#000;font-weight:bold">[</span><span style="color:#d14">&#34;timestamp&#34;</span>, <span style="color:#d14">&#34;dd/MMM/YYYY:HH:mm:ss Z&#34;</span><span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#008080">remove_field</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#000;font-weight:bold">[</span><span style="color:#d14">&#34;timestamp&#34;</span><span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>outpugst <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>  elasticsearch <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008080">hosts</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;localhost:9200&#34;</span> <span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#008080">index</span> <span style="color:#000;font-weight:bold">=</span>&gt; <span style="color:#d14">&#34;%{type}-%{+YYYY.MM.dd}&#34;</span> <span style="color:#998;font-style:italic"># index 中含有时间戳</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span></code></pre></div><p><code>service logstash start</code> 启动 Logstash 即可，注意，他的启动速度很慢。</p>
 <h3 id="elastcisearch">Elastcisearch</h3>
 <p>上面的 Logstash 配置中，我们可以看到最终写入 Elastic Search 的 Index 含有时间戳，这是比较推荐的做法。因为可以方便我们按天对数据进行分析。关于 Elastic Search 我们只要配置一下 Index 的 Mapping 信息即可。因为我们的 Index 是按天生成的，每天都是一个新的 Index，那当然不可能每天都配置一次 Index 的 Mapping。这里需要使用 Elastic Search 的一个功能，<code>Index Template</code>，我们可以创建一个 Index 的配置模板，使用这个模板来配置所有匹配的 Index。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-shell" data-lang="shell">curl -XPUT localhost:9200/_template/nginx -d <span style="color:#d14">&#39;
-</span><span style="color:#d14">{
-</span><span style="color:#d14">  &#34;template&#34;: &#34;nginx*&#34;,
-</span><span style="color:#d14">  &#34;mappings&#34;: {
-</span><span style="color:#d14">    &#34;_default_&#34;: {
-</span><span style="color:#d14">      &#34;properties&#34;: {
-</span><span style="color:#d14">        &#34;clientip&#34;: {
-</span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34;,
-</span><span style="color:#d14">          &#34;index&#34;: &#34;not_analyzed&#34;
-</span><span style="color:#d14">        },
-</span><span style="color:#d14">        &#34;ident&#34;: {
-</span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34;
-</span><span style="color:#d14">        },
-</span><span style="color:#d14">        &#34;auth&#34;: {
-</span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34;
-</span><span style="color:#d14">        },
-</span><span style="color:#d14">        &#34;verb&#34;: {
-</span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34;
-</span><span style="color:#d14">        },
-</span><span style="color:#d14">        &#34;request&#34;: {
-</span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34;
-</span><span style="color:#d14">        },
-</span><span style="color:#d14">        &#34;httpversion&#34;: {
-</span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34;
-</span><span style="color:#d14">        },
-</span><span style="color:#d14">        &#34;rawrequest&#34;: {
-</span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34; 
-</span><span style="color:#d14">        },
-</span><span style="color:#d14">        &#34;response&#34;: {
-</span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34;
-</span><span style="color:#d14">        },
-</span><span style="color:#d14">        &#34;bytes&#34;: {
-</span><span style="color:#d14">          &#34;type&#34;: &#34;integer&#34;
-</span><span style="color:#d14">        },
-</span><span style="color:#d14">        &#34;referrer&#34;: {
-</span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34;
-</span><span style="color:#d14">        },
-</span><span style="color:#d14">        &#34;agent&#34;: {
-</span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34;
-</span><span style="color:#d14">        },
-</span><span style="color:#d14">        &#34;gzip_ratio&#34;: {
-</span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34;
-</span><span style="color:#d14">        }
-</span><span style="color:#d14">      }
-</span><span style="color:#d14">    }
-</span><span style="color:#d14">  }
-</span><span style="color:#d14">}
-</span><span style="color:#d14">&#39;</span>
-</code></pre></div><p>上面的代码创建了一个名为 <code>nginx</code> 的模板，匹配所有以 nginx 开头的 Index。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>curl -XPUT localhost:9200/_template/nginx -d <span style="color:#d14">&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">{
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">  &#34;template&#34;: &#34;nginx*&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">  &#34;mappings&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">    &#34;_default_&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">      &#34;properties&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        &#34;clientip&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">          &#34;index&#34;: &#34;not_analyzed&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        },
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        &#34;ident&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        },
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        &#34;auth&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        },
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        &#34;verb&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        },
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        &#34;request&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        },
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        &#34;httpversion&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        },
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        &#34;rawrequest&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34; 
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        },
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        &#34;response&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        },
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        &#34;bytes&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">          &#34;type&#34;: &#34;integer&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        },
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        &#34;referrer&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        },
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        &#34;agent&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        },
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        &#34;gzip_ratio&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">          &#34;type&#34;: &#34;string&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">        }
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">      }
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">  }
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">}
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">&#39;</span>
+</span></span></code></pre></div><p>上面的代码创建了一个名为 <code>nginx</code> 的模板，匹配所有以 nginx 开头的 Index。</p>
 <h3 id="kibana-1">Kibana</h3>
 <p>Kibana 不需要什么配置，直接启动即可。<code>service kibana start</code>，默认运行在 5601 端口。如果考虑到安全性，也可以将 Kibana 配置为只监听本机，然后使用 Nginx 进行反向代理并控制权限，这里就不再赘述了。</p>
 <p>接下来我们需要产生点日志，然后在 Kibana 中能查看到就说明系统工作正常了。我们用 curl 随便请求一下 client 上的 Nginx 来产生一点日志。然后，打开 Kibana，<code>http://[server ip]:5601</code>。刚进去的时候，我们先要配置一下 Kibana 的 <code>Index Pattern</code>，告诉 Kibana 我们想看哪个 Index 的数据，输入 <code>nginx*</code> 即可，然后点击 <code>Discover</code> 浏览数据。</p>

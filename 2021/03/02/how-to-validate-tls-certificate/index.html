@@ -163,138 +163,138 @@
 <p><img src="/image/FuWvD3k8eGdc6j81xg3ZDPd72hfJ.png" alt=""></p>
 <p>因为证书的签名是由上级证书的私钥来签的，根证书没有上级证书，所有根证书的签名是用自己的私钥签的。</p>
 <p>我们可以来验证一下，以 GitHub 使用的根证书 DigiCert High Assurance EV Root CA 为例。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># 首先，打开 Keychain Access，找到上述证书，拖拽出来</span>
-<span style="color:#998;font-style:italic"># 重命名为 root.cer</span>
-
-<span style="color:#998;font-style:italic"># 转换 DER 到 PEM 格式</span>
-$ openssl x509 -inform der -in root.cer -out root.pem
-
-<span style="color:#998;font-style:italic"># 查看证书的签名，可以看到签名所使用的的 hash 算法是 sha1</span>
-$ openssl x509 -in root.pem -text -noout -certopt ca_default -certopt no_validity -certopt no_serial -certopt no_subject -certopt no_extensions -certopt no_signame
-    Signature Algorithm: sha1WithRSAEncryption
-         1c:1a:06:97:dc:d7:9c:9f:3c:88:66:06:08:57:21:db:21:47:
-         f8:2a:67:aa:bf:18:32:76:40:10:57:c1:8a:f3:7a:d9:11:65:
-         8e:35:fa:9e:fc:45:b5:9e:d9:4c:31:4b:b8:91:e8:43:2c:8e:
-         b3:78:ce:db:e3:53:79:71:d6:e5:21:94:01:da:55:87:9a:24:
-         64:f6:8a:66:cc:de:9c:37:cd:a8:34:b1:69:9b:23:c8:9e:78:
-         22:2b:70:43:e3:55:47:31:61:19:ef:58:c5:85:2f:4e:30:f6:
-         a0:31:16:23:c8:e7:e2:65:16:33:cb:bf:1a:1b:a0:3d:f8:ca:
-         5e:8b:31:8b:60:08:89:2d:0c:06:5c:52:b7:c4:f9:0a:98:d1:
-         15:5f:9f:12:be:7c:36:63:38:bd:44:a4:7f:e4:26:2b:0a:c4:
-         97:69:0d:e9:8c:e2:c0:10:57:b8:c8:76:12:91:55:f2:48:69:
-         d8:bc:2a:02:5b:0f:44:d4:20:31:db:f4:ba:70:26:5d:90:60:
-         9e:bc:4b:17:09:2f:b4:cb:1e:43:68:c9:07:27:c1:d2:5c:f7:
-         ea:21:b9:68:12:9c:3c:9c:bf:9e:fc:80:5c:9b:63:cd:ec:47:
-         aa:25:27:67:a0:37:f3:00:82:7d:54:d7:a9:f8:e9:2e:13:a3:
-         77:e8:1f:4a
-
-<span style="color:#998;font-style:italic"># 提取签名内容到文件中</span>
-$ openssl x509 -in root.pem -text -noout -certopt ca_default -certopt no_validity -certopt no_serial -certopt no_subject -certopt no_extensions -certopt no_signame | grep -v <span style="color:#d14">&#39;Signature Algorithm&#39;</span> | tr -d <span style="color:#d14">&#39;[:space:]:&#39;</span> | xxd -r -p &gt; root-signature.bin
-
-<span style="color:#998;font-style:italic"># 提取根证书中含有的公钥</span>
-$ openssl x509 -in root.pem -noout -pubkey &gt; root-pub.pem
-
-<span style="color:#998;font-style:italic"># 使用公钥解密签名</span>
-$ openssl rsautl -verify -inkey root-pub.pem -in root-signature.bin -pubin &gt; root-signature-decrypted.bin
-
-<span style="color:#998;font-style:italic"># 查看解密后的内容</span>
-<span style="color:#998;font-style:italic"># 可以看到，签名中存储的 hash 值为 E35E...13A8</span>
-$ openssl asn1parse -inform DER -in root-signature-decrypted.bin
-    0:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>  <span style="color:#099">33</span> cons: SEQUENCE
-    2:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>   <span style="color:#099">9</span> cons: SEQUENCE
-    4:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>   <span style="color:#099">5</span> prim: OBJECT            :sha1
-   11:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>   <span style="color:#099">0</span> prim: NULL
-   13:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>  <span style="color:#099">20</span> prim: OCTET STRING      <span style="color:#000;font-weight:bold">[</span>HEX DUMP<span style="color:#000;font-weight:bold">]</span>:E35EF08D884F0A0ADE2F75E96301CE6230F213A8
-
-<span style="color:#998;font-style:italic"># 接下来我们计算证书的 hash 值</span>
-
-<span style="color:#998;font-style:italic"># 首先提取证书的 body</span>
-<span style="color:#998;font-style:italic"># 因为证书中含有签名，签名是不包含在 hash 值计算中的</span>
-<span style="color:#998;font-style:italic"># 所以不能简单地对整个证书文件进行 hash 运算</span>
-$ openssl asn1parse -in root.pem -strparse <span style="color:#099">4</span> -out root-body.bin &amp;&gt; /dev/null
-
-<span style="color:#998;font-style:italic"># 计算 sha1 哈希值</span>
-$ openssl dgst -sha1 root-body.bin
-SHA1<span style="color:#000;font-weight:bold">(</span>root-body.bin<span style="color:#000;font-weight:bold">)=</span> e35ef08d884f0a0ade2f75e96301ce6230f213a8
-</code></pre></div><p>hash 值匹配，这也就说明根证书确实是自签名的，用自己的私钥给自己签名。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 首先，打开 Keychain Access，找到上述证书，拖拽出来</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 重命名为 root.cer</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 转换 DER 到 PEM 格式</span>
+</span></span><span style="display:flex;"><span>$ openssl x509 -inform der -in root.cer -out root.pem
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 查看证书的签名，可以看到签名所使用的的 hash 算法是 sha1</span>
+</span></span><span style="display:flex;"><span>$ openssl x509 -in root.pem -text -noout -certopt ca_default -certopt no_validity -certopt no_serial -certopt no_subject -certopt no_extensions -certopt no_signame
+</span></span><span style="display:flex;"><span>    Signature Algorithm: sha1WithRSAEncryption
+</span></span><span style="display:flex;"><span>         1c:1a:06:97:dc:d7:9c:9f:3c:88:66:06:08:57:21:db:21:47:
+</span></span><span style="display:flex;"><span>         f8:2a:67:aa:bf:18:32:76:40:10:57:c1:8a:f3:7a:d9:11:65:
+</span></span><span style="display:flex;"><span>         8e:35:fa:9e:fc:45:b5:9e:d9:4c:31:4b:b8:91:e8:43:2c:8e:
+</span></span><span style="display:flex;"><span>         b3:78:ce:db:e3:53:79:71:d6:e5:21:94:01:da:55:87:9a:24:
+</span></span><span style="display:flex;"><span>         64:f6:8a:66:cc:de:9c:37:cd:a8:34:b1:69:9b:23:c8:9e:78:
+</span></span><span style="display:flex;"><span>         22:2b:70:43:e3:55:47:31:61:19:ef:58:c5:85:2f:4e:30:f6:
+</span></span><span style="display:flex;"><span>         a0:31:16:23:c8:e7:e2:65:16:33:cb:bf:1a:1b:a0:3d:f8:ca:
+</span></span><span style="display:flex;"><span>         5e:8b:31:8b:60:08:89:2d:0c:06:5c:52:b7:c4:f9:0a:98:d1:
+</span></span><span style="display:flex;"><span>         15:5f:9f:12:be:7c:36:63:38:bd:44:a4:7f:e4:26:2b:0a:c4:
+</span></span><span style="display:flex;"><span>         97:69:0d:e9:8c:e2:c0:10:57:b8:c8:76:12:91:55:f2:48:69:
+</span></span><span style="display:flex;"><span>         d8:bc:2a:02:5b:0f:44:d4:20:31:db:f4:ba:70:26:5d:90:60:
+</span></span><span style="display:flex;"><span>         9e:bc:4b:17:09:2f:b4:cb:1e:43:68:c9:07:27:c1:d2:5c:f7:
+</span></span><span style="display:flex;"><span>         ea:21:b9:68:12:9c:3c:9c:bf:9e:fc:80:5c:9b:63:cd:ec:47:
+</span></span><span style="display:flex;"><span>         aa:25:27:67:a0:37:f3:00:82:7d:54:d7:a9:f8:e9:2e:13:a3:
+</span></span><span style="display:flex;"><span>         77:e8:1f:4a
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 提取签名内容到文件中</span>
+</span></span><span style="display:flex;"><span>$ openssl x509 -in root.pem -text -noout -certopt ca_default -certopt no_validity -certopt no_serial -certopt no_subject -certopt no_extensions -certopt no_signame | grep -v <span style="color:#d14">&#39;Signature Algorithm&#39;</span> | tr -d <span style="color:#d14">&#39;[:space:]:&#39;</span> | xxd -r -p &gt; root-signature.bin
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 提取根证书中含有的公钥</span>
+</span></span><span style="display:flex;"><span>$ openssl x509 -in root.pem -noout -pubkey &gt; root-pub.pem
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 使用公钥解密签名</span>
+</span></span><span style="display:flex;"><span>$ openssl rsautl -verify -inkey root-pub.pem -in root-signature.bin -pubin &gt; root-signature-decrypted.bin
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 查看解密后的内容</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 可以看到，签名中存储的 hash 值为 E35E...13A8</span>
+</span></span><span style="display:flex;"><span>$ openssl asn1parse -inform DER -in root-signature-decrypted.bin
+</span></span><span style="display:flex;"><span>    0:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>  <span style="color:#099">33</span> cons: SEQUENCE
+</span></span><span style="display:flex;"><span>    2:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>   <span style="color:#099">9</span> cons: SEQUENCE
+</span></span><span style="display:flex;"><span>    4:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>   <span style="color:#099">5</span> prim: OBJECT            :sha1
+</span></span><span style="display:flex;"><span>   11:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>   <span style="color:#099">0</span> prim: NULL
+</span></span><span style="display:flex;"><span>   13:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>  <span style="color:#099">20</span> prim: OCTET STRING      <span style="color:#000;font-weight:bold">[</span>HEX DUMP<span style="color:#000;font-weight:bold">]</span>:E35EF08D884F0A0ADE2F75E96301CE6230F213A8
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 接下来我们计算证书的 hash 值</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 首先提取证书的 body</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 因为证书中含有签名，签名是不包含在 hash 值计算中的</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 所以不能简单地对整个证书文件进行 hash 运算</span>
+</span></span><span style="display:flex;"><span>$ openssl asn1parse -in root.pem -strparse <span style="color:#099">4</span> -out root-body.bin &amp;&gt; /dev/null
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 计算 sha1 哈希值</span>
+</span></span><span style="display:flex;"><span>$ openssl dgst -sha1 root-body.bin
+</span></span><span style="display:flex;"><span>SHA1<span style="color:#000;font-weight:bold">(</span>root-body.bin<span style="color:#000;font-weight:bold">)=</span> e35ef08d884f0a0ade2f75e96301ce6230f213a8
+</span></span></code></pre></div><p>hash 值匹配，这也就说明根证书确实是自签名的，用自己的私钥给自己签名。</p>
 <h2 id="纸上得来终觉浅">纸上得来终觉浅</h2>
 <p>理论知识我们已经全部具备了，接下来我们来完整走一遍流程，以 github.com 为例，校验一下它的证书是否有效。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># 新建一个文件夹 github 保存所有的文件</span>
-$ mkdir github <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#0086b3">cd</span> github
-
-<span style="color:#998;font-style:italic"># 首先，我们下载 github.com 发送的证书</span>
-$ openssl s_client -connect github.com:443 -showcerts 2&gt;/dev/null &lt;/dev/null | sed -n <span style="color:#d14">&#39;/-----BEGIN/,/-----END/p&#39;</span> &gt; github.com.crt
-
-<span style="color:#998;font-style:italic"># github.com.crt 是 PEM 格式的文本文件</span>
-<span style="color:#998;font-style:italic"># 打开可以发现里面有两段 -----BEGIN CERTIFICATE----</span>
-<span style="color:#998;font-style:italic"># 这说明有两个证书，也就是 github.com 把中间证书也一并发过来了</span>
-
-<span style="color:#998;font-style:italic"># 接下来我们把两个证书提取出来</span>
-$ awk <span style="color:#d14">&#39;/BEGIN/,/END/{ if(/BEGIN/){a++}; out=&#34;cert&#34;a&#34;.tmpcrt&#34;; print &gt;out}&#39;</span> &lt; github.com.crt <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#000;font-weight:bold">for</span> cert in *.tmpcrt; <span style="color:#000;font-weight:bold">do</span> <span style="color:#008080">newname</span><span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">$(</span>openssl x509 -noout -subject -in <span style="color:#008080">$cert</span> | sed -n <span style="color:#d14">&#39;s/^.*CN=\(.*\)$/\1/; s/[ ,.*]/_/g; s/__/_/g; s/^_//g;p&#39;</span><span style="color:#000;font-weight:bold">)</span>.pem; mv <span style="color:#008080">$cert</span> <span style="color:#008080">$newname</span>; <span style="color:#000;font-weight:bold">done</span>
-
-<span style="color:#998;font-style:italic"># 我们得到了两个证书文件</span>
-<span style="color:#998;font-style:italic"># github_com.pem 和 DigiCert_SHA2_High_Assurance_Server_CA.pem</span>
-
-<span style="color:#998;font-style:italic"># 首先，验证 github_com.pem 证书确实</span>
-<span style="color:#998;font-style:italic"># 是由 DigiCert_SHA2_High_Assurance_Server_CA.pem 签发的</span>
-
-<span style="color:#998;font-style:italic"># 提取 DigiCert_SHA2_High_Assurance_Server_CA 的公钥</span>
-<span style="color:#998;font-style:italic"># 命名为 issuer-pub.pem</span>
-$ openssl x509 -in DigiCert_SHA2_High_Assurance_Server_CA.pem -noout -pubkey &gt; issuer-pub.pem
-
-<span style="color:#998;font-style:italic"># 查看 github_com.pem 的签名</span>
-<span style="color:#998;font-style:italic"># 可以看到 hash 算法是 sha256</span>
-$ openssl x509 -in github_com.pem -text -noout -certopt ca_default -certopt no_validity -certopt no_serial -certopt no_subject -certopt no_extensions -certopt no_signame
-    Signature Algorithm: sha256WithRSAEncryption
-         86:32:8f:9c:15:b8:af:e8:d1:de:08:3a:44:0e:71:20:24:d6:
-         fc:0e:58:31:cc:aa:b4:ad:1c:d5:0c:c5:af:c4:bb:fe:5f:ac:
-         90:6a:42:c8:21:eb:25:f1:6b:2c:37:b2:2a:a8:1a:6e:f2:d1:
-         4f:a6:2f:bc:cf:3a:d8:c1:9f:30:c0:ec:93:eb:0a:5a:dc:cb:
-         6c:32:1c:60:6e:ec:6e:f8:86:a5:4f:a0:b4:6d:6a:07:4a:21:
-         58:d0:29:7d:65:8a:c8:da:6a:ba:ab:f0:75:21:33:00:40:6f:
-         85:c5:13:e6:27:73:6c:ae:ea:e3:96:d0:53:db:c1:21:68:10:
-         cf:e3:d8:50:b0:14:ec:a9:98:cf:b8:ce:61:5d:3d:a3:6d:93:
-         34:c4:13:fa:11:66:a3:dd:be:10:19:70:49:e2:04:4d:81:2c:
-         1f:2e:59:c6:2c:53:45:3b:ee:f6:13:f4:d0:2c:84:6e:28:6d:
-         e4:e4:ca:e4:48:89:1b:ab:ec:22:1f:ee:12:d4:6c:75:e9:cc:
-         0b:15:74:e9:6d:9f:db:40:1f:e2:24:85:a3:4b:a4:e9:cd:6b:
-         c8:77:9f:87:4f:05:73:00:38:a5:23:54:68:fc:a2:3d:bf:18:
-         19:0e:a8:fd:b9:5e:8c:5c:e8:fc:e4:a2:52:70:ee:79:a7:d2:
-         27:4a:7a:49
-
-<span style="color:#998;font-style:italic"># 提取签名到文件中</span>
-$ openssl x509 -in github_com.pem -text -noout -certopt ca_default -certopt no_validity -certopt no_serial -certopt no_subject -certopt no_extensions -certopt no_signame | grep -v <span style="color:#d14">&#39;Signature Algorithm&#39;</span> | tr -d <span style="color:#d14">&#39;[:space:]:&#39;</span> | xxd -r -p &gt; github_com-signature.bin
-
-<span style="color:#998;font-style:italic"># 使用上级证书的公钥解密签名</span>
-$ openssl rsautl -verify -inkey issuer-pub.pem -in github_com-signature.bin -pubin &gt; github_com-signature-decrypted.bin
-
-<span style="color:#998;font-style:italic"># 查看解密后的信息</span>
-$ openssl asn1parse -inform DER -in github_com-signature-decrypted.bin
-    0:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>  <span style="color:#099">49</span> cons: SEQUENCE
-    2:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>  <span style="color:#099">13</span> cons: SEQUENCE
-    4:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>   <span style="color:#099">9</span> prim: OBJECT            :sha256
-   15:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>   <span style="color:#099">0</span> prim: NULL
-   17:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>  <span style="color:#099">32</span> prim: OCTET STRING      <span style="color:#000;font-weight:bold">[</span>HEX DUMP<span style="color:#000;font-weight:bold">]</span>:A8AA3F746FE780B1E2E5451CE4383A9633C4399E89AA3637252F38F324DFFD5F
-
-<span style="color:#998;font-style:italic"># 可以发现，hash 值是 A8AA...FD5F</span>
-
-<span style="color:#998;font-style:italic"># 接下来计算 github_com.pem 的 hash 值</span>
-
-<span style="color:#998;font-style:italic"># 提取证书的 body 部分</span>
-$ openssl asn1parse -in github_com.pem -strparse <span style="color:#099">4</span> -out github_com-body.bin &amp;&gt; /dev/null
-
-<span style="color:#998;font-style:italic"># 计算 hash 值</span>
-$ openssl dgst -sha256 github_com-body.bin
-SHA256<span style="color:#000;font-weight:bold">(</span>github_com-body.bin<span style="color:#000;font-weight:bold">)=</span> a8aa3f746fe780b1e2e5451ce4383a9633c4399e89aa3637252f38f324dffd5f
-</code></pre></div><p>hash 值匹配，我们成功校验了 github.pem 这个证书确实是由 DigiCert_SHA2_High_Assurance_Server_CA.pem 这个证书来签发的。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 新建一个文件夹 github 保存所有的文件</span>
+</span></span><span style="display:flex;"><span>$ mkdir github <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#0086b3">cd</span> github
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 首先，我们下载 github.com 发送的证书</span>
+</span></span><span style="display:flex;"><span>$ openssl s_client -connect github.com:443 -showcerts 2&gt;/dev/null &lt;/dev/null | sed -n <span style="color:#d14">&#39;/-----BEGIN/,/-----END/p&#39;</span> &gt; github.com.crt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># github.com.crt 是 PEM 格式的文本文件</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 打开可以发现里面有两段 -----BEGIN CERTIFICATE----</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 这说明有两个证书，也就是 github.com 把中间证书也一并发过来了</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 接下来我们把两个证书提取出来</span>
+</span></span><span style="display:flex;"><span>$ awk <span style="color:#d14">&#39;/BEGIN/,/END/{ if(/BEGIN/){a++}; out=&#34;cert&#34;a&#34;.tmpcrt&#34;; print &gt;out}&#39;</span> &lt; github.com.crt <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#000;font-weight:bold">for</span> cert in *.tmpcrt; <span style="color:#000;font-weight:bold">do</span> <span style="color:#008080">newname</span><span style="color:#000;font-weight:bold">=</span><span style="color:#000;font-weight:bold">$(</span>openssl x509 -noout -subject -in <span style="color:#008080">$cert</span> | sed -n <span style="color:#d14">&#39;s/^.*CN=\(.*\)$/\1/; s/[ ,.*]/_/g; s/__/_/g; s/^_//g;p&#39;</span><span style="color:#000;font-weight:bold">)</span>.pem; mv <span style="color:#008080">$cert</span> <span style="color:#008080">$newname</span>; <span style="color:#000;font-weight:bold">done</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 我们得到了两个证书文件</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># github_com.pem 和 DigiCert_SHA2_High_Assurance_Server_CA.pem</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 首先，验证 github_com.pem 证书确实</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 是由 DigiCert_SHA2_High_Assurance_Server_CA.pem 签发的</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 提取 DigiCert_SHA2_High_Assurance_Server_CA 的公钥</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 命名为 issuer-pub.pem</span>
+</span></span><span style="display:flex;"><span>$ openssl x509 -in DigiCert_SHA2_High_Assurance_Server_CA.pem -noout -pubkey &gt; issuer-pub.pem
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 查看 github_com.pem 的签名</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 可以看到 hash 算法是 sha256</span>
+</span></span><span style="display:flex;"><span>$ openssl x509 -in github_com.pem -text -noout -certopt ca_default -certopt no_validity -certopt no_serial -certopt no_subject -certopt no_extensions -certopt no_signame
+</span></span><span style="display:flex;"><span>    Signature Algorithm: sha256WithRSAEncryption
+</span></span><span style="display:flex;"><span>         86:32:8f:9c:15:b8:af:e8:d1:de:08:3a:44:0e:71:20:24:d6:
+</span></span><span style="display:flex;"><span>         fc:0e:58:31:cc:aa:b4:ad:1c:d5:0c:c5:af:c4:bb:fe:5f:ac:
+</span></span><span style="display:flex;"><span>         90:6a:42:c8:21:eb:25:f1:6b:2c:37:b2:2a:a8:1a:6e:f2:d1:
+</span></span><span style="display:flex;"><span>         4f:a6:2f:bc:cf:3a:d8:c1:9f:30:c0:ec:93:eb:0a:5a:dc:cb:
+</span></span><span style="display:flex;"><span>         6c:32:1c:60:6e:ec:6e:f8:86:a5:4f:a0:b4:6d:6a:07:4a:21:
+</span></span><span style="display:flex;"><span>         58:d0:29:7d:65:8a:c8:da:6a:ba:ab:f0:75:21:33:00:40:6f:
+</span></span><span style="display:flex;"><span>         85:c5:13:e6:27:73:6c:ae:ea:e3:96:d0:53:db:c1:21:68:10:
+</span></span><span style="display:flex;"><span>         cf:e3:d8:50:b0:14:ec:a9:98:cf:b8:ce:61:5d:3d:a3:6d:93:
+</span></span><span style="display:flex;"><span>         34:c4:13:fa:11:66:a3:dd:be:10:19:70:49:e2:04:4d:81:2c:
+</span></span><span style="display:flex;"><span>         1f:2e:59:c6:2c:53:45:3b:ee:f6:13:f4:d0:2c:84:6e:28:6d:
+</span></span><span style="display:flex;"><span>         e4:e4:ca:e4:48:89:1b:ab:ec:22:1f:ee:12:d4:6c:75:e9:cc:
+</span></span><span style="display:flex;"><span>         0b:15:74:e9:6d:9f:db:40:1f:e2:24:85:a3:4b:a4:e9:cd:6b:
+</span></span><span style="display:flex;"><span>         c8:77:9f:87:4f:05:73:00:38:a5:23:54:68:fc:a2:3d:bf:18:
+</span></span><span style="display:flex;"><span>         19:0e:a8:fd:b9:5e:8c:5c:e8:fc:e4:a2:52:70:ee:79:a7:d2:
+</span></span><span style="display:flex;"><span>         27:4a:7a:49
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 提取签名到文件中</span>
+</span></span><span style="display:flex;"><span>$ openssl x509 -in github_com.pem -text -noout -certopt ca_default -certopt no_validity -certopt no_serial -certopt no_subject -certopt no_extensions -certopt no_signame | grep -v <span style="color:#d14">&#39;Signature Algorithm&#39;</span> | tr -d <span style="color:#d14">&#39;[:space:]:&#39;</span> | xxd -r -p &gt; github_com-signature.bin
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 使用上级证书的公钥解密签名</span>
+</span></span><span style="display:flex;"><span>$ openssl rsautl -verify -inkey issuer-pub.pem -in github_com-signature.bin -pubin &gt; github_com-signature-decrypted.bin
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 查看解密后的信息</span>
+</span></span><span style="display:flex;"><span>$ openssl asn1parse -inform DER -in github_com-signature-decrypted.bin
+</span></span><span style="display:flex;"><span>    0:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>  <span style="color:#099">49</span> cons: SEQUENCE
+</span></span><span style="display:flex;"><span>    2:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>  <span style="color:#099">13</span> cons: SEQUENCE
+</span></span><span style="display:flex;"><span>    4:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>   <span style="color:#099">9</span> prim: OBJECT            :sha256
+</span></span><span style="display:flex;"><span>   15:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>   <span style="color:#099">0</span> prim: NULL
+</span></span><span style="display:flex;"><span>   17:d<span style="color:#000;font-weight:bold">=</span><span style="color:#099">1</span>  <span style="color:#008080">hl</span><span style="color:#000;font-weight:bold">=</span><span style="color:#099">2</span> <span style="color:#008080">l</span><span style="color:#000;font-weight:bold">=</span>  <span style="color:#099">32</span> prim: OCTET STRING      <span style="color:#000;font-weight:bold">[</span>HEX DUMP<span style="color:#000;font-weight:bold">]</span>:A8AA3F746FE780B1E2E5451CE4383A9633C4399E89AA3637252F38F324DFFD5F
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 可以发现，hash 值是 A8AA...FD5F</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 接下来计算 github_com.pem 的 hash 值</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 提取证书的 body 部分</span>
+</span></span><span style="display:flex;"><span>$ openssl asn1parse -in github_com.pem -strparse <span style="color:#099">4</span> -out github_com-body.bin &amp;&gt; /dev/null
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 计算 hash 值</span>
+</span></span><span style="display:flex;"><span>$ openssl dgst -sha256 github_com-body.bin
+</span></span><span style="display:flex;"><span>SHA256<span style="color:#000;font-weight:bold">(</span>github_com-body.bin<span style="color:#000;font-weight:bold">)=</span> a8aa3f746fe780b1e2e5451ce4383a9633c4399e89aa3637252f38f324dffd5f
+</span></span></code></pre></div><p>hash 值匹配，我们成功校验了 github.pem 这个证书确实是由 DigiCert_SHA2_High_Assurance_Server_CA.pem 这个证书来签发的。</p>
 <p>上面的流程比较繁琐，其实也可以直接让 openssl 来帮我们验证。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ openssl dgst -sha256 -verify issuer-pub.pem -signature github_com-signature.bin  github_com-body.bin
-Verified OK
-</code></pre></div><p>接下来的过程是上面一样，首先，我们获取上级证书的信息。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># 获取上级证书的名字</span>
-$ openssl x509 -in DigiCert_SHA2_High_Assurance_Server_CA.pem -text -noout | grep Issuer:
-        Issuer: <span style="color:#008080">C</span><span style="color:#000;font-weight:bold">=</span>US, <span style="color:#008080">O</span><span style="color:#000;font-weight:bold">=</span>DigiCert Inc, <span style="color:#008080">OU</span><span style="color:#000;font-weight:bold">=</span>www.digicert.com, <span style="color:#008080">CN</span><span style="color:#000;font-weight:bold">=</span>DigiCert High Assurance EV Root CA
-</code></pre></div><p>然后就是校验 DigiCert_SHA2_High_Assurance_Server_CA 是由 DigiCert High Assurance EV Root CA 来签发的，同时这个证书存在于我们系统中。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ openssl dgst -sha256 -verify issuer-pub.pem -signature github_com-signature.bin  github_com-body.bin
+</span></span><span style="display:flex;"><span>Verified OK
+</span></span></code></pre></div><p>接下来的过程是上面一样，首先，我们获取上级证书的信息。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 获取上级证书的名字</span>
+</span></span><span style="display:flex;"><span>$ openssl x509 -in DigiCert_SHA2_High_Assurance_Server_CA.pem -text -noout | grep Issuer:
+</span></span><span style="display:flex;"><span>        Issuer: <span style="color:#008080">C</span><span style="color:#000;font-weight:bold">=</span>US, <span style="color:#008080">O</span><span style="color:#000;font-weight:bold">=</span>DigiCert Inc, <span style="color:#008080">OU</span><span style="color:#000;font-weight:bold">=</span>www.digicert.com, <span style="color:#008080">CN</span><span style="color:#000;font-weight:bold">=</span>DigiCert High Assurance EV Root CA
+</span></span></code></pre></div><p>然后就是校验 DigiCert_SHA2_High_Assurance_Server_CA 是由 DigiCert High Assurance EV Root CA 来签发的，同时这个证书存在于我们系统中。</p>
 <p>这一步我就不再重复了，留给大家作为练习~</p>
 <h2 id="自签名">自签名</h2>
 <p>最后，我们来看看怎么自己签发证书用于本地测试。</p>

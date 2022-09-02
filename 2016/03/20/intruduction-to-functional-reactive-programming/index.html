@@ -107,47 +107,47 @@
 <li>考虑到网络延迟，需要追踪后台返回的数据是否匹配用户当前的输入。比如用户输入 &ldquo;ABC&rdquo;，系统发了一次请求，用户又改输入为 &ldquo;DEF&rdquo;，此时 ABC 的结果返回，我们就不能显示了，因为这个结果已经过时了。</li>
 </ul>
 <p>首先，我们来构建原始流：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#000;font-weight:bold">var</span> $input <span style="color:#000;font-weight:bold">=</span> $(<span style="color:#d14">&#39;#input&#39;</span>) <span style="color:#998;font-style:italic">//输入框
-</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">var</span> originInputStream <span style="color:#000;font-weight:bold">=</span> Rx.Observable.fromEvent($input, <span style="color:#d14">&#39;keyup&#39;</span>)
-</code></pre></div><p>这里，我们使用 RxJS 提供的 <code>fromEvent</code> 方法来构建原始事件流，<code>originInputStream</code> 代表的是每一个 <code>keyup</code> 事件，用户每输入一个字符，<code>originInputStream</code> 便会产生一个值，值的内容为对应的事件对象。现在来想想怎么变换这个原始流，首先，我们需要 debounce，然后我们 map 拿到用户输入的字符串，接下来需要过滤长度比较小的字符串，最后，如果后面的值和前面的值一样，我们就丢弃它。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#000;font-weight:bold">var</span> resultInputStream <span style="color:#000;font-weight:bold">=</span> originInputStream
-  .debounce(<span style="color:#099">500</span> <span style="color:#998;font-style:italic">/* ms */</span>)
-	.map(evt =&gt; evt.target.value)
-  .filter(text =&gt; text.length <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#099">2</span> )
-  .distinctUntilChanged()
-</code></pre></div><p><code>resultInputStream</code> 代表的便是每一个需要请求后台的用户输入值，这个还不是最终的 Stream。最终的 <code>suggestionStream</code> 应该代表的是后台返回的结果，我们监听然后显示 suggestions，就大功告成了。现在剩下的任务便是怎么由 <code>resultInputStream</code> 得到 <code>suggestionStream</code>。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">var</span> $input <span style="color:#000;font-weight:bold">=</span> $(<span style="color:#d14">&#39;#input&#39;</span>) <span style="color:#998;font-style:italic">//输入框
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">var</span> originInputStream <span style="color:#000;font-weight:bold">=</span> Rx.Observable.fromEvent($input, <span style="color:#d14">&#39;keyup&#39;</span>)
+</span></span></code></pre></div><p>这里，我们使用 RxJS 提供的 <code>fromEvent</code> 方法来构建原始事件流，<code>originInputStream</code> 代表的是每一个 <code>keyup</code> 事件，用户每输入一个字符，<code>originInputStream</code> 便会产生一个值，值的内容为对应的事件对象。现在来想想怎么变换这个原始流，首先，我们需要 debounce，然后我们 map 拿到用户输入的字符串，接下来需要过滤长度比较小的字符串，最后，如果后面的值和前面的值一样，我们就丢弃它。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">var</span> resultInputStream <span style="color:#000;font-weight:bold">=</span> originInputStream
+</span></span><span style="display:flex;"><span>  .debounce(<span style="color:#099">500</span> <span style="color:#998;font-style:italic">/* ms */</span>)
+</span></span><span style="display:flex;"><span>	.map(evt =&gt; evt.target.value)
+</span></span><span style="display:flex;"><span>  .filter(text =&gt; text.length <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#099">2</span> )
+</span></span><span style="display:flex;"><span>  .distinctUntilChanged()
+</span></span></code></pre></div><p><code>resultInputStream</code> 代表的便是每一个需要请求后台的用户输入值，这个还不是最终的 Stream。最终的 <code>suggestionStream</code> 应该代表的是后台返回的结果，我们监听然后显示 suggestions，就大功告成了。现在剩下的任务便是怎么由 <code>resultInputStream</code> 得到 <code>suggestionStream</code>。</p>
 <p>这里我们要介绍两个重要的方法，分别是 <code>flatMap</code> 以及 <code>flatMapLatest</code>。<code>map</code> 方法是根据流（mainStream）里面的值，产生一个新的值，如果这个新的值是一个流（subStream）怎么办呢？大部分情况下，我们会希望这个新的流（subStream）它的值出现在 mainStream 中，这样我们可以直接监听 mainStream 而不用去监听每一个 subStream，如图所示：</p>
 <p><img src="/image/9b85365djw1f23ftn0686j208z04cdg4.jpg" alt=""></p>
 <p><code>flatMap</code> 就是这样一个方法，<code>flatMapLatest</code> 顾名思义，他只会处理最新的 subStream，之前的 subStream 的值全部丢掉。这非常吻合我们的需求，因为当用户输入新的字符串时，之前的字符串的返回结果我们不再需要了。</p>
 <p>有了 <code>flatMapLatest</code> 这个方法，我们接下来需要做的便是写一个方法，根据 <code>resultInputStream</code> 的每个值，请求后台，返回一个 subStream（返回 romise 便可，RxJS 会自动帮我们转换为 Stream)。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#000;font-weight:bold">function</span> searchWikipedia (term) {
-  <span style="color:#000;font-weight:bold">return</span> $.ajax({
-    url<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#39;https://en.wikipedia.org/w/api.php&#39;</span>,
-    dataType<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#39;jsonp&#39;</span>,
-    data<span style="color:#000;font-weight:bold">:</span> {
-      action<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#39;opensearch&#39;</span>,
-      format<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#39;json&#39;</span>,
-      search<span style="color:#000;font-weight:bold">:</span> term
-    }
-  })
-}
-
-<span style="color:#000;font-weight:bold">var</span> suggestionStream <span style="color:#000;font-weight:bold">=</span> resultInputStream.flatMapLatest(searchWikipedia)
-</code></pre></div><p>得到 <code>suggestionStream</code> 以后，我们监听并显示结果就行了。至此，任务大功告成。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#000;font-weight:bold">var</span> $results <span style="color:#000;font-weight:bold">=</span> $(<span style="color:#d14">&#34;#results&#34;</span>) <span style="color:#998;font-style:italic">// ul to hold the results
-</span><span style="color:#998;font-style:italic"></span>suggestionStream.subscribe(
-  data =&gt; {
-    $results
-      .empty()
-      .append($.map(data[<span style="color:#099">1</span>], value =&gt;  $(<span style="color:#d14">&#39;&lt;li&gt;&#39;</span>).text(value)))
-  },
-  error=&gt; {
-    $results
-      .empty()
-      .append($(<span style="color:#d14">&#39;&lt;li&gt;&#39;</span>))
-        .text(<span style="color:#d14">&#39;Error:&#39;</span> <span style="color:#000;font-weight:bold">+</span> error);
-  })
-</code></pre></div><p>最终的代码可以看<a href="https://jsbin.com/luvamizavo/1/edit?html,js,output">这里</a>。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">function</span> searchWikipedia (term) {
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">return</span> $.ajax({
+</span></span><span style="display:flex;"><span>    url<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#39;https://en.wikipedia.org/w/api.php&#39;</span>,
+</span></span><span style="display:flex;"><span>    dataType<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#39;jsonp&#39;</span>,
+</span></span><span style="display:flex;"><span>    data<span style="color:#000;font-weight:bold">:</span> {
+</span></span><span style="display:flex;"><span>      action<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#39;opensearch&#39;</span>,
+</span></span><span style="display:flex;"><span>      format<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#39;json&#39;</span>,
+</span></span><span style="display:flex;"><span>      search<span style="color:#000;font-weight:bold">:</span> term
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  })
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">var</span> suggestionStream <span style="color:#000;font-weight:bold">=</span> resultInputStream.flatMapLatest(searchWikipedia)
+</span></span></code></pre></div><p>得到 <code>suggestionStream</code> 以后，我们监听并显示结果就行了。至此，任务大功告成。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">var</span> $results <span style="color:#000;font-weight:bold">=</span> $(<span style="color:#d14">&#34;#results&#34;</span>) <span style="color:#998;font-style:italic">// ul to hold the results
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>suggestionStream.subscribe(
+</span></span><span style="display:flex;"><span>  data =&gt; {
+</span></span><span style="display:flex;"><span>    $results
+</span></span><span style="display:flex;"><span>      .empty()
+</span></span><span style="display:flex;"><span>      .append($.map(data[<span style="color:#099">1</span>], value =&gt;  $(<span style="color:#d14">&#39;&lt;li&gt;&#39;</span>).text(value)))
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  error=&gt; {
+</span></span><span style="display:flex;"><span>    $results
+</span></span><span style="display:flex;"><span>      .empty()
+</span></span><span style="display:flex;"><span>      .append($(<span style="color:#d14">&#39;&lt;li&gt;&#39;</span>))
+</span></span><span style="display:flex;"><span>        .text(<span style="color:#d14">&#39;Error:&#39;</span> <span style="color:#000;font-weight:bold">+</span> error);
+</span></span><span style="display:flex;"><span>  })
+</span></span></code></pre></div><p>最终的代码可以看<a href="https://jsbin.com/luvamizavo/1/edit?html,js,output">这里</a>。</p>
 <p>上面是一个使用 RxJS 的经典例子，下面我们再来看一个例子。</p>
 <p><img src="/image/9b85365djw1f23koqhfbmj20n10603yk.jpg" alt=""></p>
 <p>这是一个十分常见的用户注册表单，几乎每一个网站都要实现的功能。实现起来也比较简单，用户点击 Submit 的时候提交内容到后台就行了，根据后台的结果再进行反馈，比如后台返回成功，则告诉用户注册成功，跳转到个人中心，后台返回“用户名已存在”，则告诉用户注册失败，重新输入。</p>
@@ -161,187 +161,185 @@
 <li>当用户点击提交按钮以后，立刻禁用提交按钮，防止二次提交</li>
 </ul>
 <p>我们先来看看使用 jQuery 怎么解决。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#000;font-weight:bold">var</span> $username <span style="color:#000;font-weight:bold">=</span> $(<span style="color:#d14">&#34;[name=username]&#34;</span>)
-<span style="color:#000;font-weight:bold">var</span> $password <span style="color:#000;font-weight:bold">=</span> $(<span style="color:#d14">&#34;[name=password]&#34;</span>)
-<span style="color:#000;font-weight:bold">var</span> $btn <span style="color:#000;font-weight:bold">=</span> $(<span style="color:#d14">&#34;button&#34;</span>)
-
-$btn.click(<span style="color:#000;font-weight:bold">function</span>(evt) {
-  evt.preventDefault()
-  btnClicked <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">true</span>
-  setButtonState()
-
-  $.ajax({
-    type<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;POST&#34;</span>,
-    url<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;/register&#34;</span>,
-    data<span style="color:#000;font-weight:bold">:</span> {
-      username<span style="color:#000;font-weight:bold">:</span> $username.val(),
-      password<span style="color:#000;font-weight:bold">:</span> $password.val(),
-    },
-    success<span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">function</span>() {
-      alert(<span style="color:#d14">&#34;Success!&#34;</span>)
-    },
-  })
-})
-
-<span style="color:#998;font-style:italic">// Status variables
-</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">var</span> usernameAvailable, 
-    checkingUsername, 
-    prevUsername, 
-    timeout, 
-    btnClicked, 
-    counter <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>
-
-$username.keyup(<span style="color:#000;font-weight:bold">function</span>(evt) {
-  <span style="color:#000;font-weight:bold">var</span> username <span style="color:#000;font-weight:bold">=</span> $username.val()
-  <span style="color:#000;font-weight:bold">if</span>(username <span style="color:#000;font-weight:bold">===</span> prevUsername) <span style="color:#000;font-weight:bold">return</span>
-  usernameAvailable <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">false</span>
-  setButtonState()
-  clearAllInfo()
-
-  <span style="color:#000;font-weight:bold">if</span>(username.length <span style="color:#000;font-weight:bold">===</span> <span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">return</span>
-
-  <span style="color:#000;font-weight:bold">if</span>(timeout) clearTimeout(timeout)
-  prevUsername <span style="color:#000;font-weight:bold">=</span> username
-  timeout <span style="color:#000;font-weight:bold">=</span> setTimeout(<span style="color:#000;font-weight:bold">function</span>() {
-    checkingUsername <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">true</span>
-    toggleCheckingIndicator()
-    <span style="color:#000;font-weight:bold">var</span> id <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">++</span>counter
-    $.ajax({
-      url<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;/check&#34;</span>,
-      data<span style="color:#000;font-weight:bold">:</span> {
-        username<span style="color:#000;font-weight:bold">:</span> $username.val(),
-      },
-      success<span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">function</span>(res) {
-        <span style="color:#000;font-weight:bold">if</span>(id <span style="color:#000;font-weight:bold">!==</span> counter) <span style="color:#000;font-weight:bold">return</span>
-        checkingUsername <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">false</span>
-        usernameAvailable <span style="color:#000;font-weight:bold">=</span> res.available
-        setButtonState()
-        toggleCheckingIndicator()
-        showResult()
-      },
-    })
-  }, <span style="color:#099">500</span>)
-})
-
-$password.keyup(<span style="color:#000;font-weight:bold">function</span>(evt) {
-  setButtonState()
-})
-
-<span style="color:#000;font-weight:bold">function</span> setButtonState() {
-  <span style="color:#000;font-weight:bold">var</span> enabled <span style="color:#000;font-weight:bold">=</span> $username.val().length <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#099">0</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span>
-    $password.val().length <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#099">0</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span>
-    usernameAvailable <span style="color:#000;font-weight:bold">&amp;&amp;</span>
-    <span style="color:#000;font-weight:bold">!</span>btnClicked
-  $btn.prop(<span style="color:#d14">&#34;disabled&#34;</span>, <span style="color:#000;font-weight:bold">!</span>enabled)
-}
-
-<span style="color:#000;font-weight:bold">function</span> toggleCheckingIndicator() {
-  $(<span style="color:#d14">&#34;#result-ok&#34;</span>).hide()
-  $(<span style="color:#d14">&#34;#result-bad&#34;</span>).hide()
-  <span style="color:#000;font-weight:bold">if</span>(checkingUsername) {
-    $(<span style="color:#d14">&#34;#indicator&#34;</span>).show()
-  } <span style="color:#000;font-weight:bold">else</span> {
-    $(<span style="color:#d14">&#34;#indicator&#34;</span>).hide()
-  }
-}
-
-<span style="color:#000;font-weight:bold">function</span> showResult(available) {
-  usernameAvailable <span style="color:#000;font-weight:bold">?</span> $(<span style="color:#d14">&#34;#result-ok&#34;</span>).show() <span style="color:#000;font-weight:bold">:</span> $(<span style="color:#d14">&#34;#result-bad&#34;</span>).show()
-}
-
-<span style="color:#000;font-weight:bold">function</span> clearAllInfo() {
-  $(<span style="color:#d14">&#34;#result-ok&#34;</span>).hide()
-  $(<span style="color:#d14">&#34;#result-bad&#34;</span>).hide()
-  $(<span style="color:#d14">&#34;#indicator&#34;</span>).hide()
-}
-
-setButtonState()
-
-</code></pre></div><p>代码不需要太多解释，逻辑很直接，使用几个变量来追踪我们想要追踪的状态来实现上述的几个功能。这样的代码有一个问题，那就是随着需求的增加，会变来越来越复杂，引入越来越多的状态，直到最后无法控制。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">var</span> $username <span style="color:#000;font-weight:bold">=</span> $(<span style="color:#d14">&#34;[name=username]&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">var</span> $password <span style="color:#000;font-weight:bold">=</span> $(<span style="color:#d14">&#34;[name=password]&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">var</span> $btn <span style="color:#000;font-weight:bold">=</span> $(<span style="color:#d14">&#34;button&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$btn.click(<span style="color:#000;font-weight:bold">function</span>(evt) {
+</span></span><span style="display:flex;"><span>  evt.preventDefault()
+</span></span><span style="display:flex;"><span>  btnClicked <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">true</span>
+</span></span><span style="display:flex;"><span>  setButtonState()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  $.ajax({
+</span></span><span style="display:flex;"><span>    type<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;POST&#34;</span>,
+</span></span><span style="display:flex;"><span>    url<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;/register&#34;</span>,
+</span></span><span style="display:flex;"><span>    data<span style="color:#000;font-weight:bold">:</span> {
+</span></span><span style="display:flex;"><span>      username<span style="color:#000;font-weight:bold">:</span> $username.val(),
+</span></span><span style="display:flex;"><span>      password<span style="color:#000;font-weight:bold">:</span> $password.val(),
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    success<span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">function</span>() {
+</span></span><span style="display:flex;"><span>      alert(<span style="color:#d14">&#34;Success!&#34;</span>)
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>  })
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">// Status variables
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">var</span> usernameAvailable, 
+</span></span><span style="display:flex;"><span>    checkingUsername, 
+</span></span><span style="display:flex;"><span>    prevUsername, 
+</span></span><span style="display:flex;"><span>    timeout, 
+</span></span><span style="display:flex;"><span>    btnClicked, 
+</span></span><span style="display:flex;"><span>    counter <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$username.keyup(<span style="color:#000;font-weight:bold">function</span>(evt) {
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">var</span> username <span style="color:#000;font-weight:bold">=</span> $username.val()
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">if</span>(username <span style="color:#000;font-weight:bold">===</span> prevUsername) <span style="color:#000;font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>  usernameAvailable <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">false</span>
+</span></span><span style="display:flex;"><span>  setButtonState()
+</span></span><span style="display:flex;"><span>  clearAllInfo()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">if</span>(username.length <span style="color:#000;font-weight:bold">===</span> <span style="color:#099">0</span>) <span style="color:#000;font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">if</span>(timeout) clearTimeout(timeout)
+</span></span><span style="display:flex;"><span>  prevUsername <span style="color:#000;font-weight:bold">=</span> username
+</span></span><span style="display:flex;"><span>  timeout <span style="color:#000;font-weight:bold">=</span> setTimeout(<span style="color:#000;font-weight:bold">function</span>() {
+</span></span><span style="display:flex;"><span>    checkingUsername <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">true</span>
+</span></span><span style="display:flex;"><span>    toggleCheckingIndicator()
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">var</span> id <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">++</span>counter
+</span></span><span style="display:flex;"><span>    $.ajax({
+</span></span><span style="display:flex;"><span>      url<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;/check&#34;</span>,
+</span></span><span style="display:flex;"><span>      data<span style="color:#000;font-weight:bold">:</span> {
+</span></span><span style="display:flex;"><span>        username<span style="color:#000;font-weight:bold">:</span> $username.val(),
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>      success<span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">function</span>(res) {
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">if</span>(id <span style="color:#000;font-weight:bold">!==</span> counter) <span style="color:#000;font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>        checkingUsername <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">false</span>
+</span></span><span style="display:flex;"><span>        usernameAvailable <span style="color:#000;font-weight:bold">=</span> res.available
+</span></span><span style="display:flex;"><span>        setButtonState()
+</span></span><span style="display:flex;"><span>        toggleCheckingIndicator()
+</span></span><span style="display:flex;"><span>        showResult()
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>    })
+</span></span><span style="display:flex;"><span>  }, <span style="color:#099">500</span>)
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$password.keyup(<span style="color:#000;font-weight:bold">function</span>(evt) {
+</span></span><span style="display:flex;"><span>  setButtonState()
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">function</span> setButtonState() {
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">var</span> enabled <span style="color:#000;font-weight:bold">=</span> $username.val().length <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#099">0</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span>
+</span></span><span style="display:flex;"><span>    $password.val().length <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#099">0</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span>
+</span></span><span style="display:flex;"><span>    usernameAvailable <span style="color:#000;font-weight:bold">&amp;&amp;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">!</span>btnClicked
+</span></span><span style="display:flex;"><span>  $btn.prop(<span style="color:#d14">&#34;disabled&#34;</span>, <span style="color:#000;font-weight:bold">!</span>enabled)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">function</span> toggleCheckingIndicator() {
+</span></span><span style="display:flex;"><span>  $(<span style="color:#d14">&#34;#result-ok&#34;</span>).hide()
+</span></span><span style="display:flex;"><span>  $(<span style="color:#d14">&#34;#result-bad&#34;</span>).hide()
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">if</span>(checkingUsername) {
+</span></span><span style="display:flex;"><span>    $(<span style="color:#d14">&#34;#indicator&#34;</span>).show()
+</span></span><span style="display:flex;"><span>  } <span style="color:#000;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>    $(<span style="color:#d14">&#34;#indicator&#34;</span>).hide()
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">function</span> showResult(available) {
+</span></span><span style="display:flex;"><span>  usernameAvailable <span style="color:#000;font-weight:bold">?</span> $(<span style="color:#d14">&#34;#result-ok&#34;</span>).show() <span style="color:#000;font-weight:bold">:</span> $(<span style="color:#d14">&#34;#result-bad&#34;</span>).show()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">function</span> clearAllInfo() {
+</span></span><span style="display:flex;"><span>  $(<span style="color:#d14">&#34;#result-ok&#34;</span>).hide()
+</span></span><span style="display:flex;"><span>  $(<span style="color:#d14">&#34;#result-bad&#34;</span>).hide()
+</span></span><span style="display:flex;"><span>  $(<span style="color:#d14">&#34;#indicator&#34;</span>).hide()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>setButtonState()
+</span></span></code></pre></div><p>代码不需要太多解释，逻辑很直接，使用几个变量来追踪我们想要追踪的状态来实现上述的几个功能。这样的代码有一个问题，那就是随着需求的增加，会变来越来越复杂，引入越来越多的状态，直到最后无法控制。</p>
 <p>我们再来看看 RxJS 怎么解决这个问题。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#000;font-weight:bold">var</span> $username <span style="color:#000;font-weight:bold">=</span> $(<span style="color:#d14">&#34;[name=username]&#34;</span>)
-<span style="color:#000;font-weight:bold">var</span> $password <span style="color:#000;font-weight:bold">=</span> $(<span style="color:#d14">&#34;[name=password]&#34;</span>)
-<span style="color:#000;font-weight:bold">var</span> $btn <span style="color:#000;font-weight:bold">=</span> $(<span style="color:#d14">&#34;button&#34;</span>)
-
-<span style="color:#000;font-weight:bold">function</span> getStream($ele) {
-  <span style="color:#000;font-weight:bold">return</span> Rx.Observable.fromEvent($ele, <span style="color:#d14">&#34;keyup&#34;</span>)
-  	.pluck(<span style="color:#d14">&#34;target&#34;</span>, <span style="color:#d14">&#34;value&#34;</span>)
-  	.distinctUntilChanged().startWith(<span style="color:#d14">&#34;&#34;</span>)
-}
-
-<span style="color:#000;font-weight:bold">var</span> usernameStream <span style="color:#000;font-weight:bold">=</span> getStream($username)
-<span style="color:#000;font-weight:bold">var</span> passwordStream <span style="color:#000;font-weight:bold">=</span> getStream($password)
-<span style="color:#000;font-weight:bold">var</span> btnClickedStream <span style="color:#000;font-weight:bold">=</span> Rx.Observable.fromEvent($btn, <span style="color:#d14">&#34;click&#34;</span>)
-
-<span style="color:#000;font-weight:bold">var</span> enteredStream <span style="color:#000;font-weight:bold">=</span> usernameStream
-	.combineLatest(passwordStream, (username, password) =&gt; {
-  		<span style="color:#000;font-weight:bold">return</span> username.length <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#099">0</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> password.length <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#099">0</span>
-	})
-
-<span style="color:#000;font-weight:bold">var</span> ajaxStream <span style="color:#000;font-weight:bold">=</span> usernameStream
-  .debounce(<span style="color:#099">500</span>)
-  .filter(s =&gt; s.length <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#099">0</span>)
-  .flatMapLatest(s =&gt; {
-    setIndicator(<span style="color:#000;font-weight:bold">true</span>)
-    <span style="color:#000;font-weight:bold">return</span> $.getJSON(<span style="color:#d14">&#34;/check&#34;</span>, {username<span style="color:#000;font-weight:bold">:</span> s})
-  })
-  .map(res =&gt; {
-    setIndicator(<span style="color:#000;font-weight:bold">false</span>)
-    setResult(res.available)
-    <span style="color:#000;font-weight:bold">return</span> res.available
-  })
-
-<span style="color:#000;font-weight:bold">var</span> availabilityStream <span style="color:#000;font-weight:bold">=</span> ajaxStream.merge(usernameStream.map(s =&gt; <span style="color:#000;font-weight:bold">false</span>))
-availabilityStream.subscribe(clearResult)
-
-<span style="color:#000;font-weight:bold">var</span> buttonStateStream <span style="color:#000;font-weight:bold">=</span> enteredStream
-	.combineLatest(availabilityStream, (a, b) =&gt; a <span style="color:#000;font-weight:bold">&amp;&amp;</span> b)
-	.merge(btnClickedStream.map(s =&gt; <span style="color:#000;font-weight:bold">false</span>))
-
-btnClickedStream.flatMap(register).subscribe(
-  d =&gt; {
-    <span style="color:#000;font-weight:bold">if</span>(d.success) {
-      alert(<span style="color:#d14">&#34;Success!&#34;</span>)
-    }
-  },
-  jqXHR =&gt; {
-    console.error(jqXHR.statusText)
-  }
-)
-
-buttonStateStream.subscribe(
-  <span style="color:#000;font-weight:bold">function</span>(enabled) {
-    $btn.prop(<span style="color:#d14">&#34;disabled&#34;</span>, <span style="color:#000;font-weight:bold">!</span>enabled)
-  }
-)
-
-<span style="color:#000;font-weight:bold">function</span> register(evt) {
-  evt.preventDefault()
-  <span style="color:#000;font-weight:bold">return</span> $.ajax({
-    url<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;/register&#34;</span>,
-    method<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;POST&#34;</span>,
-    data<span style="color:#000;font-weight:bold">:</span> {
-      username<span style="color:#000;font-weight:bold">:</span> $username.val(),
-      password<span style="color:#000;font-weight:bold">:</span> $password.val(),
-    },
-  })
-}
-
-
-<span style="color:#000;font-weight:bold">function</span> setIndicator(enabled) {
-  clearResult()
-  enabled <span style="color:#000;font-weight:bold">?</span> $(<span style="color:#d14">&#34;#indicator&#34;</span>).show() <span style="color:#000;font-weight:bold">:</span> $(<span style="color:#d14">&#34;#indicator&#34;</span>).hide()
-}
-
-<span style="color:#000;font-weight:bold">function</span> clearResult() {
-  $(<span style="color:#d14">&#34;#result-ok,#result-bad&#34;</span>).hide()
-}
-
-<span style="color:#000;font-weight:bold">function</span> setResult(ok) {
-  ok <span style="color:#000;font-weight:bold">?</span> $(<span style="color:#d14">&#34;#result-ok&#34;</span>).show() <span style="color:#000;font-weight:bold">:</span> $(<span style="color:#d14">&#34;#result-bad&#34;</span>).show()
-}
-
-</code></pre></div><p>还是一样的思路，首先构建原始的 Stream，变换得到我们想要监听的 Stream，除了辅助的 UI 函数以外，剩下的代码都在操作 Stream，没有任何状态的跟踪，代码变得简洁清楚明了。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">var</span> $username <span style="color:#000;font-weight:bold">=</span> $(<span style="color:#d14">&#34;[name=username]&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">var</span> $password <span style="color:#000;font-weight:bold">=</span> $(<span style="color:#d14">&#34;[name=password]&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">var</span> $btn <span style="color:#000;font-weight:bold">=</span> $(<span style="color:#d14">&#34;button&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">function</span> getStream($ele) {
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">return</span> Rx.Observable.fromEvent($ele, <span style="color:#d14">&#34;keyup&#34;</span>)
+</span></span><span style="display:flex;"><span>  	.pluck(<span style="color:#d14">&#34;target&#34;</span>, <span style="color:#d14">&#34;value&#34;</span>)
+</span></span><span style="display:flex;"><span>  	.distinctUntilChanged().startWith(<span style="color:#d14">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">var</span> usernameStream <span style="color:#000;font-weight:bold">=</span> getStream($username)
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">var</span> passwordStream <span style="color:#000;font-weight:bold">=</span> getStream($password)
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">var</span> btnClickedStream <span style="color:#000;font-weight:bold">=</span> Rx.Observable.fromEvent($btn, <span style="color:#d14">&#34;click&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">var</span> enteredStream <span style="color:#000;font-weight:bold">=</span> usernameStream
+</span></span><span style="display:flex;"><span>	.combineLatest(passwordStream, (username, password) =&gt; {
+</span></span><span style="display:flex;"><span>  		<span style="color:#000;font-weight:bold">return</span> username.length <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#099">0</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> password.length <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#099">0</span>
+</span></span><span style="display:flex;"><span>	})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">var</span> ajaxStream <span style="color:#000;font-weight:bold">=</span> usernameStream
+</span></span><span style="display:flex;"><span>  .debounce(<span style="color:#099">500</span>)
+</span></span><span style="display:flex;"><span>  .filter(s =&gt; s.length <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#099">0</span>)
+</span></span><span style="display:flex;"><span>  .flatMapLatest(s =&gt; {
+</span></span><span style="display:flex;"><span>    setIndicator(<span style="color:#000;font-weight:bold">true</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> $.getJSON(<span style="color:#d14">&#34;/check&#34;</span>, {username<span style="color:#000;font-weight:bold">:</span> s})
+</span></span><span style="display:flex;"><span>  })
+</span></span><span style="display:flex;"><span>  .map(res =&gt; {
+</span></span><span style="display:flex;"><span>    setIndicator(<span style="color:#000;font-weight:bold">false</span>)
+</span></span><span style="display:flex;"><span>    setResult(res.available)
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> res.available
+</span></span><span style="display:flex;"><span>  })
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">var</span> availabilityStream <span style="color:#000;font-weight:bold">=</span> ajaxStream.merge(usernameStream.map(s =&gt; <span style="color:#000;font-weight:bold">false</span>))
+</span></span><span style="display:flex;"><span>availabilityStream.subscribe(clearResult)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">var</span> buttonStateStream <span style="color:#000;font-weight:bold">=</span> enteredStream
+</span></span><span style="display:flex;"><span>	.combineLatest(availabilityStream, (a, b) =&gt; a <span style="color:#000;font-weight:bold">&amp;&amp;</span> b)
+</span></span><span style="display:flex;"><span>	.merge(btnClickedStream.map(s =&gt; <span style="color:#000;font-weight:bold">false</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>btnClickedStream.flatMap(register).subscribe(
+</span></span><span style="display:flex;"><span>  d =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">if</span>(d.success) {
+</span></span><span style="display:flex;"><span>      alert(<span style="color:#d14">&#34;Success!&#34;</span>)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  jqXHR =&gt; {
+</span></span><span style="display:flex;"><span>    console.error(jqXHR.statusText)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>buttonStateStream.subscribe(
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">function</span>(enabled) {
+</span></span><span style="display:flex;"><span>    $btn.prop(<span style="color:#d14">&#34;disabled&#34;</span>, <span style="color:#000;font-weight:bold">!</span>enabled)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">function</span> register(evt) {
+</span></span><span style="display:flex;"><span>  evt.preventDefault()
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">return</span> $.ajax({
+</span></span><span style="display:flex;"><span>    url<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;/register&#34;</span>,
+</span></span><span style="display:flex;"><span>    method<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;POST&#34;</span>,
+</span></span><span style="display:flex;"><span>    data<span style="color:#000;font-weight:bold">:</span> {
+</span></span><span style="display:flex;"><span>      username<span style="color:#000;font-weight:bold">:</span> $username.val(),
+</span></span><span style="display:flex;"><span>      password<span style="color:#000;font-weight:bold">:</span> $password.val(),
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>  })
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">function</span> setIndicator(enabled) {
+</span></span><span style="display:flex;"><span>  clearResult()
+</span></span><span style="display:flex;"><span>  enabled <span style="color:#000;font-weight:bold">?</span> $(<span style="color:#d14">&#34;#indicator&#34;</span>).show() <span style="color:#000;font-weight:bold">:</span> $(<span style="color:#d14">&#34;#indicator&#34;</span>).hide()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">function</span> clearResult() {
+</span></span><span style="display:flex;"><span>  $(<span style="color:#d14">&#34;#result-ok,#result-bad&#34;</span>).hide()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">function</span> setResult(ok) {
+</span></span><span style="display:flex;"><span>  ok <span style="color:#000;font-weight:bold">?</span> $(<span style="color:#d14">&#34;#result-ok&#34;</span>).show() <span style="color:#000;font-weight:bold">:</span> $(<span style="color:#d14">&#34;#result-bad&#34;</span>).show()
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>还是一样的思路，首先构建原始的 Stream，变换得到我们想要监听的 Stream，除了辅助的 UI 函数以外，剩下的代码都在操作 Stream，没有任何状态的跟踪，代码变得简洁清楚明了。</p>
 <p>最后，用户注册的完整代码包括 UI 和一个 Express 的服务器可以在 [frp-demo] 下载。</p>
 <p>[frp-demo]: <a href="https://github.com/cj1128/frp-demo">https://github.com/cj1128/frp-demo</a>)</p>
           </div>

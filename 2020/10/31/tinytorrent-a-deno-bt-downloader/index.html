@@ -126,39 +126,39 @@
 </ul>
 <p><a href="https://deno.land/x/bencode@v0.1.2">deno-bencode</a> 是我给 Deno 写的一个 Bencode 编解码库，我们现在使用这个库来看看种子文件中到底有什么。</p>
 <p>我们用 Debian 的官方种子文件来测试。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-typescript" data-lang="typescript"><span style="color:#998;font-style:italic">// decode.ts
-</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">import</span> { decode } <span style="color:#000;font-weight:bold">from</span> <span style="color:#d14">&#34;https://deno.land/x/bencode@v0.1.2/mod.ts&#34;</span>
-
-<span style="color:#000;font-weight:bold">const</span> file <span style="color:#000;font-weight:bold">=</span> Deno.args[<span style="color:#099">0</span>]
-console.log(decode(Deno.readFileSync(file)))
-</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ wget https://cdimage.debian.org/debian-cd/current/amd64/bt-cd/debian-10.6.0-amd64-netinst.iso.torrent
-$ deno run --allow-read decode.ts debian-10.6.0-amd64-netinst.iso.torrent
-<span style="color:#000;font-weight:bold">{</span>
-  announce: <span style="color:#d14">&#34;http://bttracker.debian.org:6969/announce&#34;</span>,
-  comment: <span style="color:#d14">&#39;&#34;Debian CD from cdimage.debian.org&#34;&#39;</span>,
-  <span style="color:#d14">&#34;creation date&#34;</span>: 1601120878,
-  httpseeds: <span style="color:#000;font-weight:bold">[</span>
-    <span style="color:#d14">&#34;https://cdimage.debian.org/cdimage/release/10.6.0//srv/cdbuilder.debian.org/dst/deb-cd/weekly-builds...&#34;</span>,
-    <span style="color:#d14">&#34;https://cdimage.debian.org/cdimage/archive/10.6.0//srv/cdbuilder.debian.org/dst/deb-cd/weekly-builds...&#34;</span>
-  <span style="color:#000;font-weight:bold">]</span>,
-  info: <span style="color:#000;font-weight:bold">{</span>
-    length: 365953024,
-    name: <span style="color:#d14">&#34;debian-10.6.0-amd64-netinst.iso&#34;</span>,
-    <span style="color:#d14">&#34;piece length&#34;</span>: 262144,
-    pieces: Uint8Array<span style="color:#000;font-weight:bold">(</span>27920<span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">[</span>
-      144,  55, 173,  67, 115, 234, 169, 248, 222,  41, 139, 142, 125,
-      100, 183, 130,  43, 148, 137, 130,   2, 194,  83, 109, 140, 147,
-      123, 174, 234, 135,  58, 207, 217, 141, 107,  86, 245, 137,  79,
-      150,  23,  33, 151, 157, 125, 159,  97,  10, 200, 137,  36, 158,
-       74,  19,  97, 194, 171, 164,  32, 145, 175, 213,  91, 193, 120,
-       26,  89, 109, 114,  61,  90, 166, 168, 137, 218, 154, 219, 119,
-      107,  46, 240,  50, 134, 161, 162,  18, 224,  51, 210,  61,  41,
-        6, 207, 124,  62, 199, 227, 134, 146, 206,
-      ... <span style="color:#099">27820</span> more items
-    <span style="color:#000;font-weight:bold">]</span>
-  <span style="color:#000;font-weight:bold">}</span>
-<span style="color:#000;font-weight:bold">}</span>
-</code></pre></div><p>首先，种子文件是一个 Bencode 编码的 Dictionary，里面含有一些字段，比较重要的是这些：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#998;font-style:italic">// decode.ts
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">import</span> { decode } <span style="color:#000;font-weight:bold">from</span> <span style="color:#d14">&#34;https://deno.land/x/bencode@v0.1.2/mod.ts&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> file <span style="color:#000;font-weight:bold">=</span> Deno.args[<span style="color:#099">0</span>]
+</span></span><span style="display:flex;"><span>console.log(decode(Deno.readFileSync(file)))
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ wget https://cdimage.debian.org/debian-cd/current/amd64/bt-cd/debian-10.6.0-amd64-netinst.iso.torrent
+</span></span><span style="display:flex;"><span>$ deno run --allow-read decode.ts debian-10.6.0-amd64-netinst.iso.torrent
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>  announce: <span style="color:#d14">&#34;http://bttracker.debian.org:6969/announce&#34;</span>,
+</span></span><span style="display:flex;"><span>  comment: <span style="color:#d14">&#39;&#34;Debian CD from cdimage.debian.org&#34;&#39;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#d14">&#34;creation date&#34;</span>: 1601120878,
+</span></span><span style="display:flex;"><span>  httpseeds: <span style="color:#000;font-weight:bold">[</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#d14">&#34;https://cdimage.debian.org/cdimage/release/10.6.0//srv/cdbuilder.debian.org/dst/deb-cd/weekly-builds...&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#d14">&#34;https://cdimage.debian.org/cdimage/archive/10.6.0//srv/cdbuilder.debian.org/dst/deb-cd/weekly-builds...&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">]</span>,
+</span></span><span style="display:flex;"><span>  info: <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    length: 365953024,
+</span></span><span style="display:flex;"><span>    name: <span style="color:#d14">&#34;debian-10.6.0-amd64-netinst.iso&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#d14">&#34;piece length&#34;</span>: 262144,
+</span></span><span style="display:flex;"><span>    pieces: Uint8Array<span style="color:#000;font-weight:bold">(</span>27920<span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">[</span>
+</span></span><span style="display:flex;"><span>      144,  55, 173,  67, 115, 234, 169, 248, 222,  41, 139, 142, 125,
+</span></span><span style="display:flex;"><span>      100, 183, 130,  43, 148, 137, 130,   2, 194,  83, 109, 140, 147,
+</span></span><span style="display:flex;"><span>      123, 174, 234, 135,  58, 207, 217, 141, 107,  86, 245, 137,  79,
+</span></span><span style="display:flex;"><span>      150,  23,  33, 151, 157, 125, 159,  97,  10, 200, 137,  36, 158,
+</span></span><span style="display:flex;"><span>       74,  19,  97, 194, 171, 164,  32, 145, 175, 213,  91, 193, 120,
+</span></span><span style="display:flex;"><span>       26,  89, 109, 114,  61,  90, 166, 168, 137, 218, 154, 219, 119,
+</span></span><span style="display:flex;"><span>      107,  46, 240,  50, 134, 161, 162,  18, 224,  51, 210,  61,  41,
+</span></span><span style="display:flex;"><span>        6, 207, 124,  62, 199, 227, 134, 146, 206,
+</span></span><span style="display:flex;"><span>      ... <span style="color:#099">27820</span> more items
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span></code></pre></div><p>首先，种子文件是一个 Bencode 编码的 Dictionary，里面含有一些字段，比较重要的是这些：</p>
 <ul>
 <li><code>announce</code>: 这是一个 URL，作用后面再说</li>
 <li><code>info</code>: 这个又是一个 Dictionary，里面含有文件相关的信息
@@ -182,52 +182,52 @@ $ deno run --allow-read decode.ts debian-10.6.0-amd64-netinst.iso.torrent
 <p>大家可以发现，上面的种子只包含一个文件，很多时候，我们打开种子时，里面会有多个文件，下载器会让我们选择哪些文件需要被下载。</p>
 <p>这里就涉及到另外一个问题，<a href="https://wiki.theory.org/BitTorrentSpecification#Info_in_Single_File_Mode">单文件种子</a> 和 <a href="https://wiki.theory.org/BitTorrentSpecification#Info_in_Multiple_File_Mode">多文件种子</a>，它们存储的信息略有不同，我们用一个例子来看。</p>
 <p>我随便找了一个 Taylor Swift 的专辑 Red 的种子，打开看看。</p>
-<pre><code>$ deno run --allow-read decode.ts red.torrent
+<pre tabindex="0"><code>$ deno run --allow-read decode.ts red.torrent
 {
-  announce: &quot;http://tracker.nwps.ws:6969/announce&quot;,
-  &quot;announce-list&quot;: [
-    [ &quot;http://tracker.nwps.ws:6969/announce&quot; ],
-    [ &quot;http://tracker.winglai.com/announce&quot; ],
-    [ &quot;http://fr33dom.h33t.com:3310/announce&quot; ],
-    [ &quot;http://exodus.desync.com:6969/announce&quot; ],
-    [ &quot;http://torrent.gresille.org/announce&quot; ],
-    [ &quot;http://tracker.trackerfix.com/announce&quot; ],
-    [ &quot;udp://tracker.btzoo.eu:80/announce&quot; ],
-    [ &quot;http://tracker.windsormetalbattery.com/announce&quot; ],
-    [ &quot;udp://10.rarbg.me:80/announce&quot; ],
-    [ &quot;udp://ipv4.tracker.harry.lu:80/announce&quot; ],
-    [ &quot;udp://tracker.ilibr.org:6969/announce&quot; ],
-    [ &quot;udp://tracker.zond.org:80/announce&quot; ],
-    [ &quot;http://torrent-tracker.ru/announce.php&quot; ],
-    [ &quot;http://bigfoot1942.sektori.org:6969/announce&quot; ],
-    [ &quot;http://tracker.best-torrents.net:6969/announce&quot; ],
-    [ &quot;http://announce.torrentsmd.com:6969/announce&quot; ],
-    [ &quot;udp://tracker.token.ro:80/announce&quot; ],
-    [ &quot;udp://open.demonii.com:80&quot; ],
-    [ &quot;udp://tracker.coppersurfer.tk:80&quot; ],
-    [ &quot;http://tracker.thepiratebay.org/announce&quot; ],
-    [ &quot;udp://9.rarbg.com:2710/announce&quot; ],
-    [ &quot;udp://open.demonii.com:1337/announce&quot; ],
-    [ &quot;udp://tracker.ccc.de:80/announce&quot; ],
-    [ &quot;udp://tracker.istole.it:80/announce&quot; ],
-    [ &quot;udp://tracker.publicbt.com:80/announce&quot; ],
-    [ &quot;udp://tracker.openbittorrent.com:80/announce&quot; ],
-    [ &quot;udp://tracker.istole.it:80/announce&quot; ],
-    [ &quot;http://tracker.istole.it/announce&quot; ],
-    [ &quot;udp://tracker.publicbt.com:80/announce&quot; ],
-    [ &quot;http://tracker.publicbt.com/announce&quot; ],
-    [ &quot;udp://open.demonii.com:1337/announce&quot; ],
-    [ &quot;udp://11.rarbg.me:80/announce&quot; ],
-    [ &quot;udp://10.rarbg.me:80/announce&quot; ],
-    [ &quot;udp://9.rarbg.com:2710/announce&quot; ],
-    [ &quot;udp://tracker.token.ro:80/announce&quot; ],
-    [ &quot;udp://12.rarbg.me:80/announce&quot; ],
-    [ &quot;http://tracker.trackerfix.com/announce&quot; ]
+  announce: &#34;http://tracker.nwps.ws:6969/announce&#34;,
+  &#34;announce-list&#34;: [
+    [ &#34;http://tracker.nwps.ws:6969/announce&#34; ],
+    [ &#34;http://tracker.winglai.com/announce&#34; ],
+    [ &#34;http://fr33dom.h33t.com:3310/announce&#34; ],
+    [ &#34;http://exodus.desync.com:6969/announce&#34; ],
+    [ &#34;http://torrent.gresille.org/announce&#34; ],
+    [ &#34;http://tracker.trackerfix.com/announce&#34; ],
+    [ &#34;udp://tracker.btzoo.eu:80/announce&#34; ],
+    [ &#34;http://tracker.windsormetalbattery.com/announce&#34; ],
+    [ &#34;udp://10.rarbg.me:80/announce&#34; ],
+    [ &#34;udp://ipv4.tracker.harry.lu:80/announce&#34; ],
+    [ &#34;udp://tracker.ilibr.org:6969/announce&#34; ],
+    [ &#34;udp://tracker.zond.org:80/announce&#34; ],
+    [ &#34;http://torrent-tracker.ru/announce.php&#34; ],
+    [ &#34;http://bigfoot1942.sektori.org:6969/announce&#34; ],
+    [ &#34;http://tracker.best-torrents.net:6969/announce&#34; ],
+    [ &#34;http://announce.torrentsmd.com:6969/announce&#34; ],
+    [ &#34;udp://tracker.token.ro:80/announce&#34; ],
+    [ &#34;udp://open.demonii.com:80&#34; ],
+    [ &#34;udp://tracker.coppersurfer.tk:80&#34; ],
+    [ &#34;http://tracker.thepiratebay.org/announce&#34; ],
+    [ &#34;udp://9.rarbg.com:2710/announce&#34; ],
+    [ &#34;udp://open.demonii.com:1337/announce&#34; ],
+    [ &#34;udp://tracker.ccc.de:80/announce&#34; ],
+    [ &#34;udp://tracker.istole.it:80/announce&#34; ],
+    [ &#34;udp://tracker.publicbt.com:80/announce&#34; ],
+    [ &#34;udp://tracker.openbittorrent.com:80/announce&#34; ],
+    [ &#34;udp://tracker.istole.it:80/announce&#34; ],
+    [ &#34;http://tracker.istole.it/announce&#34; ],
+    [ &#34;udp://tracker.publicbt.com:80/announce&#34; ],
+    [ &#34;http://tracker.publicbt.com/announce&#34; ],
+    [ &#34;udp://open.demonii.com:1337/announce&#34; ],
+    [ &#34;udp://11.rarbg.me:80/announce&#34; ],
+    [ &#34;udp://10.rarbg.me:80/announce&#34; ],
+    [ &#34;udp://9.rarbg.com:2710/announce&#34; ],
+    [ &#34;udp://tracker.token.ro:80/announce&#34; ],
+    [ &#34;udp://12.rarbg.me:80/announce&#34; ],
+    [ &#34;http://tracker.trackerfix.com/announce&#34; ]
   ],
-  comment: &quot;Torrent downloaded from torrent cache at http://itorrents.org&quot;,
-  &quot;created by&quot;: &quot;uTorrent/3210&quot;,
-  &quot;creation date&quot;: 1351095350,
-  encoding: &quot;UTF-8&quot;,
+  comment: &#34;Torrent downloaded from torrent cache at http://itorrents.org&#34;,
+  &#34;created by&#34;: &#34;uTorrent/3210&#34;,
+  &#34;creation date&#34;: 1351095350,
+  encoding: &#34;UTF-8&#34;,
   info: {
     files: [
       { length: 13236894, path: [Array] },
@@ -254,8 +254,8 @@ $ deno run --allow-read decode.ts debian-10.6.0-amd64-netinst.iso.torrent
       { length: 7797281, path: [Array] },
       { length: 7357902, path: [Array] }
     ],
-    name: &quot;Taylor Swift - Red (Deluxe Version)&quot;,
-    &quot;piece length&quot;: 16384,
+    name: &#34;Taylor Swift - Red (Deluxe Version)&#34;,
+    &#34;piece length&#34;: 16384,
     pieces: Uint8Array(276460) [
       107,  33, 238, 211, 243,  14, 230, 146,  23,  98, 147, 188, 251, 168,
       170, 253, 105,  99,  55, 208, 230,  60,  87, 198,  22, 246, 245, 186,
@@ -270,51 +270,51 @@ $ deno run --allow-read decode.ts debian-10.6.0-amd64-netinst.iso.torrent
   }
 }
 </code></pre><p>可以发现，最大的区别在于 <code>info</code> 里面多了一个字段叫做 <code>files</code>。默认的 <code>console.log</code> 没有打印出 <code>path</code> 内容，我们改一下代码，单独打印 <code>files</code>。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-typescript" data-lang="typescript"><span style="color:#998;font-style:italic">// decode2.ts
-</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">import</span> { decode } <span style="color:#000;font-weight:bold">from</span> <span style="color:#d14">&#34;https://deno.land/x/bencode@v0.1.2/mod.ts&#34;</span>
-
-<span style="color:#000;font-weight:bold">const</span> file <span style="color:#000;font-weight:bold">=</span> Deno.args[<span style="color:#099">0</span>]
-<span style="color:#000;font-weight:bold">const</span> result <span style="color:#000;font-weight:bold">=</span> decode(Deno.readFileSync(file)) <span style="color:#000;font-weight:bold">as</span> <span style="color:#458;font-weight:bold">any</span>
-console.log(result.info.files)
-</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$  deno run --allow-read decode2.ts red.torrent
-<span style="color:#000;font-weight:bold">[</span>
-  <span style="color:#000;font-weight:bold">{</span> length: 13236894, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - All Too Well.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span>
-    length: 12992666,
-    path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - State of Grace (Acoustic Version).mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span>
-  <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span>
-    length: 12031154,
-    path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift Feat Gary Lightbody - The Last Time.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span>
-  <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span> length: 11899411, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - State of Grace.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span> length: 11535936, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - The Moment I Knew.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span> length: 11465792, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Sad Beautiful Tragic.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span>
-    length: 9888023,
-    path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift Feat Ed Sheeran - Everything Has Changed.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span>
-  <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span> length: 9853495, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - I Almost Do.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span> length: 9781419, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Treacherous.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span> length: 9684472, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Treacherous (Demo).mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span> length: 9681093, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - The Lucky One.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span> length: 9574507, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Begin Again.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span> length: 9355103, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - 22.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span> length: 9154619, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Red (Demo).mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span> length: 9028224, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Come Back... Be Here.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span> length: 8994573, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Red.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span> length: 8903823, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Girl At Home.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span> length: 8895321, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Starlight.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span> length: 8859865, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - I Knew You Were Trouble..mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span> length: 8304962, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Stay Stay Stay.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span> length: 8188974, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Holy Ground.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span>
-    length: 7797281,
-    path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - We Are Never Ever Getting Back Together.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span>
-  <span style="color:#000;font-weight:bold">}</span>,
-  <span style="color:#000;font-weight:bold">{</span> length: 7357902, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Digital Booklet - Red (Deluxe).pdf&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>
-<span style="color:#000;font-weight:bold">]</span>
-</code></pre></div><p>现在就很清楚了，对多文件种子来说，<code>files</code> 里面存储了每个文件的长度，以及每个文件的路径。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#998;font-style:italic">// decode2.ts
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">import</span> { decode } <span style="color:#000;font-weight:bold">from</span> <span style="color:#d14">&#34;https://deno.land/x/bencode@v0.1.2/mod.ts&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> file <span style="color:#000;font-weight:bold">=</span> Deno.args[<span style="color:#099">0</span>]
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> result <span style="color:#000;font-weight:bold">=</span> decode(Deno.readFileSync(file)) <span style="color:#000;font-weight:bold">as</span> <span style="color:#458;font-weight:bold">any</span>
+</span></span><span style="display:flex;"><span>console.log(result.info.files)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$  deno run --allow-read decode2.ts red.torrent
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">[</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span> length: 13236894, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - All Too Well.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    length: 12992666,
+</span></span><span style="display:flex;"><span>    path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - State of Grace (Acoustic Version).mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    length: 12031154,
+</span></span><span style="display:flex;"><span>    path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift Feat Gary Lightbody - The Last Time.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span> length: 11899411, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - State of Grace.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span> length: 11535936, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - The Moment I Knew.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span> length: 11465792, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Sad Beautiful Tragic.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    length: 9888023,
+</span></span><span style="display:flex;"><span>    path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift Feat Ed Sheeran - Everything Has Changed.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span> length: 9853495, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - I Almost Do.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span> length: 9781419, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Treacherous.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span> length: 9684472, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Treacherous (Demo).mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span> length: 9681093, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - The Lucky One.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span> length: 9574507, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Begin Again.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span> length: 9355103, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - 22.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span> length: 9154619, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Red (Demo).mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span> length: 9028224, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Come Back... Be Here.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span> length: 8994573, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Red.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span> length: 8903823, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Girl At Home.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span> length: 8895321, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Starlight.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span> length: 8859865, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - I Knew You Were Trouble..mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span> length: 8304962, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Stay Stay Stay.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span> length: 8188974, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - Holy Ground.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    length: 7797281,
+</span></span><span style="display:flex;"><span>    path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Taylor Swift - We Are Never Ever Getting Back Together.mp3&#34;</span> <span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">}</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">{</span> length: 7357902, path: <span style="color:#000;font-weight:bold">[</span> <span style="color:#d14">&#34;Digital Booklet - Red (Deluxe).pdf&#34;</span> <span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">]</span>
+</span></span></code></pre></div><p>现在就很清楚了，对多文件种子来说，<code>files</code> 里面存储了每个文件的长度，以及每个文件的路径。</p>
 <h3 id="tracker">Tracker</h3>
 <p>现在我们来看第二个问题，如何找到 Peer 以及如何让 Peer 找到我们？</p>
 <p>这里的关键就是种子文件中存储的 <code>announce</code> 字段，这个字段是一个 URL，这个 URL 指向了一个 Tracker 服务器。</p>
@@ -328,21 +328,21 @@ console.log(result.info.files)
 <li><code>port</code>: 我们客户端的监听端口，用于接收其他 Peer 发来的消息</li>
 </ul>
 <p>Tracker 返回的信息使用 Bencode 编码，里面含有两个数据，<code>interval</code> 和 <code>peers</code>。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js">{
-  interval<span style="color:#000;font-weight:bold">:</span> <span style="color:#099">900</span>,
-  peers<span style="color:#000;font-weight:bold">:</span> Uint8Array(<span style="color:#099">300</span>) [
-    <span style="color:#099">171</span>,  <span style="color:#099">33</span>, <span style="color:#099">254</span>,  <span style="color:#099">92</span>, <span style="color:#099">200</span>, <span style="color:#099">213</span>,  <span style="color:#099">75</span>,  <span style="color:#099">85</span>, <span style="color:#099">105</span>, <span style="color:#099">120</span>,  <span style="color:#099">26</span>, <span style="color:#099">225</span>,  <span style="color:#099">87</span>, <span style="color:#099">122</span>,
-    <span style="color:#099">122</span>, <span style="color:#099">178</span>, <span style="color:#099">217</span>,   <span style="color:#099">4</span>,  <span style="color:#099">89</span>, <span style="color:#099">160</span>, <span style="color:#099">104</span>,  <span style="color:#099">18</span>, <span style="color:#099">200</span>, <span style="color:#099">213</span>, <span style="color:#099">105</span>, <span style="color:#099">233</span>,  <span style="color:#099">64</span>,  <span style="color:#099">91</span>,
-    <span style="color:#099">200</span>, <span style="color:#099">213</span>, <span style="color:#099">112</span>,   <span style="color:#099">3</span>, <span style="color:#099">198</span>, <span style="color:#099">231</span>, <span style="color:#099">200</span>, <span style="color:#099">213</span>, <span style="color:#099">177</span>, <span style="color:#099">136</span>, <span style="color:#099">104</span>,   <span style="color:#099">4</span>, <span style="color:#099">200</span>, <span style="color:#099">213</span>,
-     <span style="color:#099">84</span>,   <span style="color:#099">3</span>, <span style="color:#099">130</span>,  <span style="color:#099">32</span>, <span style="color:#099">234</span>,  <span style="color:#099">96</span>, <span style="color:#099">206</span>, <span style="color:#099">144</span>,  <span style="color:#099">63</span>, <span style="color:#099">149</span>, <span style="color:#099">200</span>, <span style="color:#099">213</span>,  <span style="color:#099">51</span>,  <span style="color:#099">15</span>,
-    <span style="color:#099">200</span>,  <span style="color:#099">26</span>, <span style="color:#099">194</span>, <span style="color:#099">246</span>,  <span style="color:#099">95</span>,  <span style="color:#099">78</span>, <span style="color:#099">126</span>, <span style="color:#099">134</span>, <span style="color:#099">200</span>, <span style="color:#099">213</span>, <span style="color:#099">100</span>,  <span style="color:#099">38</span>,  <span style="color:#099">32</span>, <span style="color:#099">104</span>,
-    <span style="color:#099">200</span>, <span style="color:#099">213</span>, <span style="color:#099">123</span>, <span style="color:#099">113</span>,  <span style="color:#099">10</span>, <span style="color:#099">254</span>, <span style="color:#099">200</span>, <span style="color:#099">213</span>, <span style="color:#099">148</span>, <span style="color:#099">251</span>, <span style="color:#099">183</span>,  <span style="color:#099">98</span>,  <span style="color:#099">26</span>, <span style="color:#099">225</span>,
-    <span style="color:#099">186</span>, <span style="color:#099">179</span>, <span style="color:#099">163</span>,  <span style="color:#099">68</span>,  <span style="color:#099">26</span>, <span style="color:#099">225</span>,  <span style="color:#099">38</span>,  <span style="color:#099">88</span>, <span style="color:#099">192</span>,  <span style="color:#099">43</span>,  <span style="color:#099">26</span>, <span style="color:#099">225</span>,  <span style="color:#099">90</span>, <span style="color:#099">189</span>,
-    <span style="color:#099">212</span>, <span style="color:#099">240</span>,
-    ... <span style="color:#099">200</span> more items
-  ]
-}
-</code></pre></div><p><code>peers</code> 是一个 Byte Array，每 6 个字节代表一个 Peer，前 4 个字节为 IP 地址，后 2 个字节为 BigEndian 的端口号。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  interval<span style="color:#000;font-weight:bold">:</span> <span style="color:#099">900</span>,
+</span></span><span style="display:flex;"><span>  peers<span style="color:#000;font-weight:bold">:</span> Uint8Array(<span style="color:#099">300</span>) [
+</span></span><span style="display:flex;"><span>    <span style="color:#099">171</span>,  <span style="color:#099">33</span>, <span style="color:#099">254</span>,  <span style="color:#099">92</span>, <span style="color:#099">200</span>, <span style="color:#099">213</span>,  <span style="color:#099">75</span>,  <span style="color:#099">85</span>, <span style="color:#099">105</span>, <span style="color:#099">120</span>,  <span style="color:#099">26</span>, <span style="color:#099">225</span>,  <span style="color:#099">87</span>, <span style="color:#099">122</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#099">122</span>, <span style="color:#099">178</span>, <span style="color:#099">217</span>,   <span style="color:#099">4</span>,  <span style="color:#099">89</span>, <span style="color:#099">160</span>, <span style="color:#099">104</span>,  <span style="color:#099">18</span>, <span style="color:#099">200</span>, <span style="color:#099">213</span>, <span style="color:#099">105</span>, <span style="color:#099">233</span>,  <span style="color:#099">64</span>,  <span style="color:#099">91</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#099">200</span>, <span style="color:#099">213</span>, <span style="color:#099">112</span>,   <span style="color:#099">3</span>, <span style="color:#099">198</span>, <span style="color:#099">231</span>, <span style="color:#099">200</span>, <span style="color:#099">213</span>, <span style="color:#099">177</span>, <span style="color:#099">136</span>, <span style="color:#099">104</span>,   <span style="color:#099">4</span>, <span style="color:#099">200</span>, <span style="color:#099">213</span>,
+</span></span><span style="display:flex;"><span>     <span style="color:#099">84</span>,   <span style="color:#099">3</span>, <span style="color:#099">130</span>,  <span style="color:#099">32</span>, <span style="color:#099">234</span>,  <span style="color:#099">96</span>, <span style="color:#099">206</span>, <span style="color:#099">144</span>,  <span style="color:#099">63</span>, <span style="color:#099">149</span>, <span style="color:#099">200</span>, <span style="color:#099">213</span>,  <span style="color:#099">51</span>,  <span style="color:#099">15</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#099">200</span>,  <span style="color:#099">26</span>, <span style="color:#099">194</span>, <span style="color:#099">246</span>,  <span style="color:#099">95</span>,  <span style="color:#099">78</span>, <span style="color:#099">126</span>, <span style="color:#099">134</span>, <span style="color:#099">200</span>, <span style="color:#099">213</span>, <span style="color:#099">100</span>,  <span style="color:#099">38</span>,  <span style="color:#099">32</span>, <span style="color:#099">104</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#099">200</span>, <span style="color:#099">213</span>, <span style="color:#099">123</span>, <span style="color:#099">113</span>,  <span style="color:#099">10</span>, <span style="color:#099">254</span>, <span style="color:#099">200</span>, <span style="color:#099">213</span>, <span style="color:#099">148</span>, <span style="color:#099">251</span>, <span style="color:#099">183</span>,  <span style="color:#099">98</span>,  <span style="color:#099">26</span>, <span style="color:#099">225</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#099">186</span>, <span style="color:#099">179</span>, <span style="color:#099">163</span>,  <span style="color:#099">68</span>,  <span style="color:#099">26</span>, <span style="color:#099">225</span>,  <span style="color:#099">38</span>,  <span style="color:#099">88</span>, <span style="color:#099">192</span>,  <span style="color:#099">43</span>,  <span style="color:#099">26</span>, <span style="color:#099">225</span>,  <span style="color:#099">90</span>, <span style="color:#099">189</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#099">212</span>, <span style="color:#099">240</span>,
+</span></span><span style="display:flex;"><span>    ... <span style="color:#099">200</span> more items
+</span></span><span style="display:flex;"><span>  ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>peers</code> 是一个 Byte Array，每 6 个字节代表一个 Peer，前 4 个字节为 IP 地址，后 2 个字节为 BigEndian 的端口号。</p>
 <p>以上面的输出为例，我们可以得知，第一个 Peer 的地址是 <code>171.33.254.92:51413</code>。</p>
 <div class="post__tip">
   <span class="post__tip__span">T</span>ip: 当然，后来 BT 扩展了一个 <code>peers6</code> 字段用来返回 IPv6 的地址。
@@ -455,9 +455,9 @@ console.log(result.info.files)
 <li>一个 BT 客户端</li>
 </ul>
 <p>先来安装 Tracker 服务器，很容易就可以找到一个开源实现 <a href="https://github.com/webtorrent/bittorrent-tracker">bittorrent-tracker</a>。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ yarn add bittorrent-tracker
-$ ./node_modules/.bin/bittorrent-tracker --http
-</code></pre></div><p>现在我们拥有了一个运行在本机 8000 端口的 Tracker 服务器，Tracker URL 是 <code>http://localhost:8000/announce</code>。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ yarn add bittorrent-tracker
+</span></span><span style="display:flex;"><span>$ ./node_modules/.bin/bittorrent-tracker --http
+</span></span></code></pre></div><p>现在我们拥有了一个运行在本机 8000 端口的 Tracker 服务器，Tracker URL 是 <code>http://localhost:8000/announce</code>。</p>
 <p>接下来我们需要个 BT 客户端来给我们做种。</p>
 <p>我第一个想法是 uTorrent，但是很可惜，它在 Mac 10.15 上运行不了。</p>
 <p>接下来尝试 qBittorrent，可以在 Mac 10.15 上运行。打开以后，选择新建种子，随便选择一个文件，然后 Tracker 填写上面的地址。</p>

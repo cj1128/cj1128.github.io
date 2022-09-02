@@ -92,18 +92,18 @@ host，比如公司内部的各种服务，或者测试项目的时候暂时把�
 <h2 id="配置">配置</h2>
 <p>在 Mac 上，<code>Dnsmasq</code> 使用的配置文件是 <code>/usr/local/etc/dnsmasq.conf</code> 文件。Linux 上是 <code>/etc/dnsmasq.conf</code>。</p>
 <p>默认配置文件中列举了所有的配置和解释，所以很容易看懂。这里我们使用以下的配置。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text"># 所有没有 `.`` 的域名 (plain names) 都不会向上游 DNS Server 转发，只查询 hosts 文件
-domain-needed
-# 所有保留 IP 地址段内的反向查询都不会向上游 DNS Server 转发，只查询 hosts 文件
-bogus-priv
-# 不要读取 /etc/resolver 中的 DNS Server 的配置
-no-resolv
-# 不要 poll /etc/resolver 文件的更新
-no-poll
-# 下面这两个配置我们的上游 DNS 服务器
-server=8.8.8.8
-server=8.8.4.4
-</code></pre></div><p>配置完了以后，在 <code>/etc/hosts</code> 中添加我们的内部 hosts。启动 <code>Dnsmasq</code> 就行了。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span># 所有没有 `.`` 的域名 (plain names) 都不会向上游 DNS Server 转发，只查询 hosts 文件
+</span></span><span style="display:flex;"><span>domain-needed
+</span></span><span style="display:flex;"><span># 所有保留 IP 地址段内的反向查询都不会向上游 DNS Server 转发，只查询 hosts 文件
+</span></span><span style="display:flex;"><span>bogus-priv
+</span></span><span style="display:flex;"><span># 不要读取 /etc/resolver 中的 DNS Server 的配置
+</span></span><span style="display:flex;"><span>no-resolv
+</span></span><span style="display:flex;"><span># 不要 poll /etc/resolver 文件的更新
+</span></span><span style="display:flex;"><span>no-poll
+</span></span><span style="display:flex;"><span># 下面这两个配置我们的上游 DNS 服务器
+</span></span><span style="display:flex;"><span>server=8.8.8.8
+</span></span><span style="display:flex;"><span>server=8.8.4.4
+</span></span></code></pre></div><p>配置完了以后，在 <code>/etc/hosts</code> 中添加我们的内部 hosts。启动 <code>Dnsmasq</code> 就行了。</p>
 <h2 id="配置路由器">配置路由器</h2>
 <p>默认情况下，每一台新进入网络的计算机，默认 DNS Server 是路由器，而路由器的默认 DNS Server 是自动根据 ISP 获取。我们最后一步是把路由器的 DNS 服务器设置为启动了 Dnsmasq 的机器即可。每一台路由器修改 DNS Server 不一样，找一找可以很容易找到。</p>
 <h2 id="最后">最后</h2>

@@ -81,26 +81,25 @@
 
           <div class="post__content">
             <p>Shell 对程序员来说是必不可少的生产力工具。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">$ figlet &lt;&lt;&lt; &#34;Hello Shell&#34;
- _   _      _ _         ____  _          _ _
-| | | | ___| | | ___   / ___|| |__   ___| | |
-| |_| |/ _ \ | |/ _ \  \___ \| &#39;_ \ / _ \ | |
-|  _  |  __/ | | (_) |  ___) | | | |  __/ | |
-|_| |_|\___|_|_|\___/  |____/|_| |_|\___|_|_|
-
-</code></pre></div><p>下面这条指令可以查看 Shell 中我们最常用的 10 条命令，大家可以试一试。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ <span style="color:#0086b3">history</span> | awk <span style="color:#d14">&#39;{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] &#34; &#34; CMD[a]/count*100 &#34;% &#34; a;}&#39;</span> | grep -v <span style="color:#d14">&#34;./&#34;</span> | column -c3 -s <span style="color:#d14">&#34; &#34;</span> -t | sort -nr | nl |  head -n10
- <span style="color:#099">1</span>  <span style="color:#099">429</span>  16.6473%    ls
- <span style="color:#099">2</span>  <span style="color:#099">235</span>  9.11913%    vim
- <span style="color:#099">3</span>  <span style="color:#099">204</span>  7.91618%    gss
- <span style="color:#099">4</span>  <span style="color:#099">186</span>  7.21769%    yarn
- <span style="color:#099">5</span>  <span style="color:#099">169</span>  6.55801%    <span style="color:#0086b3">cd</span>
- <span style="color:#099">6</span>  <span style="color:#099">86</span>   3.33721%    j
- <span style="color:#099">7</span>  <span style="color:#099">75</span>   2.91036%    git
- <span style="color:#099">8</span>  <span style="color:#099">64</span>   2.48351%    subl
- <span style="color:#099">9</span>  <span style="color:#099">49</span>   1.90144%    rg
-<span style="color:#099">10</span>  <span style="color:#099">49</span>   1.90144%    glog
-</code></pre></div><p>没想到我最常用的是 <code>ls</code>，不过也挺合理的，毕竟做任何操作之前习惯性的 ls 一下。(我的 ls 实际上链接到了 <a href="https://github.com/ogham/exa">exa</a>)。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>$ figlet &lt;&lt;&lt; &#34;Hello Shell&#34;
+</span></span><span style="display:flex;"><span> _   _      _ _         ____  _          _ _
+</span></span><span style="display:flex;"><span>| | | | ___| | | ___   / ___|| |__   ___| | |
+</span></span><span style="display:flex;"><span>| |_| |/ _ \ | |/ _ \  \___ \| &#39;_ \ / _ \ | |
+</span></span><span style="display:flex;"><span>|  _  |  __/ | | (_) |  ___) | | | |  __/ | |
+</span></span><span style="display:flex;"><span>|_| |_|\___|_|_|\___/  |____/|_| |_|\___|_|_|
+</span></span></code></pre></div><p>下面这条指令可以查看 Shell 中我们最常用的 10 条命令，大家可以试一试。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ <span style="color:#0086b3">history</span> | awk <span style="color:#d14">&#39;{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] &#34; &#34; CMD[a]/count*100 &#34;% &#34; a;}&#39;</span> | grep -v <span style="color:#d14">&#34;./&#34;</span> | column -c3 -s <span style="color:#d14">&#34; &#34;</span> -t | sort -nr | nl |  head -n10
+</span></span><span style="display:flex;"><span> <span style="color:#099">1</span>  <span style="color:#099">429</span>  16.6473%    ls
+</span></span><span style="display:flex;"><span> <span style="color:#099">2</span>  <span style="color:#099">235</span>  9.11913%    vim
+</span></span><span style="display:flex;"><span> <span style="color:#099">3</span>  <span style="color:#099">204</span>  7.91618%    gss
+</span></span><span style="display:flex;"><span> <span style="color:#099">4</span>  <span style="color:#099">186</span>  7.21769%    yarn
+</span></span><span style="display:flex;"><span> <span style="color:#099">5</span>  <span style="color:#099">169</span>  6.55801%    <span style="color:#0086b3">cd</span>
+</span></span><span style="display:flex;"><span> <span style="color:#099">6</span>  <span style="color:#099">86</span>   3.33721%    j
+</span></span><span style="display:flex;"><span> <span style="color:#099">7</span>  <span style="color:#099">75</span>   2.91036%    git
+</span></span><span style="display:flex;"><span> <span style="color:#099">8</span>  <span style="color:#099">64</span>   2.48351%    subl
+</span></span><span style="display:flex;"><span> <span style="color:#099">9</span>  <span style="color:#099">49</span>   1.90144%    rg
+</span></span><span style="display:flex;"><span><span style="color:#099">10</span>  <span style="color:#099">49</span>   1.90144%    glog
+</span></span></code></pre></div><p>没想到我最常用的是 <code>ls</code>，不过也挺合理的，毕竟做任何操作之前习惯性的 ls 一下。(我的 ls 实际上链接到了 <a href="https://github.com/ogham/exa">exa</a>)。</p>
 <p>关于 Shell 有太多的话题可以谈了：</p>
 <ul>
 <li>各种 Shell 的特性区别：Bash/Zsh/Fish/Csh&hellip;</li>
@@ -145,10 +144,10 @@
 <p><code>interactive</code> / <code>non-interactive</code> 就比较好理解了。日常我们在终端中使用的就是 interactive Shell，它会输出提示符，会有 Job Control 等功能。</p>
 <p>而当我们执行 Shell 脚本时例如 <code>bash test.sh</code>，那么此时的 Shell 便是 non-interactive 的。</p>
 <p>使用如下的命令可以检测当前 Shell 是否是 interactive 的：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#000;font-weight:bold">[[</span> <span style="color:#008080">$-</span> <span style="color:#000;font-weight:bold">==</span> *i* <span style="color:#000;font-weight:bold">]]</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Interactive shell&#39;</span> <span style="color:#000;font-weight:bold">||</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Non-interactive shell&#39;</span>
-</code></pre></div><p>而这条命令可以检测 Shell 是否是 login 的：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#0086b3">shopt</span> -q login_shell <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Login shell&#39;</span> <span style="color:#000;font-weight:bold">||</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Non-login shell&#39;</span>
-</code></pre></div><p>检测是否是 login Shell 还有一个办法，那就是输入 <code>logout</code>，如果是 login Shell，效果相当于 <code>exit</code>，如果不是，会提示 <code>logout: not login shell</code>。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">[[</span> <span style="color:#008080">$-</span> <span style="color:#000;font-weight:bold">==</span> *i* <span style="color:#000;font-weight:bold">]]</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Interactive shell&#39;</span> <span style="color:#000;font-weight:bold">||</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Non-interactive shell&#39;</span>
+</span></span></code></pre></div><p>而这条命令可以检测 Shell 是否是 login 的：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#0086b3">shopt</span> -q login_shell <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Login shell&#39;</span> <span style="color:#000;font-weight:bold">||</span> <span style="color:#0086b3">echo</span> <span style="color:#d14">&#39;Non-login shell&#39;</span>
+</span></span></code></pre></div><p>检测是否是 login Shell 还有一个办法，那就是输入 <code>logout</code>，如果是 login Shell，效果相当于 <code>exit</code>，如果不是，会提示 <code>logout: not login shell</code>。</p>
 <h2 id="启动文件">启动文件</h2>
 <p>一般来说我们对 Bash 的配置都会放在 <code>~/.bashrc</code> 中，因为我们知道 Bash 在启动以后会 source 这个文件。但其实这并不一定，启动类型会影响启动文件。</p>
 <div class="post__tip">
@@ -198,23 +197,23 @@
 <p><img src="/image/Fp3wlzbJBjk9xBPbr-t8SHf9KTbb.png" alt=""></p>
 <p>是的，看起来很复杂，欢迎来到真实世界🙂。好在我们无需去记住这些细节，只要做到如果有一天遇到了问题，有一个清晰的排查方向就行了。</p>
 <p>日常使用中，对于 Bash 的配置就放在 <code>~/.bashrc</code> 中即可。<code>~/.bash_profile</code> 一般会含有 source <code>~/.bashrc</code> 的代码，所以不管 login 还是 non-login， <code>.bashrc</code> 文件都会被执行。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># Manjaro 默认的 ~/.bash_profile</span>
-<span style="color:#000;font-weight:bold">[[</span> -f ~/.bashrc <span style="color:#000;font-weight:bold">]]</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> . ~/.bashrc
-</code></pre></div><div class="post__tip">
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#998;font-style:italic"># Manjaro 默认的 ~/.bash_profile</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">[[</span> -f ~/.bashrc <span style="color:#000;font-weight:bold">]]</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> . ~/.bashrc
+</span></span></code></pre></div><div class="post__tip">
   <span class="post__tip__span">T</span>ip: 有好奇过 <code>rc</code> 后缀是什么意思吗？<a href="https://unix.stackexchange.com/questions/3467/what-does-rc-in-bashrc-stand-for">rc = run commands</a>
 </div>
 <p>再有一个需要注意的情况就是，常用 Shell 的地方比如 Crontab，以及在各种编程语言中调起的 Shell，比如 Python 的 <code>os.system</code> 以及 Node 的 <code>child_process.exec</code> 执行的都是 <code>non-login + non-interactive</code> 的 Shell，也就是什么启动文件都不会 source，只会继承环境变量。</p>
 <p>其实，这里还有一个细节，Crontab, Python, Node, Make 以及其他大部分使用 Shell 的程序，默认使用的 Shell 都是 <code>/bin/sh</code>。在大部分系统上，这个文件链接到了 /bin/bash。但是，如果 Bash 发现自己是以 <code>/bin/sh</code> 的身份启动的，也就是 <code>$0</code> 是 <code>/bin/sh</code> 的话，它的行为会发生改变，包括启动文件，会调整自己尽量和 sh(Bourne shell) 兼容。比如说，在 <code>non-login + non-interactive</code> 情况下它不会 source <code>$BASH_ENV</code>。</p>
 <p>我们以 Node 为例，新建一个文件 <code>echo 'hello from test.sh' &gt; test.sh</code>，然后设置 BASH_ENV 指向这个文件并启动 Node。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ <span style="color:#008080">BASH_ENV</span><span style="color:#000;font-weight:bold">=</span>test.sh node
-&gt; const <span style="color:#008080">c</span> <span style="color:#000;font-weight:bold">=</span> require<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;child_process&#34;</span><span style="color:#000;font-weight:bold">)</span>
-&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;echo hello&#34;</span><span style="color:#000;font-weight:bold">)</span>.toString<span style="color:#000;font-weight:bold">()</span>
-<span style="color:#d14">&#39;hello\n&#39;</span> <span style="color:#998;font-style:italic"># 可以发现 &#39;hello from test.sh&#39; 没有打印，也就是 BASH_ENV 指向的文件没有被 source</span>
-&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;echo hello&#34;</span>, <span style="color:#000;font-weight:bold">{</span>shell: <span style="color:#d14">&#34;/bin/bash&#34;</span><span style="color:#000;font-weight:bold">})</span>
-<span style="color:#d14">&#39;hello from test.sh\nhello\n&#39;</span> <span style="color:#998;font-style:italic"># 这次有了</span>
-&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;echo </span><span style="color:#008080">$0</span><span style="color:#d14">&#34;</span><span style="color:#000;font-weight:bold">)</span>.toString<span style="color:#000;font-weight:bold">()</span>
-<span style="color:#d14">&#39;/bin/sh\n&#39;</span> <span style="color:#998;font-style:italic"># 默认情况下执行的是 /bin/sh</span>
-</code></pre></div><h2 id="zsh">ZSH</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ <span style="color:#008080">BASH_ENV</span><span style="color:#000;font-weight:bold">=</span>test.sh node
+</span></span><span style="display:flex;"><span>&gt; const <span style="color:#008080">c</span> <span style="color:#000;font-weight:bold">=</span> require<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;child_process&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;echo hello&#34;</span><span style="color:#000;font-weight:bold">)</span>.toString<span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#39;hello\n&#39;</span> <span style="color:#998;font-style:italic"># 可以发现 &#39;hello from test.sh&#39; 没有打印，也就是 BASH_ENV 指向的文件没有被 source</span>
+</span></span><span style="display:flex;"><span>&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;echo hello&#34;</span>, <span style="color:#000;font-weight:bold">{</span>shell: <span style="color:#d14">&#34;/bin/bash&#34;</span><span style="color:#000;font-weight:bold">})</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#39;hello from test.sh\nhello\n&#39;</span> <span style="color:#998;font-style:italic"># 这次有了</span>
+</span></span><span style="display:flex;"><span>&gt; c.execSync<span style="color:#000;font-weight:bold">(</span><span style="color:#d14">&#34;echo </span><span style="color:#008080">$0</span><span style="color:#d14">&#34;</span><span style="color:#000;font-weight:bold">)</span>.toString<span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#d14">&#39;/bin/sh\n&#39;</span> <span style="color:#998;font-style:italic"># 默认情况下执行的是 /bin/sh</span>
+</span></span></code></pre></div><h2 id="zsh">ZSH</h2>
 <p>我们个人开发电脑一般多使用 ZSH，毕竟配合 Oh-My-Zsh 以后实在是太好用了。</p>
 <p>ZSH 在启动文件方面和 Bash 有所不同，<a href="http://zsh.sourceforge.net/Intro/intro_3.html">Startup Files</a> 是 ZSH 官方的说明文档。通过这个非常简略的文档，我们可以知道 ZSH 相关的启动文件有 5 个：</p>
 <ul>
@@ -225,7 +224,7 @@
 <li><code>.zlogout</code></li>
 </ul>
 <p>这 5 个文件分别有系统级和用户级的区别，使用上面的方法，我们可以一一测试不同的启动类型会 source 什么样的启动文件，这里不再赘述了，直接贴出结果。</p>
-<pre><code>+----------------+-----------+-----------+------+
+<pre tabindex="0"><code>+----------------+-----------+-----------+------+
 |                |   Login   |Interactive|Script|
 |                |           |non-login  |      |
 +----------------+-----------+-----------+------+

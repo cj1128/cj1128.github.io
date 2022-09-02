@@ -91,11 +91,11 @@
 <p>CHIP-8 一共可以访问 4KB 的内存，地址从 <code>0x000 ~ 0xfff</code>，这里面有一些地址是保留给内部使用的。</p>
 <p>CHIP-8 有 16 个 8-bit 的寄存器，记做 <code>V0</code> ~ <code>VF</code>。</p>
 <p>输入方面 CHIP-8 有一个 16 键的键盘，布局如下：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">1 2 3 C
-4 5 6 D
-7 8 9 E
-A 0 B F
-</code></pre></div><p>指令集中有相关指令可以查询某个键是否被按下了。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>1 2 3 C
+</span></span><span style="display:flex;"><span>4 5 6 D
+</span></span><span style="display:flex;"><span>7 8 9 E
+</span></span><span style="display:flex;"><span>A 0 B F
+</span></span></code></pre></div><p>指令集中有相关指令可以查询某个键是否被按下了。</p>
 <p>CHIP-8 有一个 64x32 像素的屏幕用于输出画面，每个像素只有一个 bit，也就是只能显示两种颜色，0 为黑色 1 为白色，和大部分绘图系统一样，左上角的坐标为 (0, 0)。</p>
 <p>CHIP-8 的绘图指令非常简单，指定了三个参数，<code>x</code>, <code>y</code> 以及 <code>n</code>。绘图的流程是从内存中读取 n 个字节，每个字节为一行，从 (x, y) 开始与原有的像素进行 xor 运算。</p>
 <p>同时，CHIP-8 内置了一套字体 Bitmap (Font Sprite) 用于绘制 0 ~ F 这 16 个字符。每个字符的分辨率为 4x5，占用 5 个字节，每个字节只有高四位存储了数据，低四位没有用上。</p>
@@ -139,11 +139,11 @@ A 0 B F
 </ul>
 </li>
 <li>键盘按照如下方式映射
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">1 2 3 C        1 2 3 4
-4 5 6 D   -&gt;   Q W E R
-7 8 9 E        A S D F
-A 0 B F        Z X C V
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>1 2 3 C        1 2 3 4
+</span></span><span style="display:flex;"><span>4 5 6 D   -&gt;   Q W E R
+</span></span><span style="display:flex;"><span>7 8 9 E        A S D F
+</span></span><span style="display:flex;"><span>A 0 B F        Z X C V
+</span></span></code></pre></div></li>
 </ul>
 <h2 id="design">Design</h2>
 <p>有了 Spec，接下来就是考虑怎么实现了。</p>
@@ -156,38 +156,38 @@ A 0 B F        Z X C V
 </ul>
 <p>考虑到我练手的目的是为了以后编写更加复杂的 GBA 模拟器，所以 SDL 自然就是最好的选择了，可以简单跨平台的同时又提供强大的能力。语言方面我选择直接使用 C，不用其他的 Binding 了，我喜欢 C 的操控感。</p>
 <p>输入方面，使用 SDL 的事件我们可以很轻松的获取到键盘信息。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c">SDL_Event e;
-<span style="color:#000;font-weight:bold">while</span>(SDL_PollEvent(<span style="color:#000;font-weight:bold">&amp;</span>e)) {
-  <span style="color:#000;font-weight:bold">if</span>(e.type <span style="color:#000;font-weight:bold">==</span> SDL_KEYDOWN) {
-    <span style="color:#000;font-weight:bold">switch</span>(e.key.keysym.sym) {
-      <span style="color:#000;font-weight:bold">case</span> <span style="color:#900;font-weight:bold">SDLK_1</span>:
-        ...
-    }
-  }
-}
-</code></pre></div><p>显示方面，我们可以先创建一个 Texture，然后直接写入像素数据到 Texture 中。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">*</span>rawPixels;
-<span style="color:#458;font-weight:bold">int</span> pitch;
-SDL_LockTexture(screenTexture, <span style="color:#0086b3">NULL</span>, <span style="color:#000;font-weight:bold">&amp;</span>rawPixels, <span style="color:#000;font-weight:bold">&amp;</span>pitch);
-
-u32(<span style="color:#000;font-weight:bold">*</span>pixels)[pitch <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">4</span>] <span style="color:#000;font-weight:bold">=</span> rawPixels;
-
-<span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> y <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; y <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">64</span>; y<span style="color:#000;font-weight:bold">++</span>) {
-  <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> x <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; x <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">32</span>; x<span style="color:#000;font-weight:bold">++</span>) {
-    pixels[y][x] <span style="color:#000;font-weight:bold">=</span>  ...
-  }
-}
-
-SDL_UnlockTexture(screenTexture);
-</code></pre></div><p>声音方面，可以通过 <code>SDL_QueueAudio</code> 函数来播放一段声音。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#458;font-weight:bold">float</span> <span style="color:#000;font-weight:bold">*</span>buf <span style="color:#000;font-weight:bold">=</span> malloc(bufLength)
-
-<span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> sampleCount; i<span style="color:#000;font-weight:bold">++</span>) {
-  buf[i] <span style="color:#000;font-weight:bold">=</span> ...
-}
-
-SDL_QueueAudio(audioDevice, buf, bufLength);
-</code></pre></div><h2 id="the-last">The Last</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>SDL_Event e;
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">while</span>(SDL_PollEvent(<span style="color:#000;font-weight:bold">&amp;</span>e)) {
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">if</span>(e.type <span style="color:#000;font-weight:bold">==</span> SDL_KEYDOWN) {
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">switch</span>(e.key.keysym.sym) {
+</span></span><span style="display:flex;"><span>      <span style="color:#000;font-weight:bold">case</span> <span style="color:#900;font-weight:bold">SDLK_1</span>:
+</span></span><span style="display:flex;"><span>        ...
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>显示方面，我们可以先创建一个 Texture，然后直接写入像素数据到 Texture 中。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">*</span>rawPixels;
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span> pitch;
+</span></span><span style="display:flex;"><span>SDL_LockTexture(screenTexture, <span style="color:#0086b3">NULL</span>, <span style="color:#000;font-weight:bold">&amp;</span>rawPixels, <span style="color:#000;font-weight:bold">&amp;</span>pitch);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>u32(<span style="color:#000;font-weight:bold">*</span>pixels)[pitch <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">4</span>] <span style="color:#000;font-weight:bold">=</span> rawPixels;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> y <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; y <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">64</span>; y<span style="color:#000;font-weight:bold">++</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> x <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; x <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">32</span>; x<span style="color:#000;font-weight:bold">++</span>) {
+</span></span><span style="display:flex;"><span>    pixels[y][x] <span style="color:#000;font-weight:bold">=</span>  ...
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SDL_UnlockTexture(screenTexture);
+</span></span></code></pre></div><p>声音方面，可以通过 <code>SDL_QueueAudio</code> 函数来播放一段声音。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#458;font-weight:bold">float</span> <span style="color:#000;font-weight:bold">*</span>buf <span style="color:#000;font-weight:bold">=</span> malloc(bufLength)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">for</span>(<span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>; i <span style="color:#000;font-weight:bold">&lt;</span> sampleCount; i<span style="color:#000;font-weight:bold">++</span>) {
+</span></span><span style="display:flex;"><span>  buf[i] <span style="color:#000;font-weight:bold">=</span> ...
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SDL_QueueAudio(audioDevice, buf, bufLength);
+</span></span></code></pre></div><h2 id="the-last">The Last</h2>
 <p>编写好以后，我们可以使用如下两个 ROM 来简单测试我们的模拟器：</p>
 <ul>
 <li><a href="https://github.com/cj1128/chip8-emulator/blob/master/rom/BC_test.ch8">BC Test</a></li>

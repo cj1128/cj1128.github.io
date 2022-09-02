@@ -92,30 +92,30 @@
 <p>从上图可以看出，显示的是 59605，这个是真实值，但是字符却是 96809，这个是虚假值。右边的 <code>font-family</code> 告诉我们这个元素使用了一个自定义字体。</p>
 <p>从 Network 面板中的我们可以找到这个字体，具体链接是 <a href="https://shark.douyucdn.cn/app/douyu/res/font/mpepc5unpb.woff">mpepc5unpb.woff</a>。</p>
 <p>如果大家将字体下载下来，使用如下的 HTML 代码来渲染它，我们就可以看得很清楚：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-html" data-lang="html"><span style="color:#999;font-weight:bold;font-style:italic">&lt;!DOCTYPE html&gt;</span>
-&lt;<span style="color:#000080">html</span>&gt;
-&lt;<span style="color:#000080">head</span>&gt;
-  &lt;<span style="color:#000080">style</span> <span style="color:#008080">type</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;text/css&#34;</span>&gt;
-    @<span style="color:#000;font-weight:bold">font-face</span> {
-      <span style="color:#000080">font-family</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000080">test</span><span style="color:#000;font-weight:bold">;</span>
-      <span style="color:#000080">src</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000080">url</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000080">mpepc5unpb</span>.<span style="color:#458;font-weight:bold">woff</span><span style="color:#000;font-weight:bold">);</span>
-    }
-
-    <span style="color:#000080">div</span> {
-      <span style="color:#000;font-weight:bold">font-family</span>: test;
-      <span style="color:#000;font-weight:bold">font-size</span>: <span style="color:#099">80</span><span style="color:#458;font-weight:bold">px</span>;
-      <span style="color:#000;font-weight:bold">text-align</span>: <span style="color:#000;font-weight:bold">center</span>;
-      <span style="color:#000;font-weight:bold">margin</span>: <span style="color:#099">200</span><span style="color:#458;font-weight:bold">px</span> <span style="color:#099">0</span>;
-    }
-  &lt;/<span style="color:#000080">style</span>&gt;
-&lt;/<span style="color:#000080">head</span>&gt;
-&lt;<span style="color:#000080">body</span>&gt;
-  &lt;<span style="color:#000080">div</span>&gt;
-  0123456789
-  &lt;/<span style="color:#000080">div</span>&gt;
-&lt;/<span style="color:#000080">body</span>&gt;
-&lt;/<span style="color:#000080">html</span>&gt;
-</code></pre></div><p><img src="/image/Fvk8_hOHE5ac4YpWHy_j7idottWG.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">&lt;!DOCTYPE html&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#000080">html</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#000080">head</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#000080">style</span> <span style="color:#008080">type</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;text/css&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    @<span style="color:#000;font-weight:bold">font-face</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#000080">font-family</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000080">test</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#000080">src</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000080">url</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000080">mpepc5unpb</span>.<span style="color:#458;font-weight:bold">woff</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">div</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#000;font-weight:bold">font-family</span>: test;
+</span></span><span style="display:flex;"><span>      <span style="color:#000;font-weight:bold">font-size</span>: <span style="color:#099">80</span><span style="color:#458;font-weight:bold">px</span>;
+</span></span><span style="display:flex;"><span>      <span style="color:#000;font-weight:bold">text-align</span>: <span style="color:#000;font-weight:bold">center</span>;
+</span></span><span style="display:flex;"><span>      <span style="color:#000;font-weight:bold">margin</span>: <span style="color:#099">200</span><span style="color:#458;font-weight:bold">px</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#000080">style</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#000080">head</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#000080">body</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#000080">div</span>&gt;
+</span></span><span style="display:flex;"><span>  0123456789
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#000080">div</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#000080">body</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#000080">html</span>&gt;
+</span></span></code></pre></div><p><img src="/image/Fvk8_hOHE5ac4YpWHy_j7idottWG.png" alt=""></p>
 <p>在这个字体中，字符 <code>0</code> 会渲染图形 <code>0</code>，字符 <code>1</code> 会渲染图形 <code>7</code>，以此类推，因此，HTML 中的字符 <code>96809</code> 渲染的图形就是 <code>59605</code>。</p>
 <p>这个原理不难理解，我们甚至不需要知道字体文件内部的具体格式。因为不管怎样，字体内部一定有一个映射关系。这个关系规定了什么样的字符渲染什么样的图形。</p>
 <p>正常情况下，字符 1 对应的图形是 1 的形状，但是通过修改字体，我们就可以让字符 1 对应的图形是 9 的形状，或者说，其他任意形状。</p>
@@ -176,16 +176,16 @@
 </div>
 <p>既然此路不通，我们换个思路，请求到了数据以后，JS 代码一定会调用相关 API 去修改 DOM，能不能监听到这个动作？在它修改 DOM 的时候打上断点，这样就可以通过调用栈知道是哪段 JS 在做此操作，然后顺腾摸瓜找到对应的接口。</p>
 <p>答案是是可以的，通过使用 <code>MutationObserver</code> 我们可以监听任意 DOM 的修改事件。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#000;font-weight:bold">new</span> MutationObserver((mutations, observer) =&gt; {
-  <span style="color:#000;font-weight:bold">const</span> el <span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">document</span>.querySelector(<span style="color:#d14">&#34;span.Title-followNum&#34;</span>)
-  <span style="color:#000;font-weight:bold">if</span> (el <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">null</span>) {
-    observer.disconnect()
-    <span style="color:#000;font-weight:bold">new</span> MutationObserver((mutations, observer) =&gt; {
-      <span style="color:#000;font-weight:bold">debugger</span>
-    }).observe(el, {childList<span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">true</span>, subtree<span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">true</span>})
-  }
-}).observe(<span style="color:#0086b3">document</span>, {childList<span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">true</span>, subtree<span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">true</span>})
-</code></pre></div><p>通过 <a href="https://www.tampermonkey.net/">Tampermonkey</a> 加载上面的代码，刷新，等待断点触发。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">new</span> MutationObserver((mutations, observer) =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">const</span> el <span style="color:#000;font-weight:bold">=</span> <span style="color:#0086b3">document</span>.querySelector(<span style="color:#d14">&#34;span.Title-followNum&#34;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">if</span> (el <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">null</span>) {
+</span></span><span style="display:flex;"><span>    observer.disconnect()
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">new</span> MutationObserver((mutations, observer) =&gt; {
+</span></span><span style="display:flex;"><span>      <span style="color:#000;font-weight:bold">debugger</span>
+</span></span><span style="display:flex;"><span>    }).observe(el, {childList<span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">true</span>, subtree<span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">true</span>})
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}).observe(<span style="color:#0086b3">document</span>, {childList<span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">true</span>, subtree<span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">true</span>})
+</span></span></code></pre></div><p>通过 <a href="https://www.tampermonkey.net/">Tampermonkey</a> 加载上面的代码，刷新，等待断点触发。</p>
 <p><img src="/image/FiL0ZC_TXcbRcuw8HwUUUn65oB9w.png" alt=""></p>
 <p>从上面的调用栈可以看出，数据来源自 WebSocket。</p>
 <p>去 Network 面板中看一下，果然是这样。</p>
@@ -208,41 +208,41 @@
   <span class="post__tip__span">T</span>ip: 对于一个协议来说，作为外部人员，我们是永远无法弄清楚有些问题的成因的。可能这四个字节有其他用处，可能就是设计失误，也有可能一开始没有这四个字节，后来因为 bug 不小心加上了，然后为了后向兼容，就一直带上了。
 </div>
 <p>现在我们来看具体的键值对：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">type@=loginreq
-roomid@=7874579
-dfl@=sn@AA=105@ASss@AA=1
-username@=
-password@=
-ltkid@=
-biz@=
-stk@=
-devid@=4d9c39a8a93746b6db53675800021501
-ct@=0
-pt@=2
-cvr@=0
-tvr@=7
-apd@=
-rt@=1593623035
-vk@=6e9dfb63cdae310f97700a750b2fa47f
-ver@=20190610
-aver@=218101901
-dmbt@=chrome
-dmbv@=83
-</code></pre></div><p>这些参数中，<code>type</code>, <code>roomid</code>, <code>devid</code> 都很好理解，<code>dfl</code>, <code>ver</code>, <code>aver</code>, <code>dmbt</code>, <code>dmbv</code> 这些看起来像是不重要的信息携带字段。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>type@=loginreq
+</span></span><span style="display:flex;"><span>roomid@=7874579
+</span></span><span style="display:flex;"><span>dfl@=sn@AA=105@ASss@AA=1
+</span></span><span style="display:flex;"><span>username@=
+</span></span><span style="display:flex;"><span>password@=
+</span></span><span style="display:flex;"><span>ltkid@=
+</span></span><span style="display:flex;"><span>biz@=
+</span></span><span style="display:flex;"><span>stk@=
+</span></span><span style="display:flex;"><span>devid@=4d9c39a8a93746b6db53675800021501
+</span></span><span style="display:flex;"><span>ct@=0
+</span></span><span style="display:flex;"><span>pt@=2
+</span></span><span style="display:flex;"><span>cvr@=0
+</span></span><span style="display:flex;"><span>tvr@=7
+</span></span><span style="display:flex;"><span>apd@=
+</span></span><span style="display:flex;"><span>rt@=1593623035
+</span></span><span style="display:flex;"><span>vk@=6e9dfb63cdae310f97700a750b2fa47f
+</span></span><span style="display:flex;"><span>ver@=20190610
+</span></span><span style="display:flex;"><span>aver@=218101901
+</span></span><span style="display:flex;"><span>dmbt@=chrome
+</span></span><span style="display:flex;"><span>dmbv@=83
+</span></span></code></pre></div><p>这些参数中，<code>type</code>, <code>roomid</code>, <code>devid</code> 都很好理解，<code>dfl</code>, <code>ver</code>, <code>aver</code>, <code>dmbt</code>, <code>dmbv</code> 这些看起来像是不重要的信息携带字段。</p>
 <p><code>rt</code> 很容易发现是一个秒级时间戳，现在唯一剩下的就是 <code>vk</code> 这个字段。我们可以通过修改字段值的方式来大致判断字段的作用和重要性。</p>
 <p>如果我们原封不动的使用这个请求体（在检查器中右键选择 <code>Copy message... -&gt; Copy as hex</code>）请求斗鱼的 WebSocket 服务，会发现一开始是有正常响应的，但是过几分钟后就报错了。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#000;font-weight:bold">const</span> WebSocket <span style="color:#000;font-weight:bold">=</span> require(<span style="color:#d14">&#34;ws&#34;</span>)
-
-<span style="color:#000;font-weight:bold">const</span> ws <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">new</span> WebSocket(<span style="color:#d14">&#34;wss://wsproxy.douyu.com:6672/&#34;</span>)
-
-ws.on(<span style="color:#d14">&#34;open&#34;</span>, () =&gt; {
-  ws.send(Buffer.from(<span style="color:#d14">&#34;1b0100001b010000b102000074797065403d6c6f67696e7265712f726f6f6d6964403d373837343537392f64666c403d736e4041413d31303540415373734041413d312f757365726e616d65403d2f70617373776f7264403d2f6c746b6964403d2f62697a403d2f73746b403d2f6465766964403d34643963333961386139333734366236646235333637353830303032313530312f6374403d302f7074403d322f637672403d302f747672403d372f617064403d2f7274403d313539333632333033352f766b403d36653964666236336364616533313066393737303061373530623266613437662f766572403d32303139303631302f61766572403d3231383130313930312f646d6274403d6368726f6d652f646d6276403d38332f00&#34;</span>, <span style="color:#d14">&#34;hex&#34;</span>))
-})
-
-ws.on(<span style="color:#d14">&#34;message&#34;</span>, payload =&gt; {
-  console.log(payload.toString())
-})
-</code></pre></div><p>很明显，斗鱼会校验 <code>rt</code> 的值，如果服务器时间和 <code>rt</code> 时间超过一定间隔，那么会返回错误，这是一个很常见的设计。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> WebSocket <span style="color:#000;font-weight:bold">=</span> require(<span style="color:#d14">&#34;ws&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> ws <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">new</span> WebSocket(<span style="color:#d14">&#34;wss://wsproxy.douyu.com:6672/&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ws.on(<span style="color:#d14">&#34;open&#34;</span>, () =&gt; {
+</span></span><span style="display:flex;"><span>  ws.send(Buffer.from(<span style="color:#d14">&#34;1b0100001b010000b102000074797065403d6c6f67696e7265712f726f6f6d6964403d373837343537392f64666c403d736e4041413d31303540415373734041413d312f757365726e616d65403d2f70617373776f7264403d2f6c746b6964403d2f62697a403d2f73746b403d2f6465766964403d34643963333961386139333734366236646235333637353830303032313530312f6374403d302f7074403d322f637672403d302f747672403d372f617064403d2f7274403d313539333632333033352f766b403d36653964666236336364616533313066393737303061373530623266613437662f766572403d32303139303631302f61766572403d3231383130313930312f646d6274403d6368726f6d652f646d6276403d38332f00&#34;</span>, <span style="color:#d14">&#34;hex&#34;</span>))
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ws.on(<span style="color:#d14">&#34;message&#34;</span>, payload =&gt; {
+</span></span><span style="display:flex;"><span>  console.log(payload.toString())
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div><p>很明显，斗鱼会校验 <code>rt</code> 的值，如果服务器时间和 <code>rt</code> 时间超过一定间隔，那么会返回错误，这是一个很常见的设计。</p>
 <p>如果我们修改了一下 <code>vk</code>，也会得到一个错误，这说明 <code>vk</code> 是类似签名的东西，而不是什么信息携带字段，服务端会校验它的有效性。</p>
 <p>对于 <code>dfl</code>, <code>ver</code>, <code>aver</code>, <code>dmbt</code>, <code>dmbv</code> 这些字段，我们会发现随便修改都不会影响结果，说明我们的之前的猜测是正确的。</p>
 <p>所以，现在剩下的问题就是要搞清楚 <code>vk</code> 的签名规则，这个只能从源码入手。</p>
@@ -262,123 +262,123 @@ ws.on(<span style="color:#d14">&#34;message&#34;</span>, payload =&gt; {
 <p>然后我们就发现 <code>vk</code> 的值等于 <code>L(y + &quot;r5*^5;}2#${XF[h+;'./.Q'1;,-]f'p[&quot; + p)</code>。到这里就简单了，通过断点可以发现 <code>y</code> 就是 <code>rt</code>，<code>p</code> 是 <code>devid</code>，而 <code>L</code> 是一个求 md5 值的函数。</p>
 <p>所以 <code>vk</code> 的签名算法是 <code>vk = md5(rt + &quot;r5*^5;}2#${XF[h+;'./.Q'1;,-]f'p[&quot; + devid)</code></p>
 <p>现在整个消息体的结构我们都清楚了，我们试着构造消息体请求斗鱼服务器看看能不能得到响应。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-js" data-lang="js"><span style="color:#000;font-weight:bold">const</span> encode <span style="color:#000;font-weight:bold">=</span> obj =&gt; <span style="color:#0086b3">Object</span>.keys(obj).map(k =&gt; <span style="color:#d14">`</span><span style="color:#d14">${</span> k <span style="color:#d14">}</span><span style="color:#d14">@=</span><span style="color:#d14">${</span> obj[k] <span style="color:#d14">}</span><span style="color:#d14">`</span>).join(<span style="color:#d14">&#34;/&#34;</span>)
-
-<span style="color:#000;font-weight:bold">const</span> decode <span style="color:#000;font-weight:bold">=</span> str =&gt; {
-  <span style="color:#000;font-weight:bold">return</span> str.split(<span style="color:#d14">&#34;/&#34;</span>).reduce((acc, pair) =&gt; {
-    <span style="color:#000;font-weight:bold">const</span> [key, value] <span style="color:#000;font-weight:bold">=</span> pair.split(<span style="color:#d14">&#34;@=&#34;</span>)
-    acc[key] <span style="color:#000;font-weight:bold">=</span> value
-    <span style="color:#000;font-weight:bold">return</span> acc
-  }, {})
-}
-
-<span style="color:#000;font-weight:bold">const</span> crypto <span style="color:#000;font-weight:bold">=</span> require(<span style="color:#d14">&#34;crypto&#34;</span>)
-<span style="color:#000;font-weight:bold">const</span> md5Hash <span style="color:#000;font-weight:bold">=</span> crypto.createHash(<span style="color:#d14">&#34;md5&#34;</span>)
-<span style="color:#000;font-weight:bold">const</span> md5 <span style="color:#000;font-weight:bold">=</span> payload =&gt; {
-  <span style="color:#000;font-weight:bold">return</span> md5Hash.update(payload).digest(<span style="color:#d14">&#34;hex&#34;</span>)
-}
-
-<span style="color:#998;font-style:italic">// 4-byte length, 4-byte length, 0xb1, 0x02, 0x00, 0x00
-</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">const</span> getPayload <span style="color:#000;font-weight:bold">=</span> obj =&gt; {
-  <span style="color:#000;font-weight:bold">const</span> arr <span style="color:#000;font-weight:bold">=</span> [<span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0xb1</span>, <span style="color:#099">0x02</span>, <span style="color:#099">0x00</span>, <span style="color:#099">0x00</span>]
-
-  <span style="color:#000;font-weight:bold">const</span> objEncoded <span style="color:#000;font-weight:bold">=</span> encode(obj) <span style="color:#000;font-weight:bold">+</span> <span style="color:#d14">&#34;/\x00&#34;</span>
-  arr.push(...objEncoded.split(<span style="color:#d14">&#34;&#34;</span>).map(c =&gt; c.charCodeAt(<span style="color:#099">0</span>)))
-
-  <span style="color:#000;font-weight:bold">const</span> payload <span style="color:#000;font-weight:bold">=</span> Buffer.from(arr)
-  <span style="color:#000;font-weight:bold">const</span> dv <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">new</span> DataView(payload.buffer, payload.byteOffset)
-  <span style="color:#000;font-weight:bold">const</span> length <span style="color:#000;font-weight:bold">=</span> payload.length <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">4</span>
-  dv.setUint32(<span style="color:#099">0</span>, length, <span style="color:#000;font-weight:bold">true</span>)
-  dv.setUint32(<span style="color:#099">4</span>, length, <span style="color:#000;font-weight:bold">true</span>)
-
-  <span style="color:#000;font-weight:bold">return</span> payload
-}
-
-ws.on(<span style="color:#d14">&#34;open&#34;</span>, () =&gt; {
-  <span style="color:#998;font-style:italic">// 这个随便填写一个
-</span><span style="color:#998;font-style:italic"></span>  <span style="color:#000;font-weight:bold">const</span> devID <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#34;4d9c39a8a93746b6db53675800021501&#34;</span>
-
-  <span style="color:#000;font-weight:bold">const</span> rt <span style="color:#000;font-weight:bold">=</span> (<span style="color:#000;font-weight:bold">new</span> <span style="color:#0086b3">Date</span>().getTime() <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">1000</span>) <span style="color:#000;font-weight:bold">&gt;&gt;</span> <span style="color:#099">0</span>
-
-  <span style="color:#000;font-weight:bold">const</span> obj <span style="color:#000;font-weight:bold">=</span> {
-    type<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;loginreq&#34;</span>,
-    roomid<span style="color:#000;font-weight:bold">:</span> roomID,
-    devid<span style="color:#000;font-weight:bold">:</span> devID,
-    rt<span style="color:#000;font-weight:bold">:</span> rt,
-    vk<span style="color:#000;font-weight:bold">:</span> md5(rt <span style="color:#000;font-weight:bold">+</span> <span style="color:#d14">&#34;r5*^5;}2#${XF[h+;&#39;./.Q&#39;1;,-]f&#39;p[&#34;</span> <span style="color:#000;font-weight:bold">+</span> devID),
-  }
-
-  <span style="color:#000;font-weight:bold">const</span> payload <span style="color:#000;font-weight:bold">=</span> getPayload(obj)
-  ws.send(payload)
-})
-
-ws.on(<span style="color:#d14">&#34;message&#34;</span>, payload =&gt; {
-  <span style="color:#000;font-weight:bold">const</span> data <span style="color:#000;font-weight:bold">=</span> decode(payload.slice(<span style="color:#099">12</span>).toString())
-  <span style="color:#000;font-weight:bold">if</span>(data.type <span style="color:#000;font-weight:bold">===</span> <span style="color:#d14">&#34;followed_count&#34;</span>) {
-    console.log(data)
-  } <span style="color:#000;font-weight:bold">else</span> {
-    console.log(data.type)
-  }
-})
-</code></pre></div><p>成功了！</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> encode <span style="color:#000;font-weight:bold">=</span> obj =&gt; <span style="color:#0086b3">Object</span>.keys(obj).map(k =&gt; <span style="color:#d14">`</span><span style="color:#d14">${</span> k <span style="color:#d14">}</span><span style="color:#d14">@=</span><span style="color:#d14">${</span> obj[k] <span style="color:#d14">}</span><span style="color:#d14">`</span>).join(<span style="color:#d14">&#34;/&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> decode <span style="color:#000;font-weight:bold">=</span> str =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">return</span> str.split(<span style="color:#d14">&#34;/&#34;</span>).reduce((acc, pair) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">const</span> [key, value] <span style="color:#000;font-weight:bold">=</span> pair.split(<span style="color:#d14">&#34;@=&#34;</span>)
+</span></span><span style="display:flex;"><span>    acc[key] <span style="color:#000;font-weight:bold">=</span> value
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> acc
+</span></span><span style="display:flex;"><span>  }, {})
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> crypto <span style="color:#000;font-weight:bold">=</span> require(<span style="color:#d14">&#34;crypto&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> md5Hash <span style="color:#000;font-weight:bold">=</span> crypto.createHash(<span style="color:#d14">&#34;md5&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> md5 <span style="color:#000;font-weight:bold">=</span> payload =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">return</span> md5Hash.update(payload).digest(<span style="color:#d14">&#34;hex&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">// 4-byte length, 4-byte length, 0xb1, 0x02, 0x00, 0x00
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">const</span> getPayload <span style="color:#000;font-weight:bold">=</span> obj =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">const</span> arr <span style="color:#000;font-weight:bold">=</span> [<span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0</span>, <span style="color:#099">0xb1</span>, <span style="color:#099">0x02</span>, <span style="color:#099">0x00</span>, <span style="color:#099">0x00</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">const</span> objEncoded <span style="color:#000;font-weight:bold">=</span> encode(obj) <span style="color:#000;font-weight:bold">+</span> <span style="color:#d14">&#34;/\x00&#34;</span>
+</span></span><span style="display:flex;"><span>  arr.push(...objEncoded.split(<span style="color:#d14">&#34;&#34;</span>).map(c =&gt; c.charCodeAt(<span style="color:#099">0</span>)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">const</span> payload <span style="color:#000;font-weight:bold">=</span> Buffer.from(arr)
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">const</span> dv <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">new</span> DataView(payload.buffer, payload.byteOffset)
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">const</span> length <span style="color:#000;font-weight:bold">=</span> payload.length <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">4</span>
+</span></span><span style="display:flex;"><span>  dv.setUint32(<span style="color:#099">0</span>, length, <span style="color:#000;font-weight:bold">true</span>)
+</span></span><span style="display:flex;"><span>  dv.setUint32(<span style="color:#099">4</span>, length, <span style="color:#000;font-weight:bold">true</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">return</span> payload
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ws.on(<span style="color:#d14">&#34;open&#34;</span>, () =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#998;font-style:italic">// 这个随便填写一个
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>  <span style="color:#000;font-weight:bold">const</span> devID <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#34;4d9c39a8a93746b6db53675800021501&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">const</span> rt <span style="color:#000;font-weight:bold">=</span> (<span style="color:#000;font-weight:bold">new</span> <span style="color:#0086b3">Date</span>().getTime() <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">1000</span>) <span style="color:#000;font-weight:bold">&gt;&gt;</span> <span style="color:#099">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">const</span> obj <span style="color:#000;font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>    type<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;loginreq&#34;</span>,
+</span></span><span style="display:flex;"><span>    roomid<span style="color:#000;font-weight:bold">:</span> roomID,
+</span></span><span style="display:flex;"><span>    devid<span style="color:#000;font-weight:bold">:</span> devID,
+</span></span><span style="display:flex;"><span>    rt<span style="color:#000;font-weight:bold">:</span> rt,
+</span></span><span style="display:flex;"><span>    vk<span style="color:#000;font-weight:bold">:</span> md5(rt <span style="color:#000;font-weight:bold">+</span> <span style="color:#d14">&#34;r5*^5;}2#${XF[h+;&#39;./.Q&#39;1;,-]f&#39;p[&#34;</span> <span style="color:#000;font-weight:bold">+</span> devID),
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">const</span> payload <span style="color:#000;font-weight:bold">=</span> getPayload(obj)
+</span></span><span style="display:flex;"><span>  ws.send(payload)
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ws.on(<span style="color:#d14">&#34;message&#34;</span>, payload =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">const</span> data <span style="color:#000;font-weight:bold">=</span> decode(payload.slice(<span style="color:#099">12</span>).toString())
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">if</span>(data.type <span style="color:#000;font-weight:bold">===</span> <span style="color:#d14">&#34;followed_count&#34;</span>) {
+</span></span><span style="display:flex;"><span>    console.log(data)
+</span></span><span style="display:flex;"><span>  } <span style="color:#000;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>    console.log(data.type)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div><p>成功了！</p>
 <p><img src="/image/Ful4n8KK-B5sBNFK9i8eEX3oUIIu.png" alt=""></p>
 <h3 id="ocr">OCR</h3>
 <p>获取到字体 ID 和假数据以后，接下来我们要做的就是使用字体渲染一张图片，然后调用 OCR 工具识别图片。</p>
 <p>我们先使用字体 ID 将字体下载下来，字体的下载 URL 是固定的 <code>https://shark.douyucdn.cn/app/douyu/res/font/FONT_ID.woff</code>。</p>
 <p>怎样渲染字体到图片呢？这个问题方案有很多，上文中我们利用了浏览器，这里我选择使用 SDL。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-c" data-lang="c"><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;SDL2/SDL.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;SDL2/SDL_ttf.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;SDL2/SDL_image.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
-</span><span style="color:#999;font-weight:bold;font-style:italic"></span>
-<span style="color:#458;font-weight:bold">int</span>
-<span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">void</span>)
-{
-  <span style="color:#000;font-weight:bold">if</span>(TTF_Init() <span style="color:#000;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) {
-    printf(<span style="color:#d14">&#34;error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, TTF_GetError());
-    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">1</span>;
-  }
-
-  TTF_Font <span style="color:#000;font-weight:bold">*</span>font <span style="color:#000;font-weight:bold">=</span> TTF_OpenFont(<span style="color:#d14">&#34;test.woff&#34;</span>, <span style="color:#099">50</span>);
-  <span style="color:#000;font-weight:bold">if</span>(font <span style="color:#000;font-weight:bold">==</span> <span style="color:#0086b3">NULL</span>) {
-    printf(<span style="color:#d14">&#34;error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, TTF_GetError());
-    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">1</span>;
-  }
-
-  SDL_Color black <span style="color:#000;font-weight:bold">=</span> { <span style="color:#099">0x00</span>, <span style="color:#099">0x00</span>, <span style="color:#099">0x00</span> };
-  SDL_Surface <span style="color:#000;font-weight:bold">*</span>surface <span style="color:#000;font-weight:bold">=</span> TTF_RenderText_Solid(font, <span style="color:#d14">&#34;0123456789&#34;</span>, black);
-  <span style="color:#000;font-weight:bold">if</span>(surface <span style="color:#000;font-weight:bold">==</span> <span style="color:#0086b3">NULL</span>) {
-    printf(<span style="color:#d14">&#34;error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, TTF_GetError());
-    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">1</span>;
-  }
-
-  IMG_SavePNG(surface, <span style="color:#d14">&#34;test.png&#34;</span>);
-  <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
-}
-</code></pre></div><p>SDL 渲染速度非常快，结果也很清楚，用来 OCR 应该足够了。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;SDL2/SDL.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;SDL2/SDL_ttf.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;SDL2/SDL_image.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#458;font-weight:bold">int</span>
+</span></span><span style="display:flex;"><span><span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">void</span>)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">if</span>(TTF_Init() <span style="color:#000;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) {
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#d14">&#34;error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, TTF_GetError());
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  TTF_Font <span style="color:#000;font-weight:bold">*</span>font <span style="color:#000;font-weight:bold">=</span> TTF_OpenFont(<span style="color:#d14">&#34;test.woff&#34;</span>, <span style="color:#099">50</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">if</span>(font <span style="color:#000;font-weight:bold">==</span> <span style="color:#0086b3">NULL</span>) {
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#d14">&#34;error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, TTF_GetError());
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  SDL_Color black <span style="color:#000;font-weight:bold">=</span> { <span style="color:#099">0x00</span>, <span style="color:#099">0x00</span>, <span style="color:#099">0x00</span> };
+</span></span><span style="display:flex;"><span>  SDL_Surface <span style="color:#000;font-weight:bold">*</span>surface <span style="color:#000;font-weight:bold">=</span> TTF_RenderText_Solid(font, <span style="color:#d14">&#34;0123456789&#34;</span>, black);
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">if</span>(surface <span style="color:#000;font-weight:bold">==</span> <span style="color:#0086b3">NULL</span>) {
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#d14">&#34;error: %s</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, TTF_GetError());
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  IMG_SavePNG(surface, <span style="color:#d14">&#34;test.png&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>SDL 渲染速度非常快，结果也很清楚，用来 OCR 应该足够了。</p>
 <p><img src="/image/FpSLekVg2B25ags6kwehiDgAgZ0r.png" alt=""></p>
 <p>图形识别这一块我并没有什么太多经验，但是没关系，感谢开源世界。我们 Google OCR，很容易就会找到一个看起来很厉害的库 <a href="https://github.com/tesseract-ocr/tesseract">tesseract</a>。</p>
 <p>先安装它 <code>brew install tesseract</code>。</p>
 <p>项目本身是 C++ 的，我们可以直接用 C++ 调用。但是因为后面我打算使用 Go 写一个完整的关注人数爬虫，所以这里我们使用 Go 来调用。</p>
 <p>安装 Go 的绑定 <a href="https://github.com/otiai10/gosseract">gosseract</a>，然后使用如下代码来试试：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-go" data-lang="go"><span style="color:#000;font-weight:bold">package</span> main
-
-<span style="color:#000;font-weight:bold">import</span> (
-  <span style="color:#d14">&#34;fmt&#34;</span>
-
-  <span style="color:#d14">&#34;github.com/otiai10/gosseract/v2&#34;</span>
-)
-
-<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>() {
-  client <span style="color:#000;font-weight:bold">:=</span> gosseract.<span style="color:#900;font-weight:bold">NewClient</span>()
-  <span style="color:#000;font-weight:bold">defer</span> client.<span style="color:#900;font-weight:bold">Close</span>()
-
-  client.<span style="color:#900;font-weight:bold">SetImage</span>(<span style="color:#d14">&#34;test.png&#34;</span>)
-  client.<span style="color:#900;font-weight:bold">SetWhitelist</span>(<span style="color:#d14">&#34;0123456789&#34;</span>)
-  text, _ <span style="color:#000;font-weight:bold">:=</span> client.<span style="color:#900;font-weight:bold">Text</span>()
-  fmt.<span style="color:#900;font-weight:bold">Println</span>(text)
-}
-</code></pre></div><p>然后我们很顺利地就得到了结果，开源万岁！🎉</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">package</span> main
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">import</span> (
+</span></span><span style="display:flex;"><span>  <span style="color:#d14">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#d14">&#34;github.com/otiai10/gosseract/v2&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>() {
+</span></span><span style="display:flex;"><span>  client <span style="color:#000;font-weight:bold">:=</span> gosseract.<span style="color:#900;font-weight:bold">NewClient</span>()
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">defer</span> client.<span style="color:#900;font-weight:bold">Close</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  client.<span style="color:#900;font-weight:bold">SetImage</span>(<span style="color:#d14">&#34;test.png&#34;</span>)
+</span></span><span style="display:flex;"><span>  client.<span style="color:#900;font-weight:bold">SetWhitelist</span>(<span style="color:#d14">&#34;0123456789&#34;</span>)
+</span></span><span style="display:flex;"><span>  text, _ <span style="color:#000;font-weight:bold">:=</span> client.<span style="color:#900;font-weight:bold">Text</span>()
+</span></span><span style="display:flex;"><span>  fmt.<span style="color:#900;font-weight:bold">Println</span>(text)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>然后我们很顺利地就得到了结果，开源万岁！🎉</p>
 <p><img src="/image/Fp-epduQcenYERhgqPyFAhesEOJl.png" alt=""></p>
 <h3 id="最终实现">最终实现</h3>
 <p>最后，我们把上面的各个步骤整合一下，使用 Go 来实现一个完整的斗鱼关注人数爬虫，最终的代码在这里 <a href="https://github.com/cj1128/douyu-crawler-demo">douyu-crawler-demo</a>。</p>
@@ -407,38 +407,38 @@ ws.on(<span style="color:#d14">&#34;message&#34;</span>, payload =&gt; {
 <li>IP 池：很多接口会限制 IP 的访问频率，这个时候要挂 IP 池。</li>
 </ul>
 <p>最后，我们来测试一下我们的程序效果。<a href="https://github.com/cj1128/douyu-crawler-demo/blob/master/roomids.txt">roomids.txt</a> 中含有 120 个斗鱼主播的 roomID，我们使用爬虫来爬取这 120 个主播的关注人数。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ douyu-crawler-demo -f roomids.txt
-....
-2020/07/02 13:28:41 all <span style="color:#000;font-weight:bold">done</span> in 36.313598957s
-2020/07/02 13:28:41   total: <span style="color:#099">120</span>
-2020/07/02 13:28:41   success: <span style="color:#099">86</span>
-2020/07/02 13:28:41   error: <span style="color:#099">34</span>
-2020/07/02 13:28:41   ocr failed: <span style="color:#099">0</span>
-</code></pre></div><p>120 个主播，一共花费了 36s，这个速度还是非常理想的，使用 Headless Browser 是不可能有这个速度的。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ douyu-crawler-demo -f roomids.txt
+</span></span><span style="display:flex;"><span>....
+</span></span><span style="display:flex;"><span>2020/07/02 13:28:41 all <span style="color:#000;font-weight:bold">done</span> in 36.313598957s
+</span></span><span style="display:flex;"><span>2020/07/02 13:28:41   total: <span style="color:#099">120</span>
+</span></span><span style="display:flex;"><span>2020/07/02 13:28:41   success: <span style="color:#099">86</span>
+</span></span><span style="display:flex;"><span>2020/07/02 13:28:41   error: <span style="color:#099">34</span>
+</span></span><span style="display:flex;"><span>2020/07/02 13:28:41   ocr failed: <span style="color:#099">0</span>
+</span></span></code></pre></div><p>120 个主播，一共花费了 36s，这个速度还是非常理想的，使用 Headless Browser 是不可能有这个速度的。</p>
 <p>但是我们会发现，其中有一些失败了，看日志主要是 WebSocket 没有返回值或者超时了，这在爬虫中很正常，直接重试一下就行了。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ douyu-crawler-demo -f roomids.txt
-...
-2020/07/02 13:29:42 all <span style="color:#000;font-weight:bold">done</span> in 23.660793712s
-2020/07/02 13:29:42   total: <span style="color:#099">120</span>
-2020/07/02 13:29:42   success: <span style="color:#099">120</span>
-2020/07/02 13:29:42   error: <span style="color:#099">0</span>
-2020/07/02 13:29:42   ocr failed: <span style="color:#099">0</span>
-</code></pre></div><p>这次全部成功了，结果文件在 <code>result/result.txt</code> 中。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ douyu-crawler-demo -f roomids.txt
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>2020/07/02 13:29:42 all <span style="color:#000;font-weight:bold">done</span> in 23.660793712s
+</span></span><span style="display:flex;"><span>2020/07/02 13:29:42   total: <span style="color:#099">120</span>
+</span></span><span style="display:flex;"><span>2020/07/02 13:29:42   success: <span style="color:#099">120</span>
+</span></span><span style="display:flex;"><span>2020/07/02 13:29:42   error: <span style="color:#099">0</span>
+</span></span><span style="display:flex;"><span>2020/07/02 13:29:42   ocr failed: <span style="color:#099">0</span>
+</span></span></code></pre></div><p>这次全部成功了，结果文件在 <code>result/result.txt</code> 中。</p>
 <div class="post__tip">
   <span class="post__tip__span">T</span>ip: 可以发现 OCR 没有一次失败，tesseract 太赞了👍
 </div>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ head result/result.txt
-5324388,b72iyfidmi,5538567,1169154
-582074,yzs37nb5ik,447330,116880
-6937618,21lwetbnlg,579241,128374
-5632185,flecd9ycbg,495291,327621
-6794440,21lwetbnlg,80850,90910
-52319,tcmpj93mbl,452436,576593
-820795,n1kril0e2r,80063,40025
-5168755,5n5pkb33y,861526,689528
-8546776,84c209m14f,9869,3783
-5747228,svk3del36j,319692,127978
-</code></pre></div><p>每个字段分别是房间号、字体 ID、假数据以及真数据。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ head result/result.txt
+</span></span><span style="display:flex;"><span>5324388,b72iyfidmi,5538567,1169154
+</span></span><span style="display:flex;"><span>582074,yzs37nb5ik,447330,116880
+</span></span><span style="display:flex;"><span>6937618,21lwetbnlg,579241,128374
+</span></span><span style="display:flex;"><span>5632185,flecd9ycbg,495291,327621
+</span></span><span style="display:flex;"><span>6794440,21lwetbnlg,80850,90910
+</span></span><span style="display:flex;"><span>52319,tcmpj93mbl,452436,576593
+</span></span><span style="display:flex;"><span>820795,n1kril0e2r,80063,40025
+</span></span><span style="display:flex;"><span>5168755,5n5pkb33y,861526,689528
+</span></span><span style="display:flex;"><span>8546776,84c209m14f,9869,3783
+</span></span><span style="display:flex;"><span>5747228,svk3del36j,319692,127978
+</span></span></code></pre></div><p>每个字段分别是房间号、字体 ID、假数据以及真数据。</p>
 <h2 id="防守">防守</h2>
 <p>讲完了进攻，现在我们来看看如果我们站在防守方，需要使用这种技巧来反爬，该怎么做？</p>
 <p>字体反爬的核心是随机生成一个映射，根据映射生成字体，然后返回字体和假数据给到前端。</p>
@@ -455,104 +455,104 @@ ws.on(<span style="color:#d14">&#34;message&#34;</span>, payload =&gt; {
 <p>这里我们使用 <a href="https://github.com/fonttools/fonttools">fonttools</a> 这个强大的 Python 库来进行后续的操作。</p>
 <p>我们以开源字体 <a href="https://sourcefoundry.org/hack/">Hack</a> 为例。</p>
 <p>我们先来裁剪字体。安装好 <code>fonttools</code> 以后会默认安装几个工具，其中之一是 <a href="https://fonttools.readthedocs.io/en/latest/subset/index.html?highlight=pyftsubset">pyftsubset</a>，这个工具就可以用来裁剪字体。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ pyftsubset hack.ttf --text<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;0123456789&#34;</span>
-WARNING: TTFA NOT subset; don<span style="color:#a61717;background-color:#e3d2d2">&#39;</span>t know how to subset; dropped
-</code></pre></div><p>上面的 warning 不用介意，运行完毕之后我们得到了 <code>hack.subset.ttf</code>，这个便是裁剪后的字体，只支持渲染 0 ~ 9。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ pyftsubset hack.ttf --text<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;0123456789&#34;</span>
+</span></span><span style="display:flex;"><span>WARNING: TTFA NOT subset; don<span style="color:#a61717;background-color:#e3d2d2">&#39;</span>t know how to subset; dropped
+</span></span></code></pre></div><p>上面的 warning 不用介意，运行完毕之后我们得到了 <code>hack.subset.ttf</code>，这个便是裁剪后的字体，只支持渲染 0 ~ 9。</p>
 <p>接下来转换字体为可读的 ttx 格式。同样，fonttools 自带了一个工具叫做 <code>ttx</code>，直接使用即可。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ ttx hack.subset.ttf
-Dumping <span style="color:#d14">&#34;hack.subset.ttf&#34;</span> to <span style="color:#d14">&#34;hack.subset.ttx&#34;</span>...
-Dumping <span style="color:#d14">&#39;GlyphOrder&#39;</span> table...
-Dumping <span style="color:#d14">&#39;head&#39;</span> table...
-Dumping <span style="color:#d14">&#39;hhea&#39;</span> table...
-Dumping <span style="color:#d14">&#39;maxp&#39;</span> table...
-Dumping <span style="color:#d14">&#39;OS/2&#39;</span> table...
-Dumping <span style="color:#d14">&#39;hmtx&#39;</span> table...
-Dumping <span style="color:#d14">&#39;cmap&#39;</span> table...
-Dumping <span style="color:#d14">&#39;fpgm&#39;</span> table...
-Dumping <span style="color:#d14">&#39;prep&#39;</span> table...
-Dumping <span style="color:#d14">&#39;cvt &#39;</span> table...
-Dumping <span style="color:#d14">&#39;loca&#39;</span> table...
-Dumping <span style="color:#d14">&#39;glyf&#39;</span> table...
-Dumping <span style="color:#d14">&#39;name&#39;</span> table...
-Dumping <span style="color:#d14">&#39;post&#39;</span> table...
-Dumping <span style="color:#d14">&#39;gasp&#39;</span> table...
-Dumping <span style="color:#d14">&#39;GSUB&#39;</span> table...
-</code></pre></div><p>我们会发现目录下多了一个 <code>hack.subset.ttx</code> 文件，打开观察一下。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ttx hack.subset.ttf
+</span></span><span style="display:flex;"><span>Dumping <span style="color:#d14">&#34;hack.subset.ttf&#34;</span> to <span style="color:#d14">&#34;hack.subset.ttx&#34;</span>...
+</span></span><span style="display:flex;"><span>Dumping <span style="color:#d14">&#39;GlyphOrder&#39;</span> table...
+</span></span><span style="display:flex;"><span>Dumping <span style="color:#d14">&#39;head&#39;</span> table...
+</span></span><span style="display:flex;"><span>Dumping <span style="color:#d14">&#39;hhea&#39;</span> table...
+</span></span><span style="display:flex;"><span>Dumping <span style="color:#d14">&#39;maxp&#39;</span> table...
+</span></span><span style="display:flex;"><span>Dumping <span style="color:#d14">&#39;OS/2&#39;</span> table...
+</span></span><span style="display:flex;"><span>Dumping <span style="color:#d14">&#39;hmtx&#39;</span> table...
+</span></span><span style="display:flex;"><span>Dumping <span style="color:#d14">&#39;cmap&#39;</span> table...
+</span></span><span style="display:flex;"><span>Dumping <span style="color:#d14">&#39;fpgm&#39;</span> table...
+</span></span><span style="display:flex;"><span>Dumping <span style="color:#d14">&#39;prep&#39;</span> table...
+</span></span><span style="display:flex;"><span>Dumping <span style="color:#d14">&#39;cvt &#39;</span> table...
+</span></span><span style="display:flex;"><span>Dumping <span style="color:#d14">&#39;loca&#39;</span> table...
+</span></span><span style="display:flex;"><span>Dumping <span style="color:#d14">&#39;glyf&#39;</span> table...
+</span></span><span style="display:flex;"><span>Dumping <span style="color:#d14">&#39;name&#39;</span> table...
+</span></span><span style="display:flex;"><span>Dumping <span style="color:#d14">&#39;post&#39;</span> table...
+</span></span><span style="display:flex;"><span>Dumping <span style="color:#d14">&#39;gasp&#39;</span> table...
+</span></span><span style="display:flex;"><span>Dumping <span style="color:#d14">&#39;GSUB&#39;</span> table...
+</span></span></code></pre></div><p>我们会发现目录下多了一个 <code>hack.subset.ttx</code> 文件，打开观察一下。</p>
 <p>很容易就可以发现，<code>cmap</code> 标签中定义了字符和图形的映射。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-xml" data-lang="xml"><span style="color:#000080">&lt;cmap&gt;</span>
-  <span style="color:#000080">&lt;tableVersion</span> <span style="color:#008080">version=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">/&gt;</span>
-  <span style="color:#000080">&lt;cmap_format_4</span> <span style="color:#008080">platformID=</span><span style="color:#d14">&#34;0&#34;</span> <span style="color:#008080">platEncID=</span><span style="color:#d14">&#34;3&#34;</span> <span style="color:#008080">language=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x30&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;zero&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT ZERO --&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x31&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;one&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT ONE --&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x32&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;two&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT TWO --&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x33&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;three&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT THREE --&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x34&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;four&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT FOUR --&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x35&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;five&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT FIVE --&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x36&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;six&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT SIX --&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x37&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;seven&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT SEVEN --&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x38&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;eight&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT EIGHT --&gt;</span>
-    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x39&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;nine&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT NINE --&gt;</span>
-  <span style="color:#000080">&lt;/cmap_format_4&gt;</span>
-  ...
-<span style="color:#000080">&lt;/cmap&gt;</span>
-</code></pre></div><p><code>0x30</code> 也就是字符 0 对应 <code>name=&quot;zero&quot;</code> 的 <code>TTGlyph</code>，TTGlyph 中定义了渲染要用的数据，也就是一些坐标。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-xml" data-lang="xml"><span style="color:#000080">&lt;TTGlyph</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;zero&#34;</span> <span style="color:#008080">xMin=</span><span style="color:#d14">&#34;123&#34;</span> <span style="color:#008080">yMin=</span><span style="color:#d14">&#34;-29&#34;</span> <span style="color:#008080">xMax=</span><span style="color:#d14">&#34;1110&#34;</span> <span style="color:#008080">yMax=</span><span style="color:#d14">&#34;1520&#34;</span><span style="color:#000080">&gt;</span>
-  <span style="color:#000080">&lt;contour&gt;</span>
-    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;617&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;-29&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;1&#34;</span><span style="color:#000080">/&gt;</span>
-    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;369&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;-29&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">/&gt;</span>
-    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;246&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;165&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;1&#34;</span><span style="color:#000080">/&gt;</span>
-    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;123&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;358&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">/&gt;</span>
-    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;123&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;745&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;1&#34;</span><span style="color:#000080">/&gt;</span>
-    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;123&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;1134&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">/&gt;</span>
-    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;246&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;1327&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;1&#34;</span><span style="color:#000080">/&gt;</span>
-    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;369&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;1520&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">/&gt;</span>
-    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;616&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;1520&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;1&#34;</span><span style="color:#000080">/&gt;</span>
-    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;864&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;1520&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">/&gt;</span>
-    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;987&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;1327&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;1&#34;</span><span style="color:#000080">/&gt;</span>
-    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;1110&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;1134&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">/&gt;</span>
-    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;1110&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;745&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;1&#34;</span><span style="color:#000080">/&gt;</span>
-    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;1110&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;-29&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">/&gt;</span>
-  <span style="color:#000080">&lt;/contour&gt;</span>
-  ...
-<span style="color:#000080">&lt;/TTGlyph&gt;</span>
-</code></pre></div><p>那么怎么制作混淆字体的方法就不言而喻了，我们修改一下这个 XML，把 <code>TTGlyph(name=&quot;zero&quot;)</code> 标签的 <code>zero</code> 换成 <code>eight</code> 然后把 <code>TTGlyph(name=&quot;eight&quot;)</code> 标签的 <code>eight</code> 换成 <code>zero</code>，保存文件为 <code>fake.ttx</code>。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#000080">&lt;cmap&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000080">&lt;tableVersion</span> <span style="color:#008080">version=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000080">&lt;cmap_format_4</span> <span style="color:#008080">platformID=</span><span style="color:#d14">&#34;0&#34;</span> <span style="color:#008080">platEncID=</span><span style="color:#d14">&#34;3&#34;</span> <span style="color:#008080">language=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x30&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;zero&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT ZERO --&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x31&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;one&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT ONE --&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x32&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;two&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT TWO --&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x33&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;three&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT THREE --&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x34&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;four&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT FOUR --&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x35&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;five&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT FIVE --&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x36&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;six&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT SIX --&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x37&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;seven&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT SEVEN --&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x38&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;eight&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT EIGHT --&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;map</span> <span style="color:#008080">code=</span><span style="color:#d14">&#34;0x39&#34;</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;nine&#34;</span><span style="color:#000080">/&gt;</span><span style="color:#998;font-style:italic">&lt;!-- DIGIT NINE --&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000080">&lt;/cmap_format_4&gt;</span>
+</span></span><span style="display:flex;"><span>  ...
+</span></span><span style="display:flex;"><span><span style="color:#000080">&lt;/cmap&gt;</span>
+</span></span></code></pre></div><p><code>0x30</code> 也就是字符 0 对应 <code>name=&quot;zero&quot;</code> 的 <code>TTGlyph</code>，TTGlyph 中定义了渲染要用的数据，也就是一些坐标。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#000080">&lt;TTGlyph</span> <span style="color:#008080">name=</span><span style="color:#d14">&#34;zero&#34;</span> <span style="color:#008080">xMin=</span><span style="color:#d14">&#34;123&#34;</span> <span style="color:#008080">yMin=</span><span style="color:#d14">&#34;-29&#34;</span> <span style="color:#008080">xMax=</span><span style="color:#d14">&#34;1110&#34;</span> <span style="color:#008080">yMax=</span><span style="color:#d14">&#34;1520&#34;</span><span style="color:#000080">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000080">&lt;contour&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;617&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;-29&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;1&#34;</span><span style="color:#000080">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;369&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;-29&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;246&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;165&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;1&#34;</span><span style="color:#000080">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;123&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;358&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;123&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;745&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;1&#34;</span><span style="color:#000080">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;123&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;1134&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;246&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;1327&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;1&#34;</span><span style="color:#000080">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;369&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;1520&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;616&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;1520&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;1&#34;</span><span style="color:#000080">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;864&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;1520&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;987&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;1327&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;1&#34;</span><span style="color:#000080">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;1110&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;1134&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;1110&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;745&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;1&#34;</span><span style="color:#000080">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&lt;pt</span> <span style="color:#008080">x=</span><span style="color:#d14">&#34;1110&#34;</span> <span style="color:#008080">y=</span><span style="color:#d14">&#34;-29&#34;</span> <span style="color:#008080">on=</span><span style="color:#d14">&#34;0&#34;</span><span style="color:#000080">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000080">&lt;/contour&gt;</span>
+</span></span><span style="display:flex;"><span>  ...
+</span></span><span style="display:flex;"><span><span style="color:#000080">&lt;/TTGlyph&gt;</span>
+</span></span></code></pre></div><p>那么怎么制作混淆字体的方法就不言而喻了，我们修改一下这个 XML，把 <code>TTGlyph(name=&quot;zero&quot;)</code> 标签的 <code>zero</code> 换成 <code>eight</code> 然后把 <code>TTGlyph(name=&quot;eight&quot;)</code> 标签的 <code>eight</code> 换成 <code>zero</code>，保存文件为 <code>fake.ttx</code>。</p>
 <p>导出 ttx 到 ttf 依然是使用 <code>ttx</code> 工具。</p>
-<pre><code>$ ttx -o fake.ttf fake.ttx
-Compiling &quot;fake.ttx&quot; to &quot;fake.ttf&quot;...
-Parsing 'GlyphOrder' table...
-Parsing 'head' table...
-Parsing 'hhea' table...
-Parsing 'maxp' table...
-Parsing 'OS/2' table...
-Parsing 'hmtx' table...
-Parsing 'cmap' table...
-Parsing 'fpgm' table...
-Parsing 'prep' table...
-Parsing 'cvt ' table...
-Parsing 'loca' table...
-Parsing 'glyf' table...
-Parsing 'name' table...
-Parsing 'post' table...
-Parsing 'gasp' table...
-Parsing 'GSUB' table...
+<pre tabindex="0"><code>$ ttx -o fake.ttf fake.ttx
+Compiling &#34;fake.ttx&#34; to &#34;fake.ttf&#34;...
+Parsing &#39;GlyphOrder&#39; table...
+Parsing &#39;head&#39; table...
+Parsing &#39;hhea&#39; table...
+Parsing &#39;maxp&#39; table...
+Parsing &#39;OS/2&#39; table...
+Parsing &#39;hmtx&#39; table...
+Parsing &#39;cmap&#39; table...
+Parsing &#39;fpgm&#39; table...
+Parsing &#39;prep&#39; table...
+Parsing &#39;cvt &#39; table...
+Parsing &#39;loca&#39; table...
+Parsing &#39;glyf&#39; table...
+Parsing &#39;name&#39; table...
+Parsing &#39;post&#39; table...
+Parsing &#39;gasp&#39; table...
+Parsing &#39;GSUB&#39; table...
 </code></pre><p>使用上文提到的 HTML 使用 <code>fake.ttf</code> 渲染 0 ~ 9，可以看到，我们成功地制作了一个混淆字体。</p>
 <p><img src="/image/FsXY7liRLS9B1_55DC3HQCY0Va7a.png" alt=""></p>
 <p><a href="https://github.com/cj1128/douyu-crawler-demo/blob/master/genfont.py">genfont.py</a> 是我使用 Python 编写的脚本，可以自动生成任意数量的混淆字体。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash"><span style="color:#998;font-style:italic"># 使用 hack.subset.ttf 为基础生成 20 个混淆字体</span>
-$ ./genfont.py hack.subset.ttf <span style="color:#099">20</span>
-....
-$ ls result/generated <span style="color:#998;font-style:italic"># 结果存储在这个目录中</span>
-0018fb8365.7149586203.ttf  267ccb0e95.8402759136.ttf
-08a9457ab9.3958406712.ttf  281ef45f09.2154786390.ttf
-1bbdd405ca.9147328650.ttf  788e0c7651.8790526413.ttf
-1f985cd725.6417320895.ttf  5433d36fde.1326570894.ttf
-2d56def315.8962135047.ttf  6844549191.3597082416.ttf
-6bd27a4bac.0658392147.ttf  a422833064.8416930752.ttf
-6e337094a4.0754261839.ttf  c7f0591c38.5761804329.ttf
-9a0e22d6ad.9173452860.ttf  d3269bd2ce.0384976152.ttf
-9a407f17c1.8379426105.ttf  f97691cc25.1587964230.ttf
-44a428c37d.3602974581.ttf  ffe2c54286.6894312057.ttf
-</code></pre></div><p>文件名的形式为 <code>fontID.mapping.ttf</code>。比如 <code>0018fb8365.7149586203.ttf</code> 这个字体会将 <code>0</code> 渲染为 <code>7</code>。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 使用 hack.subset.ttf 为基础生成 20 个混淆字体</span>
+</span></span><span style="display:flex;"><span>$ ./genfont.py hack.subset.ttf <span style="color:#099">20</span>
+</span></span><span style="display:flex;"><span>....
+</span></span><span style="display:flex;"><span>$ ls result/generated <span style="color:#998;font-style:italic"># 结果存储在这个目录中</span>
+</span></span><span style="display:flex;"><span>0018fb8365.7149586203.ttf  267ccb0e95.8402759136.ttf
+</span></span><span style="display:flex;"><span>08a9457ab9.3958406712.ttf  281ef45f09.2154786390.ttf
+</span></span><span style="display:flex;"><span>1bbdd405ca.9147328650.ttf  788e0c7651.8790526413.ttf
+</span></span><span style="display:flex;"><span>1f985cd725.6417320895.ttf  5433d36fde.1326570894.ttf
+</span></span><span style="display:flex;"><span>2d56def315.8962135047.ttf  6844549191.3597082416.ttf
+</span></span><span style="display:flex;"><span>6bd27a4bac.0658392147.ttf  a422833064.8416930752.ttf
+</span></span><span style="display:flex;"><span>6e337094a4.0754261839.ttf  c7f0591c38.5761804329.ttf
+</span></span><span style="display:flex;"><span>9a0e22d6ad.9173452860.ttf  d3269bd2ce.0384976152.ttf
+</span></span><span style="display:flex;"><span>9a407f17c1.8379426105.ttf  f97691cc25.1587964230.ttf
+</span></span><span style="display:flex;"><span>44a428c37d.3602974581.ttf  ffe2c54286.6894312057.ttf
+</span></span></code></pre></div><p>文件名的形式为 <code>fontID.mapping.ttf</code>。比如 <code>0018fb8365.7149586203.ttf</code> 这个字体会将 <code>0</code> 渲染为 <code>7</code>。</p>
           </div>
 
           <div id="post__comments">

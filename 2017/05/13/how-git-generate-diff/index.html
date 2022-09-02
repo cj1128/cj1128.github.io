@@ -85,16 +85,16 @@
 <p>我们先简单定义一下什么是 diff：diff 就是目标文本和源文本之间的区别，也就是将源文本变成目标文本所需要的操作。</p>
 <p>git 为我们生成的 diff 是很直观易懂的，一看就知道我们对文件进行了哪些改动。但是，实际上，diff 生成是一个非常复杂的问题。</p>
 <p>举个简单的例子，源文本为 <code>ABCABBA</code>，目标文本为 <code>CBABAC</code>，他们之间的 diff 其实有无穷多种（我们以字符为单位，一般情况下是以行为单位）。比如</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">1.  - A       2.  - A       3.  + C
-    - B           + C           - A
-      C             B             B
-    - A           - C           - C
-      B             A             A
-    + A             B             B
-      B           - B           - B
-      A             A             A
-    + C           + C           + C
-</code></pre></div><p>上面三种都是有效的 diff，都可以将源文本变成目标文本，但是第二种和第三种没有第一种看起来“直观”。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>1.  - A       2.  - A       3.  + C
+</span></span><span style="display:flex;"><span>    - B           + C           - A
+</span></span><span style="display:flex;"><span>      C             B             B
+</span></span><span style="display:flex;"><span>    - A           - C           - C
+</span></span><span style="display:flex;"><span>      B             A             A
+</span></span><span style="display:flex;"><span>    + A             B             B
+</span></span><span style="display:flex;"><span>      B           - B           - B
+</span></span><span style="display:flex;"><span>      A             A             A
+</span></span><span style="display:flex;"><span>    + C           + C           + C
+</span></span></code></pre></div><p>上面三种都是有效的 diff，都可以将源文本变成目标文本，但是第二种和第三种没有第一种看起来“直观”。</p>
 <p>所以，我们需要个算法，生成“直观”的 diff，怎么样才叫“直观”呢？</p>
 <ul>
 <li>
@@ -102,25 +102,25 @@
 </li>
 <li>
 <p>当修改一块代码时，整块的删除然后新增，比删除新增交叉在一起要好，例如：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">  Good: - one            Bad: - one
-        - two                 + four
-        - three               - two
-        + four                + five
-        + five                + six
-        + six                 - three
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>  Good: - one            Bad: - one
+</span></span><span style="display:flex;"><span>        - two                 + four
+</span></span><span style="display:flex;"><span>        - three               - two
+</span></span><span style="display:flex;"><span>        + four                + five
+</span></span><span style="display:flex;"><span>        + five                + six
+</span></span><span style="display:flex;"><span>        + six                 - three
+</span></span></code></pre></div></li>
 <li>
 <p>新增或删除的内容应该和代码结构相呼应，例如下面的例子，左边我们可以很直观地看出新增了一个inspect 方法。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">  Good: class Foo                   Bad:    class Foo
-          def initialize(name)                def initialize(name)
-            @name = name                        @name = name
-          end                             +   end
-      +                                   +
-      +   def inspect                     +   def inspect
-      +     @name                         +     @name
-      +   end                                 end
-        end                                 end
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>  Good: class Foo                   Bad:    class Foo
+</span></span><span style="display:flex;"><span>          def initialize(name)                def initialize(name)
+</span></span><span style="display:flex;"><span>            @name = name                        @name = name
+</span></span><span style="display:flex;"><span>          end                             +   end
+</span></span><span style="display:flex;"><span>      +                                   +
+</span></span><span style="display:flex;"><span>      +   def inspect                     +   def inspect
+</span></span><span style="display:flex;"><span>      +     @name                         +     @name
+</span></span><span style="display:flex;"><span>      +   end                                 end
+</span></span><span style="display:flex;"><span>        end                                 end
+</span></span></code></pre></div></li>
 </ul>
 <p>除了直观以外，diff 还需要短，这一点是好理解的，我们希望 diff 反应的是把源文本变成目标文本需要用的最少的操作。</p>
 <p>那么，现在的问题就是：怎样寻找最短的直观的 diff？</p>
@@ -139,16 +139,16 @@
 <li>(7, 5) -&gt; (7, 6)</li>
 </ol>
 <p>这条路径代表的 diff 如下。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">- A
-- B
-  C
-+ B
-  A
-  B
-- B
-  A
-+ C
-</code></pre></div><p>现在，“寻找 diff” 这件事，被抽象成了“寻找图的路径”了。那么，“最短的直观的” diff 对应的路径有什么特点呢？</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>- A
+</span></span><span style="display:flex;"><span>- B
+</span></span><span style="display:flex;"><span>  C
+</span></span><span style="display:flex;"><span>+ B
+</span></span><span style="display:flex;"><span>  A
+</span></span><span style="display:flex;"><span>  B
+</span></span><span style="display:flex;"><span>- B
+</span></span><span style="display:flex;"><span>  A
+</span></span><span style="display:flex;"><span>+ C
+</span></span></code></pre></div><p>现在，“寻找 diff” 这件事，被抽象成了“寻找图的路径”了。那么，“最短的直观的” diff 对应的路径有什么特点呢？</p>
 <ul>
 <li>路径长度最短（对角线不算长度）</li>
 <li>先向右，再向下（先删除，后新增）</li>
@@ -166,16 +166,16 @@
 <p>当 <code>d=2</code>，<code>k=2</code> 时，最优坐标是 <code>(3, 1)</code>。</p>
 <p>以此类推，直到我们找到一个 <code>d</code> 和 <code>k</code> 值，达到最终的目标坐标 <code>(7, 6)</code>。</p>
 <p>下图横轴代表 d，纵轴代表 k，中间是最优坐标，从这张图可以清晰的看出，当 <code>d=5</code>，<code>k=1</code> 时，我们到达了目标坐标 (7, 6)，因此，”最短的直观的“路径就是 <code>(0, 0) -&gt; (1, 0) -&gt; (3, 1) -&gt; (5, 4) -&gt; (7, 5) -&gt; (7, 6)</code>，对应的 diff 如下。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-text" data-lang="text">- A
-- B
-  C
-+ B
-  A
-  B
-- B
-  A
-+ C
-</code></pre></div><p><img src="/image/9b85365dgy1ffjz1967znj20p20k9gmg.jpg" alt=""></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>- A
+</span></span><span style="display:flex;"><span>- B
+</span></span><span style="display:flex;"><span>  C
+</span></span><span style="display:flex;"><span>+ B
+</span></span><span style="display:flex;"><span>  A
+</span></span><span style="display:flex;"><span>  B
+</span></span><span style="display:flex;"><span>- B
+</span></span><span style="display:flex;"><span>  A
+</span></span><span style="display:flex;"><span>+ C
+</span></span></code></pre></div><p><img src="/image/9b85365dgy1ffjz1967znj20p20k9gmg.jpg" alt=""></p>
 <p>现在我们可以知道，其实 Myers 算法是一个典型的”动态规划“算法，也就是说，父问题的求解归结为子问题的求解。要知道 d=5 时所有 k 对应的最优坐标，必须先要知道 d=4 时所有 k 对应的最优坐标，要知道 d=4 时的答案，必须先求解 d=3，以此类推，和 01 背包问题很是相似。</p>
 <h2 id="实现">实现</h2>
 <p>算法原理知道以后，实现便是一件简单的事情了，<a href="https://github.com/cj1128/myers-diff">myers-diff</a> 仓库是我使用 Go 实现的一个版本，基本流程如下：</p>

@@ -89,151 +89,150 @@
 <p>Golang 提供了非常棒的 Profiling 工具，可以很容易地得到 CPU 和内存的 Profiling 数据。更加赞的是，Golang 还提供了工具来可视化这些数据，一眼就可以看出程序的性能瓶颈在哪儿，调优从未如此轻松。</p>
 <h2 id="package-pprof">Package pprof</h2>
 <p>Golang 标准库里，有一个叫做 <code>pprof</code> 的包，通过这个包，我们可以 profiling 任意的程序，两个函数调用即可。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-golang" data-lang="golang"><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>() {
-  <span style="color:#000;font-weight:bold">...</span>.
-  f, err <span style="color:#000;font-weight:bold">:=</span> os.<span style="color:#900;font-weight:bold">Create</span>(<span style="color:#d14">&#34;cpu-profile.prof&#34;</span>)
-  <span style="color:#000;font-weight:bold">if</span> err <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">nil</span> {
-    log.<span style="color:#900;font-weight:bold">Fatal</span>(err)
-  }
-  pprof.<span style="color:#900;font-weight:bold">StartCPUProfile</span>(f)
-  <span style="color:#000;font-weight:bold">...</span> <span style="color:#998;font-style:italic">// this is program you want to profile
-</span><span style="color:#998;font-style:italic"></span>  pprof.<span style="color:#900;font-weight:bold">StopCPUProfile</span>()
-}
-</code></pre></div><p>程序运行后，pprof 会将 Profiling 数据写到指定的文件当中，然后通过 <code>go tool pprof</code>就可以查看。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">...</span>.
+</span></span><span style="display:flex;"><span>  f, err <span style="color:#000;font-weight:bold">:=</span> os.<span style="color:#900;font-weight:bold">Create</span>(<span style="color:#d14">&#34;cpu-profile.prof&#34;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">if</span> err <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span>    log.<span style="color:#900;font-weight:bold">Fatal</span>(err)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  pprof.<span style="color:#900;font-weight:bold">StartCPUProfile</span>(f)
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">...</span> <span style="color:#998;font-style:italic">// this is program you want to profile
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>  pprof.<span style="color:#900;font-weight:bold">StopCPUProfile</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>程序运行后，pprof 会将 Profiling 数据写到指定的文件当中，然后通过 <code>go tool pprof</code>就可以查看。</p>
 <p>我们来 Profiling 一个简单的 Fibonacci 程序。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-golang" data-lang="golang"><span style="color:#000;font-weight:bold">package</span> main
-
-<span style="color:#000;font-weight:bold">import</span> (
-	<span style="color:#d14">&#34;fmt&#34;</span>
-	<span style="color:#d14">&#34;log&#34;</span>
-	<span style="color:#d14">&#34;os&#34;</span>
-	<span style="color:#d14">&#34;runtime/pprof&#34;</span>
-)
-
-<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>() {
-	f, err <span style="color:#000;font-weight:bold">:=</span> os.<span style="color:#900;font-weight:bold">Create</span>(<span style="color:#d14">&#34;cpu-profile.prof&#34;</span>)
-	<span style="color:#000;font-weight:bold">if</span> err <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">nil</span> {
-		log.<span style="color:#900;font-weight:bold">Fatal</span>(err)
-	}
-	pprof.<span style="color:#900;font-weight:bold">StartCPUProfile</span>(f)
-	fmt.<span style="color:#900;font-weight:bold">Println</span>(<span style="color:#900;font-weight:bold">fibonacci</span>(<span style="color:#099">45</span>))
-	pprof.<span style="color:#900;font-weight:bold">StopCPUProfile</span>()
-}
-
-<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">fibonacci</span>(n <span style="color:#458;font-weight:bold">int</span>) <span style="color:#458;font-weight:bold">int</span> {
-	<span style="color:#000;font-weight:bold">if</span> n &lt; <span style="color:#099">2</span> {
-		<span style="color:#000;font-weight:bold">return</span> n
-	}
-	<span style="color:#000;font-weight:bold">return</span> <span style="color:#900;font-weight:bold">fibonacci</span>(n<span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">+</span> <span style="color:#900;font-weight:bold">fibonacci</span>(n<span style="color:#000;font-weight:bold">-</span><span style="color:#099">2</span>)
-}
-</code></pre></div><p>编译以后，运行程序便可以生成 <code>cpu-profile.prof</code> 文件。使用 <code>go tool pprof finabocci cpu-profile.prof</code> 进入 Profiling 控制台，输入<code>web</code> 指令跳入浏览器中查看 Golang 为我们生成的可视化性能数据。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">package</span> main
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">import</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#d14">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#d14">&#34;log&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#d14">&#34;os&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#d14">&#34;runtime/pprof&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>() {
+</span></span><span style="display:flex;"><span>	f, err <span style="color:#000;font-weight:bold">:=</span> os.<span style="color:#900;font-weight:bold">Create</span>(<span style="color:#d14">&#34;cpu-profile.prof&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">if</span> err <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span>		log.<span style="color:#900;font-weight:bold">Fatal</span>(err)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	pprof.<span style="color:#900;font-weight:bold">StartCPUProfile</span>(f)
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#900;font-weight:bold">Println</span>(<span style="color:#900;font-weight:bold">fibonacci</span>(<span style="color:#099">45</span>))
+</span></span><span style="display:flex;"><span>	pprof.<span style="color:#900;font-weight:bold">StopCPUProfile</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">fibonacci</span>(n <span style="color:#458;font-weight:bold">int</span>) <span style="color:#458;font-weight:bold">int</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">if</span> n &lt; <span style="color:#099">2</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#000;font-weight:bold">return</span> n
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">return</span> <span style="color:#900;font-weight:bold">fibonacci</span>(n<span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) <span style="color:#000;font-weight:bold">+</span> <span style="color:#900;font-weight:bold">fibonacci</span>(n<span style="color:#000;font-weight:bold">-</span><span style="color:#099">2</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>编译以后，运行程序便可以生成 <code>cpu-profile.prof</code> 文件。使用 <code>go tool pprof finabocci cpu-profile.prof</code> 进入 Profiling 控制台，输入<code>web</code> 指令跳入浏览器中查看 Golang 为我们生成的可视化性能数据。</p>
 <p><img src="/image/9b85365djw1f9xgcymlqpj20zo0h3jvw.jpg" alt=""></p>
 <h2 id="benchmark-test">Benchmark Test</h2>
 <p>每一次都手动引入 <code>pprof</code> 包比较麻烦，也没有必要。一般 Golang 的性能测试我们会使用 Golang 提供的 Benchmark 功能，Golang 提供了命令行参数我们可以直接得到测试文件中 Benchmark 的 Profiling 数据。不需要添加任何代码。</p>
 <p>下面我们来写一个 Benchmark 测试一下 Golang 的标准库函数 <code>rand.Intn</code> 的性能如何。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-golang" data-lang="golang"><span style="color:#000;font-weight:bold">package</span> main
-
-<span style="color:#000;font-weight:bold">import</span> (
-	<span style="color:#d14">&#34;math/rand&#34;</span>
-	<span style="color:#d14">&#34;testing&#34;</span>
-)
-
-<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">BenchmarkRandom</span>(b <span style="color:#000;font-weight:bold">*</span>testing.B) {
-	<span style="color:#000;font-weight:bold">for</span> i <span style="color:#000;font-weight:bold">:=</span> <span style="color:#099">0</span>; i &lt; b.N; i<span style="color:#000;font-weight:bold">++</span> {
-		<span style="color:#900;font-weight:bold">random</span>()
-	}
-}
-
-<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">random</span>() <span style="color:#458;font-weight:bold">int</span> {
-	<span style="color:#000;font-weight:bold">return</span> rand.<span style="color:#900;font-weight:bold">Intn</span>(<span style="color:#099">100</span>)
-}
-
-</code></pre></div><p>因为 pprof 需要编译好的二进制文件以及 prof 文件一起才可以分析，所以先要编译这一段测试程序。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ go <span style="color:#0086b3">test</span> -c go_test.go
-$ ./main.test -test.bench<span style="color:#000;font-weight:bold">=</span>. -test.cpuprofile<span style="color:#000;font-weight:bold">=</span>cpu-profile.prof
-testing: warning: no tests to run
-BenchmarkRandom-8       <span style="color:#099">50000000</span>                30.5 ns/op
-</code></pre></div><p>可以看出 Go 标准库的 <code>rand.Intn</code> 性能很好，测试运行完毕以后，我们也得到了相应的 CPU Profiling 数据。使用 <code>go tool pprof</code> 打开以后，使用 <code>top 5</code> 指令得到开销排名前五的函数。五个里面有两个是 <code>sync/atomic</code> 包的函数，很明显，<code>rant.Intn</code> 是并发安全的。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ go tool pprof main.test cpu-profile.prof
-<span style="color:#000;font-weight:bold">(</span>pprof<span style="color:#000;font-weight:bold">)</span> top <span style="color:#099">5</span>
-780ms of 1370ms total <span style="color:#000;font-weight:bold">(</span>56.93%<span style="color:#000;font-weight:bold">)</span>
-Showing top <span style="color:#099">5</span> nodes out of <span style="color:#099">35</span> <span style="color:#000;font-weight:bold">(</span>cum &gt;<span style="color:#000;font-weight:bold">=</span> 610ms<span style="color:#000;font-weight:bold">)</span>
-      flat  flat%   sum%        cum   cum%
-     270ms 19.71% 19.71%      270ms 19.71%  runtime.usleep
-     170ms 12.41% 32.12%      840ms 61.31%  math/rand.<span style="color:#000;font-weight:bold">(</span>*Rand<span style="color:#000;font-weight:bold">)</span>.Int31n
-     150ms 10.95% 43.07%      150ms 10.95%  sync/atomic.AddUint32
-     110ms  8.03% 51.09%      110ms  8.03%  sync/atomic.CompareAndSwapUint32
-      80ms  5.84% 56.93%      610ms 44.53%  math/rand.<span style="color:#000;font-weight:bold">(</span>*Rand<span style="color:#000;font-weight:bold">)</span>.Int63
-</code></pre></div><h2 id="example-sudoku">Example Sudoku</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">package</span> main
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">import</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#d14">&#34;math/rand&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#d14">&#34;testing&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">BenchmarkRandom</span>(b <span style="color:#000;font-weight:bold">*</span>testing.B) {
+</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">for</span> i <span style="color:#000;font-weight:bold">:=</span> <span style="color:#099">0</span>; i &lt; b.N; i<span style="color:#000;font-weight:bold">++</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#900;font-weight:bold">random</span>()
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">random</span>() <span style="color:#458;font-weight:bold">int</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">return</span> rand.<span style="color:#900;font-weight:bold">Intn</span>(<span style="color:#099">100</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>因为 pprof 需要编译好的二进制文件以及 prof 文件一起才可以分析，所以先要编译这一段测试程序。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ go <span style="color:#0086b3">test</span> -c go_test.go
+</span></span><span style="display:flex;"><span>$ ./main.test -test.bench<span style="color:#000;font-weight:bold">=</span>. -test.cpuprofile<span style="color:#000;font-weight:bold">=</span>cpu-profile.prof
+</span></span><span style="display:flex;"><span>testing: warning: no tests to run
+</span></span><span style="display:flex;"><span>BenchmarkRandom-8       <span style="color:#099">50000000</span>                30.5 ns/op
+</span></span></code></pre></div><p>可以看出 Go 标准库的 <code>rand.Intn</code> 性能很好，测试运行完毕以后，我们也得到了相应的 CPU Profiling 数据。使用 <code>go tool pprof</code> 打开以后，使用 <code>top 5</code> 指令得到开销排名前五的函数。五个里面有两个是 <code>sync/atomic</code> 包的函数，很明显，<code>rant.Intn</code> 是并发安全的。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ go tool pprof main.test cpu-profile.prof
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">(</span>pprof<span style="color:#000;font-weight:bold">)</span> top <span style="color:#099">5</span>
+</span></span><span style="display:flex;"><span>780ms of 1370ms total <span style="color:#000;font-weight:bold">(</span>56.93%<span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>Showing top <span style="color:#099">5</span> nodes out of <span style="color:#099">35</span> <span style="color:#000;font-weight:bold">(</span>cum &gt;<span style="color:#000;font-weight:bold">=</span> 610ms<span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>      flat  flat%   sum%        cum   cum%
+</span></span><span style="display:flex;"><span>     270ms 19.71% 19.71%      270ms 19.71%  runtime.usleep
+</span></span><span style="display:flex;"><span>     170ms 12.41% 32.12%      840ms 61.31%  math/rand.<span style="color:#000;font-weight:bold">(</span>*Rand<span style="color:#000;font-weight:bold">)</span>.Int31n
+</span></span><span style="display:flex;"><span>     150ms 10.95% 43.07%      150ms 10.95%  sync/atomic.AddUint32
+</span></span><span style="display:flex;"><span>     110ms  8.03% 51.09%      110ms  8.03%  sync/atomic.CompareAndSwapUint32
+</span></span><span style="display:flex;"><span>      80ms  5.84% 56.93%      610ms 44.53%  math/rand.<span style="color:#000;font-weight:bold">(</span>*Rand<span style="color:#000;font-weight:bold">)</span>.Int63
+</span></span></code></pre></div><h2 id="example-sudoku">Example Sudoku</h2>
 <p>下面我用 <a href="https://github.com/paddie/godoku">Godoku</a> 这个项目为例，看看怎么具体优化一个程序。Godoku 是一个 Go 编写的暴力破解数独的程序，逻辑比较简单，从上到下从左到右扫描每一个空格，从 1 到 9 开始填写数字，一旦数字无效（行冲突，列冲突或者 9 宫格冲突），那么就换一个数字，如果所有数字都换了还无效，那么就退回上一个格子，继续这个过程。</p>
 <h3 id="step1">Step1</h3>
 <p>程序自带了测试和 Benchmark，所以我们先来生成一个 Profiling 文件，看看哪个地方开销最大。</p>
 <p><img src="/image/9b85365dgw1f9xhhnlv05j20s70mcafx.jpg" alt=""></p>
 <p>很明显，<code>ValidInSquare</code>这个函数开销很大，这个函数是检测一个数字在九宫格里面存不存在，作者的实现如下。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-golang" data-lang="golang"><span style="color:#000;font-weight:bold">func</span> (s <span style="color:#000;font-weight:bold">*</span>Sudoku) <span style="color:#900;font-weight:bold">ValidInSquare</span>(row, col, val <span style="color:#458;font-weight:bold">int</span>) <span style="color:#458;font-weight:bold">bool</span> {
-	row, col = <span style="color:#0086b3">int</span>(row<span style="color:#000;font-weight:bold">/</span><span style="color:#099">3</span>)<span style="color:#000;font-weight:bold">*</span><span style="color:#099">3</span>, <span style="color:#0086b3">int</span>(col<span style="color:#000;font-weight:bold">/</span><span style="color:#099">3</span>)<span style="color:#000;font-weight:bold">*</span><span style="color:#099">3</span>
-
-	<span style="color:#000;font-weight:bold">for</span> i <span style="color:#000;font-weight:bold">:=</span> row; i &lt; row<span style="color:#000;font-weight:bold">+</span><span style="color:#099">3</span>; i<span style="color:#000;font-weight:bold">++</span> {
-		<span style="color:#000;font-weight:bold">for</span> j <span style="color:#000;font-weight:bold">:=</span> col; j &lt; col<span style="color:#000;font-weight:bold">+</span><span style="color:#099">3</span>; j<span style="color:#000;font-weight:bold">++</span> {
-			<span style="color:#998;font-style:italic">//fmt.Printf(&#34;row, col = %v, %v\n&#34;, i, j)
-</span><span style="color:#998;font-style:italic"></span>			<span style="color:#000;font-weight:bold">if</span> s.board[i][j] <span style="color:#000;font-weight:bold">==</span> val {
-				<span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">false</span>
-			}
-		}
-	}
-	<span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">true</span>
-}
-</code></pre></div><p>循环判断有没有这个数，逻辑很简单，但是 Profiling 告诉我们，这里成了性能瓶颈，每一次测试数字都要调用这个方法，而这个方法内部是一个循环，调用如此频繁的方法采用循环肯定是不行的。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> (s <span style="color:#000;font-weight:bold">*</span>Sudoku) <span style="color:#900;font-weight:bold">ValidInSquare</span>(row, col, val <span style="color:#458;font-weight:bold">int</span>) <span style="color:#458;font-weight:bold">bool</span> {
+</span></span><span style="display:flex;"><span>	row, col = <span style="color:#0086b3">int</span>(row<span style="color:#000;font-weight:bold">/</span><span style="color:#099">3</span>)<span style="color:#000;font-weight:bold">*</span><span style="color:#099">3</span>, <span style="color:#0086b3">int</span>(col<span style="color:#000;font-weight:bold">/</span><span style="color:#099">3</span>)<span style="color:#000;font-weight:bold">*</span><span style="color:#099">3</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">for</span> i <span style="color:#000;font-weight:bold">:=</span> row; i &lt; row<span style="color:#000;font-weight:bold">+</span><span style="color:#099">3</span>; i<span style="color:#000;font-weight:bold">++</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#000;font-weight:bold">for</span> j <span style="color:#000;font-weight:bold">:=</span> col; j &lt; col<span style="color:#000;font-weight:bold">+</span><span style="color:#099">3</span>; j<span style="color:#000;font-weight:bold">++</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#998;font-style:italic">//fmt.Printf(&#34;row, col = %v, %v\n&#34;, i, j)
+</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>			<span style="color:#000;font-weight:bold">if</span> s.board[i][j] <span style="color:#000;font-weight:bold">==</span> val {
+</span></span><span style="display:flex;"><span>				<span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">false</span>
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">true</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>循环判断有没有这个数，逻辑很简单，但是 Profiling 告诉我们，这里成了性能瓶颈，每一次测试数字都要调用这个方法，而这个方法内部是一个循环，调用如此频繁的方法采用循环肯定是不行的。</p>
 <h3 id="step2">Step2</h3>
 <p>这里我们采用经典的 <strong>空间换时间</strong> 思路，使用另外一个结构存储九宫格内的状态信息，使得查询一个数字在九宫格内有没有可以通过简单的数组访问得到。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-golang" data-lang="golang">s.regionInfo = <span style="color:#0086b3">make</span>([]<span style="color:#458;font-weight:bold">int</span>, s.dim <span style="color:#000;font-weight:bold">*</span> s.dim <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">9</span>)
-
-<span style="color:#000;font-weight:bold">func</span> (s <span style="color:#000;font-weight:bold">*</span>Sudoku) <span style="color:#900;font-weight:bold">updateRegion</span>(row, col, val, delta <span style="color:#458;font-weight:bold">int</span>) {
-	region <span style="color:#000;font-weight:bold">:=</span> (row<span style="color:#000;font-weight:bold">/</span><span style="color:#099">3</span>)<span style="color:#000;font-weight:bold">*</span><span style="color:#099">3</span> <span style="color:#000;font-weight:bold">+</span> col<span style="color:#000;font-weight:bold">/</span><span style="color:#099">3</span>
-	key <span style="color:#000;font-weight:bold">:=</span> region<span style="color:#000;font-weight:bold">*</span><span style="color:#099">9</span> <span style="color:#000;font-weight:bold">+</span> val <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">1</span>
-	s.regionInfo[key] <span style="color:#000;font-weight:bold">+=</span> delta
-}
-
-<span style="color:#000;font-weight:bold">func</span> (s <span style="color:#000;font-weight:bold">*</span>Sudoku) <span style="color:#900;font-weight:bold">checkRegion</span>(row, col, val <span style="color:#458;font-weight:bold">int</span>) <span style="color:#458;font-weight:bold">bool</span> {
-	region <span style="color:#000;font-weight:bold">:=</span> (row<span style="color:#000;font-weight:bold">/</span><span style="color:#099">3</span>)<span style="color:#000;font-weight:bold">*</span><span style="color:#099">3</span> <span style="color:#000;font-weight:bold">+</span> col<span style="color:#000;font-weight:bold">/</span><span style="color:#099">3</span>
-	key <span style="color:#000;font-weight:bold">:=</span> region<span style="color:#000;font-weight:bold">*</span><span style="color:#099">9</span> <span style="color:#000;font-weight:bold">+</span> val <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">1</span>
-	<span style="color:#000;font-weight:bold">return</span> s.regionInfo[key] <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">1</span>
-}
-</code></pre></div><p>我们使用一个额外的 <code>regionInfo</code> slice 来存储九宫格里的情况，每一次设置数独中格子的值时，我们更新一下 regionInfo 的信息。当要检查某个数在某个九宫格中是否已经存在时，直接查询 regionInfo 即可。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-golang" data-lang="golang"><span style="color:#000;font-weight:bold">func</span> (s <span style="color:#000;font-weight:bold">*</span>Sudoku) <span style="color:#900;font-weight:bold">ValidInSquare</span>(row, col, val <span style="color:#458;font-weight:bold">int</span>) <span style="color:#458;font-weight:bold">bool</span> {
-	<span style="color:#000;font-weight:bold">return</span> !s.<span style="color:#900;font-weight:bold">checkRegion</span>(row, col, val)
-}
-</code></pre></div><p>再运行一次测试，看看性能改善了多少。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span>s.regionInfo = <span style="color:#0086b3">make</span>([]<span style="color:#458;font-weight:bold">int</span>, s.dim <span style="color:#000;font-weight:bold">*</span> s.dim <span style="color:#000;font-weight:bold">/</span> <span style="color:#099">9</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> (s <span style="color:#000;font-weight:bold">*</span>Sudoku) <span style="color:#900;font-weight:bold">updateRegion</span>(row, col, val, delta <span style="color:#458;font-weight:bold">int</span>) {
+</span></span><span style="display:flex;"><span>	region <span style="color:#000;font-weight:bold">:=</span> (row<span style="color:#000;font-weight:bold">/</span><span style="color:#099">3</span>)<span style="color:#000;font-weight:bold">*</span><span style="color:#099">3</span> <span style="color:#000;font-weight:bold">+</span> col<span style="color:#000;font-weight:bold">/</span><span style="color:#099">3</span>
+</span></span><span style="display:flex;"><span>	key <span style="color:#000;font-weight:bold">:=</span> region<span style="color:#000;font-weight:bold">*</span><span style="color:#099">9</span> <span style="color:#000;font-weight:bold">+</span> val <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span>	s.regionInfo[key] <span style="color:#000;font-weight:bold">+=</span> delta
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> (s <span style="color:#000;font-weight:bold">*</span>Sudoku) <span style="color:#900;font-weight:bold">checkRegion</span>(row, col, val <span style="color:#458;font-weight:bold">int</span>) <span style="color:#458;font-weight:bold">bool</span> {
+</span></span><span style="display:flex;"><span>	region <span style="color:#000;font-weight:bold">:=</span> (row<span style="color:#000;font-weight:bold">/</span><span style="color:#099">3</span>)<span style="color:#000;font-weight:bold">*</span><span style="color:#099">3</span> <span style="color:#000;font-weight:bold">+</span> col<span style="color:#000;font-weight:bold">/</span><span style="color:#099">3</span>
+</span></span><span style="display:flex;"><span>	key <span style="color:#000;font-weight:bold">:=</span> region<span style="color:#000;font-weight:bold">*</span><span style="color:#099">9</span> <span style="color:#000;font-weight:bold">+</span> val <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">return</span> s.regionInfo[key] <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>我们使用一个额外的 <code>regionInfo</code> slice 来存储九宫格里的情况，每一次设置数独中格子的值时，我们更新一下 regionInfo 的信息。当要检查某个数在某个九宫格中是否已经存在时，直接查询 regionInfo 即可。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> (s <span style="color:#000;font-weight:bold">*</span>Sudoku) <span style="color:#900;font-weight:bold">ValidInSquare</span>(row, col, val <span style="color:#458;font-weight:bold">int</span>) <span style="color:#458;font-weight:bold">bool</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">return</span> !s.<span style="color:#900;font-weight:bold">checkRegion</span>(row, col, val)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>再运行一次测试，看看性能改善了多少。</p>
 <p><img src="/image/9b85365dgw1f9xhx008q9j212g0m3q8x.jpg" alt=""></p>
 <p>很好！CPU 开销已经由 9770ms 降低到了 5460ms，性能提高 79%。现在程序的性能瓶颈已经是 <code>ValidInColumnAndRow</code> 这个函数了。</p>
 <h3 id="step3">Step3</h3>
 <p>作者 <code>ValidInColumnAndRow</code> 函数的实现仍然是直观简单的循环。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-golang" data-lang="golang"><span style="color:#000;font-weight:bold">func</span> (s <span style="color:#000;font-weight:bold">*</span>Sudoku) <span style="color:#900;font-weight:bold">ValidInColumnAndRow</span>(row, col, val <span style="color:#458;font-weight:bold">int</span>) <span style="color:#458;font-weight:bold">bool</span> {
-	<span style="color:#000;font-weight:bold">for</span> i <span style="color:#000;font-weight:bold">:=</span> <span style="color:#099">0</span>; i &lt; <span style="color:#099">9</span>; i<span style="color:#000;font-weight:bold">++</span> {
-		<span style="color:#000;font-weight:bold">if</span> s.board[row][i] <span style="color:#000;font-weight:bold">==</span> val <span style="color:#000;font-weight:bold">||</span>
-			s.board[i][col] <span style="color:#000;font-weight:bold">==</span> val {
-			<span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">false</span>
-		}
-	}
-	<span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">true</span>
-}
-</code></pre></div><p>我们使用同样的策略来优化 <code>ValidInColumnAndRow</code> 这个函数，使用额外的数据结构存储每一行和每一列的数字状态信息。这样查询时可以马上返回，而不需要做任何循环比较。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-golang" data-lang="golang"><span style="color:#000;font-weight:bold">func</span> (s <span style="color:#000;font-weight:bold">*</span>Sudoku) <span style="color:#900;font-weight:bold">updateRowAndCol</span>(row, col, val, delta <span style="color:#458;font-weight:bold">int</span>) {
-	rowKey <span style="color:#000;font-weight:bold">:=</span> row<span style="color:#000;font-weight:bold">*</span><span style="color:#099">9</span> <span style="color:#000;font-weight:bold">+</span> val <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">1</span>
-	colKey <span style="color:#000;font-weight:bold">:=</span> col<span style="color:#000;font-weight:bold">*</span><span style="color:#099">9</span> <span style="color:#000;font-weight:bold">+</span> val <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">1</span>
-	s.rowInfo[rowKey] <span style="color:#000;font-weight:bold">+=</span> delta
-	s.colInfo[colKey] <span style="color:#000;font-weight:bold">+=</span> delta
-}
-
-<span style="color:#000;font-weight:bold">func</span> (s <span style="color:#000;font-weight:bold">*</span>Sudoku) <span style="color:#900;font-weight:bold">checkRowOrCol</span>(row, col, val <span style="color:#458;font-weight:bold">int</span>) <span style="color:#458;font-weight:bold">bool</span> {
-	rowKey <span style="color:#000;font-weight:bold">:=</span> row<span style="color:#000;font-weight:bold">*</span><span style="color:#099">9</span> <span style="color:#000;font-weight:bold">+</span> val <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">1</span>
-	colKey <span style="color:#000;font-weight:bold">:=</span> col<span style="color:#000;font-weight:bold">*</span><span style="color:#099">9</span> <span style="color:#000;font-weight:bold">+</span> val <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">1</span>
-	<span style="color:#000;font-weight:bold">return</span> s.rowInfo[rowKey] <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">1</span> <span style="color:#000;font-weight:bold">||</span> s.colInfo[colKey] <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">1</span>
-}
-<span style="color:#000;font-weight:bold">func</span> (s <span style="color:#000;font-weight:bold">*</span>Sudoku) <span style="color:#900;font-weight:bold">ValidInColumnAndRow</span>(row, col, val <span style="color:#458;font-weight:bold">int</span>) <span style="color:#458;font-weight:bold">bool</span> {
-	<span style="color:#000;font-weight:bold">return</span> !s.<span style="color:#900;font-weight:bold">checkRowOrCol</span>(row, col, val)
-}
-</code></pre></div><p>我们再来看看 Profiling 数据。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> (s <span style="color:#000;font-weight:bold">*</span>Sudoku) <span style="color:#900;font-weight:bold">ValidInColumnAndRow</span>(row, col, val <span style="color:#458;font-weight:bold">int</span>) <span style="color:#458;font-weight:bold">bool</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">for</span> i <span style="color:#000;font-weight:bold">:=</span> <span style="color:#099">0</span>; i &lt; <span style="color:#099">9</span>; i<span style="color:#000;font-weight:bold">++</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#000;font-weight:bold">if</span> s.board[row][i] <span style="color:#000;font-weight:bold">==</span> val <span style="color:#000;font-weight:bold">||</span>
+</span></span><span style="display:flex;"><span>			s.board[i][col] <span style="color:#000;font-weight:bold">==</span> val {
+</span></span><span style="display:flex;"><span>			<span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">false</span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">true</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>我们使用同样的策略来优化 <code>ValidInColumnAndRow</code> 这个函数，使用额外的数据结构存储每一行和每一列的数字状态信息。这样查询时可以马上返回，而不需要做任何循环比较。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> (s <span style="color:#000;font-weight:bold">*</span>Sudoku) <span style="color:#900;font-weight:bold">updateRowAndCol</span>(row, col, val, delta <span style="color:#458;font-weight:bold">int</span>) {
+</span></span><span style="display:flex;"><span>	rowKey <span style="color:#000;font-weight:bold">:=</span> row<span style="color:#000;font-weight:bold">*</span><span style="color:#099">9</span> <span style="color:#000;font-weight:bold">+</span> val <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span>	colKey <span style="color:#000;font-weight:bold">:=</span> col<span style="color:#000;font-weight:bold">*</span><span style="color:#099">9</span> <span style="color:#000;font-weight:bold">+</span> val <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span>	s.rowInfo[rowKey] <span style="color:#000;font-weight:bold">+=</span> delta
+</span></span><span style="display:flex;"><span>	s.colInfo[colKey] <span style="color:#000;font-weight:bold">+=</span> delta
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> (s <span style="color:#000;font-weight:bold">*</span>Sudoku) <span style="color:#900;font-weight:bold">checkRowOrCol</span>(row, col, val <span style="color:#458;font-weight:bold">int</span>) <span style="color:#458;font-weight:bold">bool</span> {
+</span></span><span style="display:flex;"><span>	rowKey <span style="color:#000;font-weight:bold">:=</span> row<span style="color:#000;font-weight:bold">*</span><span style="color:#099">9</span> <span style="color:#000;font-weight:bold">+</span> val <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span>	colKey <span style="color:#000;font-weight:bold">:=</span> col<span style="color:#000;font-weight:bold">*</span><span style="color:#099">9</span> <span style="color:#000;font-weight:bold">+</span> val <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">return</span> s.rowInfo[rowKey] <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">1</span> <span style="color:#000;font-weight:bold">||</span> s.colInfo[colKey] <span style="color:#000;font-weight:bold">==</span> <span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">func</span> (s <span style="color:#000;font-weight:bold">*</span>Sudoku) <span style="color:#900;font-weight:bold">ValidInColumnAndRow</span>(row, col, val <span style="color:#458;font-weight:bold">int</span>) <span style="color:#458;font-weight:bold">bool</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#000;font-weight:bold">return</span> !s.<span style="color:#900;font-weight:bold">checkRowOrCol</span>(row, col, val)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>我们再来看看 Profiling 数据。</p>
 <p><img src="/image/9b85365dgw1f9xi9qhf6uj211m0idjvs.jpg" alt=""></p>
 <p>性能再次得到了提升，由 5460ms 降低到了 3610ms。初步看来，已经没有了明显可以优化的地方了。到此为止，我们的程序性能已经得到了 170% 的提升！我们并没有怎么努力，只不过是生成了 Profiling 文件，一眼看出问题在哪儿，然后针对性地优化而已。</p>
 <p>感谢 Golang 提供了这套超赞的 pprof 工具，性能调优变得如此轻松和愉悦。这里我所举的只是 pprof 功能的冰山一角，pprof 的强大功能远不止这些。比如可以使用 <code>list</code> 指令查看函数的源码中每一行代码的开销以及使用 <code>weblist</code> 指令查看函数汇编以后每一句汇编指令的开销等等。不仅是 CPU Profiling，pprof 同样支持 Memory Profiling，可以帮助你检查程序中内存的分配情况。总之，在 pprof 的帮助下，程序的开销信息变得一清二楚，优化自然变得轻而易举。</p>
